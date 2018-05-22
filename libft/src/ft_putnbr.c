@@ -34,7 +34,7 @@ void	ft_putnbr(int n)
 		d *= 10;
 	while (d >= 1)
 	{
-		ft_putchar('0' + ((n / d) - (m * 10)));
+		ft_putchar((char)('0' + ((n / d) - (m * 10))));
 		m = n / d;
 		d /= 10;
 	}

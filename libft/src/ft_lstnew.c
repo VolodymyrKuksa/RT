@@ -30,7 +30,7 @@ t_list		*ft_lstnew(void const *content, size_t content_size)
 	}
 	else
 	{
-		bl->content = (void *)NULL;
+		bl->content = NULL;
 		bl->content_size = 0;
 	}
 	return (bl);

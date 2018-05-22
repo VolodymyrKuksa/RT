@@ -16,7 +16,7 @@ char	*ft_strnew(size_t size)
 {
 	char	*str;
 
-	str = (void *)ft_memalloc(size + 1);
+	str = ft_memalloc(size + 1);
 	if (str)
 		str[size] = '\0';
 	return (str);

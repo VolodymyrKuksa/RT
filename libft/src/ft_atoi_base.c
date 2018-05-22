@@ -77,7 +77,7 @@ int			ft_atoi_base(const char *str, int str_base)
 	tab = ft_convert(s, str_base);
 	if (!tab)
 		return ((int)NULL);
-	len = ft_strlen(s) - 1;
+	len = (int)ft_strlen(s) - 1;
 	free(s);
 	return (sign * ft_count(tab, len, str_base, sign));
 }

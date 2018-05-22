@@ -17,7 +17,6 @@ static void	*ft_clean(char **res, int count)
 	while (count >= 0)
 		free(res[count--]);
 	free(res);
-	res = NULL;
 	return (NULL);
 }
 
@@ -41,7 +40,7 @@ static char	**split(char const *s, char c, int count)
 		e = b;
 		while (s[e] != c && s[e])
 			e++;
-		res[i] = ft_strsub(s, b, (e - b));
+		res[i] = ft_strsub(s, (unsigned)b, (size_t)(e - b));
 		if (!res[i])
 			return (ft_clean(res, count));
 		b = e;

@@ -12,10 +12,6 @@
 
 #include "get_next_line.h"
 #include "libft.h"
-#include <sys/types.h>
-#include <sys/uio.h>
-#include <unistd.h>
-#include <stdlib.h>
 
 t_fd_list	*new_fd_elem(int fd)
 {
@@ -39,11 +35,11 @@ int			read_line(t_fd_list *ptr, char **line)
 	ptr->ls = NULL;
 	while (!ptr->ls && nbread)
 	{
-		nbread = read(ptr->fd, ptr->read, BUFF_SIZE);
+		nbread = (int)read(ptr->fd, ptr->read, BUFF_SIZE);
 		ptr->read[nbread] = '\0';
 		if (nbread == -1)
 			return (-1);
-		if ((ptr->ls = ft_memchr(ptr->read, '\n', nbread)))
+		if ((ptr->ls = ft_memchr(ptr->read, '\n', (size_t)nbread)))
 			*((ptr->ls)++) = '\0';
 		tmp = *line;
 		*line = ft_strjoin(*line, ptr->read);
@@ -61,8 +57,8 @@ int			read_line(t_fd_list *ptr, char **line)
 
 int			give_line(t_fd_list *ptr, char **line)
 {
-	char			*p;
-	unsigned int	len;
+	char	*p;
+	size_t	len;
 
 	len = ft_strlen(ptr->ls);
 	if (!((*line) = ft_strnew(len)))

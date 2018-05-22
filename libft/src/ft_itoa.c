@@ -23,7 +23,7 @@ static void	comp(int n, int sign, int d, char *str)
 			str[i++] = '-';
 		while (d >= 1)
 		{
-			str[i++] = '0' + n / d;
+			str[i++] = (char)('0' + n / d);
 			n %= d;
 			d /= 10;
 		}
@@ -53,7 +53,7 @@ char		*ft_itoa(int n)
 		d *= 10;
 		i++;
 	}
-	str = ft_strnew(i + 1);
+	str = ft_strnew((size_t)i + 1);
 	comp(n, sign, d, str);
 	return (str);
 }

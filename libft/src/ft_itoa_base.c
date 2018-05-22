@@ -37,7 +37,7 @@ static char	*ft_convert(unsigned int nb, int base, int sign)
 
 	i = ft_count_len(nb, base, sign);
 	str_base = ft_strdup("0123456789ABCDEF");
-	res = ft_strnew(i);
+	res = ft_strnew((size_t)i);
 	if (!res)
 		return (NULL);
 	if (sign == -1)
@@ -60,8 +60,8 @@ char		*ft_itoa_base(int value, int base)
 	sign = 0;
 	(base == 10 && value < 0) ? sign-- : sign++;
 	if (value < 0)
-		nb = -value;
+		nb = (unsigned)(-value);
 	else
-		nb = value;
+		nb = (unsigned)value;
 	return (ft_convert(nb, base, sign));
 }

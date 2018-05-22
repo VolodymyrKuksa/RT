@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-static int	ft_is_sorted(int *tab, unsigned int size)
+static int	ft_is_sorted(const int *tab, unsigned int size)
 {
 	unsigned int	i;
 
