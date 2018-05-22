@@ -3,3 +3,5 @@ cmake-build-debug
 .DS_Store
 libft/obj
 libft/libft.a
+libvec/obj
+libvec/libvec.a

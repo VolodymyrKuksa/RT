@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <OpenCL/opencl.h>
 #include "libft.h"
+#include "libvec.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -42,6 +43,8 @@ const char *KernelSource = "\n" \
 
 int main(int argc, char** argv)
 {
+	t_vec	tutu = vec_new(0.5, -1.3, 3.14);
+	vec_print(tutu, "tutu:");
 	ft_putendl("yo-yo");
 	int err;                            // error code returned from api calls
 
