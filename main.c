@@ -10,17 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <OpenCL/opencl.h>
-
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <OpenCL/opencl.h>
+#include "libft.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -48,6 +42,7 @@ const char *KernelSource = "\n" \
 
 int main(int argc, char** argv)
 {
+	ft_putendl("yo-yo");
 	int err;                            // error code returned from api calls
 
 	float data[DATA_SIZE];              // original data set given to device

@@ -1,2 +1,5 @@
 cmake-build-debug
 .idea
+.DS_Store
+libft/obj
+libft/libft.a
