@@ -10,12 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <OpenCL/opencl.h>
-#include "libft.h"
-#include "libvec.h"
+#include "rt.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 

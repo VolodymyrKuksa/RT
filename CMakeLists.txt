@@ -10,7 +10,7 @@ add_library(libvec STATIC ${LIBVEC_DIR} libvec/src/vec_print.c)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake_modules")
 find_package(SDL2 REQUIRED)
 
-include_directories(${SDL2_INCLUDE_DIR} libft/includes libvec/includes)
+include_directories(${SDL2_INCLUDE_DIR} includes libft/includes libvec/includes)
 
 find_library(OPENCL OpenCL)
 

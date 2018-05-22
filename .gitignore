@@ -5,3 +5,5 @@ libft/obj
 libft/libft.a
 libvec/obj
 libvec/libvec.a
+RT
+obj

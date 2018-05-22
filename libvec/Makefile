@@ -50,23 +50,23 @@ all: $(NAME)
 $(NAME): $(INC) $(D_OBJ) $(OBJ)
 	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
-	@printf "Libvec: %-24s$(C_GREEN)[done]$(C_NONE)\n" $@
+	@printf "%-10s%-25s$(C_GREEN)[done]$(C_NONE)\n" $(NAME): $@
 
 $(D_OBJ):
 	@mkdir $(D_OBJ)
-	@printf "Libvec: %-24s$(C_CYAN)[done]$(C_NONE)\n" $@
+	@printf "%-10s%-25s$(C_GREEN)[done]$(C_NONE)\n" $(NAME): $@
 
 $(D_OBJ)%.o:$(D_SRC)%.c $(INC)
 	@$(CC) $(CFLAGS) -c -I $(D_INC) $< -o $@
-	@printf "Libvec: %-24s$(C_GREEN)[done]$(C_NONE)\n" $@
+	@printf "%-10s%-25s$(C_GREEN)[done]$(C_NONE)\n" $(NAME): $@
 
 clean:
 	@rm -rf $(D_OBJ)
-	@printf "Libvec: %-24s$(C_RED)[done]$(C_NONE)\n" $@
+	@printf "%-10s%-25s$(C_RED)[done]$(C_NONE)\n" $(NAME): $@
 
 fclean: clean
 	@rm -rf $(NAME)
-	@printf "Libvec: %-24s$(C_RED)[done]$(C_NONE)\n" $@
+	@printf "%-10s%-25s$(C_RED)[done]$(C_NONE)\n" $(NAME): $@
 
 re: fclean all
 

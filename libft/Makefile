@@ -48,22 +48,22 @@ all: $(NAME)
 $(NAME): $(OBJ_DIR) $(OBJ)
 	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
-	@printf "Libft: %-25s$(C_GREEN)[done]$(C_NONE)\n" $@
+	@printf "%-10s%-25s$(C_GREEN)[done]$(C_NONE)\n" $(NAME): $@
 
 $(OBJ_DIR):
 	@mkdir $@
-	@@printf "Libft: %-25s$(C_CYAN)[done]$(C_NONE)\n" $@
+	@printf "%-10s%-25s$(C_GREEN)[done]$(C_NONE)\n" $(NAME): $@
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c $(INC)
 	@$(CC) -c -I $(D_INC) $(FLAGS) $< -o $@
-	@printf "Libft: %-25s$(C_GREEN)[done]$(C_NONE)\n" $@
+	@printf "%-10s%-25s$(C_GREEN)[done]$(C_NONE)\n" $(NAME): $@
 
 clean:
 	@/bin/rm -rf $(OBJ_DIR)
-	@printf "Libft: %-25s$(C_RED)[done]$(C_NONE)\n" $@
+	@printf "%-10s%-25s$(C_RED)[done]$(C_NONE)\n" $(NAME): $@
 
 fclean: clean
 	@/bin/rm -rf $(NAME)
-	@printf "Libft: %-25s$(C_RED)[done]$(C_NONE)\n" $@
+	@printf "%-10s%-25s$(C_RED)[done]$(C_NONE)\n" $(NAME): $@
 
 re: fclean $(NAME)
