@@ -40,7 +40,7 @@ int main(void)
 {
 	char	*content;
 	size_t	size;
-	content = read_file("Makefile", &size);
+	content = read_file("tutut", &size);
 	if (content)
 		printf("size: %lu\n%s", size, content);
 

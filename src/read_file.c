@@ -47,14 +47,14 @@ char		*read_file(const char *filename, size_t *size)
 	gnlret = get_next_line(fd, &line);
 	while (gnlret > 0)
 	{
-		if (gnlret < 0)
-		{
-			free(res);
-			*size = 0;
-			return (NULL);
-		}
 		join_lines(&res, &line);
 		gnlret = get_next_line(fd, &line);
+	}
+	if (gnlret < 0)
+	{
+		free(res);
+		*size = 0;
+		return (NULL);
 	}
 	*size = ft_strlen(res);
 	return (res);
