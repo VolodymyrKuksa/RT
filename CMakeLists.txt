@@ -14,5 +14,5 @@ include_directories(${SDL2_INCLUDE_DIR} includes libft/includes libvec/includes)
 
 find_library(OPENCL OpenCL)
 
-add_executable(rt src/main.c)
+add_executable(rt src/main.c src/read_file.c)
 target_link_libraries(rt ${SDL2_LIBRARY} ${OPENCL} libft libvec)

@@ -28,7 +28,7 @@ LFT = $(D_LFT)$(N_LFT)
 LVEC = $(D_LVEC)$(N_LVEC)
 
 
-C_FILES = main.c
+C_FILES = main.c read_file.c
 
 
 SRC = $(addprefix $(D_SRC), $(C_FILES))

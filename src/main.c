@@ -23,7 +23,7 @@
 // Simple compute kernel which computes the square of an input array
 //
 const char *KernelSource = "\n" \
-"__kernel void square(                                                       \n" \
+"__kernel void square(                                                  \n" \
 "   __global float* input,                                              \n" \
 "   __global float* output,                                             \n" \
 "   const unsigned int count)                                           \n" \
@@ -36,11 +36,14 @@ const char *KernelSource = "\n" \
 
 ////////////////////////////////////////////////////////////////////////////////
 
-int main(int argc, char** argv)
+int main(void)
 {
-	t_vec	tutu = vec_new(0.5, -1.3, 3.14);
-	vec_print(tutu, "tutu:");
-	ft_putendl("yo-yo");
+	char	*content;
+	size_t	size;
+	content = read_file("Makefile", &size);
+	if (content)
+		printf("size: %lu\n%s", size, content);
+
 	int err;                            // error code returned from api calls
 
 	float data[DATA_SIZE];              // original data set given to device
@@ -96,7 +99,7 @@ int main(int argc, char** argv)
 
 	// Create the compute program from the source buffer
 	//
-	program = clCreateProgramWithSource(context, 1, (const char **) & KernelSource, NULL, &err);
+	program = clCreateProgramWithSource(context, 1, & KernelSource, NULL, &err);
 	if (!program)
 	{
 		printf("Error: Failed to create compute program!\n");
@@ -148,7 +151,7 @@ int main(int argc, char** argv)
 	// Set the arguments to our compute kernel
 	//
 	err = 0;
-	err  = clSetKernelArg(kernel, 0, sizeof(cl_mem), &input);
+	err |= clSetKernelArg(kernel, 0, sizeof(cl_mem), &input);
 	err |= clSetKernelArg(kernel, 1, sizeof(cl_mem), &output);
 	err |= clSetKernelArg(kernel, 2, sizeof(unsigned int), &count);
 	if (err != CL_SUCCESS)
