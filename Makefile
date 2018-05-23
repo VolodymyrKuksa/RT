@@ -33,7 +33,7 @@ LVEC = $(D_LVEC)$(N_LVEC)
 
 #--------------FILES------------------------------------------------------------
 
-HEAD_FILES = rt.h
+HEAD_FILES = rt.h rt_types.h
 
 C_FILES = main.c read_file.c
 

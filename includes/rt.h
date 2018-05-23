@@ -19,7 +19,7 @@
 # include <OpenCL/opencl.h>
 # include "libft.h"
 #include "get_next_line.h"
-# include "libvec.h"
+# include "rt_types.h"
 
 /*
 **	returns a string with file content and writes it`s in the size variable
