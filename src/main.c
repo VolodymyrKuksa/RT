@@ -12,23 +12,31 @@
 
 #include "rt.h"
 
+#define DEBUG
+#include <assert.h>
+
+
 int		main(void)
 {
 
-	cl_device_id	device_id;
+	cl_device_id	*device_ids;
+	unsigned int	devcount;
+	int				err;
 
-	if (clGetDeviceIDs(0, CL_DEVICE_TYPE_GPU, 1, &device_id, 0))
-	{
-		printf("failed to get device ids\n");
-		exit (EXIT_FAILURE);
-	}
+	err = clGetDeviceIDs(0, CL_DEVICE_TYPE_ALL, 0, 0, &devcount);
+	assert(err == CL_SUCCESS);
+	device_ids = (cl_device_id*)malloc(sizeof(cl_device_id) * devcount);
+	err = clGetDeviceIDs(0, CL_DEVICE_TYPE_ALL, devcount, device_ids, 0);
+	assert(err == CL_SUCCESS);
 
 	char	*name;
 	name = (char*)malloc(sizeof(char) * 256);
-	clGetDeviceInfo(device_id, CL_DEVICE_NAME, 256, name, 0);
-	printf("%s\n", name);
+	for (int i = 0; i < devcount; ++i) {
+		clGetDeviceInfo(device_ids[i], CL_DEVICE_NAME, 256, name, 0);
+		printf("%s:\n", name);
+		clGetDeviceInfo(device_ids[i], CL_DEVICE_VERSION, 256, name, 0);
+		i < devcount - 1 ? printf("%s\n\n", name) : printf("%s\n", name);
+	}
 
 	return (0);
-
-
 }
