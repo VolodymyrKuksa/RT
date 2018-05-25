@@ -13,8 +13,7 @@
 #ifndef RT_TYPES_H
 # define RT_TYPES_H
 
-#include <SDL_video.h>
-#include <SDL_system.h>
+#include <SDL.h>
 # include "libvec.h"
 
 typedef struct		s_sphere
