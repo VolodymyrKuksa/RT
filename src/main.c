@@ -59,6 +59,15 @@ int		main(void)
 	err = clGetDeviceIDs(0, CL_DEVICE_TYPE_GPU, 1, &gpu_dev, 0);
 	assert (err == CL_SUCCESS);
 
+	cl_bool	image_support;
+	err = clGetDeviceInfo(gpu_dev, CL_DEVICE_IMAGE_SUPPORT,
+		sizeof(image_support), &image_support, 0);
+	assert (err == CL_SUCCESS);
+	if (image_support)
+		printf("Images supported!\n");
+	else
+		printf("Images not supported(\n");
+
 	//create context with all devices which have to work on the task
 	context = clCreateContext(0, 1, &gpu_dev, 0, 0, &err);
 	assert (err == CL_SUCCESS);
