@@ -21,8 +21,6 @@
 # include "get_next_line.h"
 # include "rt_types.h"
 
-# define KERNEL_PATH "src/kernel_source.cl"
-
 /*
 **	returns a string with file content and writes it`s in the size variable
 **	returns NULL and writes 0 to size in case of an error
