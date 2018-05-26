@@ -14,9 +14,11 @@
 
 //#define NDEBUG
 #include <assert.h>
+#include <time.h>
 
 //absolute path if executable is not in main proj dir (ex: cmake-build-debug)
 #define KERNEL_PATH "/Users/vkuksa/projects/rt/src/kernel_source.cl"
+#define SIZE 4096
 
 int		main(void)
 {
@@ -45,10 +47,12 @@ int		main(void)
 	size_t				source_size;	//kernel source code size
 	cl_program			program;		//program built from kernel source code
 	cl_kernel			kernel;			//kernel (task)
-	char				buff[14];		//buffer to fill with chars
-	cl_mem				mem;			//gpu memory for the buffer
-	size_t				buff_len;		//buffer length
-	size_t				work_group;		//max work group size
+	size_t				global_size;	//global work group size
+	size_t				local_size;		//local (max) work group size
+	int					input[SIZE];	//input buffer
+	int					output[SIZE];	//output buffer
+	cl_mem				clin;			//gpu memory for input buffer
+	cl_mem				clout;			//gpu memory fot output buffer
 
 	//get first gpu device on the computer
 	//0 for platform because apple already handles it
@@ -80,36 +84,62 @@ int		main(void)
 	kernel = clCreateKernel(program, "hello_world", &err);
 	assert (err == CL_SUCCESS);
 
-	//get size of the buffer
-	buff_len = sizeof(buff);
+	//generate random data set
+	srand((unsigned)clock());
+	for (int i = 0; i < SIZE; ++i) {
+		input[i] = rand(); // NOLINT
+	}
 
-	//allocate memory on context for the buffer
-	mem = clCreateBuffer(context, CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY,
-		buff_len, 0, &err);
+	//get size of the buffer
+	global_size = sizeof(input);
+
+	//allocate memory on context for buffers
+	clin = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_HOST_WRITE_ONLY,
+		global_size, 0, &err);
+	assert (err == CL_SUCCESS);
+	clout = clCreateBuffer(context, CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY,
+		global_size, 0, &err);
+	assert (err == CL_SUCCESS);
+
+	//write data set to the device memory
+	err = clEnqueueWriteBuffer(command_queue, clin, CL_TRUE, 0, global_size,
+		input, 0, 0, 0);
 	assert (err == CL_SUCCESS);
 
 	//set the allocated memory as an argument for __kernel function
-	err = clSetKernelArg(kernel, 0, sizeof(mem), &mem);
+	err = clSetKernelArg(kernel, 0, sizeof(clin), &clin);
+	assert (err == CL_SUCCESS);
+	err = clSetKernelArg(kernel, 1, sizeof(clout), &clout);
 	assert (err == CL_SUCCESS);
 
-	//don`t bother getting max work group size for this task
-	work_group = 1;
+	//getting max work group size for this task
+	err = clGetKernelWorkGroupInfo(kernel, gpu_dev, CL_KERNEL_WORK_GROUP_SIZE,
+		sizeof(local_size), &local_size, 0);
+	assert (err == CL_SUCCESS);
+	local_size = local_size > global_size ? global_size : local_size;
+	printf("%lu\n", local_size);
 
 	//push task to the command queue
-	err = clEnqueueNDRangeKernel(command_queue, kernel, 1, 0, &buff_len,
-		&work_group, 0, 0, 0);
+	err = clEnqueueNDRangeKernel(command_queue, kernel, 1, 0, &global_size,
+		&local_size, 0, 0, 0);
 	assert (err == CL_SUCCESS);
 
 	//wait while the task is being processed
 	clFinish(command_queue);
 
 	//read from the memory, filled by the current command que
-	err = clEnqueueReadBuffer(command_queue, mem, CL_TRUE, 0, buff_len, buff,
-		0, 0, 0);
+	err = clEnqueueReadBuffer(command_queue, clout, CL_TRUE, 0, global_size,
+		output, 0, 0, 0);
 	assert (err == CL_SUCCESS);
 
 	//print result
-	printf("%s", buff);
+	int results = 0;
+	for(int i = 0; i < SIZE; ++i)
+	{
+		if (output[i] == input[i] * input[i])
+			results++;
+	}
+	printf("%d/%d correct results\n", results, SIZE);
 
 	return (0);
 }

@@ -1,17 +1,7 @@
-__kernel void	hello_world(__global char *data)
+__kernel void	hello_world(__global int *input, __global int *output)
 {
-	data[0] = 'H';
-	data[1] = 'e';
-	data[2] = 'l';
-	data[3] = 'l';
-	data[4] = 'o';
-	data[5] = ' ';
-	data[6] = 'W';
-	data[7] = 'o';
-	data[8] = 'r';
-	data[9] = 'l';
-	data[10] = 'd';
-	data[11] = '!';
-	data[12] = '\n';
-	data[13] = '\0';
+	int		id;
+
+	id = get_global_id(0);
+	output[id] = input[id] * input[id];
 }
