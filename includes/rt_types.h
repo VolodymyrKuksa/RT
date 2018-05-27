@@ -13,18 +13,21 @@
 #ifndef RT_TYPES_H
 # define RT_TYPES_H
 
-# define WIN_WIDTH 1080
-# define WIN_HEIGHT 720
-
 # include <OpenCL/opencl.h>
 #include <SDL.h>
 # include "libvec.h"
+
+typedef union		u_rgb
+{
+	unsigned int	c;
+	unsigned char	argb[4];
+}					t_rgb;
 
 typedef struct		s_scrn
 {
 	SDL_Window		*window;
 	SDL_Surface		*surface;
-	unsigned int	*surf_arr;
+	t_rgb			*surf_arr;
 }					t_scrn;
 
 typedef struct			s_cldata
