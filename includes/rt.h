@@ -16,7 +16,6 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <OpenCL/opencl.h>
 # include "libft.h"
 # include "get_next_line.h"
 # include "rt_types.h"

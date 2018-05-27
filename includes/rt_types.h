@@ -13,9 +13,25 @@
 #ifndef RT_TYPES_H
 # define RT_TYPES_H
 
+# include <OpenCL/opencl.h>
 #include <SDL.h>
 # include "libvec.h"
 
+typedef struct			s_cldata
+{
+	cl_device_id		dev_id;
+	cl_context			context;
+	cl_command_queue	command_queue;
+	char				**source;
+	cl_program			program;
+	cl_kernel			kernel;
+	size_t				global_size;
+	size_t				local_size;
+	cl_mem				clin;
+	cl_mem				clout;
+}						t_cldata;
+
+/* some stupid shit:
 typedef struct		s_sphere
 {
 	t_vec			col;
@@ -45,5 +61,6 @@ typedef struct		s_env
 	SDL_Window		*wnd;
 	SDL_Renderer	*rend;
 }					t_env;
+*/
 
 #endif
