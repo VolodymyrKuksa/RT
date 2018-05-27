@@ -13,8 +13,8 @@
 #include "rt.h"
 #include <assert.h>
 
-#define KERNEL_PATH "/Users/vkuksa/projects/rt/src/kernel_source.cl"
-//#define KERNEL_PATH "/Users"
+//#define KERNEL_PATH "/Users/vkuksa/projects/rt/src/kernel_source.cl"
+#define KERNEL_PATH "/Users/ikorchah/CLionProjects/RT/src/kernel_source.cl"
 
 size_t		win_width = 1080;
 size_t		win_height = 720;
