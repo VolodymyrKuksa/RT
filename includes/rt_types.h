@@ -23,12 +23,11 @@ typedef struct			s_cldata
 	cl_context			context;
 	cl_command_queue	command_queue;
 	char				**source;
+	size_t				source_size;
 	cl_program			program;
 	cl_kernel			kernel;
 	size_t				global_size;
 	size_t				local_size;
-	cl_mem				clin;
-	cl_mem				clout;
 }						t_cldata;
 
 /* some stupid shit:

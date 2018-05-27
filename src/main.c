@@ -20,8 +20,95 @@
 #define KERNEL_PATH "/Users/vkuksa/projects/rt/src/kernel_source.cl"
 #define SIZE 4096
 
-int		main(void)
+void	init_openCL(t_cldata *cl)
 {
+	int		err;
+	err = clGetDeviceIDs(0, CL_DEVICE_TYPE_GPU, 1, &cl->dev_id, 0);
+	cl->context = clCreateContext(0, 1, &cl->dev_id, 0, 0, &err);
+	cl->command_queue = clCreateCommandQueue(cl->context, cl->dev_id, 0, &err);
+	cl->source = (char**)malloc(sizeof(char*));
+	*cl->source = read_file(KERNEL_PATH, &cl->source_size);
+	cl->program = clCreateProgramWithSource(cl->context, 1,
+		(const char **)cl->source, &cl->source_size, &err);
+	err = clBuildProgram(cl->program, 0, 0, 0, 0, 0);
+	cl->kernel = clCreateKernel(cl->program, "hello_world", &err);
+}
+
+int		main(void) {
+
+	t_cldata	cldata;
+	int			input[SIZE];	//input buffer
+	int			output[SIZE];	//output buffer
+	cl_mem		clin;			//gpu memory for input buffer
+	cl_mem		clout;			//gpu memory fot output buffer
+	int			err;			//error code
+
+	init_openCL(&cldata);
+
+
+	//generate random data set
+	srand((unsigned) clock());
+	for (int i = 0; i < SIZE; ++i) {
+		input[i] = rand(); // NOLINT
+	}
+
+	//get size of the buffer
+	cldata.global_size = SIZE;
+
+	//allocate memory on context for buffers
+	clin = clCreateBuffer(cldata.context,
+		CL_MEM_READ_ONLY | CL_MEM_HOST_WRITE_ONLY, cldata.global_size, 0, &err);
+	assert (err == CL_SUCCESS);
+	clout = clCreateBuffer(cldata.context,
+		CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, cldata.global_size, 0, &err);
+	assert (err == CL_SUCCESS);
+
+	//write data set to the device memory
+	err = clEnqueueWriteBuffer(cldata.command_queue, clin, CL_TRUE, 0,
+		cldata.global_size, input, 0, 0, 0);
+	assert (err == CL_SUCCESS);
+
+	//set the allocated memory as an argument for __kernel function
+	err = clSetKernelArg(cldata.kernel, 0, sizeof(clin), &clin);
+	assert (err == CL_SUCCESS);
+	err = clSetKernelArg(cldata.kernel, 1, sizeof(clout), &clout);
+	assert (err == CL_SUCCESS);
+
+	//getting max work group size for this task
+	err = clGetKernelWorkGroupInfo(cldata.kernel, cldata.dev_id,
+		CL_KERNEL_WORK_GROUP_SIZE, sizeof(cldata.local_size),
+		&cldata.local_size, 0);
+	assert (err == CL_SUCCESS);
+	cldata.local_size = cldata.local_size > cldata.global_size ?
+		cldata.global_size : cldata.local_size;
+	printf("%lu\n", cldata.local_size);
+
+	//push task to the command queue
+	err = clEnqueueNDRangeKernel(cldata.command_queue, cldata.kernel, 1, 0,
+		&cldata.global_size, &cldata.local_size, 0, 0, 0);
+	assert (err == CL_SUCCESS);
+
+	//wait while the task is being processed
+	clFinish(cldata.command_queue);
+
+	//read from the memory, filled by the current command que
+	err = clEnqueueReadBuffer(cldata.command_queue, clout, CL_TRUE, 0,
+		cldata.global_size, output, 0, 0, 0);
+	assert (err == CL_SUCCESS);
+
+	//print result
+	int results = 0;
+	for (int i = 0; i < SIZE; ++i) {
+		if (output[i] == input[i] * input[i]) {
+			results++;
+		}
+	}
+	printf("%d/%d correct results\n", results, SIZE);
+
+	return (0);
+}
+
+
 
 /*	cl_device_id	*device_ids;
 	unsigned int	devcount;
@@ -39,6 +126,7 @@ int		main(void)
 		i < devcount - 1 ? printf("%s\n\n", name) : printf("%s\n", name);
 	}*/
 
+	/*
 	int					err;			//error code
 	cl_device_id		gpu_dev;		//compute device identifier
 	cl_context			context;		//context (devices to compute on)
@@ -91,64 +179,4 @@ int		main(void)
 
 	//create kernel (task) out of the successfully built program
 	kernel = clCreateKernel(program, "hello_world", &err);
-	assert (err == CL_SUCCESS);
-
-	//generate random data set
-	srand((unsigned)clock());
-	for (int i = 0; i < SIZE; ++i) {
-		input[i] = rand(); // NOLINT
-	}
-
-	//get size of the buffer
-	global_size = sizeof(input);
-
-	//allocate memory on context for buffers
-	clin = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_HOST_WRITE_ONLY,
-		global_size, 0, &err);
-	assert (err == CL_SUCCESS);
-	clout = clCreateBuffer(context, CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY,
-		global_size, 0, &err);
-	assert (err == CL_SUCCESS);
-
-	//write data set to the device memory
-	err = clEnqueueWriteBuffer(command_queue, clin, CL_TRUE, 0, global_size,
-		input, 0, 0, 0);
-	assert (err == CL_SUCCESS);
-
-	//set the allocated memory as an argument for __kernel function
-	err = clSetKernelArg(kernel, 0, sizeof(clin), &clin);
-	assert (err == CL_SUCCESS);
-	err = clSetKernelArg(kernel, 1, sizeof(clout), &clout);
-	assert (err == CL_SUCCESS);
-
-	//getting max work group size for this task
-	err = clGetKernelWorkGroupInfo(kernel, gpu_dev, CL_KERNEL_WORK_GROUP_SIZE,
-		sizeof(local_size), &local_size, 0);
-	assert (err == CL_SUCCESS);
-	local_size = local_size > global_size ? global_size : local_size;
-	printf("%lu\n", local_size);
-
-	//push task to the command queue
-	err = clEnqueueNDRangeKernel(command_queue, kernel, 1, 0, &global_size,
-		&local_size, 0, 0, 0);
-	assert (err == CL_SUCCESS);
-
-	//wait while the task is being processed
-	clFinish(command_queue);
-
-	//read from the memory, filled by the current command que
-	err = clEnqueueReadBuffer(command_queue, clout, CL_TRUE, 0, global_size,
-		output, 0, 0, 0);
-	assert (err == CL_SUCCESS);
-
-	//print result
-	int results = 0;
-	for(int i = 0; i < SIZE; ++i)
-	{
-		if (output[i] == input[i] * input[i])
-			results++;
-	}
-	printf("%d/%d correct results\n", results, SIZE);
-
-	return (0);
-}
+	assert (err == CL_SUCCESS); */
