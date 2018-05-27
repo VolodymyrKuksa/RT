@@ -12,7 +12,6 @@
 
 #include "rt.h"
 #include <assert.h>
-#include <time.h>
 
 #define KERNEL_PATH "/Users/vkuksa/projects/rt/src/kernel_source.cl"
 
@@ -30,7 +29,8 @@ int		init_win(t_scrn *screen)
 	else
 	{
 		screen->window = SDL_CreateWindow("CANCER RT", SDL_WINDOWPOS_UNDEFINED,
-		SDL_WINDOWPOS_UNDEFINED, win_width, win_height, SDL_WINDOW_SHOWN);
+		SDL_WINDOWPOS_UNDEFINED, (int)win_width, (int)win_height,
+			SDL_WINDOW_SHOWN);
 		if (screen->window == NULL)
 		{
 			ft_putstr("Window could not be created! Error: ");
@@ -102,6 +102,7 @@ int		main(void) {
 	cl_mem		height;
 	t_rgb		px[win_height * win_width];		//host memory for output colors
 	int			err;			//error code
+	t_scrn		screen;
 
 	init_openCL(&cldata);
 
@@ -110,19 +111,18 @@ int		main(void) {
 
 	//allocate memory on context for buffers
 	pixels = clCreateBuffer(cldata.context,
-		CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, cldata.global_size, 0, &err);
+		CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, sizeof(px), 0, &err);
 	assert (err == CL_SUCCESS);
 	width = clCreateBuffer(cldata.context,
-		CL_MEM_READ_ONLY | CL_MEM_HOST_WRITE_ONLY, sizeof(int), 0, &err);
+		CL_MEM_READ_ONLY | CL_MEM_HOST_WRITE_ONLY, sizeof(win_width), 0, &err);
 	assert (err == CL_SUCCESS);
 	height = clCreateBuffer(cldata.context,
-		CL_MEM_READ_ONLY | CL_MEM_HOST_WRITE_ONLY, sizeof(int), 0, &err);
+		CL_MEM_READ_ONLY | CL_MEM_HOST_WRITE_ONLY, sizeof(win_height), 0, &err);
 	assert (err == CL_SUCCESS);
 
 
 	err = clEnqueueWriteBuffer(cldata.command_queue, width, CL_TRUE, 0,
 		sizeof(win_width), &win_width, 0, 0, 0);
-	printf("%d\n", err);
 	assert (err == CL_SUCCESS);
 	err = clEnqueueWriteBuffer(cldata.command_queue, height, CL_TRUE, 0,
 		sizeof(win_height), &win_height, 0, 0, 0);
@@ -143,11 +143,14 @@ int		main(void) {
 	assert (err == CL_SUCCESS);
 	cldata.local_size = cldata.local_size > cldata.global_size ?
 		cldata.global_size : cldata.local_size;
+	while (cldata.global_size % cldata.local_size != 0)
+		cldata.local_size -= 1;
 	printf("%lu\n", cldata.local_size);
 
 	//push task to the command queue
 	err = clEnqueueNDRangeKernel(cldata.command_queue, cldata.kernel, 1, 0,
 		&cldata.global_size, &cldata.local_size, 0, 0, 0);
+	printf("%d\n", err);
 	assert (err == CL_SUCCESS);
 
 	//wait while the task is being processed
@@ -155,10 +158,8 @@ int		main(void) {
 
 	//read from the memory, filled by the current command que
 	err = clEnqueueReadBuffer(cldata.command_queue, pixels, CL_TRUE, 0,
-		cldata.global_size, px, 0, 0, 0);
+		sizeof(px), px, 0, 0, 0);
 	assert (err == CL_SUCCESS);
-
-	t_scrn	screen;
 
 	init_win(&screen);
 	for(int i = 0; i < cldata.global_size; ++i)
