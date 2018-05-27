@@ -16,12 +16,9 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <OpenCL/opencl.h>
 # include "libft.h"
 # include "get_next_line.h"
 # include "rt_types.h"
-
-# define KERNEL_PATH "src/kernel_source.cl"
 
 /*
 **	returns a string with file content and writes it`s in the size variable
