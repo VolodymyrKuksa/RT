@@ -35,7 +35,7 @@ LVEC = $(D_LVEC)$(N_LVEC)
 
 HEAD_FILES = rt.h rt_types.h
 
-C_FILES = main.c read_file.c sdl_utils.c
+C_FILES = main.c read_file.c sdl_utils.c scene_init.c
 
 
 SRC = $(addprefix $(D_SRC), $(C_FILES))

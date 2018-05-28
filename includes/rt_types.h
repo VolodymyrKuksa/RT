@@ -43,36 +43,35 @@ typedef struct			s_cldata
 	size_t				local_size;
 }						t_cldata;
 
-/* some stupid shit:
 typedef struct		s_sphere
 {
-	t_vec			col;
-	t_vec			pos;
-	t_vec			emission;
-	double			r;
+	cl_float3		col;
+	cl_float3		pos;
+	cl_float3		emission;
+	float			r;
 }					t_sphere;
 
 typedef struct		s_ray
 {
-	t_vec			pos;
-	t_vec			dir;
+	cl_float3		pos;
+	cl_float3		dir;
 }					t_ray;
 
 typedef struct		s_cam
 {
-	t_vec			pos;
-	t_vec			dir;
-	t_vec			updir;
-	t_vec			ldir;
-	double			f_length;
-	double			aperture;
+	cl_float3		pos;
+	cl_float3		dir;
+	cl_float3		updir;
+	cl_float3		ldir;
+	float			f_length;
+	float			aperture;
 }					t_cam;
 
-typedef struct		s_env
+typedef struct		s_scene
 {
-	SDL_Window		*wnd;
-	SDL_Renderer	*rend;
-}					t_env;
-*/
+	int				num_obj;
+	t_sphere		*obj;
+	t_cam			cam;
+}					t_scene;
 
 #endif

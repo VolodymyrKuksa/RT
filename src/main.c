@@ -62,7 +62,7 @@ void	init_openCL(t_cldata *cl)
 	char	*options;
 
 	options = "-Werror";
-	err = clGetDeviceIDs(0, CL_DEVICE_TYPE_GPU, 1, &cl->dev_id, 0);
+	err = clGetDeviceIDs(0, CL_DEVICE_TYPE_CPU, 1, &cl->dev_id, 0);
 	assert (err == CL_SUCCESS);
 	cl->context = clCreateContext(0, 1, &cl->dev_id, 0, 0, &err);
 	assert (err == CL_SUCCESS);
@@ -87,11 +87,15 @@ int		main(void) {
 
 	t_cldata	cl;
 	cl_mem		px_gpu;
+	cl_mem		obj_gpu;
+	cl_mem		cam_gpu;
 	t_rgb		px_host[g_win_height * g_win_width];
 	int			err;
 	t_scrn		screen;
+	t_scene		scene;
 
 	init_openCL(&cl);
+	init_scene(&scene);
 
 	//get size of the buffer
 	cl.global_size = g_win_height * g_win_width;
@@ -100,13 +104,27 @@ int		main(void) {
 	px_gpu = clCreateBuffer(cl.context,
 		CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, sizeof(px_host), 0, &err);
 	assert (err == CL_SUCCESS);
+	obj_gpu = clCreateBuffer(cl.context, CL_MEM_READ_ONLY |
+		CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR,
+		sizeof(t_sphere) * scene.num_obj, scene.obj, &err);
+	assert (err == CL_SUCCESS);
+//	cam_gpu = clCreateBuffer(cl.context, CL_MEM_READ_ONLY |
+//		CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR,
+//		sizeof(t_cam), &scene.cam, &err);
+//	assert (err == CL_SUCCESS);
 
 	//set the allocated memory as an argument for __kernel function
 	err = clSetKernelArg(cl.kernel, 0, sizeof(px_gpu), &px_gpu);
 	assert (err == CL_SUCCESS);
-	err = clSetKernelArg(cl.kernel, 1, sizeof(g_win_width), &g_win_width);
+	err = clSetKernelArg(cl.kernel, 1, sizeof(obj_gpu), &obj_gpu);
 	assert (err == CL_SUCCESS);
-	err = clSetKernelArg(cl.kernel, 2, sizeof(g_win_height), &g_win_height);
+	err = clSetKernelArg(cl.kernel, 2, sizeof(scene.num_obj), &scene.num_obj);
+	assert (err == CL_SUCCESS);
+	err = clSetKernelArg(cl.kernel, 3, sizeof(scene.cam), &scene.cam);
+	assert (err == CL_SUCCESS);
+	err = clSetKernelArg(cl.kernel, 4, sizeof(g_win_width), &g_win_width);
+	assert (err == CL_SUCCESS);
+	err = clSetKernelArg(cl.kernel, 5, sizeof(g_win_height), &g_win_height);
 	assert (err == CL_SUCCESS);
 
 	//getting max work group size for this task
@@ -118,12 +136,11 @@ int		main(void) {
 		cl.global_size : cl.local_size;
 	while (cl.global_size % cl.local_size != 0)
 		cl.local_size -= 1;
-	printf("%lu\n", cl.local_size);
+	printf("local size: %lu\n", cl.local_size);
 
 	//push task to the command queue
 	err = clEnqueueNDRangeKernel(cl.command_queue, cl.kernel, 1, 0,
 		&cl.global_size, &cl.local_size, 0, 0, 0);
-	printf("%d\n", err);
 	assert (err == CL_SUCCESS);
 
 	//read from the memory, filled by the current command que
