@@ -126,13 +126,14 @@ int		main(void) {
 	printf("%d\n", err);
 	assert (err == CL_SUCCESS);
 
-	//wait while the task is being processed
-	clFinish(cl.command_queue);
-
 	//read from the memory, filled by the current command que
-	err = clEnqueueReadBuffer(cl.command_queue, px_gpu, CL_TRUE, 0,
-		sizeof(px_host), px_host, 0, 0, 0);
+	err = clEnqueueReadBuffer(cl.command_queue, px_gpu, CL_FALSE, 0,
+							  sizeof(px_host), px_host, 0, 0, 0);
 	assert (err == CL_SUCCESS);
+
+	//wait while the task is being processed AND BUFFER IS BEING READ
+	//this way reading is a bit faster
+	clFinish(cl.command_queue);
 
 	init_win(&screen);
 	for(int i = 0; i < cl.global_size; ++i)
