@@ -16,34 +16,8 @@
 #define KERNEL_PATH "/Users/vkuksa/projects/rt/src/kernel_source.cl"
 //#define KERNEL_PATH "/Users/ikorchah/CLionProjects/RT/src/kernel_source.cl"
 
-size_t		win_width = 1080;
-size_t		win_height = 720;
-
-int		init_win(t_scrn *screen)
-{
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
-	{
-		ft_putstr("SDL could not initialize! Error: ");
-		ft_putendl(SDL_GetError());
-		return (0);
-	}
-	else
-	{
-		screen->window = SDL_CreateWindow("CANCER RT", SDL_WINDOWPOS_UNDEFINED,
-		SDL_WINDOWPOS_UNDEFINED, (int)win_width, (int)win_height,
-			SDL_WINDOW_SHOWN);
-		if (screen->window == NULL)
-		{
-			ft_putstr("Window could not be created! Error: ");
-			ft_putendl(SDL_GetError());
-			return (0);
-		}
-		else
-			screen->surface = SDL_GetWindowSurface(screen->window);
-	}
-	screen->surf_arr = (t_rgb *)screen->surface->pixels;
-	return (1);
-}
+size_t		g_win_width = 1080;
+size_t		g_win_height = 720;
 
 void	main_loop(t_scrn *screen)
 {
@@ -65,13 +39,6 @@ void	main_loop(t_scrn *screen)
 		}
 		SDL_UpdateWindowSurface(screen->window);
 	}
-}
-
-void	close_sdl(t_scrn *screen)
-{
-	SDL_FreeSurface(screen->surface);
-	SDL_DestroyWindow(screen->window);
-	SDL_Quit();
 }
 
 void	print_log(t_cldata *cl)
@@ -118,74 +85,74 @@ void	init_openCL(t_cldata *cl)
 
 int		main(void) {
 
-	t_cldata	cldata;
-	cl_mem		pixels;			//gpu memory for output colors
+	t_cldata	cl;
+	cl_mem		px_gpu;
 	cl_mem		width;
 	cl_mem		height;
-	t_rgb		px[win_height * win_width];		//host memory for output colors
-	int			err;			//error code
+	t_rgb		px_host[g_win_height * g_win_width];
+	int			err;
 	t_scrn		screen;
 
-	init_openCL(&cldata);
+	init_openCL(&cl);
 
 	//get size of the buffer
-	cldata.global_size = win_height * win_width;
+	cl.global_size = g_win_height * g_win_width;
 
 	//allocate memory on context for buffers
-	pixels = clCreateBuffer(cldata.context,
-		CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, sizeof(px), 0, &err);
+	px_gpu = clCreateBuffer(cl.context,
+		CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, sizeof(px_host), 0, &err);
 	assert (err == CL_SUCCESS);
-	width = clCreateBuffer(cldata.context,
-		CL_MEM_READ_ONLY | CL_MEM_HOST_WRITE_ONLY, sizeof(win_width), 0, &err);
+	width = clCreateBuffer(cl.context, CL_MEM_READ_ONLY |
+		CL_MEM_HOST_WRITE_ONLY, sizeof(g_win_width), 0, &err);
 	assert (err == CL_SUCCESS);
-	height = clCreateBuffer(cldata.context,
-		CL_MEM_READ_ONLY | CL_MEM_HOST_WRITE_ONLY, sizeof(win_height), 0, &err);
+	height = clCreateBuffer(cl.context, CL_MEM_READ_ONLY |
+		CL_MEM_HOST_WRITE_ONLY, sizeof(g_win_height), 0, &err);
 	assert (err == CL_SUCCESS);
 
 
-	err = clEnqueueWriteBuffer(cldata.command_queue, width, CL_TRUE, 0,
-		sizeof(win_width), &win_width, 0, 0, 0);
+	err = clEnqueueWriteBuffer(cl.command_queue, width, CL_TRUE, 0,
+		sizeof(g_win_width), &g_win_width, 0, 0, 0);
 	assert (err == CL_SUCCESS);
-	err = clEnqueueWriteBuffer(cldata.command_queue, height, CL_TRUE, 0,
-		sizeof(win_height), &win_height, 0, 0, 0);
+	err = clEnqueueWriteBuffer(cl.command_queue, height, CL_TRUE, 0,
+		sizeof(g_win_height), &g_win_height, 0, 0, 0);
 	assert (err == CL_SUCCESS);
 
 	//set the allocated memory as an argument for __kernel function
-	err = clSetKernelArg(cldata.kernel, 0, sizeof(pixels), &pixels);
+	err = clSetKernelArg(cl.kernel, 0, sizeof(px_gpu), &px_gpu);
 	assert (err == CL_SUCCESS);
-	err = clSetKernelArg(cldata.kernel, 1, sizeof(width), &width);
+	err = clSetKernelArg(cl.kernel, 1, sizeof(width), &width);
 	assert (err == CL_SUCCESS);
-	err = clSetKernelArg(cldata.kernel, 2, sizeof(height), &height);
+	err = clSetKernelArg(cl.kernel, 2, sizeof(height), &height);
 	assert (err == CL_SUCCESS);
 
 	//getting max work group size for this task
-	err = clGetKernelWorkGroupInfo(cldata.kernel, cldata.dev_id,
-		CL_KERNEL_WORK_GROUP_SIZE, sizeof(cldata.local_size),
-		&cldata.local_size, 0);
+	err = clGetKernelWorkGroupInfo(cl.kernel, cl.dev_id,
+		CL_KERNEL_WORK_GROUP_SIZE, sizeof(cl.local_size),
+		&cl.local_size, 0);
 	assert (err == CL_SUCCESS);
-	cldata.local_size = cldata.local_size > cldata.global_size ?
-		cldata.global_size : cldata.local_size;
-	while (cldata.global_size % cldata.local_size != 0)
-		cldata.local_size -= 1;
-	printf("%lu\n", cldata.local_size);
+	cl.local_size = cl.local_size > cl.global_size ?
+		cl.global_size : cl.local_size;
+	while (cl.global_size % cl.local_size != 0)
+		cl.local_size -= 1;
+	printf("%lu\n", cl.local_size);
 
 	//push task to the command queue
-	err = clEnqueueNDRangeKernel(cldata.command_queue, cldata.kernel, 1, 0,
-		&cldata.global_size, &cldata.local_size, 0, 0, 0);
+	err = clEnqueueNDRangeKernel(cl.command_queue, cl.kernel, 1, 0,
+		&cl.global_size, &cl.local_size, 0, 0, 0);
 	printf("%d\n", err);
 	assert (err == CL_SUCCESS);
 
 	//wait while the task is being processed
-	clFinish(cldata.command_queue);
+	clFinish(cl.command_queue);
 
 	//read from the memory, filled by the current command que
-	err = clEnqueueReadBuffer(cldata.command_queue, pixels, CL_TRUE, 0,
-		sizeof(px), px, 0, 0, 0);
+	err = clEnqueueReadBuffer(cl.command_queue, px_gpu, CL_TRUE, 0,
+		sizeof(px_host), px_host, 0, 0, 0);
 	assert (err == CL_SUCCESS);
 
 	init_win(&screen);
-	for(int i = 0; i < cldata.global_size; ++i)
-		screen.surf_arr[i] = px[i];
+	for(int i = 0; i < cl.global_size; ++i)
+		screen.surf_arr[i] = px_host[i];
 	main_loop(&screen);
 	close_sdl(&screen);
 

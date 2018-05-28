@@ -27,4 +27,7 @@
 
 char	*read_file(const char *filename, size_t *size);
 
+int		init_win(t_scrn *screen);
+void	close_sdl(t_scrn *screen);
+
 #endif
