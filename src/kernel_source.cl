@@ -93,15 +93,11 @@ __kernel void	hello_world(__global unsigned int *pixels,
 	int		id = get_global_id(0);
 	int		x = id % w;
 	int		y = id / w;
-	unsigned int	seed0;
-	unsigned int	seed1;
-	seed1 = x * x * y;
-	seed0 = y * y * x;
+	unsigned int	seed0 = seed[id];
+	unsigned int	seed1 = seed[id + w * h];
 	t_ray ray = get_camera_ray(x, y, &cam);
 	float t = 	check_sphere(ray, *obj);
-		pixels[id] = t > 0 ? 0xff0000 : x * y * (x % w) * (y % h) * get_random(&seed0, &seed1) * get_random(&seed0, &seed1);
-	seed[0] = seed0;
-	seed[1] = seed1;
+		pixels[id] = t > 0 ? 0xff0000 : 0xffffffff * get_random(&seed0, &seed1) * get_random(&seed0, &seed1);
 }
 
 

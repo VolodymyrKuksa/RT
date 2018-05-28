@@ -76,4 +76,10 @@ typedef struct		s_scene
 	t_cam			cam;
 }					t_scene;
 
+typedef struct		s_seed
+{
+	int				*seeds;
+	size_t			size;
+}					t_seeds;
+
 #endif

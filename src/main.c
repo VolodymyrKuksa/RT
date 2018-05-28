@@ -12,11 +12,10 @@
 
 #include "rt.h"
 #include <assert.h>
-#include <term.h>
 #include <time.h>
 
-//#define KERNEL_PATH "/Users/vkuksa/projects/rt/src/kernel_source.cl"
-#define KERNEL_PATH "/Users/ikorchah/CLionProjects/RT/src/kernel_source.cl"
+#define KERNEL_PATH "/Users/vkuksa/projects/rt/src/kernel_source.cl"
+//#define KERNEL_PATH "/Users/ikorchah/CLionProjects/RT/src/kernel_source.cl"
 
 size_t		g_win_width = 1080;
 size_t		g_win_height = 720;
@@ -72,6 +71,7 @@ void	init_openCL(t_cldata *cl)
 	assert (err == CL_SUCCESS);
 	cl->source = (char**)malloc(sizeof(char*));
 	*cl->source = read_file(KERNEL_PATH, &cl->source_size);
+	assert(*cl->source != NULL);
 	cl->program = clCreateProgramWithSource(cl->context, 1,
 		(const char **)cl->source, &cl->source_size, &err);
 	assert (err == CL_SUCCESS);
@@ -85,13 +85,25 @@ void	init_openCL(t_cldata *cl)
 	assert (err == CL_SUCCESS);
 }
 
+void	init_seeds(t_seeds *s)
+{
+	int		i;
+
+	s->size = (uint)(g_win_height * g_win_width * 2);
+	s->seeds = (int*)malloc(sizeof(uint) * s->size);
+	srand((uint)clock());
+	i = -1;
+	while (++i < s->size)
+		s->seeds[i] = rand(); // NOLINT
+}
+
 int		main(void) {
 
 	t_cldata	cl;
 	cl_mem		px_gpu;
 	cl_mem		obj_gpu;
-	cl_mem 		seed_gpu;
-	unsigned int	seed_host[2];
+	t_seeds		seeds_host;
+	cl_mem		seed_gpu;
 	t_rgb		px_host[g_win_height * g_win_width];
 	int			err;
 	t_scrn		screen;
@@ -99,12 +111,10 @@ int		main(void) {
 
 	init_openCL(&cl);
 	init_scene(&scene);
+	init_seeds(&seeds_host);
 
 	//get size of the buffer
 	cl.global_size = g_win_height * g_win_width;
-
-	seed_host[1] = (unsigned int)clock();
-	seed_host[0] = (unsigned int)seed_host;
 
 	//allocate memory on context for buffers
 	px_gpu = clCreateBuffer(cl.context,
@@ -114,15 +124,10 @@ int		main(void) {
 		CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR,
 		sizeof(t_sphere) * scene.num_obj, scene.obj, &err);
 	assert (err == CL_SUCCESS);
-	seed_gpu = clCreateBuffer(cl.context,
-		CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR,
-		sizeof(seed_host), &seed_host, &err);
+	seed_gpu = clCreateBuffer(cl.context, CL_MEM_READ_ONLY |
+		CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR,
+		sizeof(int) * seeds_host.size, seeds_host.seeds, &err);
 	assert (err == CL_SUCCESS);
-
-//	cam_gpu = clCreateBuffer(cl.context, CL_MEM_READ_ONLY |
-//		CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR,
-//		sizeof(t_cam), &scene.cam, &err);
-//	assert (err == CL_SUCCESS);
 
 	//set the allocated memory as an argument for __kernel function
 	err = clSetKernelArg(cl.kernel, 0, sizeof(px_gpu), &px_gpu);
