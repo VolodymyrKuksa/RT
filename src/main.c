@@ -13,8 +13,8 @@
 #include "rt.h"
 #include <assert.h>
 
-//#define KERNEL_PATH "/Users/vkuksa/projects/rt/src/kernel_source.cl"
-#define KERNEL_PATH "/Users/ikorchah/CLionProjects/RT/src/kernel_source.cl"
+#define KERNEL_PATH "/Users/vkuksa/projects/rt/src/kernel_source.cl"
+//#define KERNEL_PATH "/Users/ikorchah/CLionProjects/RT/src/kernel_source.cl"
 
 size_t		win_width = 1080;
 size_t		win_height = 720;
@@ -74,9 +74,27 @@ void	close_sdl(t_scrn *screen)
 	SDL_Quit();
 }
 
+void	print_log(t_cldata *cl)
+{
+	int		err;
+	size_t	build_log_size;
+	char	*build_log;
+
+	build_log_size = 1024;
+	build_log = (char*)malloc(sizeof(char) * 1024);
+	err = clGetProgramBuildInfo(cl->program, cl->dev_id, CL_PROGRAM_BUILD_LOG,
+		build_log_size, build_log, 0);
+	assert(err == CL_SUCCESS);
+	printf("%s\n", build_log);
+	exit(EXIT_FAILURE);
+}
+
 void	init_openCL(t_cldata *cl)
 {
 	int		err;
+	char	*options;
+
+	options = "-Werror";
 	err = clGetDeviceIDs(0, CL_DEVICE_TYPE_GPU, 1, &cl->dev_id, 0);
 	assert (err == CL_SUCCESS);
 	cl->context = clCreateContext(0, 1, &cl->dev_id, 0, 0, &err);
@@ -88,9 +106,12 @@ void	init_openCL(t_cldata *cl)
 	cl->program = clCreateProgramWithSource(cl->context, 1,
 		(const char **)cl->source, &cl->source_size, &err);
 	assert (err == CL_SUCCESS);
-	err = clBuildProgram(cl->program, 0, 0, 0, 0, 0);
-//	printf("%d\n", err);
-	assert (err == CL_SUCCESS);
+	err = clBuildProgram(cl->program, 0, 0, options, 0, 0);
+	if (err != CL_SUCCESS)
+	{
+		printf("BUILD ERROR: %d\n", err);
+		print_log(cl);
+	}
 	cl->kernel = clCreateKernel(cl->program, "hello_world", &err);
 	assert (err == CL_SUCCESS);
 }
