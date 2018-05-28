@@ -1,9 +1,7 @@
 __kernel void	hello_world(__global unsigned int *pixels,
-	__global int *width,
-	__global int *height)
+	int w,
+	int h)
 {
-	unsigned int	w = *width;
-	unsigned int	h = *height;
 	int		id = get_global_id(0);
 	int		x = id % w;
 	int		y = id / w;

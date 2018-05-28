@@ -47,8 +47,8 @@ void	print_log(t_cldata *cl)
 	size_t	build_log_size;
 	char	*build_log;
 
-	build_log_size = 1024;
-	build_log = (char*)malloc(sizeof(char) * 1024);
+	build_log_size = 2048;
+	build_log = (char*)malloc(sizeof(char) * build_log_size);
 	err = clGetProgramBuildInfo(cl->program, cl->dev_id, CL_PROGRAM_BUILD_LOG,
 		build_log_size, build_log, 0);
 	assert(err == CL_SUCCESS);
@@ -87,8 +87,6 @@ int		main(void) {
 
 	t_cldata	cl;
 	cl_mem		px_gpu;
-	cl_mem		width;
-	cl_mem		height;
 	t_rgb		px_host[g_win_height * g_win_width];
 	int			err;
 	t_scrn		screen;
@@ -102,27 +100,13 @@ int		main(void) {
 	px_gpu = clCreateBuffer(cl.context,
 		CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, sizeof(px_host), 0, &err);
 	assert (err == CL_SUCCESS);
-	width = clCreateBuffer(cl.context, CL_MEM_READ_ONLY |
-		CL_MEM_HOST_WRITE_ONLY, sizeof(g_win_width), 0, &err);
-	assert (err == CL_SUCCESS);
-	height = clCreateBuffer(cl.context, CL_MEM_READ_ONLY |
-		CL_MEM_HOST_WRITE_ONLY, sizeof(g_win_height), 0, &err);
-	assert (err == CL_SUCCESS);
-
-
-	err = clEnqueueWriteBuffer(cl.command_queue, width, CL_TRUE, 0,
-		sizeof(g_win_width), &g_win_width, 0, 0, 0);
-	assert (err == CL_SUCCESS);
-	err = clEnqueueWriteBuffer(cl.command_queue, height, CL_TRUE, 0,
-		sizeof(g_win_height), &g_win_height, 0, 0, 0);
-	assert (err == CL_SUCCESS);
 
 	//set the allocated memory as an argument for __kernel function
 	err = clSetKernelArg(cl.kernel, 0, sizeof(px_gpu), &px_gpu);
 	assert (err == CL_SUCCESS);
-	err = clSetKernelArg(cl.kernel, 1, sizeof(width), &width);
+	err = clSetKernelArg(cl.kernel, 1, sizeof(g_win_width), &g_win_width);
 	assert (err == CL_SUCCESS);
-	err = clSetKernelArg(cl.kernel, 2, sizeof(height), &height);
+	err = clSetKernelArg(cl.kernel, 2, sizeof(g_win_height), &g_win_height);
 	assert (err == CL_SUCCESS);
 
 	//getting max work group size for this task
