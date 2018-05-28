@@ -13,6 +13,7 @@
 #include "rt.h"
 #include <assert.h>
 #include <term.h>
+#include <time.h>
 
 //#define KERNEL_PATH "/Users/vkuksa/projects/rt/src/kernel_source.cl"
 #define KERNEL_PATH "/Users/ikorchah/CLionProjects/RT/src/kernel_source.cl"
@@ -89,7 +90,8 @@ int		main(void) {
 	t_cldata	cl;
 	cl_mem		px_gpu;
 	cl_mem		obj_gpu;
-	cl_mem		cam_gpu;
+	cl_mem 		seed_gpu;
+	unsigned int	seed_host[2];
 	t_rgb		px_host[g_win_height * g_win_width];
 	int			err;
 	t_scrn		screen;
@@ -101,6 +103,9 @@ int		main(void) {
 	//get size of the buffer
 	cl.global_size = g_win_height * g_win_width;
 
+	seed_host[1] = (unsigned int)clock();
+	seed_host[0] = (unsigned int)seed_host;
+
 	//allocate memory on context for buffers
 	px_gpu = clCreateBuffer(cl.context,
 		CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, sizeof(px_host), 0, &err);
@@ -109,6 +114,11 @@ int		main(void) {
 		CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR,
 		sizeof(t_sphere) * scene.num_obj, scene.obj, &err);
 	assert (err == CL_SUCCESS);
+	seed_gpu = clCreateBuffer(cl.context,
+		CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR,
+		sizeof(seed_host), &seed_host, &err);
+	assert (err == CL_SUCCESS);
+
 //	cam_gpu = clCreateBuffer(cl.context, CL_MEM_READ_ONLY |
 //		CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR,
 //		sizeof(t_cam), &scene.cam, &err);
@@ -126,6 +136,8 @@ int		main(void) {
 	err = clSetKernelArg(cl.kernel, 4, sizeof(g_win_width), &g_win_width);
 	assert (err == CL_SUCCESS);
 	err = clSetKernelArg(cl.kernel, 5, sizeof(g_win_height), &g_win_height);
+	assert (err == CL_SUCCESS);
+	err = clSetKernelArg(cl.kernel, 6, sizeof(seed_gpu), &seed_gpu);
 	assert (err == CL_SUCCESS);
 
 	//getting max work group size for this task
