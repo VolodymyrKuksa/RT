@@ -135,8 +135,8 @@ __kernel void	render_pixel(
 		return ;
 	}
 	float3	n = sphere_normal(ray, *obj, t);
-	float3	up = normalize((float3)(1,1,1));
-	float	res = dot(n, up);
+	float3	light_vec = normalize((float3)(1,1,1));
+	float	res = dot(n, light_vec);
 	pixels[id].x = res > 0 ? res : 0;
 }
 
