@@ -81,7 +81,7 @@ void	init_openCL(t_cldata *cl)
 		printf("BUILD ERROR: %d\n", err);
 		print_log(cl);
 	}
-	cl->kernel = clCreateKernel(cl->program, "hello_world", &err);
+	cl->kernel = clCreateKernel(cl->program, "render_pixel", &err);
 	assert (err == CL_SUCCESS);
 }
 
@@ -97,14 +97,14 @@ void	init_seeds(t_seeds *s)
 		s->seeds[i] = rand(); // NOLINT
 }
 
-int		main(void) {
-
+int		main(void)
+{
 	t_cldata	cl;
 	cl_mem		px_gpu;
 	cl_mem		obj_gpu;
 	t_seeds		seeds_host;
 	cl_mem		seed_gpu;
-	t_rgb		px_host[g_win_height * g_win_width];
+	cl_float3	*px_host;
 	int			err;
 	t_scrn		screen;
 	t_scene		scene;
@@ -112,13 +112,15 @@ int		main(void) {
 	init_openCL(&cl);
 	init_scene(&scene);
 	init_seeds(&seeds_host);
+	px_host = (cl_float3*)malloc(sizeof(cl_float3) * g_win_width * g_win_height);
 
 	//get size of the buffer
 	cl.global_size = g_win_height * g_win_width;
 
 	//allocate memory on context for buffers
 	px_gpu = clCreateBuffer(cl.context,
-		CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, sizeof(px_host), 0, &err);
+		CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY,
+		sizeof(cl_float3) * g_win_width * g_win_height, 0, &err);
 	assert (err == CL_SUCCESS);
 	obj_gpu = clCreateBuffer(cl.context, CL_MEM_READ_ONLY |
 		CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR,
@@ -163,7 +165,7 @@ int		main(void) {
 
 	//read from the memory, filled by the current command que
 	err = clEnqueueReadBuffer(cl.command_queue, px_gpu, CL_FALSE, 0,
-							  sizeof(px_host), px_host, 0, 0, 0);
+		sizeof(cl_float3) * g_win_width * g_win_height, px_host, 0, 0, 0);
 	assert (err == CL_SUCCESS);
 
 	//wait while the task is being processed AND BUFFER IS BEING READ
@@ -172,7 +174,11 @@ int		main(void) {
 
 	init_win(&screen);
 	for(int i = 0; i < cl.global_size; ++i)
-		screen.surf_arr[i] = px_host[i];
+	{
+		screen.surf_arr[i].bgra[0] = (u_char) (px_host[i].z * 0xff);
+		screen.surf_arr[i].bgra[1] = (u_char) (px_host[i].y * 0xff);
+		screen.surf_arr[i].bgra[2] = (u_char) (px_host[i].x * 0xff);
+	}
 	main_loop(&screen);
 	close_sdl(&screen);
 

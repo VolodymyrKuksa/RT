@@ -33,8 +33,13 @@ typedef struct		s_quad
 	float d;
 }					t_quad;
 
+
 t_ray get_camera_ray(int x, int y, t_cam *cam);
 float	check_sphere(t_ray ray, t_sphere sphere);
+static float get_random(unsigned int *seed0, unsigned int *seed1);
+float	solve_quad(t_quad q);
+float3	sphere_normal(t_ray r, t_sphere sphere, float t);
+
 
 t_ray get_camera_ray(int x, int y, t_cam *cam)
 {
@@ -45,6 +50,30 @@ t_ray get_camera_ray(int x, int y, t_cam *cam)
 	(cam->pr_pl_h / 2 - y) + cam->ldir * (cam->pr_pl_w / 2 - x);
 	ray.dir = normalize(ray.dir);
 	return(ray);
+}
+
+float3	sphere_normal(t_ray r, t_sphere sphere, float t)
+{
+	float3	intersect;
+	float3	n;
+
+	intersect = r.pos + t * r.dir;
+	n = normalize(intersect - sphere.pos);
+	return (dot(n, r.dir) > 0 ? -1 * n : n);
+}
+
+float	solve_quad(t_quad q)
+{
+	float	t1;
+	float	t2;
+
+	t1 = (-q.b - sqrt(q.d)) / q.a;
+	t2 = (-q.b + sqrt(q.d)) / q.a;
+	if ((t1 <= t2 && t1 >= 0) || (t1 >= 0 && t2 < 0))
+		return (t1);
+	if ((t2 <= t1 && t2 >= 0) || (t2 >= 0 && t1 < 0))
+		return (t2);
+	return (-1);
 }
 
 float	check_sphere(t_ray ray, t_sphere sphere)
@@ -58,10 +87,8 @@ float	check_sphere(t_ray ray, t_sphere sphere)
 	q.c = dot(x, x) - sphere.r * sphere.r;
 	if ((q.d = q.b * q.b - 2.0 * q.a * q.c) < 0)
 		return (-1.0f);
-	return (1.0f);
+	return (solve_quad(q));
 }
-
-static float get_random(unsigned int *seed0, unsigned int *seed1);
 
 static float get_random(unsigned int *seed0, unsigned int *seed1) {
 
@@ -81,8 +108,10 @@ static float get_random(unsigned int *seed0, unsigned int *seed1) {
 	return (res.f - 2.0f) / 2.0f;
 }
 
+//colors are represented as float3, where x - red, y - green, z - blue
 
-__kernel void	hello_world(__global unsigned int *pixels,
+__kernel void	render_pixel(
+	__global float3 *pixels,
 	__global t_sphere *obj,
 	int num_obj,
 	t_cam cam,
@@ -96,8 +125,19 @@ __kernel void	hello_world(__global unsigned int *pixels,
 	unsigned int	seed0 = seed[id];
 	unsigned int	seed1 = seed[id + w * h];
 	t_ray ray = get_camera_ray(x, y, &cam);
-	float t = 	check_sphere(ray, *obj);
-		pixels[id] = t > 0 ? 0xff0000 : 0xffffffff * get_random(&seed0, &seed1) * get_random(&seed0, &seed1);
+	float t = check_sphere(ray, *obj);
+	if (t <= 0.0f)
+	{
+		pixels[id].x = get_random(&seed0, &seed1);
+		pixels[id].y = get_random(&seed0, &seed1);
+		pixels[id].z = get_random(&seed0, &seed1);
+		pixels[id] = normalize(pixels[id]) * 0.6f;
+		return ;
+	}
+	float3	n = sphere_normal(ray, *obj, t);
+	float3	up = normalize((float3)(1,1,1));
+	float	res = dot(n, up);
+	pixels[id].x = res > 0 ? res : 0;
 }
 
 
