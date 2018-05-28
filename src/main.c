@@ -12,9 +12,10 @@
 
 #include "rt.h"
 #include <assert.h>
+#include <term.h>
 
-#define KERNEL_PATH "/Users/vkuksa/projects/rt/src/kernel_source.cl"
-//#define KERNEL_PATH "/Users/ikorchah/CLionProjects/RT/src/kernel_source.cl"
+//#define KERNEL_PATH "/Users/vkuksa/projects/rt/src/kernel_source.cl"
+#define KERNEL_PATH "/Users/ikorchah/CLionProjects/RT/src/kernel_source.cl"
 
 size_t		g_win_width = 1080;
 size_t		g_win_height = 720;
@@ -47,7 +48,7 @@ void	print_log(t_cldata *cl)
 	size_t	build_log_size;
 	char	*build_log;
 
-	build_log_size = 2048;
+	build_log_size = 4096;
 	build_log = (char*)malloc(sizeof(char) * build_log_size);
 	err = clGetProgramBuildInfo(cl->program, cl->dev_id, CL_PROGRAM_BUILD_LOG,
 		build_log_size, build_log, 0);

@@ -12,6 +12,9 @@
 
 #include "rt.h"
 
+extern int	g_win_width;
+extern int	g_win_height;
+
 void	init_scene(t_scene *scene)
 {
 	scene->num_obj = 1;
@@ -41,4 +44,6 @@ void	init_scene(t_scene *scene)
 	scene->cam.ldir.z = 0;
 	scene->cam.f_length = 935.0f;
 	scene->cam.aperture = 0;
+	scene->cam.pr_pl_w = g_win_width;
+	scene->cam.pr_pl_h = g_win_height;
 }

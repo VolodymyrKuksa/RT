@@ -65,6 +65,8 @@ typedef struct		s_cam
 	cl_float3		ldir;
 	float			f_length;
 	float			aperture;
+	int				pr_pl_w;
+	int				pr_pl_h;
 }					t_cam;
 
 typedef struct		s_scene
