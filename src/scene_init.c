@@ -17,9 +17,10 @@ extern int	g_win_height;
 
 void	init_scene(t_scene *scene)
 {
-	scene->num_obj = 1;
+	scene->num_obj = 2;
 	scene->obj = (t_sphere*)malloc(sizeof(t_sphere) * scene->num_obj);
-	scene->obj[0].pos.x = 0;
+
+	scene->obj[0].pos.x = -5;
 	scene->obj[0].pos.y = 0;
 	scene->obj[0].pos.z = 0;
 	scene->obj[0].col.x = 1.0f;
@@ -29,6 +30,17 @@ void	init_scene(t_scene *scene)
 	scene->obj[0].emission.y = 0;
 	scene->obj[0].emission.z = 0;
 	scene->obj[0].r = 10;
+
+	scene->obj[1].pos.x = 5;
+	scene->obj[1].pos.y = 0;
+	scene->obj[1].pos.z = 0;
+	scene->obj[1].col.x = 1.0f;
+	scene->obj[1].col.y = 1.0f;
+	scene->obj[1].col.z = 1.0f;
+	scene->obj[1].emission.x = 0;
+	scene->obj[1].emission.y = 0;
+	scene->obj[1].emission.z = 0;
+	scene->obj[1].r = 10;
 
 	scene->cam.pos.x = 0;
 	scene->cam.pos.y = 0;

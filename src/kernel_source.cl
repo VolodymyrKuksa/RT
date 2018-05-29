@@ -35,10 +35,11 @@ typedef struct		s_quad
 
 
 t_ray get_camera_ray(int x, int y, t_cam *cam);
-float	check_sphere(t_ray ray, t_sphere sphere);
+float	check_sphere(t_ray *ray, t_sphere sphere);
 static float get_random(unsigned int *seed0, unsigned int *seed1);
 float	solve_quad(t_quad q);
 float3	sphere_normal(t_ray r, t_sphere sphere, float t);
+float	get_intersection(t_ray *ray, __global t_sphere *obj, int num_obj, int *id);
 
 
 t_ray get_camera_ray(int x, int y, t_cam *cam)
@@ -76,14 +77,14 @@ float	solve_quad(t_quad q)
 	return (-1);
 }
 
-float	check_sphere(t_ray ray, t_sphere sphere)
+float	check_sphere(t_ray *ray, t_sphere sphere)
 {
 	t_quad		q;
 	__float3	x;
 
-	x = ray.pos - sphere.pos;
+	x = ray->pos - sphere.pos;
 	q.a = 2.0f;
-	q.b = 2.0f * dot(ray.dir, x);
+	q.b = 2.0f * dot(ray->dir, x);
 	q.c = dot(x, x) - sphere.r * sphere.r;
 	if ((q.d = q.b * q.b - 2.0 * q.a * q.c) < 0)
 		return (-1.0f);
@@ -110,6 +111,22 @@ static float get_random(unsigned int *seed0, unsigned int *seed1) {
 
 //colors are represented as float3, where x - red, y - green, z - blue
 
+float	get_intersection(t_ray *ray, __global t_sphere *obj, int num_obj, int *id)
+{
+	float	t = -1;
+	float	tmp = -1;
+	for(int i = 0; i < num_obj; ++i)
+	{
+		tmp = check_sphere(ray, obj[i]);
+		if ((t < 0 && tmp > 0) || (tmp < t && tmp > 0))
+		{
+			t = tmp;
+			*id = i;
+		}
+	}
+	return t;
+}
+
 __kernel void	render_pixel(
 	__global float3 *pixels,
 	__global t_sphere *obj,
@@ -125,7 +142,9 @@ __kernel void	render_pixel(
 	unsigned int	seed0 = seed[id];
 	unsigned int	seed1 = seed[id + w * h];
 	t_ray ray = get_camera_ray(x, y, &cam);
-	float t = check_sphere(ray, *obj);
+
+	int		obj_id = 0;
+	float t = get_intersection(&ray, obj, num_obj, &obj_id);
 	if (t <= 0.0f)
 	{
 		pixels[id].x = get_random(&seed0, &seed1);
@@ -134,10 +153,11 @@ __kernel void	render_pixel(
 		pixels[id] = normalize(pixels[id]) * 0.6f;
 		return ;
 	}
-	float3	n = sphere_normal(ray, *obj, t);
+	float3	n = sphere_normal(ray, obj[obj_id], t);
 	float3	light_vec = normalize((float3)(1,1,1));
 	float	res = dot(n, light_vec);
-	pixels[id].x = res > 0 ? res : 0;
+	pixels[id].x = res > 0 && obj_id == 0 ? res : 0;
+	pixels[id].y = res > 0 && obj_id == 1 ? res : 0;
 }
 
 
