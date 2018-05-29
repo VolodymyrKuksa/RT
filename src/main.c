@@ -117,10 +117,10 @@ int		main(void)
 	init_openCL(&cl);
 	init_scene(&scene);
 	init_seeds(&seeds_host);
-	px_host = (cl_float3*)malloc(sizeof(cl_float3) * g_win_width * g_win_height);
 
 	//get size of the buffer
 	cl.global_size = g_win_height * g_win_width;
+	px_host = (cl_float3*)malloc(sizeof(cl_float3) * cl.global_size);
 
 	//allocate memory on context for buffers
 	px_gpu = clCreateBuffer(cl.context,

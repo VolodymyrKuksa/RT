@@ -24,7 +24,7 @@ void	init_scene(t_scene *scene)
 
 	tmp.pos.x = -5;
 	tmp.pos.y = -5;
-	tmp.pos.z = 0;
+	tmp.pos.z = -50;
 	tmp.col.x = 1.0f;
 	tmp.col.y = 0.5f;
 	tmp.col.z = 0.5f;
@@ -36,7 +36,7 @@ void	init_scene(t_scene *scene)
 
 	tmp.pos.x = 5;
 	tmp.pos.y = -5;
-	tmp.pos.z = 0;
+	tmp.pos.z = -50;
 	tmp.col.x = 0.5f;
 	tmp.col.y = 1.0f;
 	tmp.col.z = 0.5f;
@@ -48,20 +48,20 @@ void	init_scene(t_scene *scene)
 
 	tmp.pos.x = 0;
 	tmp.pos.y = 13;
-	tmp.pos.z = 0;
+	tmp.pos.z = -50;
 	tmp.col.x = 1.0f;
 	tmp.col.y = 1.0f;
 	tmp.col.z = 1.0f;
-	tmp.emission.x = 0;
-	tmp.emission.y = 0;
-	tmp.emission.z = 0;
+	tmp.emission.x = 1;
+	tmp.emission.y = 1;
+	tmp.emission.z = 1;
 	tmp.r = 5;
 	scene->obj[2] = tmp;
 
 
 	scene->cam.pos.x = 0;
 	scene->cam.pos.y = 0;
-	scene->cam.pos.z = 50;
+	scene->cam.pos.z = 0;
 	scene->cam.dir.x = 0;
 	scene->cam.dir.y = 0;
 	scene->cam.dir.z = -1;
