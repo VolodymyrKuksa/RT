@@ -19,32 +19,44 @@ void	init_scene(t_scene *scene)
 {
 	t_sphere	tmp;
 
-	scene->num_obj = 3;
+	scene->num_obj = 7;
 	scene->obj = (t_sphere*)malloc(sizeof(t_sphere) * scene->num_obj);
 
-	tmp.pos.x = -5;
-	tmp.pos.y = -5;
-	tmp.pos.z = -50;
+	tmp.pos.x = 0;
+	tmp.pos.y = 0;
+	tmp.pos.z = -5500;
 	tmp.col.x = 1.0f;
 	tmp.col.y = 0.5f;
 	tmp.col.z = 0.5f;
 	tmp.emission.x = 0;
 	tmp.emission.y = 0;
 	tmp.emission.z = 0;
-	tmp.r = 10;
+	tmp.r = 4900;
 	scene->obj[0] = tmp;
 
-	tmp.pos.x = 5;
-	tmp.pos.y = -5;
-	tmp.pos.z = -50;
+	tmp.pos.x = 5000;
+	tmp.pos.y = 0;
+	tmp.pos.z = 0;
 	tmp.col.x = 0.5f;
 	tmp.col.y = 1.0f;
 	tmp.col.z = 0.5f;
 	tmp.emission.x = 0;
 	tmp.emission.y = 0;
 	tmp.emission.z = 0;
-	tmp.r = 10;
+	tmp.r = 4900;
 	scene->obj[1] = tmp;
+
+	tmp.pos.x = -5000;
+	tmp.pos.y = 0;
+	tmp.pos.z = 0;
+	tmp.col.x = 0.5f;
+	tmp.col.y = 0.5f;
+	tmp.col.z = 1.0f;
+	tmp.emission.x = 0;
+	tmp.emission.y = 0;
+	tmp.emission.z = 0;
+	tmp.r = 4900;
+	scene->obj[2] = tmp;
 
 	tmp.pos.x = 0;
 	tmp.pos.y = 13;
@@ -56,8 +68,43 @@ void	init_scene(t_scene *scene)
 	tmp.emission.y = 1;
 	tmp.emission.z = 1;
 	tmp.r = 5;
-	scene->obj[2] = tmp;
+	scene->obj[3] = tmp;
 
+	tmp.pos.x = 0;
+	tmp.pos.y = 5000;
+	tmp.pos.z = 0;
+	tmp.col.x = 0.0f;
+	tmp.col.y = 1.0f;
+	tmp.col.z = 1.0f;
+	tmp.emission.x = 0;
+	tmp.emission.y = 0;
+	tmp.emission.z = 0;
+	tmp.r = 4900;
+	scene->obj[4] = tmp;
+
+	tmp.pos.x = 0;
+	tmp.pos.y = -5000;
+	tmp.pos.z = 0;
+	tmp.col.x = 0.0f;
+	tmp.col.y = 1.0f;
+	tmp.col.z = 1.0f;
+	tmp.emission.x = 1;
+	tmp.emission.y = 1;
+	tmp.emission.z = 1;
+	tmp.r = 4900;
+	scene->obj[5] = tmp;
+
+	tmp.pos.x = 0;
+	tmp.pos.y = 0;
+	tmp.pos.z = 5000;
+	tmp.col.x = 1.0f;
+	tmp.col.y = 0.5f;
+	tmp.col.z = 0.5f;
+	tmp.emission.x = 0;
+	tmp.emission.y = 0;
+	tmp.emission.z = 0;
+	tmp.r = 4900;
+	scene->obj[6] = tmp;
 
 	scene->cam.pos.x = 0;
 	scene->cam.pos.y = 0;

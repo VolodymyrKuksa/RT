@@ -177,6 +177,8 @@ float3	trace_ray(t_ray *ray, __global t_sphere *obj, int num_obj, uint2 seeds)
 		ray->pos = hitpoint + ray->dir * EPSILON;
 
 		accum_col += col_mask * obj[obj_id].emission;
+//		if (obj[obj_id].emission.x > 0 || obj[obj_id].emission.y > 0 || obj[obj_id].emission.z > 0)
+//		break;
 		col_mask *= obj[obj_id].col;
 		col_mask *= dot(n, ray->dir);
 	}
@@ -201,9 +203,9 @@ __kernel void	render_pixel(
 	t_ray ray = get_camera_ray(x, y, &cam);
 	pixels[id] = (float3)(0,0,0);
 	int		max_sample = 1;
-	float	sample_influence = 1.0f / max_sample;
+//	float	sample_influence = 1.0f / max_sample;
 	for(int samples = 0; samples < max_sample; ++samples)
-		pixels[id] += trace_ray(&ray, obj, num_obj, seeds) * sample_influence;
+		pixels[id] += trace_ray(&ray, obj, num_obj, seeds) / max_sample;
 }
 
 
