@@ -17,30 +17,47 @@ extern int	g_win_height;
 
 void	init_scene(t_scene *scene)
 {
-	scene->num_obj = 2;
+	t_sphere	tmp;
+
+	scene->num_obj = 3;
 	scene->obj = (t_sphere*)malloc(sizeof(t_sphere) * scene->num_obj);
 
-	scene->obj[0].pos.x = -5;
-	scene->obj[0].pos.y = 0;
-	scene->obj[0].pos.z = 0;
-	scene->obj[0].col.x = 1.0f;
-	scene->obj[0].col.y = 0.5f;
-	scene->obj[0].col.z = 0.5f;
-	scene->obj[0].emission.x = 0;
-	scene->obj[0].emission.y = 0;
-	scene->obj[0].emission.z = 0;
-	scene->obj[0].r = 10;
+	tmp.pos.x = -5;
+	tmp.pos.y = -5;
+	tmp.pos.z = 0;
+	tmp.col.x = 1.0f;
+	tmp.col.y = 0.5f;
+	tmp.col.z = 0.5f;
+	tmp.emission.x = 0;
+	tmp.emission.y = 0;
+	tmp.emission.z = 0;
+	tmp.r = 10;
+	scene->obj[0] = tmp;
 
-	scene->obj[1].pos.x = 5;
-	scene->obj[1].pos.y = 0;
-	scene->obj[1].pos.z = 0;
-	scene->obj[1].col.x = 0.5f;
-	scene->obj[1].col.y = 1.0f;
-	scene->obj[1].col.z = 0.5f;
-	scene->obj[1].emission.x = 0;
-	scene->obj[1].emission.y = 0;
-	scene->obj[1].emission.z = 0;
-	scene->obj[1].r = 10;
+	tmp.pos.x = 5;
+	tmp.pos.y = -5;
+	tmp.pos.z = 0;
+	tmp.col.x = 0.5f;
+	tmp.col.y = 1.0f;
+	tmp.col.z = 0.5f;
+	tmp.emission.x = 0;
+	tmp.emission.y = 0;
+	tmp.emission.z = 0;
+	tmp.r = 10;
+	scene->obj[1] = tmp;
+
+	tmp.pos.x = 0;
+	tmp.pos.y = 13;
+	tmp.pos.z = 0;
+	tmp.col.x = 1.0f;
+	tmp.col.y = 1.0f;
+	tmp.col.z = 1.0f;
+	tmp.emission.x = 0;
+	tmp.emission.y = 0;
+	tmp.emission.z = 0;
+	tmp.r = 5;
+	scene->obj[2] = tmp;
+
 
 	scene->cam.pos.x = 0;
 	scene->cam.pos.y = 0;

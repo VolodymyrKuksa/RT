@@ -14,8 +14,13 @@
 #include <assert.h>
 #include <time.h>
 
-#define KERNEL_PATH "/Users/vkuksa/projects/rt/src/kernel_source.cl"
-//#define KERNEL_PATH "/Users/ikorchah/CLionProjects/RT/src/kernel_source.cl"
+#ifdef CLION_BUILD
+#define KERNEL_PATH "../src/kernel_source.cl"
+#else
+#define KERNEL_PATH "src/kernel_source.cl"
+#endif
+
+//#define KERNEL_PATH "/Users/vkuksa/projects/rt/src/kernel_source.cl"
 
 size_t		g_win_width = 1080;
 size_t		g_win_height = 720;
@@ -156,7 +161,7 @@ int		main(void)
 		cl.global_size : cl.local_size;
 	while (cl.global_size % cl.local_size != 0)
 		cl.local_size -= 1;
-	printf("local size: %lu\n", cl.local_size);
+//	printf("local size: %lu\n", cl.local_size);
 
 	//push task to the command queue
 	err = clEnqueueNDRangeKernel(cl.command_queue, cl.kernel, 1, 0,

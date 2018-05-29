@@ -17,3 +17,5 @@ add_executable(rt includes/rt_types.h includes/rt.h src/main.c src/read_file.c
 
 target_link_libraries(rt ${SDL2_LIBRARY} ${OPENCL} libft libvec
         ${SDL} "-F /Library/Frameworks -framework SDL2")
+
+target_compile_definitions(rt PUBLIC CLION_BUILD)
