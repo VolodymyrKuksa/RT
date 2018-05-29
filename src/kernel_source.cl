@@ -36,10 +36,11 @@ typedef struct		s_quad
 
 t_ray get_camera_ray(int x, int y, t_cam *cam);
 float	check_sphere(t_ray *ray, t_sphere sphere);
-static float get_random(unsigned int *seed0, unsigned int *seed1);
+static float get_random(uint2 *seeds);
 float	solve_quad(t_quad q);
 float3	sphere_normal(t_ray r, t_sphere sphere, float t);
 float	get_intersection(t_ray *ray, __global t_sphere *obj, int num_obj, int *id);
+float3	get_random_float3(uint2 *seeds);
 
 
 t_ray get_camera_ray(int x, int y, t_cam *cam)
@@ -91,13 +92,13 @@ float	check_sphere(t_ray *ray, t_sphere sphere)
 	return (solve_quad(q));
 }
 
-static float get_random(unsigned int *seed0, unsigned int *seed1) {
-
+static float get_random(uint2 *seeds)
+{
 	/* hash the seeds using bitwise AND operations and bitshifts */
-	*seed0 = 36969 * ((*seed0) & 65535) + ((*seed0) >> 16);  
-	*seed1 = 18000 * ((*seed1) & 65535) + ((*seed1) >> 16);
+	seeds->x = 36969 * ((seeds->x) & 65535) + ((seeds->x) >> 16);
+	seeds->y = 18000 * ((seeds->y) & 65535) + ((seeds->y) >> 16);
 
-	unsigned int ires = ((*seed0) << 16) + (*seed1);
+	unsigned int ires = ((seeds->x) << 16) + (seeds->y);
 
 	/* use union struct to convert int to float */
 	union {
@@ -107,6 +108,16 @@ static float get_random(unsigned int *seed0, unsigned int *seed1) {
 
 	res.ui = (ires & 0x007fffff) | 0x40000000;  /* bitwise AND, bitwise OR */
 	return (res.f - 2.0f) / 2.0f;
+}
+
+float3	get_random_float3(uint2 *seeds)
+{
+	float3	new_vec;
+	new_vec.x = get_random(seeds);
+	new_vec.y = get_random(seeds);
+	new_vec.z = get_random(seeds);
+
+	return new_vec;
 }
 
 //colors are represented as float3, where x - red, y - green, z - blue
@@ -139,25 +150,23 @@ __kernel void	render_pixel(
 	int		id = get_global_id(0);
 	int		x = id % w;
 	int		y = id / w;
-	unsigned int	seed0 = seed[id];
-	unsigned int	seed1 = seed[id + w * h];
+	uint2	seeds;
+	seeds.x = seed[id];
+	seeds.y = seed[id + w * h];
 	t_ray ray = get_camera_ray(x, y, &cam);
 
 	int		obj_id = 0;
 	float t = get_intersection(&ray, obj, num_obj, &obj_id);
 	if (t <= 0.0f)
 	{
-		pixels[id].x = get_random(&seed0, &seed1);
-		pixels[id].y = get_random(&seed0, &seed1);
-		pixels[id].z = get_random(&seed0, &seed1);
+		pixels[id] = get_random_float3(&seeds);
 		pixels[id] = normalize(pixels[id]) * 0.6f;
 		return ;
 	}
 	float3	n = sphere_normal(ray, obj[obj_id], t);
 	float3	light_vec = normalize((float3)(1,1,1));
 	float	res = dot(n, light_vec);
-	pixels[id].x = res > 0 && obj_id == 0 ? res : 0;
-	pixels[id].y = res > 0 && obj_id == 1 ? res : 0;
+	pixels[id] = res > 0 ? obj[obj_id].col * res : 0;
 }
 
 
