@@ -44,6 +44,7 @@ void	main_loop(t_scrn *screen, t_cldata *cl, t_scene *scene, t_seeds *seeds_host
 	SDL_Event	e;
 	int			quit;
 	cl_float3	*px_host;
+	cl_float3	*pixels;
 	int			err;
 	cl_mem		px_gpu;
 	cl_mem		obj_gpu;
@@ -52,6 +53,7 @@ void	main_loop(t_scrn *screen, t_cldata *cl, t_scene *scene, t_seeds *seeds_host
 	float		sample_influence;
 
 	px_host = (cl_float3*)malloc(sizeof(cl_float3) * cl->global_size);
+	pixels = (cl_float3*)malloc(sizeof(cl_float3) * cl->global_size);
 
 	//allocate memory on context for buffers
 	px_gpu = clCreateBuffer(cl->context,
@@ -115,19 +117,33 @@ void	main_loop(t_scrn *screen, t_cldata *cl, t_scene *scene, t_seeds *seeds_host
 
 		clFinish(cl->command_queue);
 
-		sample_influence = 1.0f / num_samples;
+		sample_influence = (1.0f / num_samples) / 2;
 
 		for(int i = 0; i < cl->global_size; ++i)
 		{
-			screen->surf_arr[i].bgra[0] *= 1.0f - sample_influence;
-			screen->surf_arr[i].bgra[1] *= 1.0f - sample_influence;
-			screen->surf_arr[i].bgra[2] *= 1.0f - sample_influence;
-			screen->surf_arr[i].bgra[0] += (u_char) (px_host[i].z * sample_influence * 0xff);
-			screen->surf_arr[i].bgra[1] += (u_char) (px_host[i].y * sample_influence * 0xff);
-			screen->surf_arr[i].bgra[2] += (u_char) (px_host[i].x * sample_influence * 0xff);
+			pixels[i].x *= 1.0f - sample_influence;
+			pixels[i].y *= 1.0f - sample_influence;
+			pixels[i].z *= 1.0f - sample_influence;
+
+			pixels[i].x += px_host[i].x * sample_influence;
+			pixels[i].y += px_host[i].y * sample_influence;
+			pixels[i].z += px_host[i].z * sample_influence;;
+
+			screen->surf_arr[i].bgra[0] = (u_char) (pixels[i].z * 0xff);
+			screen->surf_arr[i].bgra[1] = (u_char) (pixels[i].y * 0xff);
+			screen->surf_arr[i].bgra[2] = (u_char) (pixels[i].x * 0xff);
+
+
+//			screen->surf_arr[i].bgra[0] *= 1.0f - sample_influence;
+//			screen->surf_arr[i].bgra[1] *= 1.0f - sample_influence;
+//			screen->surf_arr[i].bgra[2] *= 1.0f - sample_influence;
+//
+//			screen->surf_arr[i].bgra[0] += (u_char) (px_host[i].z * sample_influence * 0xff);
+//			screen->surf_arr[i].bgra[1] += (u_char) (px_host[i].y * sample_influence * 0xff);
+//			screen->surf_arr[i].bgra[2] += (u_char) (px_host[i].x * sample_influence * 0xff);
 		}
 //		printf("%d\n", *(seeds_host->seeds));
-		printf("samples: %u, influence: %f\n", num_samples, sample_influence);
+//		printf("samples: %u, influence: %f\n", num_samples, sample_influence);
 		num_samples++;
 
 		SDL_UpdateWindowSurface(screen->window);
