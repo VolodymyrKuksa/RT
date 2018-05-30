@@ -25,10 +25,44 @@
 size_t		g_win_width = 1080;
 size_t		g_win_height = 720;
 
-void	main_loop(t_scrn *screen)
+
+void	init_seeds(t_seeds *s)
+{
+	int		i;
+
+	s->size = (uint)(g_win_height * g_win_width * 2);
+	s->seeds = (uint*)malloc(sizeof(uint) * s->size);
+	srand((uint)clock());
+	i = -1;
+	while (++i < s->size)
+		s->seeds[i] = (uint)rand(); // NOLINT
+}
+
+
+void	main_loop(t_scrn *screen, t_cldata *cl, t_scene *scene, t_seeds *seeds_host)
 {
 	SDL_Event	e;
 	int			quit;
+	cl_float3	*px_host;
+	int			err;
+	cl_mem		px_gpu;
+	cl_mem		obj_gpu;
+	cl_mem		seed_gpu;
+
+	px_host = (cl_float3*)malloc(sizeof(cl_float3) * cl->global_size);
+
+	//allocate memory on context for buffers
+	px_gpu = clCreateBuffer(cl->context,
+		CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY,
+		sizeof(cl_float3) * g_win_width * g_win_height, 0, &err);
+	assert (err == CL_SUCCESS);
+	obj_gpu = clCreateBuffer(cl->context, CL_MEM_READ_ONLY |
+		CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR,
+		sizeof(t_sphere) * scene->num_obj, scene->obj, &err);
+	assert (err == CL_SUCCESS);
+	seed_gpu = clCreateBuffer(cl->context, CL_MEM_READ_WRITE,
+		sizeof(int) * seeds_host->size, 0, &err);
+	assert (err == CL_SUCCESS);
 
 	quit = 0;
 	while (!quit)
@@ -43,6 +77,50 @@ void	main_loop(t_scrn *screen)
 					quit = 1;
 			}
 		}
+
+		err = clEnqueueWriteBuffer(cl->command_queue, seed_gpu, CL_TRUE, 0,
+			sizeof(uint) * seeds_host->size, seeds_host->seeds, 0, 0, 0);
+		assert(err == CL_SUCCESS);
+
+		//set the allocated memory as an argument for __kernel function
+		err = clSetKernelArg(cl->kernel, 0, sizeof(px_gpu), &px_gpu);
+		assert (err == CL_SUCCESS);
+		err = clSetKernelArg(cl->kernel, 1, sizeof(obj_gpu), &obj_gpu);
+		assert (err == CL_SUCCESS);
+		err = clSetKernelArg(cl->kernel, 2, sizeof(scene->num_obj), &scene->num_obj);
+		assert (err == CL_SUCCESS);
+		err = clSetKernelArg(cl->kernel, 3, sizeof(scene->cam), &scene->cam);
+		assert (err == CL_SUCCESS);
+		err = clSetKernelArg(cl->kernel, 4, sizeof(g_win_width), &g_win_width);
+		assert (err == CL_SUCCESS);
+		err = clSetKernelArg(cl->kernel, 5, sizeof(g_win_height), &g_win_height);
+		assert (err == CL_SUCCESS);
+		err = clSetKernelArg(cl->kernel, 6, sizeof(seed_gpu), &seed_gpu);
+		assert (err == CL_SUCCESS);
+
+		//push task to the command queue
+		err = clEnqueueNDRangeKernel(cl->command_queue, cl->kernel, 1, 0,
+			&cl->global_size, &cl->local_size, 0, 0, 0);
+		assert (err == CL_SUCCESS);
+
+		//read from the memory, filled by the current command que
+		err = clEnqueueReadBuffer(cl->command_queue, px_gpu, CL_FALSE, 0,
+			sizeof(cl_float3) * g_win_width * g_win_height, px_host, 0, 0, 0);
+		assert (err == CL_SUCCESS);
+		err = clEnqueueReadBuffer(cl->command_queue, seed_gpu, CL_FALSE, 0,
+			sizeof(int) * seeds_host->size, seeds_host->seeds, 0, 0, 0);
+		assert (err == CL_SUCCESS);
+
+		clFinish(cl->command_queue);
+
+		for(int i = 0; i < cl->global_size; ++i)
+		{
+			screen->surf_arr[i].bgra[0] = (u_char) (px_host[i].z * 0xff);
+			screen->surf_arr[i].bgra[1] = (u_char) (px_host[i].y * 0xff);
+			screen->surf_arr[i].bgra[2] = (u_char) (px_host[i].x * 0xff);
+		}
+//		printf("%d\n", *(seeds_host->seeds));
+
 		SDL_UpdateWindowSurface(screen->window);
 	}
 }
@@ -90,26 +168,10 @@ void	init_openCL(t_cldata *cl)
 	assert (err == CL_SUCCESS);
 }
 
-void	init_seeds(t_seeds *s)
-{
-	int		i;
-
-	s->size = (uint)(g_win_height * g_win_width * 2);
-	s->seeds = (int*)malloc(sizeof(uint) * s->size);
-	srand((uint)clock());
-	i = -1;
-	while (++i < s->size)
-		s->seeds[i] = rand(); // NOLINT
-}
-
 int		main(void)
 {
 	t_cldata	cl;
-	cl_mem		px_gpu;
-	cl_mem		obj_gpu;
 	t_seeds		seeds_host;
-	cl_mem		seed_gpu;
-	cl_float3	*px_host;
 	int			err;
 	t_scrn		screen;
 	t_scene		scene;
@@ -118,39 +180,7 @@ int		main(void)
 	init_scene(&scene);
 	init_seeds(&seeds_host);
 
-	//get size of the buffer
 	cl.global_size = g_win_height * g_win_width;
-	px_host = (cl_float3*)malloc(sizeof(cl_float3) * cl.global_size);
-
-	//allocate memory on context for buffers
-	px_gpu = clCreateBuffer(cl.context,
-		CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY,
-		sizeof(cl_float3) * g_win_width * g_win_height, 0, &err);
-	assert (err == CL_SUCCESS);
-	obj_gpu = clCreateBuffer(cl.context, CL_MEM_READ_ONLY |
-		CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR,
-		sizeof(t_sphere) * scene.num_obj, scene.obj, &err);
-	assert (err == CL_SUCCESS);
-	seed_gpu = clCreateBuffer(cl.context, CL_MEM_READ_ONLY |
-		CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR,
-		sizeof(int) * seeds_host.size, seeds_host.seeds, &err);
-	assert (err == CL_SUCCESS);
-
-	//set the allocated memory as an argument for __kernel function
-	err = clSetKernelArg(cl.kernel, 0, sizeof(px_gpu), &px_gpu);
-	assert (err == CL_SUCCESS);
-	err = clSetKernelArg(cl.kernel, 1, sizeof(obj_gpu), &obj_gpu);
-	assert (err == CL_SUCCESS);
-	err = clSetKernelArg(cl.kernel, 2, sizeof(scene.num_obj), &scene.num_obj);
-	assert (err == CL_SUCCESS);
-	err = clSetKernelArg(cl.kernel, 3, sizeof(scene.cam), &scene.cam);
-	assert (err == CL_SUCCESS);
-	err = clSetKernelArg(cl.kernel, 4, sizeof(g_win_width), &g_win_width);
-	assert (err == CL_SUCCESS);
-	err = clSetKernelArg(cl.kernel, 5, sizeof(g_win_height), &g_win_height);
-	assert (err == CL_SUCCESS);
-	err = clSetKernelArg(cl.kernel, 6, sizeof(seed_gpu), &seed_gpu);
-	assert (err == CL_SUCCESS);
 
 	//getting max work group size for this task
 	err = clGetKernelWorkGroupInfo(cl.kernel, cl.dev_id,
@@ -163,28 +193,8 @@ int		main(void)
 		cl.local_size -= 1;
 //	printf("local size: %lu\n", cl.local_size);
 
-	//push task to the command queue
-	err = clEnqueueNDRangeKernel(cl.command_queue, cl.kernel, 1, 0,
-		&cl.global_size, &cl.local_size, 0, 0, 0);
-	assert (err == CL_SUCCESS);
-
-	//read from the memory, filled by the current command que
-	err = clEnqueueReadBuffer(cl.command_queue, px_gpu, CL_FALSE, 0,
-		sizeof(cl_float3) * g_win_width * g_win_height, px_host, 0, 0, 0);
-	assert (err == CL_SUCCESS);
-
-	//wait while the task is being processed AND BUFFER IS BEING READ
-	//this way reading is a bit faster
-	clFinish(cl.command_queue);
-
 	init_win(&screen);
-	for(int i = 0; i < cl.global_size; ++i)
-	{
-		screen.surf_arr[i].bgra[0] = (u_char) (px_host[i].z * 0xff);
-		screen.surf_arr[i].bgra[1] = (u_char) (px_host[i].y * 0xff);
-		screen.surf_arr[i].bgra[2] = (u_char) (px_host[i].x * 0xff);
-	}
-	main_loop(&screen);
+	main_loop(&screen, &cl, &scene, &seeds_host);
 	close_sdl(&screen);
 
 	return (0);

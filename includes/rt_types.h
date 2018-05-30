@@ -78,7 +78,7 @@ typedef struct		s_scene
 
 typedef struct		s_seed
 {
-	int				*seeds;
+	uint			*seeds;
 	size_t			size;
 }					t_seeds;
 

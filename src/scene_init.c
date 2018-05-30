@@ -64,9 +64,9 @@ void	init_scene(t_scene *scene)
 	tmp.col.x = 1.0f;
 	tmp.col.y = 1.0f;
 	tmp.col.z = 1.0f;
-	tmp.emission.x = 1;
-	tmp.emission.y = 1;
-	tmp.emission.z = 1;
+	tmp.emission.x = 0;
+	tmp.emission.y = 0;
+	tmp.emission.z = 0;
 	tmp.r = 5;
 	scene->obj[3] = tmp;
 

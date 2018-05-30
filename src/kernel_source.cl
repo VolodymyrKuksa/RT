@@ -45,7 +45,7 @@ float3	sphere_normal_point(float3 pt, t_sphere sphere);
 float3	sphere_normal_ray(t_ray r, t_sphere sphere, float t);
 float	get_intersection(t_ray *ray, __global t_sphere *obj, int num_obj, int *id);
 float3	get_random_float3(uint2 *seeds);
-float3	trace_ray(t_ray *ray, __global t_sphere *obj, int num_obj, uint2 seeds);
+float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds);
 
 
 t_ray get_camera_ray(int x, int y, t_cam *cam)
@@ -150,37 +150,37 @@ float	get_intersection(t_ray *ray, __global t_sphere *obj, int num_obj, int *id)
 	return t;
 }
 
-float3	trace_ray(t_ray *ray, __global t_sphere *obj, int num_obj, uint2 seeds)
+float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds)
 {
 	float3	accum_col = (float3)(0,0,0); //accumulated color
 	float3	col_mask = (float3)(1,1,1); //colour mask
-	for(int	bounce = 0; bounce < 2; ++bounce)
+	for(int	bounce = 0; bounce < 8; ++bounce)
 	{
 		int obj_id = 0;
-		float t = get_intersection(ray, obj, num_obj, &obj_id);
+		float t = get_intersection(&ray, obj, num_obj, &obj_id);
 		if (t < 0)
 			break;
 
-		float3	hitpoint = ray->pos + t * ray->dir;
+		float3	hitpoint = ray.pos + t * ray.dir;
 		float3	n = sphere_normal_point(hitpoint, obj[obj_id]);
-		n = dot(n, ray->dir) > 0 ? -1 * n : n;
+		n = dot(n, ray.dir) > 0 ? -1 * n : n;
 
-		float	rand1 = 2.0f * PI * get_random(&seeds);
-		float	rand2 = get_random(&seeds);
+		float	rand1 = 2.0f * PI * get_random(seeds);
+		float	rand2 = get_random(seeds);
 		float	rand2s = sqrt(rand2);
 
 		float3	axis = fabs(n.x) > 0.1f ? (float3)(0.0f, 1.0f, 0.0f) : (float3)(1.0f, 0.0f, 0.0f);
 		float3 u = normalize(cross(axis, n));
 		float3 v = cross(n, u);
 
-		ray->dir = normalize(u * cos(rand1)*rand2s + v*sin(rand1)*rand2s + n*sqrt(1.0f - rand2));
-		ray->pos = hitpoint + ray->dir * EPSILON;
+		ray.dir = normalize(u * cos(rand1)*rand2s + v*sin(rand1)*rand2s + n*sqrt(1.0f - rand2));
+		ray.pos = hitpoint + ray.dir * EPSILON;
 
 		accum_col += col_mask * obj[obj_id].emission;
-//		if (obj[obj_id].emission.x > 0 || obj[obj_id].emission.y > 0 || obj[obj_id].emission.z > 0)
-//		break;
+		if (obj[obj_id].emission.x > 0 || obj[obj_id].emission.y > 0 || obj[obj_id].emission.z > 0)
+		break;
 		col_mask *= obj[obj_id].col;
-		col_mask *= dot(n, ray->dir);
+		col_mask *= dot(n, ray.dir);
 	}
 	return accum_col;
 }
@@ -202,10 +202,12 @@ __kernel void	render_pixel(
 	seeds.y = seed[id + w * h];
 	t_ray ray = get_camera_ray(x, y, &cam);
 	pixels[id] = (float3)(0,0,0);
-	int		max_sample = 1;
+//	int		max_sample = 100;
 //	float	sample_influence = 1.0f / max_sample;
-	for(int samples = 0; samples < max_sample; ++samples)
-		pixels[id] += trace_ray(&ray, obj, num_obj, seeds) / max_sample;
+//	for(int samples = 0; samples < max_sample; ++samples)
+	pixels[id] += trace_ray(ray, obj, num_obj, &seeds);
+	seed[id] = seeds.x;
+	seed[id + w * h] = seeds.y;
 }
 
 
