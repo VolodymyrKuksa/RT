@@ -143,7 +143,7 @@ void	main_loop(t_scrn *screen, t_cldata *cl, t_scene *scene, t_seeds *seeds_host
 //			screen->surf_arr[i].bgra[2] += (u_char) (px_host[i].x * sample_influence * 0xff);
 		}
 //		printf("%d\n", *(seeds_host->seeds));
-//		printf("samples: %u, influence: %f\n", num_samples, sample_influence);
+		printf("samples: %u, influence: %f\n", num_samples, sample_influence);
 		num_samples++;
 
 		SDL_UpdateWindowSurface(screen->window);

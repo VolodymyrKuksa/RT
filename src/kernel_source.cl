@@ -1,4 +1,4 @@
-__constant float EPSILON = 0.00003f;
+__constant float EPSILON = 0.001f;
 __constant float PI = 3.14159265359f;
 
 typedef struct		s_sphere
@@ -174,7 +174,7 @@ float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds)
 		float3 v = cross(n, u);
 
 		ray.dir = normalize(u * cos(rand1)*rand2s + v*sin(rand1)*rand2s + n*sqrt(1.0f - rand2));
-		ray.pos = hitpoint + n * (EPSILON * 3);
+		ray.pos = hitpoint + ray.dir * EPSILON;
 
 		accum_col += col_mask * obj[obj_id].emission;
 		if (obj[obj_id].emission.x > 0 || obj[obj_id].emission.y > 0 || obj[obj_id].emission.z > 0)

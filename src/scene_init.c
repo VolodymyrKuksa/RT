@@ -26,8 +26,8 @@ void	init_scene(t_scene *scene)
 	tmp.pos.y = 0;
 	tmp.pos.z = -5500;
 	tmp.col.x = 1.0f;
-	tmp.col.y = 0.5f;
-	tmp.col.z = 0.5f;
+	tmp.col.y = 0.9f;
+	tmp.col.z = 0.9f;
 	tmp.emission.x = 0;
 	tmp.emission.y = 0;
 	tmp.emission.z = 0;
@@ -59,15 +59,15 @@ void	init_scene(t_scene *scene)
 	scene->obj[2] = tmp;
 
 	tmp.pos.x = 0;
-	tmp.pos.y = 13;
-	tmp.pos.z = -50;
+	tmp.pos.y = 0;
+	tmp.pos.z = -400;
 	tmp.col.x = 1.0f;
 	tmp.col.y = 1.0f;
 	tmp.col.z = 1.0f;
 	tmp.emission.x = 0;
 	tmp.emission.y = 0;
 	tmp.emission.z = 0;
-	tmp.r = 5;
+	tmp.r = 50;
 	scene->obj[3] = tmp;
 
 	tmp.pos.x = 0;
@@ -76,21 +76,21 @@ void	init_scene(t_scene *scene)
 	tmp.col.x = 0.0f;
 	tmp.col.y = 1.0f;
 	tmp.col.z = 1.0f;
-	tmp.emission.x = 0;
-	tmp.emission.y = 0;
-	tmp.emission.z = 0;
+	tmp.emission.x = 1;
+	tmp.emission.y = 1;
+	tmp.emission.z = 1;
 	tmp.r = 4900;
 	scene->obj[4] = tmp;
 
 	tmp.pos.x = 0;
 	tmp.pos.y = -5000;
 	tmp.pos.z = 0;
-	tmp.col.x = 0.0f;
-	tmp.col.y = 1.0f;
-	tmp.col.z = 1.0f;
-	tmp.emission.x = 1;
-	tmp.emission.y = 1;
-	tmp.emission.z = 1;
+	tmp.col.x = 1.0f;
+	tmp.col.y = 0.5f;
+	tmp.col.z = 0.5f;
+	tmp.emission.x = 0;
+	tmp.emission.y = 0;
+	tmp.emission.z = 0;
 	tmp.r = 4900;
 	scene->obj[5] = tmp;
 
@@ -98,8 +98,8 @@ void	init_scene(t_scene *scene)
 	tmp.pos.y = 0;
 	tmp.pos.z = 5000;
 	tmp.col.x = 1.0f;
-	tmp.col.y = 0.5f;
-	tmp.col.z = 0.5f;
+	tmp.col.y = 0.9f;
+	tmp.col.z = 0.9f;
 	tmp.emission.x = 0;
 	tmp.emission.y = 0;
 	tmp.emission.z = 0;
