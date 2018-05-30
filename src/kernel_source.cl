@@ -154,7 +154,7 @@ float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds)
 {
 	float3	accum_col = (float3)(0,0,0); //accumulated color
 	float3	col_mask = (float3)(1,1,1); //colour mask
-	for(int	bounce = 0; bounce < 8; ++bounce)
+	for(int	bounce = 0; bounce < 16; ++bounce)
 	{
 		int obj_id = 0;
 		float t = get_intersection(&ray, obj, num_obj, &obj_id);
@@ -202,27 +202,7 @@ __kernel void	render_pixel(
 	seeds.y = seed[id + w * h];
 	t_ray ray = get_camera_ray(x, y, &cam);
 	pixels[id] = (float3)(0,0,0);
-//	int		max_sample = 100;
-//	float	sample_influence = 1.0f / max_sample;
-//	for(int samples = 0; samples < max_sample; ++samples)
 	pixels[id] += trace_ray(ray, obj, num_obj, &seeds);
 	seed[id] = seeds.x;
 	seed[id + w * h] = seeds.y;
 }
-
-
-
-/*
-int		obj_id = 0;
-float t = get_intersection(&ray, obj, num_obj, &obj_id);
-if (t <= 0.0f)
-{
-pixels[id] = get_random_float3(&seeds);
-pixels[id] = normalize(pixels[id]) * 0.6f;
-return ;
-}
-float3	n = sphere_normal(ray, obj[obj_id], t);
-float3	light_vec = normalize((float3)(1,1,1));
-float	res = dot(n, light_vec);
-pixels[id] = res > 0 ? obj[obj_id].col * res : 0;
-*/
