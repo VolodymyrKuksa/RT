@@ -48,6 +48,8 @@ void	main_loop(t_scrn *screen, t_cldata *cl, t_scene *scene, t_seeds *seeds_host
 	cl_mem		px_gpu;
 	cl_mem		obj_gpu;
 	cl_mem		seed_gpu;
+	uint		num_samples = 1;
+	float		sample_influence;
 
 	px_host = (cl_float3*)malloc(sizeof(cl_float3) * cl->global_size);
 
@@ -113,13 +115,20 @@ void	main_loop(t_scrn *screen, t_cldata *cl, t_scene *scene, t_seeds *seeds_host
 
 		clFinish(cl->command_queue);
 
+		sample_influence = 1.0f / num_samples;
+
 		for(int i = 0; i < cl->global_size; ++i)
 		{
-			screen->surf_arr[i].bgra[0] = (u_char) (px_host[i].z * 0xff);
-			screen->surf_arr[i].bgra[1] = (u_char) (px_host[i].y * 0xff);
-			screen->surf_arr[i].bgra[2] = (u_char) (px_host[i].x * 0xff);
+			screen->surf_arr[i].bgra[0] *= 1.0f - sample_influence;
+			screen->surf_arr[i].bgra[1] *= 1.0f - sample_influence;
+			screen->surf_arr[i].bgra[2] *= 1.0f - sample_influence;
+			screen->surf_arr[i].bgra[0] += (u_char) (px_host[i].z * sample_influence * 0xff);
+			screen->surf_arr[i].bgra[1] += (u_char) (px_host[i].y * sample_influence * 0xff);
+			screen->surf_arr[i].bgra[2] += (u_char) (px_host[i].x * sample_influence * 0xff);
 		}
 //		printf("%d\n", *(seeds_host->seeds));
+		printf("samples: %u, influence: %f\n", num_samples, sample_influence);
+		num_samples++;
 
 		SDL_UpdateWindowSurface(screen->window);
 	}
