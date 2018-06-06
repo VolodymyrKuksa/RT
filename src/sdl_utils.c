@@ -12,8 +12,8 @@
 
 #include "rt.h"
 
-extern size_t	g_win_width;
-extern size_t	g_win_height;
+extern unsigned int	g_win_width; /* extern^ help me with it*/
+extern unsigned int g_win_height;
 
 int		init_win(t_scrn *screen)
 {
@@ -26,7 +26,7 @@ int		init_win(t_scrn *screen)
 	else
 	{
 		screen->window = SDL_CreateWindow("CANCER RT", SDL_WINDOWPOS_UNDEFINED,
-		SDL_WINDOWPOS_UNDEFINED, (int)g_win_width, (int)g_win_height,
+		SDL_WINDOWPOS_UNDEFINED, g_win_width, g_win_height,
 		SDL_WINDOW_SHOWN);
 		if (screen->window == NULL)
 		{
@@ -35,7 +35,7 @@ int		init_win(t_scrn *screen)
 			return (0);
 		}
 		else
-			screen->surface = SDL_GetWindowSurface(screen->window);
+			screen->surface = SDL_GetWindowSurface(screen->window); /*fast ????*/
 	}
 	screen->surf_arr = (t_rgb *)screen->surface->pixels;
 	return (1);

@@ -12,49 +12,27 @@
 
 #include "rt.h"
 
-static void	join_lines(char **res, char **line)
-{
-	char	*tmp;
-
-	if (!*res)
-	{
-		*res = *line;
-		return ;
-	}
-	tmp = *res;
-	*res = ft_strjoin(*res, "\n");
-	free(tmp);
-	tmp = *res;
-	*res = ft_strjoin(*res, *line);
-	free(tmp);
-	free(*line);
-}
-
 /*
 **	DEBUG (add before `return (res);`):
-**	system("leaks -q RT");
 */
 
-char		*read_file(const char *filename, size_t *size)
+char		*read_file(int fd, size_t *size)
 {
-	int		fd;
-	int		gnlret;
+	char	*tmp;
 	char	*res;
-	char	*line;
+	int		num;
+	char	buf[256];
 
-	res = NULL;
-	fd = open(filename, O_RDONLY);
-	gnlret = get_next_line(fd, &line);
-	while (gnlret > 0)
-	{
-		join_lines(&res, &line);
-		gnlret = get_next_line(fd, &line);
-	}
-	if (gnlret < 0)
-	{
-		free(res);
-		*size = 0;
+	res = (char *)malloc(sizeof(char));
+	res[0] = '\0';
+	if (res < 0)
 		return (NULL);
+	while (num = read(fd, buf, 255))
+	{
+		buf[num] = '\0';
+		tmp = res;
+		res = ft_strjoin(res, buf);
+		free(tmp);
 	}
 	*size = ft_strlen(res);
 	return (res);

@@ -35,13 +35,23 @@ typedef struct			s_cldata
 	cl_device_id		dev_id;
 	cl_context			context;
 	cl_command_queue	command_queue;
-	char				**source;
+	char				*source;
 	size_t				source_size;
 	cl_program			program;
 	cl_kernel			kernel;
 	size_t				global_size;
 	size_t				local_size;
 }						t_cldata;
+
+/*
+typedef struct		s_obj
+{
+	cl_uchar3		col;
+	cl_double3		pos;
+	cl_double3		vec;
+
+};
+*/
 
 typedef struct		s_sphere
 {
@@ -76,7 +86,7 @@ typedef struct		s_scene
 	t_cam			cam;
 }					t_scene;
 
-typedef struct		s_seed
+typedef struct		s_seed /* ? */
 {
 	uint			*seeds;
 	size_t			size;

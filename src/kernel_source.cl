@@ -1,5 +1,6 @@
 __constant float EPSILON = 0.001f;
 __constant float PI = 3.14159265359f;
+__constant uchar max_bounces = 10;
 
 typedef struct		s_sphere
 {
@@ -154,7 +155,7 @@ float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds)
 {
 	float3	accum_col = (float3)(0,0,0); //accumulated color
 	float3	col_mask = (float3)(1,1,1); //colour mask
-	for(int	bounce = 0; bounce < 16; ++bounce)
+	for(int	bounce = 0; bounce < max_bounces; ++bounce)
 	{
 		int obj_id = 0;
 		float t = get_intersection(&ray, obj, num_obj, &obj_id);

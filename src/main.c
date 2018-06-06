@@ -9,24 +9,22 @@
 /*   Updated: 2018/05/22 17:02:00 by vkuksa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
+/* Инклудим необходимую хню */
 #include "rt.h"
 #include <assert.h>
 #include <time.h>
-
+/* Это прикол в ебучем слионе*/
 #ifdef CLION_BUILD
 #define KERNEL_PATH "../src/kernel_source.cl"
 #else
 #define KERNEL_PATH "src/kernel_source.cl"
 #endif
-
-//#define KERNEL_PATH "/Users/vkuksa/projects/rt/src/kernel_source.cl"
-
-size_t		g_win_width = 1080;
-size_t		g_win_height = 720;
+/* Это размеры окна */
+unsigned int	g_win_width = 1200;
+unsigned int	g_win_height = 680;
 
 
-void	init_seeds(t_seeds *s)
+void	init_seeds(t_seeds *s) /* I don't understand WTF */
 {
 	int		i;
 
@@ -39,7 +37,7 @@ void	init_seeds(t_seeds *s)
 }
 
 
-void	main_loop(t_scrn *screen, t_cldata *cl, t_scene *scene, t_seeds *seeds_host)
+void	main_loop(t_scrn *screen, t_cldata *cl, t_scene *scene, t_seeds *seeds_host) /* This is shit */
 {
 	SDL_Event	e;
 	int			quit;
@@ -150,16 +148,13 @@ void	main_loop(t_scrn *screen, t_cldata *cl, t_scene *scene, t_seeds *seeds_host
 	}
 }
 
-void	print_log(t_cldata *cl)
+void				print_log(t_cldata *cl)
 {
-	int		err;
-	size_t	build_log_size;
-	char	*build_log;
+	int				err;
+	char			build_log[4096];
 
-	build_log_size = 4096;
-	build_log = (char*)malloc(sizeof(char) * build_log_size);
 	err = clGetProgramBuildInfo(cl->program, cl->dev_id, CL_PROGRAM_BUILD_LOG,
-		build_log_size, build_log, 0);
+		4096, build_log, 0);
 	assert(err == CL_SUCCESS);
 	printf("%s\n", build_log);
 	exit(EXIT_FAILURE);
@@ -171,17 +166,16 @@ void	init_openCL(t_cldata *cl)
 	char	*options;
 
 	options = "-Werror";
-	err = clGetDeviceIDs(0, CL_DEVICE_TYPE_CPU, 1, &cl->dev_id, 0);
+	err = clGetDeviceIDs(0, CL_DEVICE_TYPE_GPU, 1, &cl->dev_id, 0); // SO DEVICE CPU or GPU
 	assert (err == CL_SUCCESS);
 	cl->context = clCreateContext(0, 1, &cl->dev_id, 0, 0, &err);
 	assert (err == CL_SUCCESS);
 	cl->command_queue = clCreateCommandQueue(cl->context, cl->dev_id, 0, &err);
 	assert (err == CL_SUCCESS);
-	cl->source = (char**)malloc(sizeof(char*));
-	*cl->source = read_file(KERNEL_PATH, &cl->source_size);
-	assert(*cl->source != NULL);
+	cl->source = read_file(open(KERNEL_PATH, O_RDONLY), &cl->source_size);
+	assert(NULL != cl->source);
 	cl->program = clCreateProgramWithSource(cl->context, 1,
-		(const char **)cl->source, &cl->source_size, &err);
+		&cl->source, &cl->source_size, &err);
 	assert (err == CL_SUCCESS);
 	err = clBuildProgram(cl->program, 0, 0, options, 0, 0);
 	if (err != CL_SUCCESS)
@@ -197,27 +191,24 @@ int		main(void)
 {
 	t_cldata	cl;
 	t_seeds		seeds_host;
-	int			err;
+	int	err;
 	t_scrn		screen;
 	t_scene		scene;
 
 	init_openCL(&cl);
 	init_scene(&scene);
-	init_seeds(&seeds_host);
-
+	init_seeds(&seeds_host); /* WTF ??????*/
+	/*Sooo global_size it's all pixels but I need more inf*/
 	cl.global_size = g_win_height * g_win_width;
-
-	//getting max work group size for this task
+	//getting max work group size for this task fuck you
 	err = clGetKernelWorkGroupInfo(cl.kernel, cl.dev_id,
 		CL_KERNEL_WORK_GROUP_SIZE, sizeof(cl.local_size),
 		&cl.local_size, 0);
 	assert (err == CL_SUCCESS);
 	cl.local_size = cl.local_size > cl.global_size ?
 		cl.global_size : cl.local_size;
-	while (cl.global_size % cl.local_size != 0)
+	while (cl.global_size % cl.local_size != 0) /*WTF ?????????*/
 		cl.local_size -= 1;
-//	printf("local size: %lu\n", cl.local_size);
-
 	init_win(&screen);
 	main_loop(&screen, &cl, &scene, &seeds_host);
 	close_sdl(&screen);
