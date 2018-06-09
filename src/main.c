@@ -20,8 +20,8 @@
 #define KERNEL_PATH "src/kernel_source.cl"
 #endif
 /* Это размеры окна */
-unsigned int	g_win_width = 1200;
-unsigned int	g_win_height = 680;
+unsigned int	g_win_width = 1080;
+unsigned int	g_win_height = 720;
 
 
 void	init_seeds(t_seeds *s) /* I don't understand WTF */
@@ -115,17 +115,27 @@ void	main_loop(t_scrn *screen, t_cldata *cl, t_scene *scene, t_seeds *seeds_host
 
 		clFinish(cl->command_queue);
 
-		sample_influence = (1.0f / num_samples) / 2;
+		sample_influence = (1.0f / num_samples);
 
 		for(int i = 0; i < cl->global_size; ++i)
 		{
-			pixels[i].x *= 1.0f - sample_influence;
-			pixels[i].y *= 1.0f - sample_influence;
-			pixels[i].z *= 1.0f - sample_influence;
+//			pixels[i].x *= 1.0f - sample_influence;
+//			pixels[i].y *= 1.0f - sample_influence;
+//			pixels[i].z *= 1.0f - sample_influence;
+//
+//			pixels[i].x += px_host[i].x * sample_influence;
+//			pixels[i].y += px_host[i].y * sample_influence;
+//			pixels[i].z += px_host[i].z * sample_influence;
 
-			pixels[i].x += px_host[i].x * sample_influence;
-			pixels[i].y += px_host[i].y * sample_influence;
-			pixels[i].z += px_host[i].z * sample_influence;;
+//			if (px_host[i].x || px_host[i].y || px_host[i].z) {
+				pixels[i].x = (pixels[i].x * (num_samples - 1) + px_host[i].x) /
+							  num_samples;
+				pixels[i].y = (pixels[i].y * (num_samples - 1) + px_host[i].y) /
+							  num_samples;
+				pixels[i].z = (pixels[i].z * (num_samples - 1) + px_host[i].z) /
+							  num_samples;
+//			}
+
 
 			screen->surf_arr[i].bgra[0] = (u_char) (pixels[i].z * 0xff);
 			screen->surf_arr[i].bgra[1] = (u_char) (pixels[i].y * 0xff);

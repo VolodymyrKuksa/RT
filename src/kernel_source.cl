@@ -1,6 +1,6 @@
-__constant float EPSILON = 0.001f;
+__constant float EPSILON = 0.001;
 __constant float PI = 3.14159265359f;
-__constant uchar max_bounces = 10;
+__constant int max_bounces = 10;
 
 typedef struct		s_sphere
 {
@@ -38,7 +38,7 @@ typedef struct		s_quad
 }					t_quad;
 
 
-t_ray get_camera_ray(int x, int y, t_cam *cam);
+t_ray get_camera_ray(int x, int y, t_cam *cam, uint2 *seeds);
 float	check_sphere(t_ray *ray, t_sphere sphere);
 static float get_random(uint2 *seeds);
 float	solve_quad(t_quad q);
@@ -49,7 +49,7 @@ float3	get_random_float3(uint2 *seeds);
 float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds);
 
 
-t_ray get_camera_ray(int x, int y, t_cam *cam)
+t_ray get_camera_ray(int x, int y, t_cam *cam, uint2 *seeds)
 {
 	t_ray ray;
 
@@ -58,23 +58,13 @@ t_ray get_camera_ray(int x, int y, t_cam *cam)
 //	(cam->pr_pl_h / 2 - y) + cam->ldir * (cam->pr_pl_w / 2 - x);
 //	ray.dir = normalize(ray.dir);
 	ray.pos = (float3)(0,0,0);
-	ray.dir = normalize((float3)(x - cam->pr_pl_w / 2,-y + cam->pr_pl_h / 2,-cam->f_length));
+	ray.dir = normalize((float3)(x - cam->pr_pl_w / 2 + get_random(seeds) - 0.5f,-y + cam->pr_pl_h / 2 + get_random(seeds) - 0.5f,-cam->f_length));
 	return(ray);
 }
 
 float3	sphere_normal_point(float3 pt, t_sphere sphere)
 {
 	return (normalize(pt - sphere.pos));
-}
-
-float3	sphere_normal_ray(t_ray r, t_sphere sphere, float t)
-{
-	float3	intersect;
-	float3	n;
-
-	intersect = r.pos + t * r.dir;
-	n = sphere_normal_point(intersect, sphere);
-	return (dot(n, r.dir) > 0 ? -1 * n : n);
 }
 
 float	solve_quad(t_quad q)
@@ -153,37 +143,54 @@ float	get_intersection(t_ray *ray, __global t_sphere *obj, int num_obj, int *id)
 
 float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds)
 {
-	float3	accum_col = (float3)(0,0,0); //accumulated color
-	float3	col_mask = (float3)(1,1,1); //colour mask
-	for(int	bounce = 0; bounce < max_bounces; ++bounce)
+	float3	mask = (float3)(1.f, 1.f, 1.f);
+	float3	res = (float3)(0, 0, 0);
+
+	for (int bounce = 0; bounce < max_bounces; ++bounce)
 	{
-		int obj_id = 0;
-		float t = get_intersection(&ray, obj, num_obj, &obj_id);
+		int hitsphere_id;
+		float t = get_intersection(&ray, obj, num_obj, &hitsphere_id);
 		if (t < 0)
 			break;
+		float3 hitpoint = ray.pos + t * ray.dir;
+		mask *= obj[hitsphere_id].col;
+		res += mask * obj[hitsphere_id].emission;
+		if (obj[hitsphere_id].emission.x || obj[hitsphere_id].emission.y || obj[hitsphere_id].emission.z)
+			break;
+		float3 n = sphere_normal_point(hitpoint, obj[hitsphere_id]);
+		n = dot(n, ray.dir) > 0 ? n * -1 : n;
 
-		float3	hitpoint = ray.pos + t * ray.dir;
-		float3	n = sphere_normal_point(hitpoint, obj[obj_id]);
-		n = dot(n, ray.dir) > 0 ? -1 * n : n;
+//
+//		float3 base_x;
+//		float3 base_y;
+//		float3 base_z;
+//		base_y = n;
+//		float3 tmp = (n.x == 1 ? (float3)(0, 1, 0) : (float3)(1, 0, 0));
+//		base_x = normalize(cross(base_y, tmp));
+//		base_z = cross(base_y, base_x);
+//
+//		float3 new_dir;
+//		new_dir += base_y * get_random(seeds);
+//		new_dir += base_x * (get_random(seeds) * 2 - 1);
+//		new_dir += base_z * (get_random(seeds) * 2 - 1);
+//
+//		new_dir = normalize(new_dir);
 
-		float	rand1 = 2.0f * PI * get_random(seeds);
-		float	rand2 = get_random(seeds);
-		float	rand2s = sqrt(rand2);
-
-		float3	axis = fabs(n.x) > 0.1f ? (float3)(0.0f, 1.0f, 0.0f) : (float3)(1.0f, 0.0f, 0.0f);
-		float3 u = normalize(cross(axis, n));
-		float3 v = cross(n, u);
-
-		ray.dir = normalize(u * cos(rand1)*rand2s + v*sin(rand1)*rand2s + n*sqrt(1.0f - rand2));
-		ray.pos = hitpoint + ray.dir * EPSILON;
-
-		accum_col += col_mask * obj[obj_id].emission;
-		if (obj[obj_id].emission.x > 0 || obj[obj_id].emission.y > 0 || obj[obj_id].emission.z > 0)
-		break;
-		col_mask *= obj[obj_id].col;
-		col_mask *= dot(n, ray.dir);
+		float rand1 = 2.0f * PI * get_random(seeds);
+		float rand2 = get_random(seeds);
+		float rand2s = sqrt(rand2);
+		/* create a local orthogonal coordinate frame centered at the hitpoint */
+		float3 w = n;
+		float3 axis = fabs(w.x) > 0.1f ? (float3)(0.0f, 1.0f, 0.0f) : (float3)(1.0f, 0.0f, 0.0f);
+		float3 u = normalize(cross(axis, w));
+		float3 v = cross(w, u);
+		/* use the coordinte frame and random numbers to compute the next ray direction */
+		float3 newdir = normalize(u * cos(rand1)*rand2s + v*sin(rand1)*rand2s + w*sqrt(1.0f - rand2));
+		mask *= dot(n, newdir);
+		ray.pos = hitpoint + EPSILON * newdir;
+		ray.dir = newdir;
 	}
-	return accum_col;
+	return (res);
 }
 
 __kernel void	render_pixel(
@@ -201,7 +208,7 @@ __kernel void	render_pixel(
 	uint2	seeds;
 	seeds.x = seed[id];
 	seeds.y = seed[id + w * h];
-	t_ray ray = get_camera_ray(x, y, &cam);
+	t_ray ray = get_camera_ray(x, y, &cam, &seeds);
 	pixels[id] = (float3)(0,0,0);
 	pixels[id] += trace_ray(ray, obj, num_obj, &seeds);
 	seed[id] = seeds.x;
