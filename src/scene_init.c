@@ -97,9 +97,9 @@ void	init_scene(t_scene *scene)
 	tmp.pos.x = 0;
 	tmp.pos.y = 0;
 	tmp.pos.z = 500;
-	tmp.col.x = 1.0f;
-	tmp.col.y = 0.9f;
-	tmp.col.z = 0.9f;
+	tmp.col.x = 0.0f;
+	tmp.col.y = 0.0f;
+	tmp.col.z = 1.f;
 	tmp.emission.x = 0;
 	tmp.emission.y = 0;
 	tmp.emission.z = 0;
@@ -118,9 +118,9 @@ void	init_scene(t_scene *scene)
 	tmp.r = 4;
 	scene->obj[7] = tmp;
 
-	tmp.pos.x = 10.f;
+	tmp.pos.x = 4;
 	tmp.pos.y = 4;
-	tmp.pos.z = -140;
+	tmp.pos.z = -100;
 	tmp.col.x = 0.7f;
 	tmp.col.y = 0.7f;
 	tmp.col.z = 1.f;
@@ -132,7 +132,7 @@ void	init_scene(t_scene *scene)
 
 	tmp.pos.x = -4;
 	tmp.pos.y = -4;
-	tmp.pos.z = -40;
+	tmp.pos.z = -80;
 	tmp.col.x = 0.7f;
 	tmp.col.y = 1.f;
 	tmp.col.z = 0.7f;
@@ -155,7 +155,7 @@ void	init_scene(t_scene *scene)
 	scene->cam.ldir.y = 0;
 	scene->cam.ldir.z = 0;
 	scene->cam.f_length = 90.0f;
-	scene->cam.aperture = 0.3f;
+	scene->cam.aperture = 1.0f;
 	scene->cam.ratio = scene->cam.f_length / 935.0f;
 	scene->cam.pr_pl_w = g_win_width;
 	scene->cam.pr_pl_h = g_win_height;

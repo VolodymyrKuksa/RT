@@ -119,36 +119,17 @@ void	main_loop(t_scrn *screen, t_cldata *cl, t_scene *scene, t_seeds *seeds_host
 
 		for(int i = 0; i < cl->global_size; ++i)
 		{
-//			pixels[i].x *= 1.0f - sample_influence;
-//			pixels[i].y *= 1.0f - sample_influence;
-//			pixels[i].z *= 1.0f - sample_influence;
-//
-//			pixels[i].x += px_host[i].x * sample_influence;
-//			pixels[i].y += px_host[i].y * sample_influence;
-//			pixels[i].z += px_host[i].z * sample_influence;
+			pixels[i].x *= 1.0f - sample_influence;
+			pixels[i].y *= 1.0f - sample_influence;
+			pixels[i].z *= 1.0f - sample_influence;
 
-//			if (px_host[i].x || px_host[i].y || px_host[i].z) {
-				pixels[i].x = (pixels[i].x * (num_samples - 1) + px_host[i].x) /
-							  num_samples;
-				pixels[i].y = (pixels[i].y * (num_samples - 1) + px_host[i].y) /
-							  num_samples;
-				pixels[i].z = (pixels[i].z * (num_samples - 1) + px_host[i].z) /
-							  num_samples;
-//			}
-
+			pixels[i].x += px_host[i].x * sample_influence;
+			pixels[i].y += px_host[i].y * sample_influence;
+			pixels[i].z += px_host[i].z * sample_influence;
 
 			screen->surf_arr[i].bgra[0] = (u_char) (pixels[i].z * 0xff);
 			screen->surf_arr[i].bgra[1] = (u_char) (pixels[i].y * 0xff);
 			screen->surf_arr[i].bgra[2] = (u_char) (pixels[i].x * 0xff);
-
-
-//			screen->surf_arr[i].bgra[0] *= 1.0f - sample_influence;
-//			screen->surf_arr[i].bgra[1] *= 1.0f - sample_influence;
-//			screen->surf_arr[i].bgra[2] *= 1.0f - sample_influence;
-//
-//			screen->surf_arr[i].bgra[0] += (u_char) (px_host[i].z * sample_influence * 0xff);
-//			screen->surf_arr[i].bgra[1] += (u_char) (px_host[i].y * sample_influence * 0xff);
-//			screen->surf_arr[i].bgra[2] += (u_char) (px_host[i].x * sample_influence * 0xff);
 		}
 //		printf("%d\n", *(seeds_host->seeds));
 //		printf("samples: %u, influence: %f\n", num_samples, sample_influence);
@@ -161,10 +142,15 @@ void	main_loop(t_scrn *screen, t_cldata *cl, t_scene *scene, t_seeds *seeds_host
 void				print_log(t_cldata *cl)
 {
 	int				err;
-	char			build_log[4096];
+	char			*build_log;
+	size_t 			size;
 
 	err = clGetProgramBuildInfo(cl->program, cl->dev_id, CL_PROGRAM_BUILD_LOG,
-		4096, build_log, 0);
+		0, 0, &size);
+	assert(err == CL_SUCCESS);
+	build_log = (char*)malloc(sizeof(char) * size);
+	err = clGetProgramBuildInfo(cl->program, cl->dev_id, CL_PROGRAM_BUILD_LOG,
+		size, build_log, 0);
 	assert(err == CL_SUCCESS);
 	printf("%s\n", build_log);
 	exit(EXIT_FAILURE);
@@ -175,8 +161,8 @@ void	init_openCL(t_cldata *cl)
 	int		err;
 	char	*options;
 
-	options = "-Werror";
-	err = clGetDeviceIDs(0, CL_DEVICE_TYPE_GPU, 1, &cl->dev_id, 0); // SO DEVICE CPU or GPU
+	options = "";//"-Werror";
+	err = clGetDeviceIDs(0, CL_DEVICE_TYPE_GPU, 1, &cl->dev_id, 0);
 	assert (err == CL_SUCCESS);
 	cl->context = clCreateContext(0, 1, &cl->dev_id, 0, 0, &err);
 	assert (err == CL_SUCCESS);
@@ -185,7 +171,7 @@ void	init_openCL(t_cldata *cl)
 	cl->source = read_file(open(KERNEL_PATH, O_RDONLY), &cl->source_size);
 	assert(NULL != cl->source);
 	cl->program = clCreateProgramWithSource(cl->context, 1,
-		&cl->source, &cl->source_size, &err);
+			(const char**)(&cl->source), &cl->source_size, &err);
 	assert (err == CL_SUCCESS);
 	err = clBuildProgram(cl->program, 0, 0, options, 0, 0);
 	if (err != CL_SUCCESS)
@@ -207,17 +193,16 @@ int		main(void)
 
 	init_openCL(&cl);
 	init_scene(&scene);
-	init_seeds(&seeds_host); /* WTF ??????*/
-	/*Sooo global_size it's all pixels but I need more inf*/
+	init_seeds(&seeds_host);
 	cl.global_size = g_win_height * g_win_width;
-	//getting max work group size for this task fuck you
+	//getting max work group size for this task
 	err = clGetKernelWorkGroupInfo(cl.kernel, cl.dev_id,
 		CL_KERNEL_WORK_GROUP_SIZE, sizeof(cl.local_size),
 		&cl.local_size, 0);
 	assert (err == CL_SUCCESS);
 	cl.local_size = cl.local_size > cl.global_size ?
 		cl.global_size : cl.local_size;
-	while (cl.global_size % cl.local_size != 0) /*WTF ?????????*/
+	while (cl.global_size % cl.local_size != 0)
 		cl.local_size -= 1;
 	init_win(&screen);
 	main_loop(&screen, &cl, &scene, &seeds_host);

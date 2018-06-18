@@ -48,6 +48,9 @@ float3	sphere_normal_ray(t_ray r, t_sphere sphere, float t);
 float	get_intersection(t_ray *ray, __global t_sphere *obj, int num_obj, int *id);
 float3	get_random_float3(uint2 *seeds);
 float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds);
+t_ray	diffuse(t_ray ray, float3 n, float3 hitpoint, uint2 *seeds);
+t_ray	reflect(t_ray ray, float3 n, float3 hitpoint, uint2 *seeds);
+float3	sample_hemisphere(float3 w, float max_r, uint2 *seeds);
 
 
 t_ray get_camera_ray(int x, int y, t_cam *cam, uint2 *seeds)
@@ -149,6 +152,43 @@ float	get_intersection(t_ray *ray, __global t_sphere *obj, int num_obj, int *id)
 	return t;
 }
 
+float3	sample_hemisphere(float3 w, float max_r, uint2 *seeds)
+{
+	float rand1 = 2.0f * PI * get_random(seeds);
+	float rand2 = get_random(seeds) * max_r;
+	float rand2s = sqrt(rand2);
+
+	float3 axis = fabs(w.x) > 0.1f ? (float3)(0.0f, 1.0f, 0.0f) : (float3)(1.0f, 0.0f, 0.0f);
+	float3 u = normalize(cross(axis, w));
+	float3 v = cross(w, u);
+
+	float3 newdir = normalize(u * cos(rand1)*rand2s + v*sin(rand1)*rand2s + w*sqrt(1.0f - rand2));
+
+	return (newdir);
+}
+
+t_ray	diffuse(t_ray ray, float3 n, float3 hitpoint, uint2 *seeds)
+{
+	float3 newdir = sample_hemisphere(n, 1.f, seeds);
+	ray.pos = hitpoint + EPSILON * newdir;
+	ray.dir = newdir;
+
+	return (ray);
+}
+
+t_ray	reflect(t_ray ray, float3 n, float3 hitpoint, uint2 *seeds)
+{
+	float3 tmp = ray.dir;
+	float3 reflected_dir;
+
+	reflected_dir = tmp - 2 * dot(tmp, n) * n;
+	do {
+		ray.dir = sample_hemisphere(reflected_dir, 0.02f, seeds);
+	} while (dot(ray.dir, n) < 0);
+	ray.pos = hitpoint + EPSILON * ray.dir;
+	return (ray);
+}
+
 float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds)
 {
 	float3	mask = (float3)(1.f, 1.f, 1.f);
@@ -168,19 +208,14 @@ float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds)
 		float3 n = sphere_normal_point(hitpoint, obj[hitsphere_id]);
 		n = dot(n, ray.dir) > 0 ? n * -1 : n;
 
-		float rand1 = 2.0f * PI * get_random(seeds);
-		float rand2 = get_random(seeds);
-		float rand2s = sqrt(rand2);
-		/* create a local orthogonal coordinate frame centered at the hitpoint */
-		float3 w = n;
-		float3 axis = fabs(w.x) > 0.1f ? (float3)(0.0f, 1.0f, 0.0f) : (float3)(1.0f, 0.0f, 0.0f);
-		float3 u = normalize(cross(axis, w));
-		float3 v = cross(w, u);
-		/* use the coordinte frame and random numbers to compute the next ray direction */
-		float3 newdir = normalize(u * cos(rand1)*rand2s + v*sin(rand1)*rand2s + w*sqrt(1.0f - rand2));
-		mask *= dot(n, newdir);
-		ray.pos = hitpoint + EPSILON * newdir;
-		ray.dir = newdir;
+		if (hitsphere_id != 3) {
+			ray = diffuse(ray, n, hitpoint, seeds);
+		} else if (get_random(seeds) > 0.5f) {
+			ray = reflect(ray, n, hitpoint, seeds);
+		} else {
+			ray = diffuse(ray, n, hitpoint, seeds);
+		}
+		mask *= dot(n, ray.dir);
 	}
 	return (res);
 }
