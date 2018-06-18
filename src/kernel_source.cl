@@ -19,8 +19,9 @@ typedef struct		s_cam
 	__float3		ldir;
 	float			f_length;
 	float			aperture;
-	int				pr_pl_w;
-	int				pr_pl_h;
+	float			ratio;
+	float			pr_pl_w;
+	float			pr_pl_h;
 }					t_cam;
 
 typedef struct		s_ray
@@ -53,12 +54,19 @@ t_ray get_camera_ray(int x, int y, t_cam *cam, uint2 *seeds)
 {
 	t_ray ray;
 
-//	ray.pos = cam->pos;
-//	ray.dir = ray.pos + cam->dir * cam->f_length + cam->updir *
-//	(cam->pr_pl_h / 2 - y) + cam->ldir * (cam->pr_pl_w / 2 - x);
-//	ray.dir = normalize(ray.dir);
-	ray.pos = (float3)(0,0,0);
-	ray.dir = normalize((float3)(x - cam->pr_pl_w / 2 + get_random(seeds) - 0.5f,-y + cam->pr_pl_h / 2 + get_random(seeds) - 0.5f,-cam->f_length));
+	float a = get_random(seeds) * 2 * PI;
+	float r = sqrt(get_random(seeds) * cam->aperture);
+
+	float ax = r * cos(a);
+	float ay = r * sin(a);
+
+	ray.pos = (float3)(ax,ay,0);
+
+	ray.dir = (float3)(x - cam->pr_pl_w / 2,-y + cam->pr_pl_h / 2,-cam->f_length);
+	ray.dir.x = (ray.dir.x + get_random(seeds) - 0.5f) * cam->ratio;
+	ray.dir.y = (ray.dir.y + get_random(seeds) - 0.5f) * cam->ratio;
+	ray.dir -= ray.pos;
+	ray.dir = normalize(ray.dir);
 	return(ray);
 }
 
@@ -159,22 +167,6 @@ float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds)
 			break;
 		float3 n = sphere_normal_point(hitpoint, obj[hitsphere_id]);
 		n = dot(n, ray.dir) > 0 ? n * -1 : n;
-
-//
-//		float3 base_x;
-//		float3 base_y;
-//		float3 base_z;
-//		base_y = n;
-//		float3 tmp = (n.x == 1 ? (float3)(0, 1, 0) : (float3)(1, 0, 0));
-//		base_x = normalize(cross(base_y, tmp));
-//		base_z = cross(base_y, base_x);
-//
-//		float3 new_dir;
-//		new_dir += base_y * get_random(seeds);
-//		new_dir += base_x * (get_random(seeds) * 2 - 1);
-//		new_dir += base_z * (get_random(seeds) * 2 - 1);
-//
-//		new_dir = normalize(new_dir);
 
 		float rand1 = 2.0f * PI * get_random(seeds);
 		float rand2 = get_random(seeds);

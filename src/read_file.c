@@ -12,22 +12,18 @@
 
 #include "rt.h"
 
-/*
-**	DEBUG (add before `return (res);`):
-*/
-
 char		*read_file(int fd, size_t *size)
 {
 	char	*tmp;
 	char	*res;
-	int		num;
+	ssize_t	num;
 	char	buf[256];
 
 	res = (char *)malloc(sizeof(char));
 	res[0] = '\0';
 	if (res < 0)
 		return (NULL);
-	while (num = read(fd, buf, 255))
+	while ((num = read(fd, buf, 255)))
 	{
 		buf[num] = '\0';
 		tmp = res;
