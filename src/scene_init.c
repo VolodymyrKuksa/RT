@@ -159,5 +159,5 @@ void	init_scene(t_scene *scene)
 	scene->cam.ratio = scene->cam.f_length / 935.0f;
 	scene->cam.pr_pl_w = g_win_width;
 	scene->cam.pr_pl_h = g_win_height;
-	printf("ratio: %f\n", scene->cam.ratio);
+//	printf("ratio: %f\n", scene->cam.ratio);
 }
