@@ -53,12 +53,19 @@ typedef struct		s_obj
 };
 */
 
+typedef struct		s_surf
+{
+	cl_float3		type;
+	float			roughness;
+}					t_surf;
+
 typedef struct		s_sphere
 {
 	cl_float3		col;
 	cl_float3		pos;
 	cl_float3		emission;
 	float			r;
+	t_surf			surf;
 }					t_sphere;
 
 typedef struct		s_ray

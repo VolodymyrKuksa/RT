@@ -19,7 +19,7 @@ void	init_scene(t_scene *scene)
 {
 	t_sphere	tmp;
 
-	scene->num_obj = 10;
+	scene->num_obj = 9;
 	scene->obj = (t_sphere*)malloc(sizeof(t_sphere) * scene->num_obj);
 
 	tmp.pos.x = 0;
@@ -31,6 +31,10 @@ void	init_scene(t_scene *scene)
 	tmp.emission.x = 0;
 	tmp.emission.y = 0;
 	tmp.emission.z = 0;
+	tmp.surf.roughness = 1.f;
+	tmp.surf.type.x = 0.f;
+	tmp.surf.type.y = 1.f;
+	tmp.surf.type.z = 0.f;
 	tmp.r = 490;
 	scene->obj[0] = tmp;
 
@@ -43,6 +47,10 @@ void	init_scene(t_scene *scene)
 	tmp.emission.x = 0;
 	tmp.emission.y = 0;
 	tmp.emission.z = 0;
+	tmp.surf.roughness = 1.f;
+	tmp.surf.type.x = 1.f;
+	tmp.surf.type.y = 0.f;
+	tmp.surf.type.z = 0.f;
 	tmp.r = 490;
 	scene->obj[1] = tmp;
 
@@ -55,18 +63,26 @@ void	init_scene(t_scene *scene)
 	tmp.emission.x = 0;
 	tmp.emission.y = 0;
 	tmp.emission.z = 0;
+	tmp.surf.roughness = 1.f;
+	tmp.surf.type.x = 1.f;
+	tmp.surf.type.y = 0.f;
+	tmp.surf.type.z = 0.f;
 	tmp.r = 490;
 	scene->obj[2] = tmp;
 
-	tmp.pos.x = 0;
+	tmp.pos.x = 2.5f;
 	tmp.pos.y = 0;
-	tmp.pos.z = -90;
-	tmp.col.x = 1.0f;
-	tmp.col.y = 1.0f;
-	tmp.col.z = 1.0f;
+	tmp.pos.z = -60;
+	tmp.col.x = 1.f;
+	tmp.col.y = 0.8f;
+	tmp.col.z = 0.f;
 	tmp.emission.x = 0;
 	tmp.emission.y = 0;
 	tmp.emission.z = 0;
+	tmp.surf.roughness = 0.2f;
+	tmp.surf.type.x = 0.2f;
+	tmp.surf.type.y = 0.8f;
+	tmp.surf.type.z = 0.f;
 	tmp.r = 5;
 	scene->obj[3] = tmp;
 
@@ -79,6 +95,10 @@ void	init_scene(t_scene *scene)
 	tmp.emission.x = 1;
 	tmp.emission.y = 1;
 	tmp.emission.z = 1;
+	tmp.surf.roughness = 1.f;
+	tmp.surf.type.x = 1.f;
+	tmp.surf.type.y = 0.f;
+	tmp.surf.type.z = 0.f;
 	tmp.r = 490;
 	scene->obj[4] = tmp;
 
@@ -91,6 +111,10 @@ void	init_scene(t_scene *scene)
 	tmp.emission.x = 0;
 	tmp.emission.y = 0;
 	tmp.emission.z = 0;
+	tmp.surf.roughness = 1.f;
+	tmp.surf.type.x = 1.f;
+	tmp.surf.type.y = 0.f;
+	tmp.surf.type.z = 0.f;
 	tmp.r = 490;
 	scene->obj[5] = tmp;
 
@@ -103,44 +127,56 @@ void	init_scene(t_scene *scene)
 	tmp.emission.x = 0;
 	tmp.emission.y = 0;
 	tmp.emission.z = 0;
+	tmp.surf.roughness = 1.f;
+	tmp.surf.type.x = 1.f;
+	tmp.surf.type.y = 0.f;
+	tmp.surf.type.z = 0.f;
 	tmp.r = 490;
 	scene->obj[6] = tmp;
 
-	tmp.pos.x = 0;
-	tmp.pos.y = 0;
-	tmp.pos.z = -90;
-	tmp.col.x = 1.0f;
-	tmp.col.y = 1.0f;
-	tmp.col.z = 1.0f;
-	tmp.emission.x = 0;
-	tmp.emission.y = 0;
-	tmp.emission.z = 0;
-	tmp.r = 4;
-	scene->obj[7] = tmp;
+//	tmp.pos.x = 0;
+//	tmp.pos.y = 0;
+//	tmp.pos.z = -90;
+//	tmp.col.x = 1.0f;
+//	tmp.col.y = 1.0f;
+//	tmp.col.z = 1.0f;
+//	tmp.emission.x = 0;
+//	tmp.emission.y = 0;
+//	tmp.emission.z = 0;
+//	tmp.r = 4;
+//	scene->obj[7] = tmp;
 
-	tmp.pos.x = 4;
-	tmp.pos.y = 4;
-	tmp.pos.z = -100;
+	tmp.pos.x = 7;
+	tmp.pos.y = 0;
+	tmp.pos.z = -56;
 	tmp.col.x = 0.7f;
 	tmp.col.y = 0.7f;
 	tmp.col.z = 1.f;
 	tmp.emission.x = 0;
 	tmp.emission.y = 0;
 	tmp.emission.z = 0;
-	tmp.r = 5;
+	tmp.surf.roughness = 0.f;
+	tmp.surf.type.x = 0.f;
+	tmp.surf.type.y = 1.f;
+	tmp.surf.type.z = 0.f;
+	tmp.r = 1;
 	scene->obj[8] = tmp;
 
 	tmp.pos.x = -4;
 	tmp.pos.y = -4;
-	tmp.pos.z = -80;
-	tmp.col.x = 0.7f;
+	tmp.pos.z = -50;
+	tmp.col.x = 1.f;
 	tmp.col.y = 1.f;
-	tmp.col.z = 0.7f;
+	tmp.col.z = 1.f;
 	tmp.emission.x = 0;
 	tmp.emission.y = 0;
 	tmp.emission.z = 0;
+	tmp.surf.roughness = 1.f;
+	tmp.surf.type.x = 1.f;
+	tmp.surf.type.y = 0.f;
+	tmp.surf.type.z = 0.f;
 	tmp.r = 5;
-	scene->obj[9] = tmp;
+	scene->obj[7] = tmp;
 
 	scene->cam.pos.x = 0;
 	scene->cam.pos.y = 0;
@@ -154,9 +190,9 @@ void	init_scene(t_scene *scene)
 	scene->cam.ldir.x = -1;
 	scene->cam.ldir.y = 0;
 	scene->cam.ldir.z = 0;
-	scene->cam.f_length = 90.0f;
-	scene->cam.aperture = 1.0f;
-	scene->cam.ratio = scene->cam.f_length / 935.0f;
+	scene->cam.f_length = 60.0f;
+	scene->cam.aperture = 2.0f;
+	scene->cam.ratio = scene->cam.f_length / 2000.0f; //935.f for 60 degree fov
 	scene->cam.pr_pl_w = g_win_width;
 	scene->cam.pr_pl_h = g_win_height;
 //	printf("ratio: %f\n", scene->cam.ratio);

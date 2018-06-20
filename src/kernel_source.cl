@@ -2,12 +2,20 @@ __constant float EPSILON = 0.001;
 __constant float PI = 3.14159265359f;
 __constant int max_bounces = 10;
 
+
+typedef struct		s_surf
+{
+	float3		type;
+	float			roughness;
+}					t_surf;
+
 typedef struct		s_sphere
 {
 	__float3		col;
 	__float3		pos;
 	__float3		emission;
 	float			r;
+	t_surf			surf;
 }					t_sphere;
 
 
@@ -49,7 +57,7 @@ float	get_intersection(t_ray *ray, __global t_sphere *obj, int num_obj, int *id)
 float3	get_random_float3(uint2 *seeds);
 float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds);
 t_ray	diffuse(t_ray ray, float3 n, float3 hitpoint, uint2 *seeds);
-t_ray	reflect(t_ray ray, float3 n, float3 hitpoint, uint2 *seeds);
+t_ray	reflect(t_ray ray, float3 n, float3 hitpoint, t_sphere hitsphere, uint2 *seeds);
 float3	sample_hemisphere(float3 w, float max_r, uint2 *seeds);
 
 
@@ -176,15 +184,13 @@ t_ray	diffuse(t_ray ray, float3 n, float3 hitpoint, uint2 *seeds)
 	return (ray);
 }
 
-t_ray	reflect(t_ray ray, float3 n, float3 hitpoint, uint2 *seeds)
+t_ray	reflect(t_ray ray, float3 n, float3 hitpoint, t_sphere hitsphere, uint2 *seeds)
 {
 	float3 tmp = ray.dir;
 	float3 reflected_dir;
 
 	reflected_dir = tmp - 2 * dot(tmp, n) * n;
-	do {
-		ray.dir = sample_hemisphere(reflected_dir, 0.02f, seeds);
-	} while (dot(ray.dir, n) < 0);
+	ray.dir = sample_hemisphere(reflected_dir, hitsphere.surf.roughness, seeds);
 	ray.pos = hitpoint + EPSILON * ray.dir;
 	return (ray);
 }
@@ -208,13 +214,19 @@ float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds)
 		float3 n = sphere_normal_point(hitpoint, obj[hitsphere_id]);
 		n = dot(n, ray.dir) > 0 ? n * -1 : n;
 
-		if (hitsphere_id != 3) {
+		float rand = get_random(seeds);
+
+		rand -= obj[hitsphere_id].surf.type.x;
+		if (rand <= 0.f)
 			ray = diffuse(ray, n, hitpoint, seeds);
-		} else if (get_random(seeds) > 0.5f) {
-			ray = reflect(ray, n, hitpoint, seeds);
-		} else {
-			ray = diffuse(ray, n, hitpoint, seeds);
-		}
+		else if (rand - obj[hitsphere_id].surf.type.y <= 0.f)
+			ray = reflect(ray, n, hitpoint, obj[hitsphere_id], seeds);
+		else
+			break; //refraction here
+
+		float cosine = dot(n, ray.dir);
+		if (cosine < 0)
+			break;
 		mask *= dot(n, ray.dir);
 	}
 	return (res);
