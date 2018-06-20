@@ -166,6 +166,7 @@ void				print_log(t_cldata *cl)
 	exit(EXIT_FAILURE);
 }
 
+
 void	init_openCL(t_cldata *cl)
 {
 	int		err;
