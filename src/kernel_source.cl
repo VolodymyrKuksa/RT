@@ -207,7 +207,8 @@ float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds)
 		if (t < 0)
 			break;
 		float3 hitpoint = ray.pos + t * ray.dir;
-		mask *= obj[hitsphere_id].col;
+		if (obj[hitsphere_id].surf.type.y != 1.f)
+			mask *= obj[hitsphere_id].col;
 		res += mask * obj[hitsphere_id].emission;
 		if (obj[hitsphere_id].emission.x || obj[hitsphere_id].emission.y || obj[hitsphere_id].emission.z)
 			break;
@@ -218,7 +219,11 @@ float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds)
 
 		rand -= obj[hitsphere_id].surf.type.x;
 		if (rand <= 0.f)
+		{
+//			mask *= obj[hitsphere_id].col;
+//			res += mask * obj[hitsphere_id].emission;
 			ray = diffuse(ray, n, hitpoint, seeds);
+		}
 		else if (rand - obj[hitsphere_id].surf.type.y <= 0.f)
 			ray = reflect(ray, n, hitpoint, obj[hitsphere_id], seeds);
 		else
@@ -227,8 +232,9 @@ float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds)
 		float cosine = dot(n, ray.dir);
 		if (cosine < 0)
 			break;
-		mask *= dot(n, ray.dir);
+		mask *= sqrt(cosine);//poor gamma-correction
 	}
+
 	return (res);
 }
 
