@@ -57,6 +57,7 @@ typedef struct		s_surf
 {
 	cl_float3		type;
 	float			roughness;
+	float			refraction;
 }					t_surf;
 
 typedef struct		s_sphere

@@ -127,6 +127,13 @@ void	main_loop(t_scrn *screen, t_cldata *cl, t_scene *scene, t_seeds *seeds_host
 			pixels[i].y += px_host[i].y * sample_influence;
 			pixels[i].z += px_host[i].z * sample_influence;
 
+			if (pixels[i].x > 1)
+				pixels[i].x = 1;
+			if (pixels[i].y > 1)
+				pixels[i].y = 1;
+			if (pixels[i].z > 1)
+				pixels[i].z = 1;
+
 			screen->surf_arr[i].bgra[0] = (u_char) (pixels[i].z * 0xff);
 			screen->surf_arr[i].bgra[1] = (u_char) (pixels[i].y * 0xff);
 			screen->surf_arr[i].bgra[2] = (u_char) (pixels[i].x * 0xff);

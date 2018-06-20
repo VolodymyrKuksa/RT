@@ -7,6 +7,7 @@ typedef struct		s_surf
 {
 	float3		type;
 	float			roughness;
+	float			refraction;
 }					t_surf;
 
 typedef struct		s_sphere
@@ -58,6 +59,7 @@ float3	get_random_float3(uint2 *seeds);
 float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds);
 t_ray	diffuse(t_ray ray, float3 n, float3 hitpoint, uint2 *seeds);
 t_ray	reflect(t_ray ray, float3 n, float3 hitpoint, t_sphere hitsphere, uint2 *seeds);
+t_ray	refract(t_ray ray, float3 hitpoint, t_sphere hitsphere, uint2 *seeds);
 float3	sample_hemisphere(float3 w, float max_r, uint2 *seeds);
 
 
@@ -195,6 +197,46 @@ t_ray	reflect(t_ray ray, float3 n, float3 hitpoint, t_sphere hitsphere, uint2 *s
 	return (ray);
 }
 
+t_ray	refract(t_ray ray, float3 hitpoint, t_sphere hitsphere, uint2 *seeds)
+{
+	float3	n = sphere_normal_point(hitpoint, hitsphere);
+	bool	enter = dot(ray.dir, n) > 0 ? false : true;
+	n = enter ? n : n * -1;
+
+	float	cosine_theta = dot(ray.dir, n);
+	float	cosine_theta_r;
+
+	if (enter)
+	{
+		cosine_theta_r = 1 - (1.f * 1.f * (1 - cosine_theta * cosine_theta))
+			/ (hitsphere.surf.refraction * hitsphere.surf.refraction);
+	}
+	else
+	{
+		cosine_theta_r = 1 - (hitsphere.surf.refraction * hitsphere.surf.refraction
+			* (1 - cosine_theta * cosine_theta)) / (1.f *  1.f);
+	}
+
+//	if (cosine_theta_r < 0.f)
+//		return (reflect(ray, n, hitpoint, hitsphere, seeds));
+
+	cosine_theta_r = sqrt(cosine_theta_r);
+	float3	t;
+
+	if (enter) {
+		t = (1.f * (ray.dir - n * cosine_theta) / hitsphere.surf.refraction)
+				- n * cosine_theta_r;
+	} else {
+		t = (hitsphere.surf.refraction * (ray.dir - n * cosine_theta) / 1.f)
+			- n * cosine_theta_r;
+	}
+
+	ray.dir = sample_hemisphere(t, hitsphere.surf.roughness, seeds);
+	ray.pos = hitpoint + EPSILON * ray.dir;
+
+	return (ray);
+}
+
 float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds)
 {
 	float3	mask = (float3)(1.f, 1.f, 1.f);
@@ -223,16 +265,22 @@ float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds)
 //			mask *= obj[hitsphere_id].col;
 //			res += mask * obj[hitsphere_id].emission;
 			ray = diffuse(ray, n, hitpoint, seeds);
+			float	cosine = dot(n, ray.dir);
+			cosine = cosine < 0 ? -cosine : cosine;
+			mask *= sqrt(cosine);//poor gamma-correction
 		}
 		else if (rand - obj[hitsphere_id].surf.type.y <= 0.f)
+		{
 			ray = reflect(ray, n, hitpoint, obj[hitsphere_id], seeds);
+			if (dot(n, ray.dir) < 0)
+				break;
+		}
 		else
-			break; //refraction here
+			ray = refract(ray, hitpoint, obj[hitsphere_id], seeds);
 
-		float cosine = dot(n, ray.dir);
-		if (cosine < 0)
-			break;
-		mask *= sqrt(cosine);//poor gamma-correction
+//		float	cosine = dot(n, ray.dir);
+//		cosine = cosine < 0 ? -cosine : cosine;
+//		mask *= sqrt(cosine);//poor gamma-correction
 	}
 
 	return (res);
