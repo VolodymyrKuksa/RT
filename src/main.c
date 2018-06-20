@@ -36,6 +36,36 @@ void	init_seeds(t_seeds *s) /* I don't understand WTF */
 		s->seeds[i] = (uint)rand(); // NOLINT
 }
 
+void update_window(cl_float3 *pixels, cl_float3 *px_host, t_scrn *screen, int global_size)
+{
+	static int num_samples;
+	float sample_influence;
+
+	++num_samples;
+	sample_influence = (1.0f / num_samples);
+	for(int i = 0; i < global_size; ++i)
+	{
+		pixels[i].x *= 1.0f - sample_influence;
+		pixels[i].y *= 1.0f - sample_influence;
+		pixels[i].z *= 1.0f - sample_influence;
+
+
+		pixels[i].x += px_host[i].x * sample_influence;
+		pixels[i].y += px_host[i].y * sample_influence;
+		pixels[i].z += px_host[i].z * sample_influence;
+		if (pixels[i].x > 1)
+			pixels[i].x = 1;
+		if (pixels[i].y > 1)
+			pixels[i].y = 1;
+		if (pixels[i].z > 1)
+			pixels[i].z = 1;
+		screen->surf_arr[i].bgra[0] = (u_char) (pixels[i].z * 0xff);
+		screen->surf_arr[i].bgra[1] = (u_char) (pixels[i].y * 0xff);
+		screen->surf_arr[i].bgra[2] = (u_char) (pixels[i].x * 0xff);
+	}
+	printf("samples: %u, influence: %f\n", num_samples, sample_influence);
+	SDL_UpdateWindowSurface(screen->window);
+}
 
 void	main_loop(t_scrn *screen, t_cldata *cl, t_scene *scene, t_seeds *seeds_host) /* This is shit */
 {
@@ -115,26 +145,7 @@ void	main_loop(t_scrn *screen, t_cldata *cl, t_scene *scene, t_seeds *seeds_host
 
 		clFinish(cl->command_queue);
 
-		sample_influence = (1.0f / num_samples);
-
-		for(int i = 0; i < cl->global_size; ++i)
-		{
-			pixels[i].x *= 1.0f - sample_influence;
-			pixels[i].y *= 1.0f - sample_influence;
-			pixels[i].z *= 1.0f - sample_influence;
-
-			pixels[i].x += px_host[i].x * sample_influence;
-			pixels[i].y += px_host[i].y * sample_influence;
-			pixels[i].z += px_host[i].z * sample_influence;
-
-			screen->surf_arr[i].bgra[0] = (u_char) (pixels[i].z * 0xff);
-			screen->surf_arr[i].bgra[1] = (u_char) (pixels[i].y * 0xff);
-			screen->surf_arr[i].bgra[2] = (u_char) (pixels[i].x * 0xff);
-		}
-		printf("samples: %u, influence: %f\n", num_samples, sample_influence);
-		num_samples++;
-
-		SDL_UpdateWindowSurface(screen->window);
+		update_window(pixels, px_host,screen, cl->global_size);
 	}
 }
 
@@ -151,7 +162,7 @@ void				print_log(t_cldata *cl)
 	err = clGetProgramBuildInfo(cl->program, cl->dev_id, CL_PROGRAM_BUILD_LOG,
 		size, build_log, 0);
 	assert(err == CL_SUCCESS);
-	printf("%s\n", build_log);
+	write(1, build_log, ft_strlen(build_log));
 	exit(EXIT_FAILURE);
 }
 
@@ -174,11 +185,22 @@ void	init_openCL(t_cldata *cl)
 	assert (err == CL_SUCCESS);
 	err = clBuildProgram(cl->program, 0, 0, options, 0, 0);
 	if (err != CL_SUCCESS)
-	{
-		printf("BUILD ERROR: %d\n", err);
 		print_log(cl);
-	}
 	cl->kernel = clCreateKernel(cl->program, "render_pixel", &err);
+	assert (err == CL_SUCCESS);
+	cl->global_size = g_win_height * g_win_width;
+}
+
+void get_work_group_size(t_cldata *cl)
+{
+	int err;
+
+	err = clGetKernelWorkGroupInfo(cl->kernel, cl->dev_id,
+	CL_KERNEL_WORK_GROUP_SIZE, sizeof(cl->local_size), &(cl->local_size), 0);
+	cl->local_size = cl->local_size > cl->global_size ?
+	cl->global_size : cl->local_size;
+	while (cl->global_size % cl->local_size != 0)
+		cl->local_size -= 1;
 	assert (err == CL_SUCCESS);
 }
 
@@ -186,23 +208,14 @@ int		main(void)
 {
 	t_cldata	cl;
 	t_seeds		seeds_host;
-	int	err;
 	t_scrn		screen;
 	t_scene		scene;
 
 	init_openCL(&cl);
 	init_scene(&scene);
 	init_seeds(&seeds_host);
-	cl.global_size = g_win_height * g_win_width;
 	//getting max work group size for this task
-	err = clGetKernelWorkGroupInfo(cl.kernel, cl.dev_id,
-		CL_KERNEL_WORK_GROUP_SIZE, sizeof(cl.local_size),
-		&cl.local_size, 0);
-	assert (err == CL_SUCCESS);
-	cl.local_size = cl.local_size > cl.global_size ?
-		cl.global_size : cl.local_size;
-	while (cl.global_size % cl.local_size != 0)
-		cl.local_size -= 1;
+	get_work_group_size(&cl);
 	init_win(&screen);
 	main_loop(&screen, &cl, &scene, &seeds_host);
 	close_sdl(&screen);
