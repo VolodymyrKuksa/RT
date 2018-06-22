@@ -13,15 +13,15 @@
 #ifndef RT_H
 # define RT_H
 
+# include <OpenCL/opencl.h>
+# include <SDL.h>
+# include <time.h>
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include "libft.h"
 # include "get_next_line.h"
 # include "rt_types.h"
-
-#include <assert.h>
-#include <time.h>
 
 #ifdef CLION_BUILD
 #define KERNEL_PATH "../src/kernel_source.cl"
@@ -47,5 +47,12 @@ void		init_scene(t_scene *scene);
 
 void		init_opencl(t_cldata *cl);
 void		cl_setup(t_cldata *cl);
+void 		get_work_group_size(t_cldata *cl);
+
+/*
+** cl_exec.c
+*/
+
+void	cl_exec(t_cldata *cl);
 
 #endif

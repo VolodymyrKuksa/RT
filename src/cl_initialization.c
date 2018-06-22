@@ -37,7 +37,6 @@ void	init_opencl(t_cldata *cl)
 	cl->context = clCreateContext(0, 1, &cl->dev_id, 0, 0, 0);
 	cl->command_queue = clCreateCommandQueue(cl->context, cl->dev_id, 0, 0);
 	cl->source = read_file(open(KERNEL_PATH, O_RDONLY), &cl->source_size);
-	assert(NULL != cl->source);
 	cl->program = clCreateProgramWithSource(cl->context, 1,
 		(const char**)(&cl->source), &cl->source_size, 0);
 	err = clBuildProgram(cl->program, 0, 0, 0, 0, 0);
@@ -66,4 +65,14 @@ void	cl_setup(t_cldata *cl)
 	clSetKernelArg(cl->kernel, 4, sizeof(g_win_width), &g_win_width);
 	clSetKernelArg(cl->kernel, 5, sizeof(g_win_height), &g_win_height);
 	clSetKernelArg(cl->kernel, 6, sizeof(cl->seed_gpu), &cl->seed_gpu);
+}
+
+void	get_work_group_size(t_cldata *cl)
+{
+	clGetKernelWorkGroupInfo(cl->kernel, cl->dev_id, CL_KERNEL_WORK_GROUP_SIZE,
+		sizeof(cl->local_size), &(cl->local_size), 0);
+	cl->local_size = cl->local_size > cl->global_size ?
+		cl->global_size : cl->local_size;
+	while (cl->global_size % cl->local_size != 0)
+		cl->local_size -= 1;
 }

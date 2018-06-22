@@ -13,10 +13,6 @@
 #ifndef RT_TYPES_H
 # define RT_TYPES_H
 
-# include <OpenCL/opencl.h>
-#include <SDL.h>
-# include "libvec.h"
-
 typedef union		u_rgb
 {
 	unsigned int	c;
