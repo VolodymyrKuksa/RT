@@ -175,8 +175,8 @@ void	init_scene(t_scene *scene)
 	tmp.emission.z = 0;
 	tmp.surf.roughness = 0.f;
 	tmp.surf.refraction = 2.f;
-	tmp.surf.type.x = 0.f;
-	tmp.surf.type.y = 1.f;
+	tmp.surf.type.x = 0.2f;
+	tmp.surf.type.y = 0.8f;
 	tmp.surf.type.z = 0.f;
 	tmp.r = 3.5;
 	scene->obj[9] = tmp;
@@ -245,8 +245,8 @@ void	init_scene(t_scene *scene)
 	scene->cam.ldir.y = 0;
 	scene->cam.ldir.z = 0;
 	scene->cam.f_length = 60.0f;
-	scene->cam.aperture = 0.f;
-	scene->cam.ratio = scene->cam.f_length / 1400.0f; //935.f for 60 degree fov
+	scene->cam.aperture = 0.1f;
+	scene->cam.ratio = scene->cam.f_length / 935.0f; //935.f for 60 degree fov
 	scene->cam.pr_pl_w = g_win_width;
 	scene->cam.pr_pl_h = g_win_height;
 //	printf("ratio: %f\n", scene->cam.ratio);

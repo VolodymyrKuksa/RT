@@ -30,29 +30,6 @@ typedef struct		s_scrn
 	t_rgb			*surf_arr;
 }					t_scrn;
 
-typedef struct			s_cldata
-{
-	cl_device_id		dev_id;
-	cl_context			context;
-	cl_command_queue	command_queue;
-	char				*source;
-	size_t				source_size;
-	cl_program			program;
-	cl_kernel			kernel;
-	size_t				global_size;
-	size_t				local_size;
-}						t_cldata;
-
-/*
-typedef struct		s_obj
-{
-	cl_uchar3		col;
-	cl_double3		pos;
-	cl_double3		vec;
-
-};
-*/
-
 typedef struct		s_surf
 {
 	cl_float3		type;
@@ -95,10 +72,33 @@ typedef struct		s_scene
 	t_cam			cam;
 }					t_scene;
 
-typedef struct		s_seed /* ? */
+typedef struct		s_seed
 {
 	uint			*seeds;
 	size_t			size;
 }					t_seeds;
+
+typedef struct			s_cldata
+{
+	cl_device_id		dev_id;
+	cl_context			context;
+	cl_command_queue	command_queue;
+	char				*source;
+	size_t				source_size;
+	cl_program			program;
+	cl_kernel			kernel;
+	size_t				global_size;
+	size_t				local_size;
+
+	cl_float3	*px_host;
+	cl_float3	*pixels;
+
+	cl_mem		px_gpu;
+	cl_mem		obj_gpu;
+	cl_mem		seed_gpu;
+
+	t_scene		sc;
+	t_seeds		seeds;
+}						t_cldata;
 
 #endif
