@@ -12,7 +12,7 @@
 
 #include "rt.h"
 
-extern unsigned int	g_win_width; /* extern^ help me with it*/
+extern unsigned int	g_win_width;
 extern unsigned int g_win_height;
 
 int		init_win(t_scrn *screen)
@@ -35,7 +35,7 @@ int		init_win(t_scrn *screen)
 			return (0);
 		}
 		else
-			screen->surface = SDL_GetWindowSurface(screen->window); /*fast ????*/
+			screen->surface = SDL_GetWindowSurface(screen->window);
 	}
 	screen->surf_arr = (t_rgb *)screen->surface->pixels;
 	return (1);

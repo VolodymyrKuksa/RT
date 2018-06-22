@@ -74,7 +74,7 @@ typedef struct		s_seed
 	size_t			size;
 }					t_seeds;
 
-typedef struct			s_cldata
+typedef struct		s_cldata
 {
 	cl_device_id		dev_id;
 	cl_context			context;
@@ -86,15 +86,15 @@ typedef struct			s_cldata
 	size_t				global_size;
 	size_t				local_size;
 
-	cl_float3	*px_host;
-	cl_float3	*pixels;
+	cl_float3			*px_host;
+	cl_float3			*pixels;
 
-	cl_mem		px_gpu;
-	cl_mem		obj_gpu;
-	cl_mem		seed_gpu;
+	cl_mem				px_gpu;
+	cl_mem				obj_gpu;
+	cl_mem				seed_gpu;
 
-	t_scene		sc;
-	t_seeds		seeds;
-}						t_cldata;
+	t_scene				sc;
+	t_seeds				seeds;
+}					t_cldata;
 
 #endif

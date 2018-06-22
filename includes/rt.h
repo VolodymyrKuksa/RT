@@ -23,13 +23,15 @@
 # include "get_next_line.h"
 # include "rt_types.h"
 
-#ifdef CLION_BUILD
-#define KERNEL_PATH "../src/kernel_source.cl"
-#else
-#define KERNEL_PATH "src/kernel_source.cl"
-#endif
+# define KERNEL_PATH "src/kernel_source.cl"
 
-#define DEVICE_TYPE CL_DEVICE_TYPE_GPU
+# ifdef CLION_BUILD
+# define KERNEL_PATH "../src/kernel_source.cl"
+# else
+# define KERNEL_PATH "src/kernel_source.cl"
+# endif
+
+# define DEVICE_TYPE CL_DEVICE_TYPE_GPU
 
 /*
 **	returns a string with file content and writes it`s in the size variable
@@ -47,12 +49,12 @@ void		init_scene(t_scene *scene);
 
 void		init_opencl(t_cldata *cl);
 void		cl_setup(t_cldata *cl);
-void 		get_work_group_size(t_cldata *cl);
+void		get_work_group_size(t_cldata *cl);
 
 /*
 ** cl_exec.c
 */
 
-void	cl_exec(t_cldata *cl);
+void		cl_exec(t_cldata *cl);
 
 #endif
