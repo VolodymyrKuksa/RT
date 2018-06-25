@@ -7,7 +7,6 @@ typedef struct		s_surf
 {
 	float3		type;
 	float			roughness;
-	float			refraction;
 }					t_surf;
 
 typedef struct		s_sphere
@@ -31,12 +30,15 @@ typedef struct		s_cam
 	float			ratio;
 	float			pr_pl_w;
 	float			pr_pl_h;
+	float			dust;
 }					t_cam;
 
 typedef struct		s_ray
 {
 	__float3		pos;
 	__float3		dir;
+	int				refractions;
+	float			dust;
 }					t_ray;
 
 typedef struct		s_quad
@@ -60,6 +62,7 @@ t_ray	diffuse(t_ray ray, float3 n, float3 hitpoint, uint2 *seeds);
 t_ray	reflect(t_ray ray, float3 n, float3 hitpt, t_sphere sp, uint2 *seeds);
 t_ray	refract(t_ray ray, float3 hitpoint, t_sphere hitsphere, uint2 *seeds);
 float3	sample_hemisphere(float3 w, float max_r, uint2 *seeds);
+bool	participating_media(t_ray *ray, float t, uint2 *seeds);
 
 
 t_ray get_camera_ray(int x, int y, t_cam *cam, uint2 *seeds)
@@ -79,6 +82,8 @@ t_ray get_camera_ray(int x, int y, t_cam *cam, uint2 *seeds)
 	ray.dir.y = (ray.dir.y + get_random(seeds) - 0.5f) * cam->ratio;
 	ray.dir -= ray.pos;
 	ray.dir = normalize(ray.dir);
+	ray.refractions = 0;
+	ray.dust = cam->dust;
 	return(ray);
 }
 
@@ -189,33 +194,58 @@ t_ray	refract(t_ray ray, float3 hitpoint, t_sphere hitsphere, uint2 *seeds)
 	float	cosine_theta = dot(ray.dir, n);
 	float	cosine_theta_r;
 
+	if (enter && ray.refractions) {
+		ray.pos = hitpoint + EPSILON * ray.dir;
+		ray.refractions++;
+		return (ray);
+	} else if (!enter && ray.refractions > 1) {
+		ray.pos = hitpoint + EPSILON * ray.dir;
+		ray.refractions--;
+		return (ray);
+	}
+
+	float3	t;
 	if (enter)
 	{
-		cosine_theta_r = 1 - (1.f * 1.f * (1 - cosine_theta * cosine_theta))
-			/ (hitsphere.surf.refraction * hitsphere.surf.refraction);
+		cosine_theta_r = 1.f - (1.f - cosine_theta * cosine_theta)
+			/ 2.25f;
+		ray.refractions++;
+		cosine_theta_r = sqrt(cosine_theta_r);
+		t = ((ray.dir - n * cosine_theta) / 1.5f) - n * cosine_theta_r;
 	}
 	else
 	{
-		cosine_theta_r = 1 - (hitsphere.surf.refraction *
-			hitsphere.surf.refraction * (1 - cosine_theta * cosine_theta)) /
-			(1.f *  1.f);
-	}
-
-	cosine_theta_r = sqrt(cosine_theta_r);
-	float3	t;
-
-	if (enter) {
-		t = (1.f * (ray.dir - n * cosine_theta) / hitsphere.surf.refraction)
-				- n * cosine_theta_r;
-	} else {
-		t = (hitsphere.surf.refraction * (ray.dir - n * cosine_theta) / 1.f)
-			- n * cosine_theta_r;
+		cosine_theta_r = 1.f - (2.25f * (1 - cosine_theta * cosine_theta));
+		ray.refractions--;
+		cosine_theta_r = sqrt(cosine_theta_r);
+		t = (1.5f * (ray.dir - n * cosine_theta)) - n * cosine_theta_r;
 	}
 
 	ray.dir = sample_hemisphere(t, hitsphere.surf.roughness, seeds);
 	ray.pos = hitpoint + EPSILON * ray.dir;
 
 	return (ray);
+}
+
+bool	participating_media(t_ray *ray, float t, uint2 *seeds)
+{
+	if (!ray->refractions)
+	{
+		float collision_prob = t * ray->dust;
+		float rd = get_random(seeds);
+		if (rd < collision_prob)
+		{
+			float new_t = t * get_random(seeds);
+			float3 n = (float3)(get_random(seeds) - 0.5f,
+								get_random(seeds) - 0.5f,
+								get_random(seeds) - 0.5f);
+			n = normalize(n);
+			float3 hitpoint = new_t * ray->dir + ray->pos;
+			*ray = diffuse(*ray, n, hitpoint, seeds);
+			return true;
+		}
+	}
+	return false;
 }
 
 float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds)
@@ -231,8 +261,12 @@ float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds)
 
 		if (t < 0)
 			break;
+
+		if (ray.dust > 0.f && participating_media(&ray, t, seeds))
+			continue;
+
 		float3 hitpoint = ray.pos + t * ray.dir;
-		if (hitsphere.surf.type.y != 1.f)
+		if (hitsphere.surf.type.y != 1.f && hitsphere.surf.type.z != 1.f)
 			mask *= hitsphere.col;
 		res += mask * hitsphere.emission;
 		float3 n = sphere_normal_point(hitpoint, hitsphere);

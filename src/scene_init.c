@@ -139,7 +139,6 @@ void	init_scene(t_scene *scene)
 	tmp.emission.x = 0;
 	tmp.emission.y = 0;
 	tmp.emission.z = 0;
-	tmp.surf.refraction = 1.5f;
 	tmp.surf.roughness = 0.02f;
 	tmp.surf.type.x = 0.5f;
 	tmp.surf.type.y = 0.5f;
@@ -157,7 +156,6 @@ void	init_scene(t_scene *scene)
 	tmp.emission.y = 0;
 	tmp.emission.z = 0;
 	tmp.surf.roughness = 0.1f;
-	tmp.surf.refraction = 2.f;
 	tmp.surf.type.x = 0.9f;
 	tmp.surf.type.y = 0.1f;
 	tmp.surf.type.z = 0.f;
@@ -174,7 +172,6 @@ void	init_scene(t_scene *scene)
 	tmp.emission.y = 0;
 	tmp.emission.z = 0;
 	tmp.surf.roughness = 0.f;
-	tmp.surf.refraction = 2.f;
 	tmp.surf.type.x = 0.2f;
 	tmp.surf.type.y = 0.8f;
 	tmp.surf.type.z = 0.f;
@@ -191,7 +188,6 @@ void	init_scene(t_scene *scene)
 	tmp.emission.y = 0;
 	tmp.emission.z = 0;
 	tmp.surf.roughness = 0.f;
-	tmp.surf.refraction = 1.5f;
 	tmp.surf.type.x = 0.1f;
 	tmp.surf.type.y = 0.1f;
 	tmp.surf.type.z = 0.8f;
@@ -208,7 +204,6 @@ void	init_scene(t_scene *scene)
 	tmp.emission.y = 0;
 	tmp.emission.z = 0;
 	tmp.surf.roughness = 0.f;
-	tmp.surf.refraction = 1.5f;
 	tmp.surf.type.x = 0.1f;
 	tmp.surf.type.y = 0.1f;
 	tmp.surf.type.z = 0.8f;
@@ -225,7 +220,6 @@ void	init_scene(t_scene *scene)
 	tmp.emission.y = 0;
 	tmp.emission.z = 0;
 	tmp.surf.roughness = 0.f;
-	tmp.surf.refraction = 1.5f;
 	tmp.surf.type.x = 1.f;
 	tmp.surf.type.y = 0.f;
 	tmp.surf.type.z = 0.f;
@@ -249,5 +243,6 @@ void	init_scene(t_scene *scene)
 	scene->cam.ratio = scene->cam.f_length / 935.0f; //935.f for 60 degree fov
 	scene->cam.pr_pl_w = g_win_width;
 	scene->cam.pr_pl_h = g_win_height;
+	scene->cam.dust = 0.f;
 //	printf("ratio: %f\n", scene->cam.ratio);
 }

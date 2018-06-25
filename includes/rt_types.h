@@ -30,7 +30,6 @@ typedef struct		s_surf
 {
 	cl_float3		type;
 	float			roughness;
-	float			refraction;
 }					t_surf;
 
 typedef struct		s_sphere
@@ -42,11 +41,11 @@ typedef struct		s_sphere
 	t_surf			surf;
 }					t_sphere;
 
-typedef struct		s_ray
-{
-	cl_float3		pos;
-	cl_float3		dir;
-}					t_ray;
+//typedef struct		s_ray
+//{
+//	cl_float3		pos;
+//	cl_float3		dir;
+//}					t_ray;
 
 typedef struct		s_cam
 {
@@ -59,6 +58,7 @@ typedef struct		s_cam
 	float			ratio;
 	float			pr_pl_w;
 	float			pr_pl_h;
+	float			dust;
 }					t_cam;
 
 typedef struct		s_scene
