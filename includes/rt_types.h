@@ -41,11 +41,13 @@ typedef struct		s_sphere
 	t_surf			surf;
 }					t_sphere;
 
-//typedef struct		s_ray
-//{
-//	cl_float3		pos;
-//	cl_float3		dir;
-//}					t_ray;
+/*
+**	typedef struct		s_ray
+**	{
+**		cl_float3		pos;
+**		cl_float3		dir;
+**	}					t_ray;
+*/
 
 typedef struct		s_cam
 {
