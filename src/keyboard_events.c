@@ -53,6 +53,22 @@ void	turn(double degree, t_cldata *cl, cl_float3 (*f)(cl_float3, double))
 	write_scene_to_kernel(cl);
 }
 
+void	move(t_cldata *cl, float x, float y, float z)
+{
+	int i;
+
+	i = -1;
+	while (++i < cl->sc.num_obj)
+	{
+		cl->sc.obj[i].pos.x += x;
+		cl->sc.obj[i].pos.y += y;
+		cl->sc.obj[i].pos.z += z;
+	}
+	cl->num_samples = 0;
+	clear_pixels(cl);
+	write_scene_to_kernel(cl);
+}
+
 int		keyboard_event(SDL_Event e, t_cldata *cl)
 {
 	if (e.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
@@ -69,5 +85,17 @@ int		keyboard_event(SDL_Event e, t_cldata *cl)
 		turn(-2.5, cl, clvec_rot_z);
 	else if (e.key.keysym.sym == SDLK_e)
 		turn(2.5, cl, clvec_rot_z);
+	else if (e.key.keysym.sym == SDLK_UP)
+		move(cl, 0, 0, 1);
+	else if (e.key.keysym.sym == SDLK_DOWN)
+		move(cl, 0, 0, -1);
+	else if (e.key.keysym.sym == SDLK_RIGHT)
+		move(cl, -1, 0, 0);
+	else if (e.key.keysym.sym == SDLK_LEFT)
+		move(cl, 1, 0, 0);
+	else if (e.key.keysym.sym == SDLK_SPACE)
+		move(cl, 0, -1, 0);
+	else if (e.key.keysym.sym == SDLK_c)
+		move(cl, 0, 1, 0);
 	return (0);
 }
