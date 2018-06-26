@@ -20,6 +20,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include "libft.h"
+# include "libvec.h"
 # include "get_next_line.h"
 # include "rt_types.h"
 
@@ -56,5 +57,11 @@ void		get_work_group_size(t_cldata *cl);
 */
 
 void		cl_exec(t_cldata *cl);
+
+/*
+**	keyboard_event.c
+*/
+
+int			keyboard_event(SDL_Event e, t_cldata *cl);
 
 #endif

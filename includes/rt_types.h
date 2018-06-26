@@ -90,6 +90,7 @@ typedef struct		s_cldata
 
 	cl_float3			*px_host;
 	cl_float3			*pixels;
+	unsigned int		num_samples;
 
 	cl_mem				px_gpu;
 	cl_mem				obj_gpu;

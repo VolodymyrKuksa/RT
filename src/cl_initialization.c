@@ -44,6 +44,7 @@ void	init_opencl(t_cldata *cl)
 		print_log(cl);
 	cl->kernel = clCreateKernel(cl->program, "render_pixel", 0);
 	cl->global_size = g_win_height * g_win_width;
+	cl->num_samples = 0;
 }
 
 void	cl_setup(t_cldata *cl)
@@ -54,7 +55,7 @@ void	cl_setup(t_cldata *cl)
 		CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY,
 		sizeof(cl_float3) * g_win_width * g_win_height, 0, 0);
 	cl->obj_gpu = clCreateBuffer(cl->context, CL_MEM_READ_ONLY |
-		CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR,
+		CL_MEM_HOST_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
 		sizeof(t_sphere) * cl->sc.num_obj, cl->sc.obj, 0);
 	cl->seed_gpu = clCreateBuffer(cl->context, CL_MEM_READ_WRITE,
 		sizeof(int) * cl->seeds.size, 0, 0);

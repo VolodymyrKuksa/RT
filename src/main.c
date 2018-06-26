@@ -34,29 +34,28 @@ void	clamp(cl_float3 *px)
 	px->z = px->z > 1.f ? 1.f : px->z;
 }
 
-void	update_window(cl_float3 *pixels, cl_float3 *px_host, t_scrn *sc, int gs)
+void	update_window(t_cldata *cl, t_scrn *sc)
 {
-	static int	num_samples;
 	float		sample_influence;
 	int			i;
 
-	++num_samples;
-	sample_influence = (1.0f / num_samples);
+	++(cl->num_samples);
+	sample_influence = (1.0f / cl->num_samples);
 	i = -1;
-	while (++i < gs)
+	while (++i < cl->global_size)
 	{
-		pixels[i].x *= 1.0f - sample_influence;
-		pixels[i].y *= 1.0f - sample_influence;
-		pixels[i].z *= 1.0f - sample_influence;
-		pixels[i].x += px_host[i].x * sample_influence;
-		pixels[i].y += px_host[i].y * sample_influence;
-		pixels[i].z += px_host[i].z * sample_influence;
-		clamp(pixels + i);
-		sc->surf_arr[i].bgra[0] = (u_char)(pixels[i].z * 0xff);
-		sc->surf_arr[i].bgra[1] = (u_char)(pixels[i].y * 0xff);
-		sc->surf_arr[i].bgra[2] = (u_char)(pixels[i].x * 0xff);
+		cl->pixels[i].x *= 1.0f - sample_influence;
+		cl->pixels[i].y *= 1.0f - sample_influence;
+		cl->pixels[i].z *= 1.0f - sample_influence;
+		cl->pixels[i].x += cl->px_host[i].x * sample_influence;
+		cl->pixels[i].y += cl->px_host[i].y * sample_influence;
+		cl->pixels[i].z += cl->px_host[i].z * sample_influence;
+		clamp(cl->pixels + i);
+		sc->surf_arr[i].bgra[0] = (u_char)(cl->pixels[i].z * 0xff);
+		sc->surf_arr[i].bgra[1] = (u_char)(cl->pixels[i].y * 0xff);
+		sc->surf_arr[i].bgra[2] = (u_char)(cl->pixels[i].x * 0xff);
 	}
-	printf("samples: %u, influence: %f\n", num_samples, sample_influence);
+	printf("samples: %u, influence: %f\n", cl->num_samples, sample_influence);
 	SDL_UpdateWindowSurface(sc->window);
 }
 
@@ -74,13 +73,10 @@ void	main_loop(t_scrn *screen, t_cldata *cl)
 			if (e.type == SDL_QUIT)
 				quit = 1;
 			else if (e.type == SDL_KEYDOWN)
-			{
-				if (e.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
-					quit = 1;
-			}
+				quit = keyboard_event(e, cl);
 		}
 		cl_exec(cl);
-		update_window(cl->pixels, cl->px_host, screen, (int)cl->global_size);
+		update_window(cl, screen);
 	}
 }
 
