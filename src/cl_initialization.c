@@ -45,6 +45,7 @@ void	init_opencl(t_cldata *cl)
 	cl->kernel = clCreateKernel(cl->program, "render_pixel", 0);
 	cl->global_size = g_win_height * g_win_width;
 	cl->num_samples = 0;
+	cl->down_keys = NOKEY;
 }
 
 void	cl_setup(t_cldata *cl)

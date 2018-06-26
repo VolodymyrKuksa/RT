@@ -23,6 +23,7 @@
 # include "libvec.h"
 # include "get_next_line.h"
 # include "rt_types.h"
+# include "keys.h"
 
 # define KERNEL_PATH "src/kernel_source.cl"
 
@@ -62,6 +63,14 @@ void		cl_exec(t_cldata *cl);
 **	keyboard_event.c
 */
 
-int			keyboard_event(SDL_Event e, t_cldata *cl);
+void		keyboard_event(SDL_Event e, t_cldata *cl);
+void		key_up_event(SDL_Event e, t_cldata *cl);
+void		key_down_event(SDL_Event e, t_cldata *cl);
+
+/*
+**	movement_events.c
+*/
+
+void		movement_events(t_cldata *cl);
 
 #endif

@@ -62,19 +62,19 @@ void	update_window(t_cldata *cl, t_scrn *sc)
 void	main_loop(t_scrn *screen, t_cldata *cl)
 {
 	SDL_Event	e;
-	int			quit;
 
 	cl_setup(cl);
-	quit = 0;
-	while (!quit)
+	while (!(cl->down_keys & KEY_ESC))
 	{
 		while (SDL_PollEvent(&e) != 0)
 		{
 			if (e.type == SDL_QUIT)
-				quit = 1;
-			else if (e.type == SDL_KEYDOWN)
-				quit = keyboard_event(e, cl);
+				cl->down_keys |= KEY_ESC;
+			else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
+				keyboard_event(e, cl);
 		}
+		if (cl->down_keys)
+			movement_events(cl);
 		cl_exec(cl);
 		update_window(cl, screen);
 	}

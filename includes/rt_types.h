@@ -98,6 +98,8 @@ typedef struct		s_cldata
 
 	t_scene				sc;
 	t_seeds				seeds;
+
+	unsigned int		down_keys;
 }					t_cldata;
 
 #endif

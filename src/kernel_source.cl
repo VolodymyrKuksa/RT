@@ -194,7 +194,7 @@ t_ray	refract(t_ray ray, float3 hitpoint, t_sphere hitsphere, uint2 *seeds)
 	float	cosine_theta = dot(ray.dir, n);
 	float	cosine_theta_r;
 
-	if (enter && ray.refractions) {
+	if (enter && ray.refractions > 0) {
 		ray.pos = hitpoint + EPSILON * ray.dir;
 		ray.refractions++;
 		return (ray);

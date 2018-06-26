@@ -13,7 +13,7 @@ include_directories(/Library/Frameworks/SDL2.framework/Headers includes
 find_library(OPENCL OpenCL)
 
 add_executable(rt includes/rt_types.h includes/rt.h src/main.c src/read_file.c
-        src/sdl_utils.c src/scene_init.c src/cl_initialization.c src/cl_exec.c src/keyboard_events.c)
+        src/sdl_utils.c src/scene_init.c src/cl_initialization.c src/cl_exec.c src/keyboard_events.c includes/keys.h src/movement_events.c)
 
 target_link_libraries(rt ${SDL2_LIBRARY} ${OPENCL} libft libvec
         ${SDL} "-F /Library/Frameworks -framework SDL2")
