@@ -29,6 +29,16 @@ void	print_log(t_cldata *cl)
 	exit(EXIT_FAILURE);
 }
 
+void	init_defaults(t_cldata *cl)
+{
+	cl->num_samples = 0;
+	cl->move_keys = NOKEY;
+	cl->mv_data.move_spd = 1.f;
+	cl->mv_data.turn_a = 2.5;
+	cl->mv_data.cosine_a = cos(DTR(cl->mv_data.turn_a));
+	cl->mv_data.sine_a = sin(DTR(cl->mv_data.turn_a));
+}
+
 void	init_opencl(t_cldata *cl)
 {
 	int		err;
@@ -44,8 +54,6 @@ void	init_opencl(t_cldata *cl)
 		print_log(cl);
 	cl->kernel = clCreateKernel(cl->program, "render_pixel", 0);
 	cl->global_size = g_win_height * g_win_width;
-	cl->num_samples = 0;
-	cl->down_keys = NOKEY;
 }
 
 void	cl_setup(t_cldata *cl)

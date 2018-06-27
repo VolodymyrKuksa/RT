@@ -37,13 +37,13 @@ void	write_scene_to_kernel(t_cldata *cl)
 		sizeof(t_sphere) * cl->sc.num_obj, cl->sc.obj, 0, 0, 0);
 }
 
-void	turn(double degree, t_cldata *cl, cl_float3 (*f)(cl_float3, double))
+void	turn(float d, t_cldata *cl, cl_float3 (*f)(float, cl_float3, t_mvdata))
 {
 	int i;
 
 	i = -1;
 	while (++i < cl->sc.num_obj)
-		cl->sc.obj[i].pos = f(cl->sc.obj[i].pos, DTR(degree));
+		cl->sc.obj[i].pos = f(d, cl->sc.obj[i].pos, cl->mv_data);
 	cl->num_samples = 0;
 	clear_pixels(cl);
 	write_scene_to_kernel(cl);
@@ -56,9 +56,9 @@ void	move(t_cldata *cl, float x, float y, float z)
 	i = -1;
 	while (++i < cl->sc.num_obj)
 	{
-		cl->sc.obj[i].pos.x += x;
-		cl->sc.obj[i].pos.y += y;
-		cl->sc.obj[i].pos.z += z;
+		cl->sc.obj[i].pos.x += x * cl->mv_data.move_spd;
+		cl->sc.obj[i].pos.y += y * cl->mv_data.move_spd;
+		cl->sc.obj[i].pos.z += z * cl->mv_data.move_spd;
 	}
 	cl->num_samples = 0;
 	clear_pixels(cl);
@@ -67,28 +67,28 @@ void	move(t_cldata *cl, float x, float y, float z)
 
 void	movement_events(t_cldata *cl)
 {
-	if (cl->down_keys & KEY_W)
-		turn(-2.5, cl, clvec_rot_x);
-	if (cl->down_keys & KEY_S)
-		turn(2.5, cl, clvec_rot_x);
-	if (cl->down_keys & KEY_A)
-		turn(-2.5, cl, clvec_rot_y);
-	if (cl->down_keys & KEY_D)
-		turn(2.5, cl, clvec_rot_y);
-	if (cl->down_keys & KEY_Q)
-		turn(-2.5, cl, clvec_rot_z);
-	if (cl->down_keys & KEY_E)
-		turn(2.5, cl, clvec_rot_z);
-	if (cl->down_keys & KEY_UP)
+	if (cl->move_keys & KEY_W)
+		turn(-1, cl, rotate_x);
+	if (cl->move_keys & KEY_S)
+		turn(1, cl, rotate_x);
+	if (cl->move_keys & KEY_A)
+		turn(-1, cl, rotate_y);
+	if (cl->move_keys & KEY_D)
+		turn(1, cl, rotate_y);
+	if (cl->move_keys & KEY_Q)
+		turn(-1, cl, rotate_z);
+	if (cl->move_keys & KEY_E)
+		turn(1, cl, rotate_z);
+	if (cl->move_keys & KEY_UP)
 		move(cl, 0, 0, 1);
-	if (cl->down_keys & KEY_DOWN)
+	if (cl->move_keys & KEY_DOWN)
 		move(cl, 0, 0, -1);
-	if (cl->down_keys & KEY_RIGHT)
+	if (cl->move_keys & KEY_RIGHT)
 		move(cl, -1, 0, 0);
-	if (cl->down_keys & KEY_LEFT)
+	if (cl->move_keys & KEY_LEFT)
 		move(cl, 1, 0, 0);
-	if (cl->down_keys & KEY_SPACE)
+	if (cl->move_keys & KEY_SPACE)
 		move(cl, 0, -1, 0);
-	if (cl->down_keys & KEY_C)
+	if (cl->move_keys & KEY_LSHIFT)
 		move(cl, 0, 1, 0);
 }

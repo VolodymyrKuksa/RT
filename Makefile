@@ -36,7 +36,7 @@ LVEC = $(D_LVEC)$(N_LVEC)
 HEAD_FILES = rt.h rt_types.h
 
 C_FILES = main.c read_file.c sdl_utils.c scene_init.c cl_initialization.c\
-cl_exec.c keyboard_events.c movement_events.c
+cl_exec.c keyboard_events.c movement_events.c rotate.c
 
 
 SRC = $(addprefix $(D_SRC), $(C_FILES))

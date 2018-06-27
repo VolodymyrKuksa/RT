@@ -64,16 +64,16 @@ void	main_loop(t_scrn *screen, t_cldata *cl)
 	SDL_Event	e;
 
 	cl_setup(cl);
-	while (!(cl->down_keys & KEY_ESC))
+	while (!(cl->move_keys & KEY_ESC))
 	{
 		while (SDL_PollEvent(&e) != 0)
 		{
 			if (e.type == SDL_QUIT)
-				cl->down_keys |= KEY_ESC;
+				cl->move_keys |= KEY_ESC;
 			else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
 				keyboard_event(e, cl);
 		}
-		if (cl->down_keys)
+		if (cl->move_keys)
 			movement_events(cl);
 		cl_exec(cl);
 		update_window(cl, screen);
@@ -86,6 +86,7 @@ int		main(void)
 	t_scrn		screen;
 
 	init_opencl(&cl);
+	init_defaults(&cl);
 	init_scene(&cl.sc);
 	init_seeds(&cl.seeds);
 	get_work_group_size(&cl);

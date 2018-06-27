@@ -27,7 +27,7 @@ enum	e_keys
 	KEY_RIGHT = 256,
 	KEY_LEFT = 512,
 	KEY_SPACE = 1024,
-	KEY_C = 2048,
+	KEY_LSHIFT = 2048,
 	KEY_ESC = 4096
 };
 

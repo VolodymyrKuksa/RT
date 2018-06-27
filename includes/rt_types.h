@@ -76,6 +76,14 @@ typedef struct		s_seed
 	size_t			size;
 }					t_seeds;
 
+typedef struct		s_mvdata
+{
+	float			move_spd;
+	double			turn_a;
+	double			cosine_a;
+	double			sine_a;
+}					t_mvdata;
+
 typedef struct		s_cldata
 {
 	cl_device_id		dev_id;
@@ -99,7 +107,8 @@ typedef struct		s_cldata
 	t_scene				sc;
 	t_seeds				seeds;
 
-	unsigned int		down_keys;
+	unsigned int		move_keys;
+	t_mvdata			mv_data;
 }					t_cldata;
 
 #endif

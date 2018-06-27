@@ -52,6 +52,7 @@ void		init_scene(t_scene *scene);
 void		init_opencl(t_cldata *cl);
 void		cl_setup(t_cldata *cl);
 void		get_work_group_size(t_cldata *cl);
+void		init_defaults(t_cldata *cl);
 
 /*
 ** cl_exec.c
@@ -72,5 +73,13 @@ void		key_down_event(SDL_Event e, t_cldata *cl);
 */
 
 void		movement_events(t_cldata *cl);
+
+/*
+**	rotate.c
+*/
+
+cl_float3	rotate_x(float dir, cl_float3 v, t_mvdata mv);
+cl_float3	rotate_y(float dir, cl_float3 v, t_mvdata mv);
+cl_float3	rotate_z(float dir, cl_float3 v, t_mvdata mv);
 
 #endif
