@@ -46,6 +46,14 @@ typedef struct		s_seed
 	size_t			size;
 }					t_seeds;
 
+typedef struct		s_mvdata
+{
+	float			move_spd;
+	double			turn_a;
+	double			cosine_a;
+	double			sine_a;
+}					t_mvdata;
+
 typedef struct		s_ray
 {
 	cl_float3		pos;
@@ -142,6 +150,7 @@ typedef struct		s_cldata
 
 	cl_float3			*px_host;
 	cl_float3			*pixels;
+	unsigned int		num_samples;
 
 	cl_mem				px_gpu;
 	cl_mem				obj_gpu;
@@ -149,6 +158,9 @@ typedef struct		s_cldata
 
 	t_scene				sc;
 	t_seeds				seeds;
+
+	unsigned int		move_keys;
+	t_mvdata			mv_data;
 }					t_cldata;
 
 #endif

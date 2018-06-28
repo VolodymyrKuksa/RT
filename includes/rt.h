@@ -20,8 +20,10 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include "libft.h"
+# include "libvec.h"
 # include "get_next_line.h"
 # include "rt_types.h"
+# include "keys.h"
 
 # define KERNEL_PATH "src/kernel_source.cl"
 
@@ -50,11 +52,34 @@ void		init_scene(t_scene *scene);
 void		init_opencl(t_cldata *cl);
 void		cl_setup(t_cldata *cl);
 void		get_work_group_size(t_cldata *cl);
+void		init_defaults(t_cldata *cl);
 
 /*
 ** cl_exec.c
 */
 
 void		cl_exec(t_cldata *cl);
+
+/*
+**	keyboard_event.c
+*/
+
+void		keyboard_event(SDL_Event e, t_cldata *cl);
+void		key_up_event(SDL_Event e, t_cldata *cl);
+void		key_down_event(SDL_Event e, t_cldata *cl);
+
+/*
+**	movement_events.c
+*/
+
+void		movement_events(t_cldata *cl);
+
+/*
+**	rotate.c
+*/
+
+cl_float3	rotate_x(float dir, cl_float3 v, t_mvdata mv);
+cl_float3	rotate_y(float dir, cl_float3 v, t_mvdata mv);
+cl_float3	rotate_z(float dir, cl_float3 v, t_mvdata mv);
 
 #endif

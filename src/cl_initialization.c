@@ -29,6 +29,16 @@ void	print_log(t_cldata *cl)
 	exit(EXIT_FAILURE);
 }
 
+void	init_defaults(t_cldata *cl)
+{
+	cl->num_samples = 0;
+	cl->move_keys = NOKEY;
+	cl->mv_data.move_spd = 1.f;
+	cl->mv_data.turn_a = 2.5;
+	cl->mv_data.cosine_a = cos(DTR(cl->mv_data.turn_a));
+	cl->mv_data.sine_a = sin(DTR(cl->mv_data.turn_a));
+}
+
 void	init_opencl(t_cldata *cl)
 {
 	int		err;
@@ -54,8 +64,8 @@ void	cl_setup(t_cldata *cl)
 		CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY,
 		sizeof(cl_float3) * g_win_width * g_win_height, 0, 0);
 	cl->obj_gpu = clCreateBuffer(cl->context, CL_MEM_READ_ONLY |
-		CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR,
-		sizeof(t_obj) * cl->sc.num_obj, cl->sc.obj, 0);
+		CL_MEM_HOST_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
+		sizeof(t_sphere) * cl->sc.num_obj, cl->sc.obj, 0);
 	cl->seed_gpu = clCreateBuffer(cl->context, CL_MEM_READ_WRITE,
 		sizeof(int) * cl->seeds.size, 0, 0);
 	clSetKernelArg(cl->kernel, 0, sizeof(cl->px_gpu), &cl->px_gpu);
