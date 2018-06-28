@@ -17,7 +17,7 @@ extern unsigned int		g_win_height;
 
 void	cl_exec(t_cldata *cl)
 {
-	clEnqueueWriteBuffer(cl->command_queue, cl->seed_gpu, CL_TRUE, 0,
+	clEnqueueWriteBuffer(cl->command_queue, cl->seed_gpu, CL_FALSE, 0,
 		sizeof(uint) * cl->seeds.size, cl->seeds.seeds, 0, 0, 0);
 	clEnqueueNDRangeKernel(cl->command_queue, cl->kernel, 1, 0,
 		&cl->global_size, &cl->local_size, 0, 0, 0);

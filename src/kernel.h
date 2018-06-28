@@ -41,6 +41,7 @@ typedef enum	e_obj_type
 typedef struct	s_sphere
 {
 	__float3 	pos;
+	float3		rot;
 	float	r;
 }				t_sphere;
 

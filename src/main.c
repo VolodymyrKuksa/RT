@@ -34,53 +34,49 @@ void	clamp(cl_float3 *px)
 	px->z = px->z > 1.f ? 1.f : px->z;
 }
 
-void	update_window(cl_float3 *pixels, cl_float3 *px_host, t_scrn *sc, int gs)
+void	update_window(t_cldata *cl, t_scrn *sc)
 {
-	static int	num_samples;
 	float		sample_influence;
 	int			i;
 
-	++num_samples;
-	sample_influence = (1.0f / num_samples);
+	++(cl->num_samples);
+	sample_influence = (1.0f / cl->num_samples);
 	i = -1;
-	while (++i < gs)
+	while (++i < cl->global_size)
 	{
-		pixels[i].x *= 1.0f - sample_influence;
-		pixels[i].y *= 1.0f - sample_influence;
-		pixels[i].z *= 1.0f - sample_influence;
-		pixels[i].x += px_host[i].x * sample_influence;
-		pixels[i].y += px_host[i].y * sample_influence;
-		pixels[i].z += px_host[i].z * sample_influence;
-		clamp(pixels + i);
-		sc->surf_arr[i].bgra[0] = (u_char)(pixels[i].z * 0xff);
-		sc->surf_arr[i].bgra[1] = (u_char)(pixels[i].y * 0xff);
-		sc->surf_arr[i].bgra[2] = (u_char)(pixels[i].x * 0xff);
+		cl->pixels[i].x *= 1.0f - sample_influence;
+		cl->pixels[i].y *= 1.0f - sample_influence;
+		cl->pixels[i].z *= 1.0f - sample_influence;
+		cl->pixels[i].x += cl->px_host[i].x * sample_influence;
+		cl->pixels[i].y += cl->px_host[i].y * sample_influence;
+		cl->pixels[i].z += cl->px_host[i].z * sample_influence;
+		clamp(cl->pixels + i);
+		sc->surf_arr[i].bgra[0] = (u_char)(cl->pixels[i].z * 0xff);
+		sc->surf_arr[i].bgra[1] = (u_char)(cl->pixels[i].y * 0xff);
+		sc->surf_arr[i].bgra[2] = (u_char)(cl->pixels[i].x * 0xff);
 	}
-	printf("samples: %u, influence: %f\n", num_samples, sample_influence);
+	printf("samples: %u, influence: %f\n", cl->num_samples, sample_influence);
 	SDL_UpdateWindowSurface(sc->window);
 }
 
 void	main_loop(t_scrn *screen, t_cldata *cl)
 {
 	SDL_Event	e;
-	int			quit;
 
 	cl_setup(cl);
-	quit = 0;
-	while (!quit)
+	while (!(cl->move_keys & KEY_ESC))
 	{
 		while (SDL_PollEvent(&e) != 0)
 		{
 			if (e.type == SDL_QUIT)
-				quit = 1;
-			else if (e.type == SDL_KEYDOWN)
-			{
-				if (e.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
-					quit = 1;
-			}
+				cl->move_keys |= KEY_ESC;
+			else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
+				keyboard_event(e, cl);
 		}
+		if (cl->move_keys)
+			movement_events(cl);
 		cl_exec(cl);
-		update_window(cl->pixels, cl->px_host, screen, (int)cl->global_size);
+		update_window(cl, screen);
 	}
 }
 
@@ -89,20 +85,13 @@ int		main(void)
 	t_cldata	cl;
 	t_scrn		screen;
 
-	printf("0\n");
 	init_opencl(&cl);
-	printf("1\n");
+	init_defaults(&cl);
 	init_scene(&cl.sc);
-	printf("2\n");
 	init_seeds(&cl.seeds);
-	printf("3\n");
 	get_work_group_size(&cl);
-	printf("4\n");
 	init_win(&screen);
-	printf("5\n");
 	main_loop(&screen, &cl);
-	printf("6\n");
 	close_sdl(&screen);
-	printf("7\n");
 	return (0);
 }

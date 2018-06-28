@@ -297,7 +297,7 @@ void	init_scene(t_scene *scene)
 	scene->cam.ldir.y = 0;
 	scene->cam.ldir.z = 0;
 	scene->cam.f_length = 60.0f;
-	scene->cam.aperture = 0.1f;
+	scene->cam.aperture = 0.00001f;
 	scene->cam.ratio = scene->cam.f_length / 935.0f; //935.f for 60 degree fov
 	scene->cam.pr_pl_w = g_win_width;
 	scene->cam.pr_pl_h = g_win_height;

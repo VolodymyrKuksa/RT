@@ -26,29 +26,6 @@ typedef struct		s_scrn
 	t_rgb			*surf_arr;
 }					t_scrn;
 
-//typedef struct		s_surf
-//{
-//	cl_float3		type;
-//	float			roughness;
-//}					t_surf;
-
-//typedef struct		s_sphere
-//{
-//	cl_float3		col;
-//	cl_float3		pos;
-//	cl_float3		emission;
-//	float			r;
-//	t_surf			surf;
-//}					t_sphere;
-
-/*
-**	typedef struct		s_ray
-**	{
-**		cl_float3		pos;
-**		cl_float3		dir;
-**	}					t_ray;
-*/
-
 typedef struct		s_cam
 {
 	cl_float3		pos;
@@ -63,43 +40,19 @@ typedef struct		s_cam
 	float			dust;
 }					t_cam;
 
-
-
 typedef struct		s_seed
 {
 	uint			*seeds;
 	size_t			size;
 }					t_seeds;
 
-//typedef struct		s_surf
-//{
-//	float3		type;
-//	float			roughness;
-//}					t_surf;
-
-//typedef struct		s_obj
-//{
-//	cl_float3		col;
-//	cl_float3		pos;
-//	cl_float3		emission;
-//	float			r;
-//	t_surf			surf;
-//}					t_sphere;
-
-
-//typedef struct		s_cam
-//{
-//	cl_float3		pos;
-//	cl_float3		dir;
-//	cl_float3		updir;
-//	cl_float3		ldir;
-//	float			f_length;
-//	float			aperture;
-//	float			ratio;
-//	float			pr_pl_w;
-//	float			pr_pl_h;
-//	float			dust;
-//}					t_cam;
+typedef struct		s_mvdata
+{
+	float			move_spd;
+	double			turn_a;
+	double			cosine_a;
+	double			sine_a;
+}					t_mvdata;
 
 typedef struct		s_ray
 {
@@ -126,6 +79,7 @@ typedef enum	e_obj_type
 typedef struct	s_sphere
 {
 	cl_float3 	pos;
+	cl_float3	rot;
 	cl_float	r;
 }				t_sphere;
 
@@ -197,6 +151,7 @@ typedef struct		s_cldata
 
 	cl_float3			*px_host;
 	cl_float3			*pixels;
+	unsigned int		num_samples;
 
 	cl_mem				px_gpu;
 	cl_mem				obj_gpu;
@@ -204,8 +159,9 @@ typedef struct		s_cldata
 
 	t_scene				sc;
 	t_seeds				seeds;
+
+	unsigned int		move_keys;
+	t_mvdata			mv_data;
 }					t_cldata;
-
-
 
 #endif
