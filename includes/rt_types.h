@@ -26,6 +26,29 @@ typedef struct		s_scrn
 	t_rgb			*surf_arr;
 }					t_scrn;
 
+typedef struct		s_surf
+{
+	cl_float3		type;
+	float			roughness;
+}					t_surf;
+
+typedef struct		s_sphere
+{
+	cl_float3		col;
+	cl_float3		pos;
+	cl_float3		emission;
+	float			r;
+	t_surf			surf;
+}					t_sphere;
+
+/*
+**	typedef struct		s_ray
+**	{
+**		cl_float3		pos;
+**		cl_float3		dir;
+**	}					t_ray;
+*/
+
 typedef struct		s_cam
 {
 	cl_float3		pos;
@@ -40,6 +63,13 @@ typedef struct		s_cam
 	float			dust;
 }					t_cam;
 
+typedef struct		s_scene
+{
+	int				num_obj;
+	t_sphere		*obj;
+	t_cam			cam;
+}					t_scene;
+
 typedef struct		s_seed
 {
 	uint			*seeds;
@@ -53,88 +83,6 @@ typedef struct		s_mvdata
 	double			cosine_a;
 	double			sine_a;
 }					t_mvdata;
-
-typedef struct		s_ray
-{
-	cl_float3		pos;
-	cl_float3		dir;
-	int				refractions;
-	float			dust;
-}					t_ray;
-
-typedef struct		s_quad
-{
-	float a;
-	float b;
-	float c;
-	float d;
-	float res;
-}					t_quad;
-
-typedef enum	e_obj_type
-{
-	sphere, plane, cylinder, cone
-}				t_obj_type;
-
-typedef struct	s_sphere
-{
-	cl_float3 	pos;
-	cl_float	r;
-}				t_sphere;
-
-typedef struct	s_cylinder
-{
-	cl_float3 	pos;
-	cl_float3 	rot;
-	float	r;
-	//float	height;
-}				t_cylinder;
-
-typedef struct	s_plane
-{
-	cl_float3 	pos;
-	cl_float3 	rot;
-}				t_plane;
-
-typedef struct	s_cone
-{
-	cl_float3 	pos;
-	cl_float3 	rot;
-	float	tng;
-//	float	m1;
-//	float	m2;
-}				t_cone;
-
-typedef	union	u_primitive
-{
-	t_plane		plane;
-	t_sphere	sphere;
-	t_cylinder	cylinder;
-	t_cone		cone;
-}				t_primitive;
-
-typedef struct	s_object
-{
-	t_obj_type	type;
-	t_primitive	primitive;
-	cl_float	diffuse;
-	cl_float	specular;
-	cl_float	refraction;
-	cl_float	roughness;
-	cl_float	ior;
-	cl_float3 	color;
-	cl_float3 	emission;
-//	float (*intersection)(t_ray*, struct s_object);
-//	cl_float3 (*normal)(cl_float3  , cl_float3 , struct s_object);
-	//cl_uchar4	texture;
-}				t_obj;
-
-typedef struct		s_scene
-{
-	int				num_obj;
-	t_obj			*obj;
-	t_cam			cam;
-}					t_scene;
 
 typedef struct		s_cldata
 {
