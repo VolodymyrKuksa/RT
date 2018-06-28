@@ -55,7 +55,7 @@ void	cl_setup(t_cldata *cl)
 		sizeof(cl_float3) * g_win_width * g_win_height, 0, 0);
 	cl->obj_gpu = clCreateBuffer(cl->context, CL_MEM_READ_ONLY |
 		CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR,
-		sizeof(t_sphere) * cl->sc.num_obj, cl->sc.obj, 0);
+		sizeof(t_obj) * cl->sc.num_obj, cl->sc.obj, 0);
 	cl->seed_gpu = clCreateBuffer(cl->context, CL_MEM_READ_WRITE,
 		sizeof(int) * cl->seeds.size, 0, 0);
 	clSetKernelArg(cl->kernel, 0, sizeof(cl->px_gpu), &cl->px_gpu);

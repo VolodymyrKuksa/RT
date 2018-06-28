@@ -89,12 +89,20 @@ int		main(void)
 	t_cldata	cl;
 	t_scrn		screen;
 
+	printf("0\n");
 	init_opencl(&cl);
+	printf("1\n");
 	init_scene(&cl.sc);
+	printf("2\n");
 	init_seeds(&cl.seeds);
+	printf("3\n");
 	get_work_group_size(&cl);
+	printf("4\n");
 	init_win(&screen);
+	printf("5\n");
 	main_loop(&screen, &cl);
+	printf("6\n");
 	close_sdl(&screen);
+	printf("7\n");
 	return (0);
 }

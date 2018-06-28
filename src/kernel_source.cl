@@ -3,67 +3,37 @@ __constant float PI = 3.14159265359f;
 __constant int max_bounces = 10;
 
 
-typedef struct		s_surf
-{
-	float3		type;
-	float			roughness;
-}					t_surf;
-
-typedef struct		s_sphere
-{
-	__float3		col;
-	__float3		pos;
-	__float3		emission;
-	float			r;
-	t_surf			surf;
-}					t_sphere;
+#include "../src/intersections_and_normals.cl"
+#include "../src/kernel.h"
 
 
-typedef struct		s_cam
-{
-	__float3		pos;
-	__float3		dir;
-	__float3		updir;
-	__float3		ldir;
-	float			f_length;
-	float			aperture;
-	float			ratio;
-	float			pr_pl_w;
-	float			pr_pl_h;
-	float			dust;
-}					t_cam;
-
-typedef struct		s_ray
-{
-	__float3		pos;
-	__float3		dir;
-	int				refractions;
-	float			dust;
-}					t_ray;
-
-typedef struct		s_quad
-{
-	float a;
-	float b;
-	float c;
-	float d;
-}					t_quad;
 
 
 t_ray get_camera_ray(int x, int y, t_cam *cam, uint2 *seeds);
-float	check_sphere(t_ray *ray, t_sphere sphere);
+//float	check_sphere(t_ray *ray, t_sphere sphere);
 static float get_random(uint2 *seeds);
 float	solve_quad(t_quad q);
-float3	sphere_normal_point(float3 pt, t_sphere sphere);
-float3	sphere_normal_ray(t_ray r, t_sphere sphere, float t);
-float	get_intersection(t_ray *r, __global t_sphere *obj, int n_obj, int *id);
-float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds);
+//float3	sphere_normal_point(float3 pt, t_sphere sphere);
+//float3	sphere_normal_ray(t_ray r, t_sphere sphere, float t);
+float	get_intersection(t_ray *r, __global t_obj *obj, int n_obj, int *id);
+float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds);
 t_ray	diffuse(t_ray ray, float3 n, float3 hitpoint, uint2 *seeds);
-t_ray	reflect(t_ray ray, float3 n, float3 hitpt, t_sphere sp, uint2 *seeds);
-t_ray	refract(t_ray ray, float3 hitpoint, t_sphere hitsphere, uint2 *seeds);
+t_ray	reflect(t_ray ray, float3 n, float3 hitpt, t_obj sp, uint2 *seeds);
+t_ray	refract(t_ray ray, float3 hitpoint, t_obj hitsphere, uint2 *seeds);
 float3	sample_hemisphere(float3 w, float max_r, uint2 *seeds);
 bool	participating_media(t_ray *ray, float t, uint2 *seeds);
 
+float	intersection_sphere(t_ray*,t_sphere);
+float	intersection_cone(t_ray*,t_cone);
+float	intersection_plane(t_ray*,t_plane);
+float	intersection_cylinder(t_ray*,t_cylinder);
+
+__float3	normal_sphere(__float3 , __float3 , t_sphere *);
+__float3	normal_cone(__float3 , __float3 , t_cone *);
+__float3	normal_plane(__float3 , __float3  , t_plane *);
+__float3	normal_cylinder(__float3 , __float3 , t_cylinder *);
+
+float3		get_normal_obj(float3 hitpoint, t_ray ray, t_obj hitobj);
 
 t_ray get_camera_ray(int x, int y, t_cam *cam, uint2 *seeds)
 {
@@ -87,32 +57,6 @@ t_ray get_camera_ray(int x, int y, t_cam *cam, uint2 *seeds)
 	return(ray);
 }
 
-inline float3	sphere_normal_point(float3 pt, t_sphere sphere)
-{
-	return (normalize(pt - sphere.pos));
-}
-
-inline float	solve_quad(t_quad q)
-{
-	float	t;
-
-	return (t = (-q.b - sqrt(q.d)) / q.a) > 0 ? t :
-		((t = (-q.b + sqrt(q.d)) / q.a) > 0 ? t : -1);
-}
-
-float	check_sphere(t_ray *ray, t_sphere sphere)
-{
-	t_quad		q;
-	__float3	x;
-
-	x = ray->pos - sphere.pos;
-	q.a = 2.0f;
-	q.b = 2.0f * dot(ray->dir, x);
-	q.c = dot(x, x) - sphere.r * sphere.r;
-	if ((q.d = q.b * q.b - 2.0 * q.a * q.c) < 0)
-		return (-1.0f);
-	return (solve_quad(q));
-}
 
 static float get_random(uint2 *seeds)
 {
@@ -130,21 +74,36 @@ static float get_random(uint2 *seeds)
 	return (res.f - 2.0f) / 2.0f;
 }
 
-//colors are represented as float3, where x - red, y - green, z - blue
-
-float	get_intersection(t_ray *r, __global t_sphere *obj, int num_obj, int *id)
+float	get_intersection(t_ray *r, __global t_obj *object, int num_obj, int *id)
 {
 	float	t = -1;
 	float	tmp = -1;
-	for(int i = 0; i < num_obj; ++i)
+	for(int i = 0; i < num_obj; i++)
 	{
-		tmp = check_sphere(r, obj[i]);
+		switch(object[i].type)
+		{
+			case sphere:
+				tmp = intersection_sphere(r, object[i].primitive.sphere);
+				break;
+			case cylinder:
+				tmp = intersection_cylinder(r, object[i].primitive.cylinder);
+				break;
+			case plane:
+				tmp = intersection_plane(r, object[i].primitive.plane);
+				break;
+			case cone:
+				tmp = intersection_cone(r, object[i].primitive.cone);
+				break;
+			default:
+				break;
+		}
 		if ((t < 0 && tmp > 0) || (tmp < t && tmp > 0))
 		{
 			t = tmp;
 			*id = i;
 		}
 	}
+//t = 0.5f;
 	return t;
 }
 
@@ -174,20 +133,23 @@ t_ray	diffuse(t_ray ray, float3 n, float3 hitpoint, uint2 *seeds)
 	return (ray);
 }
 
-t_ray	reflect(t_ray ray, float3 n, float3 hitpoint, t_sphere sp, uint2 *seeds)
+t_ray	reflect(t_ray ray, float3 n, float3 hitpoint, t_obj sp, uint2 *seeds)
 {
 	float3 tmp = ray.dir;
 	float3 reflected_dir;
 
 	reflected_dir = tmp - 2 * dot(tmp, n) * n;
-	ray.dir = sample_hemisphere(reflected_dir, sp.surf.roughness, seeds);
+	ray.dir = sample_hemisphere(reflected_dir, sp.roughness, seeds);
 	ray.pos = hitpoint + EPSILON * ray.dir;
 	return (ray);
 }
 
-t_ray	refract(t_ray ray, float3 hitpoint, t_sphere hitsphere, uint2 *seeds)
+t_ray	refract(t_ray ray, __float3 hitpoint, t_obj object, uint2 *seeds)
 {
-	float3	n = sphere_normal_point(hitpoint, hitsphere);
+	float3	n = get_normal_obj(hitpoint, ray, object);
+
+	//тут, наверное, будет проблема с enter (я поменял направление ещё в функции normal_sphere)
+
 	bool	enter = dot(ray.dir, n) > 0 ? false : true;
 	n = enter ? n : n * -1;
 
@@ -221,7 +183,7 @@ t_ray	refract(t_ray ray, float3 hitpoint, t_sphere hitsphere, uint2 *seeds)
 		t = (1.5f * (ray.dir - n * cosine_theta)) - n * cosine_theta_r;
 	}
 
-	ray.dir = sample_hemisphere(t, hitsphere.surf.roughness, seeds);
+	ray.dir = sample_hemisphere(t, object.roughness, seeds);
 	ray.pos = hitpoint + EPSILON * ray.dir;
 
 	return (ray);
@@ -247,34 +209,33 @@ bool	participating_media(t_ray *ray, float t, uint2 *seeds)
 	}
 	return false;
 }
-
-float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds)
+//------------------------------------------------------------------------------\/
+float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds)
 {
 	float3	mask = (float3)(1.f, 1.f, 1.f);
 	float3	res = (float3)(0, 0, 0);
-
 	for (int bounce = 0; bounce < max_bounces; ++bounce)
 	{
-		int hitsphere_id;
-		float t = get_intersection(&ray, obj, num_obj, &hitsphere_id);
-		t_sphere hitsphere = obj[hitsphere_id];
+		int hitobj_id = -1;
+		float t = get_intersection(&ray, obj, num_obj, &hitobj_id);
 
 		if (t < 0)
 			break;
-
+		t_obj hitobj = obj[hitobj_id];
 		if (ray.dust > 0.f && participating_media(&ray, t, seeds))
 			continue;
 
 		float3 hitpoint = ray.pos + t * ray.dir;
-		if (hitsphere.surf.type.y != 1.f && hitsphere.surf.type.z != 1.f)
-			mask *= hitsphere.col;
-		res += mask * hitsphere.emission;
-		float3 n = sphere_normal_point(hitpoint, hitsphere);
-		n = dot(n, ray.dir) > 0 ? n * -1 : n;
+		if (hitobj.specular != 1.f && hitobj.refraction != 1.f)
+			mask *= hitobj.color;
+		res += mask * hitobj.emission;
+		//float3 n = hitobj.normal(hitpoint, ray.dir ,hitobj);
+		float3 n = get_normal_obj(hitpoint, ray, hitobj);
+		n = dot(n, ray.dir) > 0 ? n * -1.f : n;
 
 		float rand = get_random(seeds);
 
-		rand -= hitsphere.surf.type.x;
+		rand -= hitobj.diffuse;
 		if (rand <= 0.f)
 		{
 			ray = diffuse(ray, n, hitpoint, seeds);
@@ -282,22 +243,22 @@ float3	trace_ray(t_ray ray, __global t_sphere *obj, int num_obj, uint2 *seeds)
 			cosine = cosine < 0 ? -cosine : cosine;
 			mask *= sqrt(cosine);//poor gamma-correction
 		}
-		else if (rand - hitsphere.surf.type.y <= 0.f)
+		else if (rand - hitobj.specular <= 0.f)
 		{
-			ray = reflect(ray, n, hitpoint, hitsphere, seeds);
+			ray = reflect(ray, n, hitpoint, hitobj, seeds);
 			if (dot(n, ray.dir) < 0)
 				break;
 		}
 		else
-			ray = refract(ray, hitpoint, hitsphere, seeds);
+			ray = refract(ray, hitpoint, hitobj, seeds);
 	}
-
 	return (res);
 }
+//------------------------------------------------------------------------------/\
 
-__kernel void	render_pixel(
+ __kernel void	render_pixel(
 	__global float3 *pixels,
-	__global t_sphere *obj,
+	__global t_obj *obj,
 	int num_obj,
 	t_cam cam,
 	int w,
@@ -314,7 +275,6 @@ __kernel void	render_pixel(
 	t_ray ray = get_camera_ray(x, y, &cam, &seeds);
 	pixels[id] = (float3)(0,0,0);
 	pixels[id] += trace_ray(ray, obj, num_obj, &seeds);
-
 	seed[id] = seeds.x;
 	seed[id + w * h] = seeds.y;
 }
