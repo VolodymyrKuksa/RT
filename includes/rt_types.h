@@ -157,6 +157,7 @@ typedef struct		s_cldata
 	cl_mem				obj_gpu;
 	cl_mem				seed_gpu;
 
+	t_scrn				screen;
 	t_scene				sc;
 	t_seeds				seeds;
 

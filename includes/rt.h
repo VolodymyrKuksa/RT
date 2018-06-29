@@ -91,4 +91,10 @@ cl_float3	rotate_z(float dir, cl_float3 v, t_mvdata mv);
 
 int		write_ppm(char *filename, cl_float3 *pixels);
 
+/*
+** write_png.c
+*/
+
+void	write_png(t_cldata *cl);
+
 #endif

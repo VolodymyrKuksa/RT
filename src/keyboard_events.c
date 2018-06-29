@@ -22,7 +22,7 @@ void	keyboard_event(SDL_Event e, t_cldata *cl)
 		key_up_event(e, cl);
 }
 
-void	key_down_event(SDL_Event e, t_cldata *cl)
+int		movement_key_down_event(SDL_Event e, t_cldata *cl)
 {
 	if (e.key.keysym.sym == SDLK_w)
 		cl->move_keys |= KEY_W;
@@ -48,6 +48,17 @@ void	key_down_event(SDL_Event e, t_cldata *cl)
 		cl->move_keys |= KEY_SPACE;
 	else if (e.key.keysym.sym == SDLK_LSHIFT)
 		cl->move_keys |= KEY_LSHIFT;
+	else
+		return (0);
+	return (1);
+}
+
+void	key_down_event(SDL_Event e, t_cldata *cl)
+{
+	if (movement_key_down_event(e, cl))
+		return ;
+	if (e.key.keysym.sym == SDLK_p)
+		write_png(cl);
 }
 
 void	key_up_event(SDL_Event e, t_cldata *cl)

@@ -34,7 +34,7 @@ void	clamp(cl_float3 *px)
 	px->z = px->z > 1.f ? 1.f : px->z;
 }
 
-void	update_window(t_cldata *cl, t_scrn *sc)
+void	update_window(t_cldata *cl)
 {
 	float		sample_influence;
 	int			i;
@@ -51,15 +51,15 @@ void	update_window(t_cldata *cl, t_scrn *sc)
 		cl->pixels[i].y += cl->px_host[i].y * sample_influence;
 		cl->pixels[i].z += cl->px_host[i].z * sample_influence;
 		clamp(cl->pixels + i);
-		sc->surf_arr[i].bgra[0] = (u_char)(cl->pixels[i].z * 0xff);
-		sc->surf_arr[i].bgra[1] = (u_char)(cl->pixels[i].y * 0xff);
-		sc->surf_arr[i].bgra[2] = (u_char)(cl->pixels[i].x * 0xff);
+		cl->screen.surf_arr[i].bgra[0] = (u_char)(cl->pixels[i].z * 0xff);
+		cl->screen.surf_arr[i].bgra[1] = (u_char)(cl->pixels[i].y * 0xff);
+		cl->screen.surf_arr[i].bgra[2] = (u_char)(cl->pixels[i].x * 0xff);
 	}
 	printf("samples: %u, influence: %f\n", cl->num_samples, sample_influence);
-	SDL_UpdateWindowSurface(sc->window);
+	SDL_UpdateWindowSurface(cl->screen.window);
 }
 
-void	main_loop(t_scrn *screen, t_cldata *cl)
+void	main_loop(t_cldata *cl)
 {
 	SDL_Event	e;
 
@@ -76,15 +76,13 @@ void	main_loop(t_scrn *screen, t_cldata *cl)
 		if (cl->move_keys)
 			movement_events(cl);
 		cl_exec(cl);
-		update_window(cl, screen);
+		update_window(cl);
 	}
-//	printf("%s\n", "write_ppm failed");		//slow af
 }
 
 int		main(void)
 {
 	t_cldata	cl;
-	t_scrn		screen;
 
 	init_opencl(&cl);
 	IMG_Init(IMG_INIT_PNG);
@@ -92,8 +90,10 @@ int		main(void)
 	init_scene(&cl.sc);
 	init_seeds(&cl.seeds);
 	get_work_group_size(&cl);
-	init_win(&screen);
-	main_loop(&screen, &cl);
-	close_sdl(&screen);
+	init_win(&cl.screen);
+	main_loop(&cl);
+	close_sdl(&cl.screen);
+	IMG_Quit();
+	system("leaks -q RT"); //DEBUG
 	return (0);
 }
