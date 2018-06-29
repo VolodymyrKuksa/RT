@@ -50,12 +50,12 @@ int		write_ppm(char *filename, cl_float3 *pixels)
 	int		size;
 
 	if ((fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0777)) == -1)
-		return 0;
+		return (0);
 	put_header_ppm(fd);
 	size = g_win_width * g_win_height;
 	i = -1;
 	printf("tutu\n");
 	while (++i < size)
 		put_pixel_ppm(fd, pixels[i]);
-	return 1;
+	return (1);
 }

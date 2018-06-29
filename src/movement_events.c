@@ -44,8 +44,10 @@ void	turn(float d, t_env *env, cl_float3 (*f)(float, cl_float3, t_mvdata))
 	i = -1;
 	while (++i < env->sc.num_obj)
 	{
-		env->sc.obj[i].primitive.sphere.pos = f(d, env->sc.obj[i].primitive.sphere.pos, env->mv_data);
-		env->sc.obj[i].primitive.sphere.rot = f(d, env->sc.obj[i].primitive.sphere.rot, env->mv_data);
+		env->sc.obj[i].primitive.sphere.pos =
+			f(d, env->sc.obj[i].primitive.sphere.pos, env->mv_data);
+		env->sc.obj[i].primitive.sphere.rot =
+			f(d, env->sc.obj[i].primitive.sphere.rot, env->mv_data);
 	}
 	env->num_samples = 0;
 	clear_pixels(&env->cl);

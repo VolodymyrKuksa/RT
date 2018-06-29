@@ -27,7 +27,7 @@ int		init_win(t_scrn *screen)
 	{
 		screen->window = SDL_CreateWindow("CANCER RT", SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED, g_win_width, g_win_height,
-		SDL_WINDOW_SHOWN);
+		SDL_WINDOW_RESIZABLE);
 		if (screen->window == NULL)
 		{
 			ft_putstr("Window could not be created! Error: ");

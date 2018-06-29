@@ -12,8 +12,8 @@
 
 #include "rt.h"
 
-extern unsigned int g_win_width;
-extern unsigned int g_win_height;
+extern unsigned int	g_win_width;
+extern unsigned int	g_win_height;
 
 char	*get_name(unsigned int num_samples)
 {
@@ -35,15 +35,16 @@ char	*get_name(unsigned int num_samples)
 
 void	write_png(t_env *env)
 {
-	char	*name;
+	char		*name;
+	SDL_Surface	*srf;
 
 	name = get_name(env->num_samples);
 	if (!name)
 	{
 		ft_putendl("Failed to save image :(");
-		return;
+		return ;
 	}
-	SDL_Surface *srf = SDL_CreateRGBSurface(0, g_win_width, g_win_height,
+	srf = SDL_CreateRGBSurface(0, g_win_width, g_win_height,
 		32, 0, 0, 0, 0);
 	ft_memcpy(srf->pixels, env->screen.surface->pixels, srf->h * srf->pitch);
 	IMG_SavePNG(srf, name);

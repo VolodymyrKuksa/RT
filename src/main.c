@@ -72,6 +72,8 @@ void	main_loop(t_env *env)
 				env->mv_data.move_keys |= KEY_ESC;
 			else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
 				keyboard_event(e, env);
+			else if (e.type == SDL_WINDOWEVENT)
+				window_event(e, env);
 		}
 		if (env->mv_data.move_keys)
 			movement_events(env);

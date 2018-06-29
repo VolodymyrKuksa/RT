@@ -72,50 +72,50 @@ typedef struct		s_quad
 	float res;
 }					t_quad;
 
-typedef enum	e_obj_type
+typedef enum		e_obj_type
 {
-	sphere, plane, cylinder, cone
-}				t_obj_type;
+	sphere,
+	plane,
+	cylinder,
+	cone
+}					t_obj_type;
 
-typedef struct	s_sphere
+typedef struct		s_sphere
 {
-	cl_float3 	pos;
+	cl_float3	pos;
 	cl_float3	rot;
 	cl_float	r;
-}				t_sphere;
+}					t_sphere;
 
-typedef struct	s_cylinder
+typedef struct		s_cylinder
 {
-	cl_float3 	pos;
-	cl_float3 	rot;
-	float	r;
-	//float	height;
-}				t_cylinder;
+	cl_float3	pos;
+	cl_float3	rot;
+	float		r;
+}					t_cylinder;
 
-typedef struct	s_plane
+typedef struct		s_plane
 {
-	cl_float3 	pos;
-	cl_float3 	rot;
-}				t_plane;
+	cl_float3	pos;
+	cl_float3	rot;
+}					t_plane;
 
-typedef struct	s_cone
+typedef struct		s_cone
 {
-	cl_float3 	pos;
-	cl_float3 	rot;
-	float	tng;
-//	float	m1;
-//	float	m2;
-}				t_cone;
+	cl_float3	pos;
+	cl_float3	rot;
+	float		tng;
+}					t_cone;
 
-typedef	union	u_primitive
+typedef	union		u_primitive
 {
 	t_plane		plane;
 	t_sphere	sphere;
 	t_cylinder	cylinder;
 	t_cone		cone;
-}				t_primitive;
+}					t_primitive;
 
-typedef struct	s_object
+typedef struct		s_object
 {
 	t_obj_type	type;
 	t_primitive	primitive;
@@ -124,12 +124,9 @@ typedef struct	s_object
 	cl_float	refraction;
 	cl_float	roughness;
 	cl_float	ior;
-	cl_float3 	color;
-	cl_float3 	emission;
-//	float (*intersection)(t_ray*, struct s_object);
-//	cl_float3 (*normal)(cl_float3  , cl_float3 , struct s_object);
-	//cl_uchar4	texture;
-}				t_obj;
+	cl_float3	color;
+	cl_float3	emission;
+}					t_obj;
 
 typedef struct		s_scene
 {

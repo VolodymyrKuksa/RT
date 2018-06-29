@@ -60,25 +60,25 @@ void	init_opencl(t_cldata *cl)
 	cl->global_size = g_win_height * g_win_width;
 }
 
-void	cl_setup(t_env *env)
+void	cl_setup(t_env *e)
 {
-	env->cl.px_host = (cl_float3*)malloc(sizeof(cl_float3) * env->cl.global_size);
-	env->cl.pixels = (cl_float3*)malloc(sizeof(cl_float3) * env->cl.global_size);
-	env->cl.px_gpu = clCreateBuffer(env->cl.context,
+	e->cl.px_host = (cl_float3*)malloc(sizeof(cl_float3) * e->cl.global_size);
+	e->cl.pixels = (cl_float3*)malloc(sizeof(cl_float3) * e->cl.global_size);
+	e->cl.px_gpu = clCreateBuffer(e->cl.context,
 		CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY,
 		sizeof(cl_float3) * g_win_width * g_win_height, 0, 0);
-	env->cl.obj_gpu = clCreateBuffer(env->cl.context, CL_MEM_READ_ONLY |
+	e->cl.obj_gpu = clCreateBuffer(e->cl.context, CL_MEM_READ_ONLY |
 		CL_MEM_HOST_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
-		sizeof(t_obj) * env->sc.num_obj, env->sc.obj, 0);
-	env->cl.seed_gpu = clCreateBuffer(env->cl.context, CL_MEM_READ_WRITE,
-		sizeof(int) * env->cl.seeds.size, 0, 0);
-	clSetKernelArg(env->cl.kernel, 0, sizeof(env->cl.px_gpu), &env->cl.px_gpu);
-	clSetKernelArg(env->cl.kernel, 1, sizeof(env->cl.obj_gpu), &env->cl.obj_gpu);
-	clSetKernelArg(env->cl.kernel, 2, sizeof(env->sc.num_obj), &env->sc.num_obj);
-	clSetKernelArg(env->cl.kernel, 3, sizeof(env->sc.cam), &env->sc.cam);
-	clSetKernelArg(env->cl.kernel, 4, sizeof(g_win_width), &g_win_width);
-	clSetKernelArg(env->cl.kernel, 5, sizeof(g_win_height), &g_win_height);
-	clSetKernelArg(env->cl.kernel, 6, sizeof(env->cl.seed_gpu), &env->cl.seed_gpu);
+		sizeof(t_obj) * e->sc.num_obj, e->sc.obj, 0);
+	e->cl.seed_gpu = clCreateBuffer(e->cl.context, CL_MEM_READ_WRITE,
+		sizeof(int) * e->cl.seeds.size, 0, 0);
+	clSetKernelArg(e->cl.kernel, 0, sizeof(e->cl.px_gpu), &e->cl.px_gpu);
+	clSetKernelArg(e->cl.kernel, 1, sizeof(e->cl.obj_gpu), &e->cl.obj_gpu);
+	clSetKernelArg(e->cl.kernel, 2, sizeof(e->sc.num_obj), &e->sc.num_obj);
+	clSetKernelArg(e->cl.kernel, 3, sizeof(e->sc.cam), &e->sc.cam);
+	clSetKernelArg(e->cl.kernel, 4, sizeof(g_win_width), &g_win_width);
+	clSetKernelArg(e->cl.kernel, 5, sizeof(g_win_height), &g_win_height);
+	clSetKernelArg(e->cl.kernel, 6, sizeof(e->cl.seed_gpu), &e->cl.seed_gpu);
 }
 
 void	get_work_group_size(t_cldata *cl)

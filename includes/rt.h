@@ -49,11 +49,17 @@ void		close_sdl(t_scrn *screen);
 void		init_scene(t_scene *scene);
 
 /*
+**	main.c
+*/
+
+void		init_seeds(t_seeds *s);
+
+/*
 **	cl_initialization.c
 */
 
 void		init_opencl(t_cldata *cl);
-void		cl_setup(t_env *env);
+void		cl_setup(t_env *e);
 void		get_work_group_size(t_cldata *cl);
 void		init_defaults(t_env *env);
 
@@ -68,8 +74,8 @@ void		cl_exec(t_cldata *cl);
 */
 
 void		keyboard_event(SDL_Event e, t_env *env);
-void		key_up_event(SDL_Event e, t_env *env);
-void		key_down_event(SDL_Event e, t_env *env);
+int			movement_key_event(SDL_Event e, t_env *env);
+int			key_down_event(SDL_Event e, t_env *env);
 
 /*
 **	movement_events.c
@@ -78,23 +84,30 @@ void		key_down_event(SDL_Event e, t_env *env);
 void		movement_events(t_env *env);
 
 /*
+**	window_event.c
+*/
+
+void		window_event(SDL_Event e, t_env *env);
+
+/*
 **	rotate.c
 */
 
 cl_float3	rotate_x(float dir, cl_float3 v, t_mvdata mv);
 cl_float3	rotate_y(float dir, cl_float3 v, t_mvdata mv);
+
 cl_float3	rotate_z(float dir, cl_float3 v, t_mvdata mv);
 
 /*
-** write_ppm.c
+**	write_ppm.c
 */
 
-int		write_ppm(char *filename, cl_float3 *pixels);
+int			write_ppm(char *filename, cl_float3 *pixels);
 
 /*
-** write_png.c
+**	write_png.c
 */
 
-void	write_png(t_env *env);
+void		write_png(t_env *env);
 
 #endif

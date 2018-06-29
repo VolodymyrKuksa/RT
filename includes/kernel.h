@@ -1,6 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   kernel.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vkuksa <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/06/29 20:04:48 by vkuksa            #+#    #+#             */
+/*   Updated: 2018/06/29 20:04:52 by vkuksa           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef KERNEL_H
-#define KERNEL_H
+# define KERNEL_H
 
 typedef struct		s_cam
 {
@@ -33,50 +44,47 @@ typedef struct		s_quad
 	float res;
 }					t_quad;
 
-typedef enum	e_obj_type
+typedef enum		e_obj_type
 {
 	sphere, plane, cylinder, cone
-}				t_obj_type;
+}					t_obj_type;
 
-typedef struct	s_sphere
+typedef struct		s_sphere
 {
-	__float3 	pos;
+	__float3	pos;
 	float3		rot;
-	float	r;
-}				t_sphere;
+	float		r;
+}					t_sphere;
 
-typedef struct	s_cylinder
+typedef struct		s_cylinder
 {
-	__float3 	pos;
-	__float3 	rot;
-	float	r;
-	//float	height;
-}				t_cylinder;
+	__float3	pos;
+	__float3	rot;
+	float		r;
+}					t_cylinder;
 
-typedef struct	s_plane
+typedef struct		s_plane
 {
-	__float3 	pos;
-	__float3 	rot;
-}				t_plane;
+	__float3	pos;
+	__float3	rot;
+}					t_plane;
 
-typedef struct	s_cone
+typedef struct		s_cone
 {
-	__float3 	pos;
-	__float3 	rot;
-	float	tng;
-//	float	m1;
-//	float	m2;
-}				t_cone;
+	__float3	pos;
+	__float3	rot;
+	float		tng;
+}					t_cone;
 
-typedef	union	u_primitive
+typedef	union		u_primitive
 {
 	t_plane		plane;
 	t_sphere	sphere;
 	t_cylinder	cylinder;
 	t_cone		cone;
-}				t_primitive;
+}					t_primitive;
 
-typedef struct	s_object
+typedef struct		s_object
 {
 	t_obj_type	type;
 	t_primitive	primitive;
@@ -85,7 +93,8 @@ typedef struct	s_object
 	float		refraction;
 	float		roughness;
 	float		ior;
-	__float3 	color;
-	__float3 	emission;
-}				t_obj;
+	__float3	color;
+	__float3	emission;
+}					t_obj;
+
 #endif
