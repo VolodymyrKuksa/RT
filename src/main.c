@@ -78,6 +78,7 @@ void	main_loop(t_scrn *screen, t_cldata *cl)
 		cl_exec(cl);
 		update_window(cl, screen);
 	}
+//	printf("%s\n", "write_ppm failed");		//slow af
 }
 
 int		main(void)
@@ -86,6 +87,7 @@ int		main(void)
 	t_scrn		screen;
 
 	init_opencl(&cl);
+	IMG_Init(IMG_INIT_PNG);
 	init_defaults(&cl);
 	init_scene(&cl.sc);
 	init_seeds(&cl.seeds);

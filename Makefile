@@ -23,8 +23,9 @@ D_OBJ = obj/
 D_INC = includes/
 D_LFTINC = $(D_LFT)includes/
 D_LVECINC = $(D_LVEC)includes/
-D_FRW = /Library/Frameworks/
+D_FRW = frameworks/
 D_SDL2 = $(D_FRW)SDL2.framework/
+D_IMG = $(D_FRW)SDL2_image.framework/
 
 #--------------LIBRARIES--------------------------------------------------------
 
@@ -48,8 +49,8 @@ HEADERS = $(addprefix $(D_INC), $(HEAD_FILES))
 CC = clang
 #CFLAGS = -Wall -Werror -Wextra -O1
 
-INC = -I $(D_INC) -I $(D_LFTINC) -I $(D_LVECINC) -I $(D_SDL2)Headers
-FRW = -framework OpenCL -framework SDL2 -F $(D_FRW)
+INC = -I $(D_INC) -I $(D_LFTINC) -I $(D_LVECINC) -I $(D_SDL2)Headers -I $(D_IMG)Headers
+FRW = -framework OpenCL -F $(D_FRW) -rpath $(D_FRW) -framework SDL2 -framework SDL2_image
 
 #--------------COLORS-----------------------------------------------------------
 

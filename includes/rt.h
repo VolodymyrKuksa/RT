@@ -15,6 +15,7 @@
 
 # include <OpenCL/opencl.h>
 # include <SDL.h>
+# include <SDL_image.h>
 # include <time.h>
 # include <fcntl.h>
 # include <stdio.h>
@@ -24,8 +25,6 @@
 # include "get_next_line.h"
 # include "rt_types.h"
 # include "keys.h"
-
-# define KERNEL_PATH "src/kernel_source.cl"
 
 # ifdef CLION_BUILD
 # define KERNEL_PATH0 "../src/kernel_source.cl"
@@ -85,5 +84,11 @@ void		movement_events(t_cldata *cl);
 cl_float3	rotate_x(float dir, cl_float3 v, t_mvdata mv);
 cl_float3	rotate_y(float dir, cl_float3 v, t_mvdata mv);
 cl_float3	rotate_z(float dir, cl_float3 v, t_mvdata mv);
+
+/*
+** write_ppm.c
+*/
+
+int		write_ppm(char *filename, cl_float3 *pixels);
 
 #endif
