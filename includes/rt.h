@@ -28,9 +28,13 @@
 # define KERNEL_PATH "src/kernel_source.cl"
 
 # ifdef CLION_BUILD
-# define KERNEL_PATH "../src/kernel_source.cl"
+# define KERNEL_PATH0 "../src/kernel_source.cl"
+# define KERNEL_PATH1 "../src/intersections_and_normals.cl"
+# define KERNEL_INC_DIR "-I ../includes"
 # else
-# define KERNEL_PATH "src/kernel_source.cl"
+# define KERNEL_PATH0 "src/kernel_source.cl"
+# define KERNEL_PATH1 "src/intersections_and_normals.cl"
+# define KERNEL_INC_DIR "-I includes"
 # endif
 
 # define DEVICE_TYPE CL_DEVICE_TYPE_GPU

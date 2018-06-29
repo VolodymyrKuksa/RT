@@ -1,6 +1,6 @@
 
 
-#include "../src/kernel.h"
+//#include "kernel.h"
 //---------------------------------intersection-------------------------------\/
 float	intersection_sphere(t_ray *ray,t_sphere sphere)
 {

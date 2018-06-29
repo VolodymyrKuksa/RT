@@ -46,12 +46,16 @@ void	init_opencl(t_cldata *cl)
 	clGetDeviceIDs(0, DEVICE_TYPE, 1, &cl->dev_id, 0);
 	cl->context = clCreateContext(0, 1, &cl->dev_id, 0, 0, 0);
 	cl->command_queue = clCreateCommandQueue(cl->context, cl->dev_id, 0, 0);
-	cl->source = read_file(open(KERNEL_PATH, O_RDONLY), &cl->source_size);
-	cl->program = clCreateProgramWithSource(cl->context, 1,
-		(const char**)(&cl->source), &cl->source_size, 0);
-	err = clBuildProgram(cl->program, 0, 0, 0, 0, 0);
+	cl->source[0] = read_file(open(KERNEL_PATH0, O_RDONLY), 0);
+	cl->source[1] = read_file(open(KERNEL_PATH1, O_RDONLY), 0);
+	cl->program = clCreateProgramWithSource(cl->context, 2,
+		(const char**)(&cl->source), 0, 0);
+	err = clBuildProgram(cl->program, 0, 0, KERNEL_INC_DIR, 0, 0);
 	if (err != CL_SUCCESS)
+	{
+		printf("%d\n", err);
 		print_log(cl);
+	}
 	cl->kernel = clCreateKernel(cl->program, "render_pixel", 0);
 	cl->global_size = g_win_height * g_win_width;
 }

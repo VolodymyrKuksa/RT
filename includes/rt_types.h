@@ -142,7 +142,7 @@ typedef struct		s_cldata
 	cl_device_id		dev_id;
 	cl_context			context;
 	cl_command_queue	command_queue;
-	char				*source;
+	char				*source[2];
 	size_t				source_size;
 	cl_program			program;
 	cl_kernel			kernel;

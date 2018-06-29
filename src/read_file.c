@@ -30,6 +30,7 @@ char		*read_file(int fd, size_t *size)
 		res = ft_strjoin(res, buf);
 		free(tmp);
 	}
-	*size = ft_strlen(res);
+	if (size)
+		*size = ft_strlen(res);
 	return (res);
 }

@@ -3,8 +3,8 @@ __constant float PI = 3.14159265359f;
 __constant int max_bounces = 10;
 
 
-#include "../src/intersections_and_normals.cl"
-#include "../src/kernel.h"
+//#include "../src/intersections_and_normals.cl"
+#include "kernel.h"
 
 
 
