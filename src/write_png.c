@@ -15,12 +15,12 @@
 extern unsigned int g_win_width;
 extern unsigned int g_win_height;
 
-char	*get_name(t_cldata *cl)
+char	*get_name(unsigned int num_samples)
 {
 	char	*str;
 	char	*tmp;
 
-	tmp = ft_itoa(cl->num_samples);
+	tmp = ft_itoa(num_samples);
 	str = ft_strjoin("RT_", tmp);
 	free(tmp);
 	if (!str)
@@ -33,11 +33,11 @@ char	*get_name(t_cldata *cl)
 	return (str);
 }
 
-void	write_png(t_cldata *cl)
+void	write_png(t_env *env)
 {
 	char	*name;
 
-	name = get_name(cl);
+	name = get_name(env->num_samples);
 	if (!name)
 	{
 		ft_putendl("Failed to save image :(");
@@ -45,7 +45,7 @@ void	write_png(t_cldata *cl)
 	}
 	SDL_Surface *srf = SDL_CreateRGBSurface(0, g_win_width, g_win_height,
 		32, 0, 0, 0, 0);
-	ft_memcpy(srf->pixels, cl->screen.surface->pixels, srf->h * srf->pitch);
+	ft_memcpy(srf->pixels, env->screen.surface->pixels, srf->h * srf->pitch);
 	IMG_SavePNG(srf, name);
 	ft_putstr("Saved image ");
 	ft_putendl(name);

@@ -34,65 +34,65 @@ void	clamp(cl_float3 *px)
 	px->z = px->z > 1.f ? 1.f : px->z;
 }
 
-void	update_window(t_cldata *cl)
+void	update_window(t_env *env)
 {
 	float		sample_influence;
 	int			i;
 
-	++(cl->num_samples);
-	sample_influence = (1.0f / cl->num_samples);
+	++(env->num_samples);
+	sample_influence = (1.0f / env->num_samples);
 	i = -1;
-	while (++i < cl->global_size)
+	while (++i < env->cl.global_size)
 	{
-		cl->pixels[i].x *= 1.0f - sample_influence;
-		cl->pixels[i].y *= 1.0f - sample_influence;
-		cl->pixels[i].z *= 1.0f - sample_influence;
-		cl->pixels[i].x += cl->px_host[i].x * sample_influence;
-		cl->pixels[i].y += cl->px_host[i].y * sample_influence;
-		cl->pixels[i].z += cl->px_host[i].z * sample_influence;
-		clamp(cl->pixels + i);
-		cl->screen.surf_arr[i].bgra[0] = (u_char)(cl->pixels[i].z * 0xff);
-		cl->screen.surf_arr[i].bgra[1] = (u_char)(cl->pixels[i].y * 0xff);
-		cl->screen.surf_arr[i].bgra[2] = (u_char)(cl->pixels[i].x * 0xff);
+		env->cl.pixels[i].x *= 1.0f - sample_influence;
+		env->cl.pixels[i].y *= 1.0f - sample_influence;
+		env->cl.pixels[i].z *= 1.0f - sample_influence;
+		env->cl.pixels[i].x += env->cl.px_host[i].x * sample_influence;
+		env->cl.pixels[i].y += env->cl.px_host[i].y * sample_influence;
+		env->cl.pixels[i].z += env->cl.px_host[i].z * sample_influence;
+		clamp(env->cl.pixels + i);
+		env->screen.surf_arr[i].bgra[0] = (u_char)(env->cl.pixels[i].z * 0xff);
+		env->screen.surf_arr[i].bgra[1] = (u_char)(env->cl.pixels[i].y * 0xff);
+		env->screen.surf_arr[i].bgra[2] = (u_char)(env->cl.pixels[i].x * 0xff);
 	}
-	printf("samples: %u, influence: %f\n", cl->num_samples, sample_influence);
-	SDL_UpdateWindowSurface(cl->screen.window);
+	printf("samples: %u, influence: %f\n", env->num_samples, sample_influence);
+	SDL_UpdateWindowSurface(env->screen.window);
 }
 
-void	main_loop(t_cldata *cl)
+void	main_loop(t_env *env)
 {
 	SDL_Event	e;
 
-	cl_setup(cl);
-	while (!(cl->move_keys & KEY_ESC))
+	cl_setup(env);
+	while (!(env->mv_data.move_keys & KEY_ESC))
 	{
 		while (SDL_PollEvent(&e) != 0)
 		{
 			if (e.type == SDL_QUIT)
-				cl->move_keys |= KEY_ESC;
+				env->mv_data.move_keys |= KEY_ESC;
 			else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
-				keyboard_event(e, cl);
+				keyboard_event(e, env);
 		}
-		if (cl->move_keys)
-			movement_events(cl);
-		cl_exec(cl);
-		update_window(cl);
+		if (env->mv_data.move_keys)
+			movement_events(env);
+		cl_exec(&env->cl);
+		update_window(env);
 	}
 }
 
 int		main(void)
 {
-	t_cldata	cl;
+	t_env	env;
 
-	init_opencl(&cl);
+	init_opencl(&env.cl);
 	IMG_Init(IMG_INIT_PNG);
-	init_defaults(&cl);
-	init_scene(&cl.sc);
-	init_seeds(&cl.seeds);
-	get_work_group_size(&cl);
-	init_win(&cl.screen);
-	main_loop(&cl);
-	close_sdl(&cl.screen);
+	init_defaults(&env);
+	init_scene(&env.sc);
+	init_seeds(&env.cl.seeds);
+	get_work_group_size(&env.cl);
+	init_win(&env.screen);
+	main_loop(&env);
+	close_sdl(&env.screen);
 	IMG_Quit();
 	system("leaks -q RT"); //DEBUG
 	return (0);

@@ -31,67 +31,67 @@ void	clear_pixels(t_cldata *cl)
 	}
 }
 
-void	write_scene_to_kernel(t_cldata *cl)
+void	write_scene_to_kernel(t_env *env)
 {
-	clEnqueueWriteBuffer(cl->command_queue, cl->obj_gpu, CL_TRUE, 0,
-		sizeof(t_obj) * cl->sc.num_obj, cl->sc.obj, 0, 0, 0);
+	clEnqueueWriteBuffer(env->cl.command_queue, env->cl.obj_gpu, CL_TRUE, 0,
+		sizeof(t_obj) * env->sc.num_obj, env->sc.obj, 0, 0, 0);
 }
 
-void	turn(float d, t_cldata *cl, cl_float3 (*f)(float, cl_float3, t_mvdata))
+void	turn(float d, t_env *env, cl_float3 (*f)(float, cl_float3, t_mvdata))
 {
 	int i;
 
 	i = -1;
-	while (++i < cl->sc.num_obj)
+	while (++i < env->sc.num_obj)
 	{
-		cl->sc.obj[i].primitive.sphere.pos = f(d, cl->sc.obj[i].primitive.sphere.pos, cl->mv_data);
-		cl->sc.obj[i].primitive.sphere.rot = f(d, cl->sc.obj[i].primitive.sphere.rot, cl->mv_data);
+		env->sc.obj[i].primitive.sphere.pos = f(d, env->sc.obj[i].primitive.sphere.pos, env->mv_data);
+		env->sc.obj[i].primitive.sphere.rot = f(d, env->sc.obj[i].primitive.sphere.rot, env->mv_data);
 	}
-	cl->num_samples = 0;
-	clear_pixels(cl);
-	write_scene_to_kernel(cl);
+	env->num_samples = 0;
+	clear_pixels(&env->cl);
+	write_scene_to_kernel(env);
 }
 
-void	move(t_cldata *cl, float x, float y, float z)
+void	move(t_env *env, float x, float y, float z)
 {
 	int i;
 
 	i = -1;
-	while (++i < cl->sc.num_obj)
+	while (++i < env->sc.num_obj)
 	{
-		cl->sc.obj[i].primitive.sphere.pos.x += x * cl->mv_data.move_spd;
-		cl->sc.obj[i].primitive.sphere.pos.y += y * cl->mv_data.move_spd;
-		cl->sc.obj[i].primitive.sphere.pos.z += z * cl->mv_data.move_spd;
+		env->sc.obj[i].primitive.sphere.pos.x += x * env->mv_data.move_spd;
+		env->sc.obj[i].primitive.sphere.pos.y += y * env->mv_data.move_spd;
+		env->sc.obj[i].primitive.sphere.pos.z += z * env->mv_data.move_spd;
 	}
-	cl->num_samples = 0;
-	clear_pixels(cl);
-	write_scene_to_kernel(cl);
+	env->num_samples = 0;
+	clear_pixels(&env->cl);
+	write_scene_to_kernel(env);
 }
 
-void	movement_events(t_cldata *cl)
+void	movement_events(t_env *env)
 {
-	if (cl->move_keys & KEY_W)
-		turn(-1, cl, rotate_x);
-	if (cl->move_keys & KEY_S)
-		turn(1, cl, rotate_x);
-	if (cl->move_keys & KEY_A)
-		turn(-1, cl, rotate_y);
-	if (cl->move_keys & KEY_D)
-		turn(1, cl, rotate_y);
-	if (cl->move_keys & KEY_Q)
-		turn(-1, cl, rotate_z);
-	if (cl->move_keys & KEY_E)
-		turn(1, cl, rotate_z);
-	if (cl->move_keys & KEY_UP)
-		move(cl, 0, 0, 1);
-	if (cl->move_keys & KEY_DOWN)
-		move(cl, 0, 0, -1);
-	if (cl->move_keys & KEY_RIGHT)
-		move(cl, -1, 0, 0);
-	if (cl->move_keys & KEY_LEFT)
-		move(cl, 1, 0, 0);
-	if (cl->move_keys & KEY_SPACE)
-		move(cl, 0, -1, 0);
-	if (cl->move_keys & KEY_LSHIFT)
-		move(cl, 0, 1, 0);
+	if (env->mv_data.move_keys & KEY_W)
+		turn(-1, env, rotate_x);
+	if (env->mv_data.move_keys & KEY_S)
+		turn(1, env, rotate_x);
+	if (env->mv_data.move_keys & KEY_A)
+		turn(-1, env, rotate_y);
+	if (env->mv_data.move_keys & KEY_D)
+		turn(1, env, rotate_y);
+	if (env->mv_data.move_keys & KEY_Q)
+		turn(-1, env, rotate_z);
+	if (env->mv_data.move_keys & KEY_E)
+		turn(1, env, rotate_z);
+	if (env->mv_data.move_keys & KEY_UP)
+		move(env, 0, 0, 1);
+	if (env->mv_data.move_keys & KEY_DOWN)
+		move(env, 0, 0, -1);
+	if (env->mv_data.move_keys & KEY_RIGHT)
+		move(env, -1, 0, 0);
+	if (env->mv_data.move_keys & KEY_LEFT)
+		move(env, 1, 0, 0);
+	if (env->mv_data.move_keys & KEY_SPACE)
+		move(env, 0, -1, 0);
+	if (env->mv_data.move_keys & KEY_LSHIFT)
+		move(env, 0, 1, 0);
 }

@@ -53,9 +53,9 @@ void		init_scene(t_scene *scene);
 */
 
 void		init_opencl(t_cldata *cl);
-void		cl_setup(t_cldata *cl);
+void		cl_setup(t_env *env);
 void		get_work_group_size(t_cldata *cl);
-void		init_defaults(t_cldata *cl);
+void		init_defaults(t_env *env);
 
 /*
 ** cl_exec.c
@@ -67,15 +67,15 @@ void		cl_exec(t_cldata *cl);
 **	keyboard_event.c
 */
 
-void		keyboard_event(SDL_Event e, t_cldata *cl);
-void		key_up_event(SDL_Event e, t_cldata *cl);
-void		key_down_event(SDL_Event e, t_cldata *cl);
+void		keyboard_event(SDL_Event e, t_env *env);
+void		key_up_event(SDL_Event e, t_env *env);
+void		key_down_event(SDL_Event e, t_env *env);
 
 /*
 **	movement_events.c
 */
 
-void		movement_events(t_cldata *cl);
+void		movement_events(t_env *env);
 
 /*
 **	rotate.c
@@ -95,6 +95,6 @@ int		write_ppm(char *filename, cl_float3 *pixels);
 ** write_png.c
 */
 
-void	write_png(t_cldata *cl);
+void	write_png(t_env *env);
 
 #endif
