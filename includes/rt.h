@@ -25,6 +25,7 @@
 # include "get_next_line.h"
 # include "rt_types.h"
 # include "keys.h"
+# include "json.h"
 
 # ifdef CLION_BUILD
 # define KERNEL_PATH0 "../src/kernel_source.cl"

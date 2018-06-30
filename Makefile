@@ -13,16 +13,22 @@
 NAME = RT
 N_LFT = libft.a
 N_LVEC = libvec.a
+N_JSON = libjson.a
 
 #---------------DIRECTORIES-----------------------------------------------------
 
 D_LFT = libft/
 D_LVEC = libvec/
+D_JSON = lib_json/
+
 D_SRC = src/
 D_OBJ = obj/
+
 D_INC = includes/
 D_LFTINC = $(D_LFT)includes/
 D_LVECINC = $(D_LVEC)includes/
+D_JSONINC = $(D_JSON)
+
 D_FRW = frameworks/
 D_SDL2 = $(D_FRW)SDL2.framework/
 D_IMG = $(D_FRW)SDL2_image.framework/
@@ -31,6 +37,7 @@ D_IMG = $(D_FRW)SDL2_image.framework/
 
 LFT = $(D_LFT)$(N_LFT)
 LVEC = $(D_LVEC)$(N_LVEC)
+LJSON = $(D_JSON)$(N_JSON)
 
 #--------------FILES------------------------------------------------------------
 
@@ -50,7 +57,7 @@ HEADERS = $(addprefix $(D_INC), $(HEAD_FILES))
 CC = clang
 #CFLAGS = -Wall -Werror -Wextra -O1
 
-INC = -I $(D_INC) -I $(D_LFTINC) -I $(D_LVECINC) -I $(D_SDL2)Headers -I $(D_IMG)Headers
+INC = -I $(D_INC) -I $(D_LFTINC) -I $(D_LVECINC) -I $(D_JSONINC) -I $(D_SDL2)Headers -I $(D_IMG)Headers
 FRW = -framework OpenCL -F $(D_FRW) -rpath $(D_FRW) -framework SDL2 -framework SDL2_image
 
 #--------------COLORS-----------------------------------------------------------
@@ -69,6 +76,8 @@ $(NAME): $(D_OBJ) $(OBJ)
 	@printf "$(C_CYAN)%-10s$(C_NONE)%-25s$(C_GREEN)[done]$(C_NONE)\n" $(NAME): $(N_LFT)
 	@make -C $(D_LVEC)
 	@printf "$(C_CYAN)%-10s$(C_NONE)%-25s$(C_GREEN)[done]$(C_NONE)\n" $(NAME): $(N_LVEC)
+	@make -C $(D_JSON)
+	@printf "$(C_CYAN)%-10s$(C_NONE)%-25s$(C_GREEN)[done]$(C_NONE)\n" $(NAME): $(N_JSON)
 	@$(CC) $(OBJ) $(LFT) $(LVEC) $(FRW) -o $(NAME)
 	@printf "$(C_CYAN)%-10s$(C_NONE)%-25s$(C_GREEN)[done]$(C_NONE)\n" $(NAME): $@
 
@@ -84,6 +93,7 @@ clean:
 	@rm -rf $(D_OBJ)
 	@make -C $(D_LFT) clean
 	@make -C $(D_LVEC) clean
+	@make -C $(D_JSON) clean
 	@printf "$(C_CYAN)%-10s$(C_NONE)%-25s$(C_RED)[done]$(C_NONE)\n" $(NAME): $@
 
 fclean: clean
@@ -91,6 +101,7 @@ fclean: clean
 	@rm -rf $(D_SDL)
 	@make -C $(D_LFT) fclean
 	@make -C $(D_LVEC) fclean
+	@make -C $(D_JSON) fclean
 	@printf "$(C_CYAN)%-10s$(C_NONE)%-25s$(C_RED)[done]$(C_NONE)\n" $(NAME): $@
 
 re: fclean all
