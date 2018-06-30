@@ -82,15 +82,6 @@ void	main_loop(t_env *env)
 	}
 }
 
-float	calculate_ppd(double fov)
-{
-	float	dist;
-
-	fov /= 2;
-	dist = (float)(g_win_width / tan(DTR(fov)));
-	return dist;
-}
-
 int		main(void)
 {
 	t_env	env;

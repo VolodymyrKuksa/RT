@@ -54,7 +54,6 @@ void		init_scene(t_scene *scene);
 */
 
 void		init_seeds(t_seeds *s);
-float		calculate_ppd(double fov);
 
 /*
 **	cl_initialization.c
@@ -90,6 +89,12 @@ void		movement_events(t_env *env);
 */
 
 void		window_event(SDL_Event e, t_env *env);
+
+/*
+**	scene_init.c
+*/
+
+float		calculate_ppd(double fov);
 
 /*
 **	rotate.c
