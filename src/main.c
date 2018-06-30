@@ -82,6 +82,15 @@ void	main_loop(t_env *env)
 	}
 }
 
+float	calculate_ppd(double fov)
+{
+	float	dist;
+
+	fov /= 2;
+	dist = (float)(g_win_width / tan(DTR(fov)));
+	return dist;
+}
+
 int		main(void)
 {
 	t_env	env;
@@ -90,6 +99,7 @@ int		main(void)
 	IMG_Init(IMG_INIT_PNG);
 	init_defaults(&env);
 	init_scene(&env.sc);
+	printf("ppd: %f\n", calculate_ppd(env.sc.cam.fov));
 	init_seeds(&env.cl.seeds);
 	get_work_group_size(&env.cl);
 	init_win(&env.screen);

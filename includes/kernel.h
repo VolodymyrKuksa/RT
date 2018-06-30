@@ -19,6 +19,7 @@ typedef struct		s_cam
 	__float3		dir;
 	__float3		updir;
 	__float3		ldir;
+	double			fov;
 	float			f_length;
 	float			aperture;
 	float			ratio;

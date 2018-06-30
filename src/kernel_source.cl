@@ -226,10 +226,7 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds)
 			continue;
 
 		float3 hitpoint = ray.pos + t * ray.dir;
-		if (hitobj.specular != 1.f && hitobj.refraction != 1.f)
-			mask *= hitobj.color;
 		res += mask * hitobj.emission;
-		//float3 n = hitobj.normal(hitpoint, ray.dir ,hitobj);
 		float3 n = get_normal_obj(hitpoint, ray, hitobj);
 		n = dot(n, ray.dir) > 0 ? n * -1.f : n;
 
@@ -238,6 +235,7 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds)
 		rand -= hitobj.diffuse;
 		if (rand <= 0.f)
 		{
+			mask *= hitobj.color;
 			ray = diffuse(ray, n, hitpoint, seeds);
 			float	cosine = dot(n, ray.dir);
 			cosine = cosine < 0 ? -cosine : cosine;

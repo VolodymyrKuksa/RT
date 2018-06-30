@@ -31,18 +31,13 @@ void	handle_resize(t_env *env)
 {
 	env->sc.cam.pr_pl_w = g_win_width;
 	env->sc.cam.pr_pl_h = g_win_height;
+	env->sc.cam.ratio = env->sc.cam.f_length / calculate_ppd(env->sc.cam.fov);
 	cl_free(&env->cl);
 	cl_setup(env);
 	get_work_group_size(&env->cl);
-	printf("width: %u; height: %u\n", g_win_width, g_win_height);
-	printf("local size: %lu\n", env->cl.local_size);
-	printf("tututu0\n");
 	env->num_samples = 0;
-	printf("tututu0\n");
 	SDL_FreeSurface(env->screen.surface);
-	printf("tututu2\n");
 	env->screen.surface = SDL_GetWindowSurface(env->screen.window);
-	printf("tututu3\n");
 	env->screen.surf_arr = (t_rgb *)env->screen.surface->pixels;
 }
 

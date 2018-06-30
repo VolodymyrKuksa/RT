@@ -68,8 +68,8 @@ void	init_scene(t_scene *scene)
 	tmp.emission.y = 0;
 	tmp.emission.z = 0;
 	tmp.roughness = 1.f;
-	tmp.diffuse = 0.f;
-	tmp.specular = 1.f;
+	tmp.diffuse = 1.f;
+	tmp.specular = 0.f;
 	tmp.refraction = 0.f;
 	tmp.primitive.sphere.r= 490;
 	tmp.type = sphere;
@@ -145,7 +145,7 @@ void	init_scene(t_scene *scene)
 
 	tmp.primitive.sphere.pos.x = 0;
 	tmp.primitive.sphere.pos.y = 0;
-	tmp.primitive.sphere.pos.z = 500;
+	tmp.primitive.sphere.pos.z = 5000;
 	tmp.color.x = 1.0f;
 	tmp.color.y = 0.0f;
 	tmp.color.z = 1.f;
@@ -176,15 +176,15 @@ void	init_scene(t_scene *scene)
 	tmp.primitive.sphere.pos.x = 2.5;
 	tmp.primitive.sphere.pos.y = 0;
 	tmp.primitive.sphere.pos.z = -60;
-	tmp.color.x = 1.f;
+	tmp.color.x = 0.f;
 	tmp.color.y = 1.f;
-	tmp.color.z = 0.3f;
+	tmp.color.z = 0.f;
 	tmp.emission.x = 0;
 	tmp.emission.y = 0;
 	tmp.emission.z = 0;
-	tmp.roughness = 0.02f;
-	tmp.diffuse = 0.5f;
-	tmp.specular = 0.5f;
+	tmp.roughness = 0.0f;
+	tmp.diffuse = 0.f;
+	tmp.specular = 1.f;
 	tmp.refraction = 0.f;
 	tmp.type = sphere;
 	tmp.primitive.sphere.r= 5;
@@ -217,9 +217,9 @@ void	init_scene(t_scene *scene)
 	tmp.emission.y = 0;
 	tmp.emission.z = 0;
 	tmp.roughness = 0.f;
-	tmp.diffuse = 0.2f;
-	tmp.specular = 0.8f;
-	tmp.refraction = 0.f;
+	tmp.diffuse = 0.f;
+	tmp.specular = 0.f;
+	tmp.refraction = 1.f;
 	tmp.type = sphere;
 	tmp.primitive.sphere.r= 3.5;
 	scene->obj[11] = tmp;
@@ -231,7 +231,7 @@ void	init_scene(t_scene *scene)
 	tmp.color.y = 1.f;
 	tmp.color.z = 1.f;
 	tmp.emission.x = 3;
-	tmp.emission.y = 3;
+	tmp.emission.y = 0;
 	tmp.emission.z = 3;
 	tmp.roughness = 1.f;
 	tmp.diffuse = 1.f;
@@ -274,9 +274,9 @@ void	init_scene(t_scene *scene)
 	tmp.color.x = 1.f;
 	tmp.color.y = 1.f;
 	tmp.color.z = 1.f;
-	tmp.emission.x = 0.5;
-	tmp.emission.y = 0.5;
-	tmp.emission.z = 0.5;
+	tmp.emission.x = 1;
+	tmp.emission.y = 1;
+	tmp.emission.z = 1;
 	tmp.roughness = 1.f;
 	tmp.diffuse = 1.f;
 	tmp.specular = 0.f;
@@ -298,7 +298,8 @@ void	init_scene(t_scene *scene)
 	scene->cam.ldir.z = 0;
 	scene->cam.f_length = 60.0f;
 	scene->cam.aperture = 0.00001f;
-	scene->cam.ratio = scene->cam.f_length / 935.0f; //935.f for 60 degree fov
+	scene->cam.fov = 90;
+	scene->cam.ratio = scene->cam.f_length / calculate_ppd(scene->cam.fov); //935.f for 60 degree fov
 	scene->cam.pr_pl_w = g_win_width;
 	scene->cam.pr_pl_h = g_win_height;
 	scene->cam.dust = 0.f;
