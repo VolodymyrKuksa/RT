@@ -25,6 +25,7 @@
 # include "get_next_line.h"
 # include "rt_types.h"
 # include "keys.h"
+# include "parser.h"
 # include "json.h"
 
 # ifdef CLION_BUILD
@@ -47,7 +48,7 @@
 char		*read_file(int fd, size_t *size);
 int			init_win(t_scrn *screen);
 void		close_sdl(t_scrn *screen);
-void		init_scene(t_scene *scene);
+void		init_scene(t_scene *scene, int argc, char **argv);
 
 /*
 **	main.c

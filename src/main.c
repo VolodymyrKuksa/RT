@@ -82,14 +82,14 @@ void	main_loop(t_env *env)
 	}
 }
 
-int		main(void)
+int		main(int argc, char **argv)
 {
 	t_env	env;
 
 	init_opencl(&env.cl);
 	IMG_Init(IMG_INIT_PNG);
 	init_defaults(&env);
-	init_scene(&env.sc);
+	init_scene(&env.sc, argc, argv);
 	printf("ppd: %f\n", calculate_ppd(env.sc.cam.fov));
 	init_seeds(&env.cl.seeds);
 	get_work_group_size(&env.cl);

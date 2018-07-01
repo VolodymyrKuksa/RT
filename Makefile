@@ -13,13 +13,13 @@
 NAME = RT
 N_LFT = libft.a
 N_LVEC = libvec.a
-N_JSON = libjson.a
+N_JSON = libJSON.a
 
 #---------------DIRECTORIES-----------------------------------------------------
 
 D_LFT = libft/
 D_LVEC = libvec/
-D_JSON = lib_json/
+D_JSON = libJSON/
 
 D_SRC = src/
 D_OBJ = obj/
@@ -27,7 +27,7 @@ D_OBJ = obj/
 D_INC = includes/
 D_LFTINC = $(D_LFT)includes/
 D_LVECINC = $(D_LVEC)includes/
-D_JSONINC = $(D_JSON)
+D_JSONINC = $(D_JSON)include/
 
 D_FRW = frameworks/
 D_SDL2 = $(D_FRW)SDL2.framework/
@@ -41,7 +41,7 @@ LJSON = $(D_JSON)$(N_JSON)
 
 #--------------FILES------------------------------------------------------------
 
-HEAD_FILES = rt.h rt_types.h
+HEAD_FILES = rt.h rt_types.h parser.h
 
 C_FILES = main.c read_file.c sdl_utils.c scene_init.c cl_initialization.c\
 cl_exec.c keyboard_events.c movement_events.c rotate.c write_png.c write_ppm.c\
@@ -78,7 +78,7 @@ $(NAME): $(D_OBJ) $(OBJ)
 	@printf "$(C_CYAN)%-10s$(C_NONE)%-25s$(C_GREEN)[done]$(C_NONE)\n" $(NAME): $(N_LVEC)
 	@make -C $(D_JSON)
 	@printf "$(C_CYAN)%-10s$(C_NONE)%-25s$(C_GREEN)[done]$(C_NONE)\n" $(NAME): $(N_JSON)
-	@$(CC) $(OBJ) $(LFT) $(LVEC) $(FRW) -o $(NAME)
+	@$(CC) $(OBJ) $(LFT) $(LVEC) $(LJSON) $(FRW) -o $(NAME)
 	@printf "$(C_CYAN)%-10s$(C_NONE)%-25s$(C_GREEN)[done]$(C_NONE)\n" $(NAME): $@
 
 $(D_OBJ):

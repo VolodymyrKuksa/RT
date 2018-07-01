@@ -14,9 +14,10 @@
 
 int		ft_strcmp(const char *s1, const char *s2)
 {
-	size_t	l;
-
-	l = ft_strlen(s1) > ft_strlen(s2) ? ft_strlen(s2) : ft_strlen(s1);
-	l++;
-	return (ft_memcmp(s1, s2, l));
+	while (*s1 == *s2 && *s1 != '\0' && *s2 != '\0')
+	{
+		s1++;
+		s2++;
+	}
+	return ((unsigned char)*s1 - (unsigned char)*s2);
 }

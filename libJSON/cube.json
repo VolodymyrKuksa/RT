@@ -1,0 +1,41 @@
+{
+	"scene setting" : {
+		"num_of_objs" : 1
+	},
+	"sphere" : {
+		"pos x": 4,
+		"pos y": 4,
+		"pos z": 512,
+		"radius": 1024,
+		"color x": 768,
+		"color y": 1024,
+		"color z": 768,
+		"light": {
+			"emission x": 0,
+			"emission y": 0,
+			"emission z": 0,
+			"roughness": 1,
+			"diffuse": 1,
+			"specular": 0,
+			"refraction": 0
+		}
+	},
+	"cone" : {
+		"pos x": 4,
+		"pos y": 4,
+		"pos z": 512,
+		"radius": 1024,
+		"color x": 768,
+		"color y": 1024,
+		"color z": 768,
+		"light": {
+			"emission x": 0,
+			"emission y": 0,
+			"emission z": 0,
+			"roughness": 1,
+			"diffuse": 1,
+			"specular": 0,
+			"refraction": 0
+		}
+	}
+}
