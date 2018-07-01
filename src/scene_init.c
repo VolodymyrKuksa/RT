@@ -329,6 +329,7 @@ void	filltheplane(json_value *value, t_scene *scene)
 			error_fedun("wrong key");
 		i++;
 	}
+	tmp.primitive.plane.rot = NORMAL(tmp.primitive.plane.rot);
 	tmp.type = plane;
 	scene->obj[scene->cur_obj++] = tmp;
 	print_plane(tmp);
