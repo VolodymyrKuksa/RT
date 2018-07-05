@@ -14,8 +14,9 @@
 extern int	g_win_width;
 extern int	g_win_height;
 #define	LENGTH(a) sqrt(a.x * a.x + a.y * a.y + a.z * a.z)
-#define NORMAL(a) (cl_float3){a.x/LENGTH(a), a.y/LENGTH(a), a.z/LENGTH(a)} //just for test
+#define NORMAL(a) (cl_float3){a.x/LENGTH(a), a.y/LENGTH(a), a.z/LENGTH(a)}//just for test
 #define ABS3(a) (cl_float3){fabs(a.x), fabs(a.y), fabs(a.z)}
+
 void	error_fedun(char *er)
 {
 	ft_putstr(er);
@@ -128,24 +129,40 @@ void	print_plane(t_obj obj)
 	printf("refraction = %f\n", obj.refraction);
 }
 
-void	check_color(t_obj tmp)
+void	fill_position(char *name, cl_float value, cl_float3 *pos)
 {
-	if (tmp.color.x < 0 || tmp.color.x > 1)
+	if (ft_strcmp(name, "pos x") == 0)
+		pos->x = value;
+	if (ft_strcmp(name, "pos y") == 0)
+		pos->y = value;
+	if (ft_strcmp(name, "pos z") == 0)
+		pos->z = value;
+}
+
+void	fill_color(char *name, cl_float value, t_obj *tmp)
+{
+	if (ft_strcmp(name, "color x") == 0)
+		tmp->color.x = value;
+	if (ft_strcmp(name, "color y") == 0)
+		tmp->color.y = value;
+	if (ft_strcmp(name, "color z") == 0)
+		tmp->color.z = value;
+	if (tmp->color.x < 0 || tmp->color.x > 1)
 		error_fedun("0 <= color x <= 1");
-	if (tmp.color.y < 0 || tmp.color.y > 1)
+	if (tmp->color.y < 0 || tmp->color.y > 1)
 		error_fedun("0 <= color y <= 1");
-	if (tmp.color.z < 0 || tmp.color.z > 1)
+	if (tmp->color.z < 0 || tmp->color.z > 1)
 		error_fedun("0 <= color z <= 1");
 }
 
-void	check_cone_rotate(t_obj tmp)
+void	fill_rotate(char *name, cl_float value, cl_float3 *rot)
 {
-	if (tmp.color.x < 0 || tmp.color.x > 1)
-		error_fedun("0 <= color x <= 1");
-	if (tmp.color.y < 0 || tmp.color.y > 1)
-		error_fedun("0 <= color y <= 1");
-	if (tmp.color.z < 0 || tmp.color.z > 1)
-		error_fedun("0 <= color z <= 1");
+	if (ft_strcmp(name, "rot x") == 0)
+		rot->x = value;
+	if (ft_strcmp(name, "rot y") == 0)
+		rot->y = value;
+	if (ft_strcmp(name, "rot z") == 0)
+		rot->z = value;
 }
 
 t_obj	default_sphere(void)
@@ -264,8 +281,9 @@ void	checksumandemiss(t_obj *tmp)
 		return ;
 	else
 		error_fedun("emission > 1 or == 0");
-	//if (tmp->emission.x > 5.0f || tmp->emission.y > 5.0f || tmp->emission.z > 5.0f)
-	//	error_fedun("emission < 5");
+	if (tmp->emission.x > 5.0f || tmp->emission.y > 5.0f ||
+		tmp->emission.z > 5.0f)
+		error_fedun("emission < 5");
 }
 
 void	parselight(json_value *value, t_obj *tmp)
@@ -310,32 +328,16 @@ void	fillthecylind(json_value *value, t_scene *scene)
 	{
 		v = *(value->u.object.values[i].value);
 		//printf("%s   %f\n", value->u.object.values[i].name, value->u.object.values[i].value->u.dbl);
-		if (ft_strcmp(value->u.object.values[i].name, "pos x") == 0)
-			tmp.primitive.cylinder.pos.x = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "pos y") == 0)
-			tmp.primitive.cylinder.pos.y = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "pos z") == 0)
-			tmp.primitive.cylinder.pos.z = (cl_float)v.u.dbl;
+		fill_position(value->u.object.values[i].name, (cl_float)v.u.dbl, &(tmp.primitive.cylinder.pos));
 		if (ft_strcmp(value->u.object.values[i].name, "radius") == 0)
 			tmp.primitive.cylinder.r = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "color x") == 0)
-			tmp.color.x = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "color y") == 0)
-			tmp.color.y = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "color z") == 0)
-			tmp.color.z = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "rot x") == 0)
-			tmp.primitive.cylinder.rot.x = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "rot y") == 0)
-			tmp.primitive.cylinder.rot.y = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "rot z") == 0)
-			tmp.primitive.cylinder.rot.z = (cl_float)v.u.dbl;
+		fill_color(value->u.object.values[i].name, (cl_float)v.u.dbl, &tmp);
+		fill_rotate(value->u.object.values[i].name, (cl_float)v.u.dbl, &(tmp.primitive.cylinder.rot));
 		if (ft_strcmp(value->u.object.values[i].name, "light") == 0)
 			parselight(&v, &tmp);
 		i++;
 	}
 	tmp.type = cylinder;
-	check_color(tmp);
 	tmp.primitive.plane.rot = NORMAL(tmp.primitive.plane.rot);
 	if (SUKA(tmp.primitive.sphere.r, 0) == 0)
 		error_fedun("radius of cylinder is bad");
@@ -358,32 +360,18 @@ void	fillthecone(json_value *value, t_scene *scene)
 	{
 		v = *(value->u.object.values[i].value);
 		//printf("%s   %f\n", value->u.object.values[i].name, value->u.object.values[i].value->u.dbl);
-		if (ft_strcmp(value->u.object.values[i].name, "pos x") == 0)
-			tmp.primitive.cone.pos.x = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "pos y") == 0)
-			tmp.primitive.cone.pos.y = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "pos z") == 0)
-			tmp.primitive.cone.pos.z = (cl_float)v.u.dbl;
+		fill_position(value->u.object.values[i].name,
+			(cl_float)v.u.dbl, &(tmp.primitive.cone.pos));
 		if (ft_strcmp(value->u.object.values[i].name, "tng") == 0)
 			tmp.primitive.cone.tng = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "color x") == 0)
-			tmp.color.x = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "color y") == 0)
-			tmp.color.y = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "color z") == 0)
-			tmp.color.z = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "rot x") == 0)
-			tmp.primitive.cone.rot.x = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "rot y") == 0)
-			tmp.primitive.cone.rot.y = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "rot z") == 0)
-			tmp.primitive.cone.rot.z = (cl_float)v.u.dbl;
+		fill_color(value->u.object.values[i].name, (cl_float)v.u.dbl, &tmp);
+		fill_rotate(value->u.object.values[i].name,
+			(cl_float)v.u.dbl, &(tmp.primitive.cone.rot));
 		if (ft_strcmp(value->u.object.values[i].name, "light") == 0)
 			parselight(&v, &tmp);
 		i++;
 	}
 	tmp.type = cone;
-	check_color(tmp);
 	tmp.primitive.plane.rot = NORMAL(tmp.primitive.plane.rot);
 	scene->obj[scene->cur_obj++] = tmp;
 	print_cone(tmp);
@@ -405,31 +393,18 @@ void	filltheplane(json_value *value, t_scene *scene)
 	{
 		v = *(value->u.object.values[i].value);
 		//printf("%s   %f\n", value->u.object.values[i].name, value->u.object.values[i].value->u.dbl);
-		if (ft_strcmp(value->u.object.values[i].name, "pos x") == 0)
-			tmp.primitive.plane.pos.x = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "pos y") == 0)
-			tmp.primitive.plane.pos.y = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "pos z") == 0)
-			tmp.primitive.plane.pos.z = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "color x") == 0)
-			tmp.color.x = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "color y") == 0)
-			tmp.color.y = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "color z") == 0)
-			tmp.color.z = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "rot x") == 0)
-			tmp.primitive.plane.rot.x = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "rot y") == 0)
-			tmp.primitive.plane.rot.y = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "rot z") == 0)
-			tmp.primitive.plane.rot.z = (cl_float)v.u.dbl;
+		fill_position(value->u.object.values[i].name,
+			(cl_float)v.u.dbl, &(tmp.primitive.plane.pos));
+		fill_color(value->u.object.values[i].name, (cl_float)v.u.dbl, &tmp);
+		fill_rotate(value->u.object.values[i].name,
+			(cl_float)v.u.dbl, &(tmp.primitive.plane.rot));
 		if (ft_strcmp(value->u.object.values[i].name, "light") == 0)
 			parselight(&v, &tmp);
 		i++;
 	}
 	tmp.primitive.plane.rot = NORMAL(tmp.primitive.plane.rot);
 	tmp.type = plane;
-	check_color(tmp);
+	//check_color(tmp);
 	scene->obj[scene->cur_obj++] = tmp;
 	print_plane(tmp);
 }
@@ -448,26 +423,16 @@ void	fillthesphere(json_value *value, t_scene *scene)
 	{
 		v = *(value->u.object.values[i].value);
 		//printf("%s   %f\n", value->u.object.values[i].name, value->u.object.values[i].value->u.dbl);
-		if (ft_strcmp(value->u.object.values[i].name, "pos x") == 0)
-			tmp.primitive.sphere.pos.x = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "pos y") == 0)
-			tmp.primitive.sphere.pos.y = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "pos z") == 0)
-			tmp.primitive.sphere.pos.z = (cl_float)v.u.dbl;
+		fill_position(value->u.object.values[i].name,
+			(cl_float)v.u.dbl, &(tmp.primitive.sphere.pos));
 		if (ft_strcmp(value->u.object.values[i].name, "radius") == 0)
 			tmp.primitive.sphere.r = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "color x") == 0)
-			tmp.color.x = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "color y") == 0)
-			tmp.color.y = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "color z") == 0)
-			tmp.color.z = (cl_float)v.u.dbl;
+		fill_color(value->u.object.values[i].name, (cl_float)v.u.dbl, &tmp);
 		if (ft_strcmp(value->u.object.values[i].name, "light") == 0)
 			parselight(&v, &tmp);
 		i++;
 	}
 	tmp.type = sphere;
-	check_color(tmp);
 	if (SUKA(tmp.primitive.sphere.r, 0) == 0)
 		error_fedun("radius of sphere is bad");
 	scene->obj[scene->cur_obj++] = tmp;
@@ -475,6 +440,8 @@ void	fillthesphere(json_value *value, t_scene *scene)
 
 
 }
+
+
 
 void	camera_default(t_cam *cam)
 {
@@ -522,12 +489,7 @@ void	get_camera_params(json_value *value, t_scene *scene)
 	{
 		
 		v = *(value->u.object.values[i].value);
-		if (ft_strcmp(value->u.object.values[i].name, "pos x") == 0)
-			scene->cam.pos.x = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "pos y") == 0)
-			scene->cam.pos.y = (cl_float)v.u.dbl;
-		if (ft_strcmp(value->u.object.values[i].name, "pos z") == 0)
-			scene->cam.pos.z = (cl_float)v.u.dbl;
+		fill_position(value->u.object.values[i].name, (cl_float)v.u.dbl, &(scene->cam.pos));
 		if (ft_strcmp(value->u.object.values[i].name, "dir x") == 0)
 			scene->cam.dir.x = (cl_float)SUKA(v.u.dbl, 0.0f);
 		if (ft_strcmp(value->u.object.values[i].name, "dir y") == 0)
@@ -632,9 +594,7 @@ void	init_scene(t_scene *scene, int argc, char **argv)
 		free(contents);
 		exit(1);
 	}
-
 	fillthescene(value, scene);
-
 	json_value_free(value);
 	free(contents);
 }
