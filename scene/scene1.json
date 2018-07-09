@@ -10,7 +10,7 @@
 		"f_length" : 60.0,
 		"dust" : 0.0,
 		"fov" : 100.0,
-		"aperture" : 0.01
+		"aperture" : 0.00
 	},
 	"sphere" : {
 		"pos x": -8.0,

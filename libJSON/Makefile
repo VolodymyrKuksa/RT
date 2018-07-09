@@ -1,7 +1,7 @@
-
 CC = clang
 
 NAME = libJSON.a
+PNAME = libJSON
 
 DIR_S = src
 
@@ -15,24 +15,35 @@ SRCS = $(addprefix $(DIR_S)/,$(SOURCES))
 
 OBJS = $(addprefix $(DIR_O)/,$(SOURCES:.c=.o))
 
-all: obj $(NAME)
+C_RED = \033[31m
+C_GREEN = \033[32m
+C_CYAN = \033[36m
+C_NONE = \033[0m
 
-$(NAME): $(OBJS)
-		@ar rc $(NAME) $(OBJS)
-		@ranlib $(NAME)
+all: $(NAME)
 
-obj:
-		@mkdir -p obj
+$(NAME): $(DIR_O) $(OBJS)
+	@ar rc $(NAME) $(OBJS)
+	@ranlib $(NAME)
+	@printf "%-10s%-25s$(C_GREEN)[done]$(C_NONE)\n" $(PNAME): $@
 
-$(DIR_O)/%.o: $(DIR_S)/%.c
-		@$(CC) $(FLAGS) -I $(HEADER) -o $@ -c $<
+$(DIR_O):
+	@mkdir -p obj
+	@printf "%-10s%-25s$(C_GREEN)[done]$(C_NONE)\n" $(PNAME): $@
+
+
+$(DIR_O)/%.o: $(DIR_S)/%.c $(HEADER)/json.h
+	@$(CC) $(FLAGS) -I $(HEADER) -o $@ -c $<
+	@printf "%-10s%-25s$(C_GREEN)[done]$(C_NONE)\n" $(PNAME): $@
 
 clean:
-		@rm -f $(OBJS)
-		@rm -rf $(DIR_O)
+	@rm -f $(OBJS)
+	@rm -rf $(DIR_O)
+	@printf "%-10s%-25s$(C_RED)[done]$(C_NONE)\n" $(PNAME): $@
 
 fclean: clean
-		@rm -f $(NAME)
+	@rm -f $(NAME)
+	@printf "%-10s%-25s$(C_RED)[done]$(C_NONE)\n" $(PNAME): $@
 
 re: fclean all
 

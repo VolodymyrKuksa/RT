@@ -7,12 +7,12 @@ add_library(libft STATIC ${LIBFT_DIR})
 FILE(GLOB_RECURSE LIBVEC_DIR "libvec/src/*.c")
 add_library(libvec STATIC ${LIBVEC_DIR})
 
-FILE(GLOB_RECURSE JSON_DIR "lib_json/*.c")
+FILE(GLOB_RECURSE JSON_DIR "libJSON/*.c")
 add_library(lib_json STATIC ${JSON_DIR})
 
 include_directories(${PROJECT_SOURCE_DIR}/frameworks/SDL2.framework/Headers includes
         ${PROJECT_SOURCE_DIR}/frameworks/SDL2_image.framework/Headers
-        libft/includes libvec/includes lib_json)
+        libft/includes libvec/includes libJSON/include)
 
 find_library(OPENCL OpenCL)
 

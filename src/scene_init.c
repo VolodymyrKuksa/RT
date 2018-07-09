@@ -23,29 +23,6 @@ void	error_fedun(char *er)
 	exit(-1);
 }
 
-char		*read_file(int fd, size_t *size)
-{
-	char	*tmp;
-	char	*res;
-	ssize_t	num;
-	char	buf[256];
-
-	res = (char *)malloc(sizeof(char));
-	res[0] = '\0';
-	if (res < 0)
-		return (NULL);
-	while ((num = read(fd, buf, 255)) > 0)
-	{
-		buf[num] = '\0';
-		tmp = res;
-		res = ft_strjoin(res, buf);
-		free(tmp);
-	}
-	if (size)
-		*size = ft_strlen(res);
-	return (res);
-}
-
 void	print_sphere(t_obj obj)
 {
 	printf("----------------------shpere---------------------------\n");

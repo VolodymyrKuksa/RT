@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "rt.h"
-/*
+
 char		*read_file(int fd, size_t *size)
 {
 	char	*tmp;
@@ -23,7 +23,7 @@ char		*read_file(int fd, size_t *size)
 	res[0] = '\0';
 	if (res < 0)
 		return (NULL);
-	while ((num = read(fd, buf, 255)))
+	while ((num = read(fd, buf, 255)) > 0)
 	{
 		buf[num] = '\0';
 		tmp = res;
@@ -34,4 +34,3 @@ char		*read_file(int fd, size_t *size)
 		*size = ft_strlen(res);
 	return (res);
 }
-*/

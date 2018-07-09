@@ -5,7 +5,7 @@ libft/obj
 libft/libft.a
 libvec/obj
 libvec/libvec.a
-lib_json/libjson.a
-lib_json/*.o
+libJSON/libjson.a
+libJSON/obj
 RT
 obj

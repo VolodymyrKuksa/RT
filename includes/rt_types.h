@@ -12,7 +12,7 @@
 
 #ifndef RT_TYPES_H
 # define RT_TYPES_H
-#define NUMBER_OF_OBJ 4
+
 typedef union		u_rgb
 {
 	unsigned int	c;
@@ -134,7 +134,7 @@ typedef struct		s_scene
 	int				num_obj;
 	t_obj			*obj;
 	t_cam			cam;
-	int 			cur_obj;
+	int				cur_obj;
 }					t_scene;
 
 typedef struct		s_cldata
