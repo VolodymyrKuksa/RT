@@ -1,6 +1,7 @@
 __constant float EPSILON = 0.001;
 __constant float PI = 3.14159265359f;
-__constant int max_bounces = 10;
+__constant int max_bounces = 20;
+__constant int min_bounces = 5;
 
 
 //#include "../src/intersections_and_normals.cl"
@@ -214,8 +215,18 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds)
 {
 	float3	mask = (float3)(1.f, 1.f, 1.f);
 	float3	res = (float3)(0, 0, 0);
+	int		bounce = 0;
 	for (int bounce = 0; bounce < max_bounces; ++bounce)
 	{
+		//if ray cant transfer much light, it will be break earlier
+		if (bounce > min_bounces) {
+			float r = get_random(seeds);
+			float light = mask.x > mask.y && mask.x > mask.z ? mask.x :
+				(mask.y > mask.z ? mask.y : mask.z);
+			if (r > light)
+				break;
+		}
+
 		int hitobj_id = -1;
 		float t = get_intersection(&ray, obj, num_obj, &hitobj_id);
 
