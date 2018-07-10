@@ -13,6 +13,13 @@
 #ifndef KERNEL_H
 # define KERNEL_H
 
+typedef struct		s_txdata
+{
+	unsigned int	width;
+	unsigned int	height;
+	unsigned int	start;
+}					t_txdata;
+
 typedef struct		s_cam
 {
 	__float3		pos;

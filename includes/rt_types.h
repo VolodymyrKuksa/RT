@@ -158,6 +158,8 @@ typedef struct		s_cldata
 	cl_mem				px_gpu;
 	cl_mem				obj_gpu;
 	cl_mem				seed_gpu;
+	cl_mem				tx_gpu;
+	cl_mem				txdata_gpu;
 
 	t_seeds				seeds;
 }					t_cldata;

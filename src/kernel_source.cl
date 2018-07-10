@@ -29,6 +29,8 @@ __float3	normal_cylinder(__float3 , __float3 , t_cylinder *);
 
 float3		get_normal_obj(float3 hitpoint, t_ray ray, t_obj hitobj);
 
+float3		get_texture_col(__global float3 *tx, __global t_txdata *txdata, int tx_count, int x, int y, int tx_id);
+
 t_ray get_camera_ray(int x, int y, t_cam *cam, uint2 *seeds)
 {
 	t_ray ray;
@@ -256,6 +258,18 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds)
 }
 //------------------------------------------------------------------------------/\
 
+
+float3		get_texture_col(__global float3 *tx, __global t_txdata *txdata, int tx_count, int x, int y, int tx_id)
+{
+	x = x % txdata[tx_id].width;
+	y = y % txdata[tx_id].height;
+	if (tx_id >= tx_count)
+		return ((float3)(-1.f, -1.f, -1.f));
+	int		index = txdata[tx_id].start + txdata[tx_id].width * y + x;
+	return (tx[index]);
+}
+
+
  __kernel void	render_pixel(
 	__global float3 *pixels,
 	__global t_obj *obj,
@@ -263,7 +277,10 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds)
 	t_cam cam,
 	int w,
 	int h,
-	__global unsigned int *seed)
+	__global unsigned int *seed,
+	__global float3 *tx,
+	__global t_txdata *txdata,
+	int tx_count)
 {
 	int		id = get_global_id(0);
 	int		x = id % w;
@@ -272,9 +289,12 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds)
 	seeds.x = seed[id];
 	seeds.y = seed[id + w * h];
 
-	t_ray ray = get_camera_ray(x, y, &cam, &seeds);
-	pixels[id] = (float3)(0,0,0);
-	pixels[id] += trace_ray(ray, obj, num_obj, &seeds);
+	int		tx_id = 4;
+	pixels[id] = get_texture_col(tx, txdata, tx_count, x, y, tx_id);
+
+//	t_ray ray = get_camera_ray(x, y, &cam, &seeds);
+//	pixels[id] = (float3)(0,0,0);
+//	pixels[id] += trace_ray(ray, obj, num_obj, &seeds);
 	seed[id] = seeds.x;
 	seed[id + w * h] = seeds.y;
 }

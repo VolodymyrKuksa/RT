@@ -123,26 +123,27 @@ int		main(int argc, char **argv)
 
 	printf("compress_texture ret: %d\n\n", compress_texture(&env.textures));
 	int index = env.textures.txdata[3].start;
-	printf("x: %f; y: %f; z: %f\n", env.textures.tx[index].x, env.textures.tx[index].y, env.textures.tx[index].z);
+	printf("x: %f; y: %f; z: %f\n", env.textures.tx[index].x,
+		env.textures.tx[index].y, env.textures.tx[index].z);
 
 	system("leaks -q RT"); //DEBUG
 
 	printf("\n============== texture loader test ==============\n\n");
 
-	SDL_Surface		*surf = get_texture(4);
-
-	if (surf)
-		SDL_BlitSurface(surf, 0, env.screen.surface, 0);
-	else
-		printf("get_texture returned NULL\n");
-	SDL_UpdateWindowSurface(env.screen.window);
-	sleep(2);
+//	SDL_Surface		*surf = get_texture(1);
+//
+//	if (surf)
+//		SDL_BlitSurface(surf, 0, env.screen.surface, 0);
+//	else
+//		printf("get_texture returned NULL\n");
+//	SDL_UpdateWindowSurface(env.screen.window);
+//	sleep(2);
 
 //==============================================================================
 
-//	main_loop(&env);
+	main_loop(&env);
 	close_sdl(&env.screen);
 	IMG_Quit();
-//	system("leaks -q RT"); //DEBUG
+	system("leaks -q RT"); //DEBUG
 	return (0);
 }

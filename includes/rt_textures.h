@@ -39,8 +39,6 @@ typedef struct		s_txgpu
 	cl_float3		*tx;
 	int				tx_count;
 	int				total_size;
-	cl_mem			*tx_gpu;
-	cl_mem			*txdata_gpu;
 }					t_txgpu;
 
 /*

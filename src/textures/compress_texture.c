@@ -83,6 +83,16 @@ int			fill_tx(t_txgpu *txgpu)
 	return (1);
 }
 
+/*
+**	compress_texture:
+**		Files t_txgpu structure;
+**		Writes all textures as an array of cl_float3 to t_txgpu.tx;
+**		Writes info about all textures as an array of t_txdata to
+**		t_txgpu.txdata;
+**		t_xdata structure includes width, height and index of the first pixel
+**		of texture in the t_txgpu.tx array
+*/
+
 int			compress_texture(t_txgpu *txg)
 {
 	txg->tx = NULL;

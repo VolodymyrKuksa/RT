@@ -72,6 +72,12 @@ void	cl_setup(t_env *e)
 		sizeof(t_obj) * e->sc.num_obj, e->sc.obj, 0);
 	e->cl.seed_gpu = clCreateBuffer(e->cl.context, CL_MEM_READ_WRITE,
 		sizeof(int) * e->cl.seeds.size, 0, 0);
+	e->cl.tx_gpu = clCreateBuffer(e->cl.context, CL_MEM_READ_ONLY |
+		CL_MEM_HOST_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
+		sizeof(cl_float3) * e->textures.total_size, e->textures.tx, 0);
+	e->cl.txdata_gpu = clCreateBuffer(e->cl.context, CL_MEM_READ_ONLY |
+		CL_MEM_HOST_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
+		sizeof(t_txdata) * e->textures.tx_count, e->textures.txdata, 0);
 	clSetKernelArg(e->cl.kernel, 0, sizeof(e->cl.px_gpu), &e->cl.px_gpu);
 	clSetKernelArg(e->cl.kernel, 1, sizeof(e->cl.obj_gpu), &e->cl.obj_gpu);
 	clSetKernelArg(e->cl.kernel, 2, sizeof(e->sc.num_obj), &e->sc.num_obj);
@@ -79,6 +85,9 @@ void	cl_setup(t_env *e)
 	clSetKernelArg(e->cl.kernel, 4, sizeof(g_win_width), &g_win_width);
 	clSetKernelArg(e->cl.kernel, 5, sizeof(g_win_height), &g_win_height);
 	clSetKernelArg(e->cl.kernel, 6, sizeof(e->cl.seed_gpu), &e->cl.seed_gpu);
+	clSetKernelArg(e->cl.kernel, 7, sizeof(e->cl.tx_gpu), &e->cl.tx_gpu);
+	clSetKernelArg(e->cl.kernel, 8, sizeof(e->cl.txdata_gpu), &e->cl.txdata_gpu);
+	clSetKernelArg(e->cl.kernel, 9, sizeof(e->textures.tx_count), &e->textures.tx_count);
 }
 
 void	get_work_group_size(t_cldata *cl)
