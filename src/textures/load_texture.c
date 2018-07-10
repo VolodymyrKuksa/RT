@@ -15,7 +15,7 @@
 static t_txlst	*g_txlst = NULL;
 unsigned int	g_txt_count = 0;
 
-t_txlst	*new_txlst_node(SDL_Surface *surf, char *filename, int id)
+t_txlst			*new_txlst_node(SDL_Surface *surf, char *filename, int id)
 {
 	t_txlst	*new;
 
@@ -32,7 +32,7 @@ t_txlst	*new_txlst_node(SDL_Surface *surf, char *filename, int id)
 	return (new);
 }
 
-int		add_to_txlst(char *filename, t_txlst **ptr)
+int				add_to_txlst(char *filename, t_txlst **ptr)
 {
 	SDL_Surface		*surf;
 
@@ -56,7 +56,7 @@ int		add_to_txlst(char *filename, t_txlst **ptr)
 **		identifier of the texture.
 */
 
-int		load_texture(char *filename)
+int				load_texture(char *filename)
 {
 	t_txlst		*tmp;
 
@@ -70,7 +70,17 @@ int		load_texture(char *filename)
 	return (add_to_txlst(filename, &tmp->next));
 }
 
-void	print_txtlst(void)		//USES PRINTF (FOR DEBUG)
+SDL_Surface		*get_texture(int id)
+{
+	t_txlst	*tmp;
+
+	tmp = g_txlst;
+	while (tmp && tmp->id != id)
+		tmp = tmp->next;
+	return (tmp->surf);
+}
+
+void			print_txtlst(void)		//USES PRINTF (FOR DEBUG)
 {
 	t_txlst		*tmp;
 

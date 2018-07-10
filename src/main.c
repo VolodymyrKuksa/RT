@@ -123,6 +123,15 @@ int		main(int argc, char **argv)
 
 	printf("\n============== texture loader test ==============\n\n");
 
+	SDL_Surface		*surf = get_texture(1);
+
+	if (surf)
+		SDL_BlitSurface(surf, 0, env.screen.surface, 0);
+	else
+		printf("get_texture returned NULL\n");
+	SDL_UpdateWindowSurface(env.screen.window);
+	sleep(2);
+
 //==============================================================================
 
 //	main_loop(&env);

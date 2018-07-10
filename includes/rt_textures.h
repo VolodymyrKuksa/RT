@@ -30,6 +30,7 @@ typedef struct		s_txlst
 */
 
 int					load_texture(char *filename);
+SDL_Surface			*get_texture(int id);
 void				print_txtlst(void);//USES PRINTF
 
 #endif
