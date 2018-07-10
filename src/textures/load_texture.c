@@ -12,8 +12,8 @@
 
 #include "rt_textures.h"
 
-static t_txlst	*g_txlst = NULL;
-unsigned int	g_txt_count = 0;
+t_txlst			*g_txlst = NULL;
+unsigned int	g_tx_count = 0;
 
 t_txlst			*new_txlst_node(SDL_Surface *surf, char *filename, int id)
 {
@@ -38,14 +38,14 @@ int				add_to_txlst(char *filename, t_txlst **ptr)
 
 	if (!(surf = IMG_Load(filename)))
 		return (-1);
-	if (!(*ptr = new_txlst_node(surf, filename, g_txt_count + 1)))
+	if (!(*ptr = new_txlst_node(surf, filename, g_tx_count)))
 	{
 		SDL_FreeSurface(surf);
 		surf = NULL;
 		return (-1);
 	}
-	++g_txt_count;
-	return (g_txt_count);
+	++g_tx_count;
+	return ((*ptr)->id);
 }
 
 /*
@@ -74,10 +74,14 @@ SDL_Surface		*get_texture(int id)
 {
 	t_txlst	*tmp;
 
+	if (id < 0 || id >= g_tx_count)
+		return (NULL);
 	tmp = g_txlst;
 	while (tmp && tmp->id != id)
 		tmp = tmp->next;
-	return (tmp->surf);
+	if (tmp)
+		return (tmp->surf);
+	return (NULL);
 }
 
 void			print_txtlst(void)		//USES PRINTF (FOR DEBUG)

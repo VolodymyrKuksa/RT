@@ -13,6 +13,7 @@
 #ifndef RT_TEXTURES_H
 # define RT_TEXTURES_H
 
+# include <OpenCL/opencl.h>
 # include <SDL.h>
 # include <SDL_image.h>
 # include "libft.h"
@@ -25,6 +26,23 @@ typedef struct		s_txlst
 	struct s_txlst	*next;
 }					t_txlst;
 
+typedef struct		s_txdata
+{
+	unsigned int	width;
+	unsigned int	height;
+	unsigned int	start;
+}					t_txdata;
+
+typedef struct		s_txgpu
+{
+	t_txdata		*txdata;
+	cl_float3		*tx;
+	int				tx_count;
+	int				total_size;
+	cl_mem			*tx_gpu;
+	cl_mem			*txdata_gpu;
+}					t_txgpu;
+
 /*
 **	load_texture.c
 */
@@ -32,5 +50,11 @@ typedef struct		s_txlst
 int					load_texture(char *filename);
 SDL_Surface			*get_texture(int id);
 void				print_txtlst(void);//USES PRINTF
+
+/*
+**	compress_texture.c
+*/
+
+int					compress_texture(t_txgpu *txg);
 
 #endif
