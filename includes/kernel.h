@@ -96,6 +96,7 @@ typedef struct		s_object
 	float		ior;
 	__float3	color;
 	__float3	emission;
+	int			tex_id;
 }					t_obj;
 
 #endif

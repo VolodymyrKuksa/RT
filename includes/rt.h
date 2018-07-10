@@ -23,6 +23,7 @@
 # include "libft.h"
 # include "libvec.h"
 # include "get_next_line.h"
+# include "rt_textures.h"
 # include "rt_types.h"
 # include "keys.h"
 # include "parser.h"

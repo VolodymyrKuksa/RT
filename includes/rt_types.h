@@ -13,6 +13,8 @@
 #ifndef RT_TYPES_H
 # define RT_TYPES_H
 
+# include "rt_textures.h"
+
 typedef union		u_rgb
 {
 	unsigned int	c;
@@ -127,6 +129,7 @@ typedef struct		s_object
 	cl_float	ior;
 	cl_float3	color;
 	cl_float3	emission;
+	int			tex_id;
 }					t_obj;
 
 typedef struct		s_scene

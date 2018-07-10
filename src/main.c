@@ -87,15 +87,47 @@ int		main(int argc, char **argv)
 	t_env	env;
 
 	init_opencl(&env.cl);
-	IMG_Init(IMG_INIT_PNG);
+	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
 	init_defaults(&env);
 	init_scene(&env.sc, argc, argv);
 	init_seeds(&env.cl.seeds);
 	get_work_group_size(&env.cl);
 	init_win(&env.screen);
-	main_loop(&env);
+
+//==============TEXTURE LOADER TEST ONLY WORKS IN TERMINAL======================
+
+//create norules file (cannot be added to git):
+// touch norules && chmod 000 norules
+
+	printf("\n============== texture loader test ==============\n\n");
+
+	system("leaks -q RT"); //DEBUG
+
+	printf("load not existing: %d\n", load_texture("tutu"));
+	printf("load1: %d\n", load_texture("textures/Wood1.jpg"));
+	printf("load not existing: %d\n", load_texture("tutu"));
+	printf("load1: %d\n", load_texture("textures/Wood1.jpg"));
+	printf("load directory: %d\n", load_texture("textures"));
+	printf("load2: %d\n", load_texture("textures/Wood2.jpg"));
+	printf("load3: %d\n", load_texture("textures/Wood3.jpg"));
+	printf("load1: %d\n", load_texture("textures/Wood1.jpg"));
+	printf("load not existing: %d\n", load_texture("tutu"));
+	printf("load directory: %d\n", load_texture("textures"));
+	printf("load no rules: %d\n", load_texture("norules"));
+
+	printf("\n");
+	print_txtlst();
+	printf("\n");
+
+	system("leaks -q RT"); //DEBUG
+
+	printf("\n============== texture loader test ==============\n\n");
+
+//==============================================================================
+
+//	main_loop(&env);
 	close_sdl(&env.screen);
 	IMG_Quit();
-	system("leaks -q RT"); //DEBUG
+//	system("leaks -q RT"); //DEBUG
 	return (0);
 }

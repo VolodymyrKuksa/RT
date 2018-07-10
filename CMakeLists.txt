@@ -8,7 +8,7 @@ FILE(GLOB_RECURSE LIBVEC_DIR "libvec/src/*.c")
 add_library(libvec STATIC ${LIBVEC_DIR})
 
 FILE(GLOB_RECURSE JSON_DIR "libJSON/*.c")
-add_library(lib_json STATIC ${JSON_DIR})
+add_library(lib_json STATIC ${JSON_DIR} src/textures/load_texture.c includes/rt_textures.h)
 
 include_directories(${PROJECT_SOURCE_DIR}/frameworks/SDL2.framework/Headers includes
         ${PROJECT_SOURCE_DIR}/frameworks/SDL2_image.framework/Headers

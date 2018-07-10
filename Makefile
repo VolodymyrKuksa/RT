@@ -41,11 +41,11 @@ LJSON = $(D_JSON)$(N_JSON)
 
 #--------------FILES------------------------------------------------------------
 
-HEAD_FILES = rt.h rt_types.h parser.h
+HEAD_FILES = rt.h rt_types.h parser.h keys.h rt_textures.h
 
 C_FILES = main.c read_file.c sdl_utils.c scene_init.c cl_initialization.c\
 cl_exec.c keyboard_events.c movement_events.c rotate.c write_png.c write_ppm.c\
-window_event.c scene_utils.c rot_obj.c mv_obj.c
+window_event.c scene_utils.c rot_obj.c mv_obj.c textures/load_texture.c
 
 
 SRC = $(addprefix $(D_SRC), $(C_FILES))
@@ -83,6 +83,7 @@ $(NAME): $(D_OBJ) $(OBJ)
 
 $(D_OBJ):
 	@mkdir $(D_OBJ)
+	@mkdir $(D_OBJ)textures
 	@printf "$(C_CYAN)%-10s$(C_NONE)%-25s$(C_GREEN)[done]$(C_NONE)\n" $(NAME): $@
 
 $(D_OBJ)%.o: $(D_SRC)%.c $(HEADERS)

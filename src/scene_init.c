@@ -19,7 +19,7 @@ extern int	g_win_height;
 
 void	error_fedun(char *er)
 {
-	ft_putstr(er);
+	ft_putendl(er);
 	exit(-1);
 }
 
@@ -438,7 +438,7 @@ void	check_camera(t_cam *cam)
 {
 	if (cam->fov <= 10.0 || cam->fov >= 160.0)
 		camera_default(cam);
-	if (cam->aperture <= 0.0000001f || cam->aperture >= 100.0)
+	if (cam->aperture < 0.f || cam->aperture >= 100.0)
 		camera_default(cam);
 	cam->updir.x = 0;
 	cam->updir.y = 1;
@@ -446,7 +446,7 @@ void	check_camera(t_cam *cam)
 	cam->ldir.x = -1;
 	cam->ldir.y = 0;
 	cam->ldir.z = 0;
-	cam->ratio = cam->f_length / calculate_ppd(cam->fov); //935.f for 60 degree fov
+	cam->ratio = cam->f_length / calculate_ppd(cam->fov);
 	cam->pr_pl_w = g_win_width;
 	cam->pr_pl_h = g_win_height;
 }
@@ -480,7 +480,7 @@ void	get_camera_params(json_value *value, t_scene *scene)
 		if (ft_strcmp(value->u.object.values[i].name, "fov") == 0)
 			scene->cam.fov = (cl_float)v.u.dbl;
 		if (ft_strcmp(value->u.object.values[i].name, "aperture") == 0)
-			scene->cam.aperture = v.u.dbl;
+			scene->cam.aperture = (float)v.u.dbl;
 		i++;
 	}
 	check_camera(&(scene->cam));
@@ -494,7 +494,6 @@ void	get_camera_params(json_value *value, t_scene *scene)
 		printf(" cam dust  %f\n", scene->cam.dust);
 		printf(" cam fov  %f\n", scene->cam.fov);
 		printf(" cam aperture  %f\n", scene->cam.aperture);
-
 }
 
 void	fillthescene(json_value *value, t_scene *scene)
@@ -514,28 +513,19 @@ void	fillthescene(json_value *value, t_scene *scene)
 	while (i < l)
 	{
 		if (ft_strcmp("sphere", value->u.object.values[i].name) == 0)
-		{
 			fillthesphere(value->u.object.values[i].value, scene);
-		}
 		else if (ft_strcmp("cone", value->u.object.values[i].name) == 0)
-		{
 			fillthecone(value->u.object.values[i].value, scene);
-		}
 		else if (ft_strcmp("plane", value->u.object.values[i].name) == 0)
-		{
 			filltheplane(value->u.object.values[i].value, scene);
-		}
 		else if (ft_strcmp("cylinder", value->u.object.values[i].name) == 0)
-		{
 			fillthecylind(value->u.object.values[i].value, scene);
-		}
 		else
 			error_fedun("wrong key in root");
 		if (scene->cur_obj >= scene->num_obj)
 			return ;
 		i++;
 	}
-
 }
 
 void	parse_scene(int argc, char **argv, char **contents, size_t *len)
@@ -558,12 +548,12 @@ void	init_scene(t_scene *scene, int argc, char **argv)
 {
 	json_value* value;
 	char *contents;
-	size_t leh;
+	size_t len;
 
-    scene->cur_obj = 0;
-    parse_scene(argc, argv, &contents, &leh);
+	scene->cur_obj = 0;
+	parse_scene(argc, argv, &contents, &len);
 
-	value = json_parse((json_char*)contents,leh);
+	value = json_parse(contents,len);
 
 	if (value == NULL)
 	{
@@ -575,296 +565,3 @@ void	init_scene(t_scene *scene, int argc, char **argv)
 	json_value_free(value);
 	free(contents);
 }
-
-/*
-void	init_scene(t_scene *scene, int argc, char **argv)
-{
-	t_obj	tmp;
-	json_value *value;
-
-	scene->num_obj = 15;
-	scene->obj = (t_obj*)malloc(sizeof(t_obj) * scene->num_obj);
-
-	tmp.primitive.sphere.pos.x = -5;
-	tmp.primitive.sphere.pos.y = -3;
-	tmp.primitive.sphere.pos.z = -50;
-	tmp.primitive.sphere.r= 4;
-	tmp.color.x = 1.f;
-	tmp.color.y = 0.5f;
-	tmp.color.z = 0.5f;
-	tmp.emission.x = 0.f;
-	tmp.emission.y = 0.f;
-	tmp.emission.z = 0.f;
-	tmp.roughness = 1.f;
-	tmp.diffuse = 1.f;
-	tmp.specular = 0;
-	tmp.refraction = 0;
-	tmp.type = sphere;
-	scene->obj[0] = tmp;
-
-	tmp.primitive.sphere.pos.x = -8;
-	tmp.primitive.sphere.pos.y = -7;
-	tmp.primitive.sphere.pos.z = -40;
-	tmp.primitive.sphere.r= 3;
-	tmp.color.x = 1.f;
-	tmp.color.y = 0.9f;
-	tmp.color.z = 1.f;
-	tmp.emission.x = 0;
-	tmp.emission.y = 0;
-	tmp.emission.z = 0;
-	tmp.roughness = 0;
-	tmp.diffuse = 1.f;
-	tmp.specular = 0;
-	tmp.refraction = 0;
-	tmp.type = sphere;
-	scene->obj[1] = tmp;
-
-	tmp.primitive.sphere.pos.x = 0;
-	tmp.primitive.sphere.pos.y = 0;
-	tmp.primitive.sphere.pos.z = -600;
-	tmp.color.x = 1.f;
-	tmp.color.y = 1.f;
-	tmp.color.z = 1.f;
-	tmp.emission.x = 0;
-	tmp.emission.y = 0;
-	tmp.emission.z = 0;
-	tmp.roughness = 1.f;
-	tmp.diffuse = 1.f;
-	tmp.specular = 0.f;
-	tmp.refraction = 0.f;
-	tmp.primitive.sphere.r= 490;
-	tmp.type = sphere;
-	scene->obj[2] = tmp;
-
-	tmp.primitive.sphere.pos.x = 500;
-	tmp.primitive.sphere.pos.y = 0;
-	tmp.primitive.sphere.pos.z = 0;
-	tmp.color.x = 0.5f;
-	tmp.color.y = 1.0f;
-	tmp.color.z = 0.5f;
-	tmp.emission.x = 0;
-	tmp.emission.y = 0;
-	tmp.emission.z = 0;
-	tmp.roughness = 1.f;
-	tmp.diffuse = 1.f;
-	tmp.specular = 0.f;
-	tmp.refraction = 0.f;
-	tmp.type = sphere;
-	tmp.primitive.sphere.r= 490;
-	scene->obj[3] = tmp;
-
-	tmp.primitive.sphere.pos.x = -500;
-	tmp.primitive.sphere.pos.y = 0;
-	tmp.primitive.sphere.pos.z = 0;
-	tmp.color.x = 0.5f;
-	tmp.color.y = 0.5f;
-	tmp.color.z = 1.0f;
-	tmp.emission.x = 0;
-	tmp.emission.y = 0;
-	tmp.emission.z = 0;
-	tmp.roughness = 1.f;
-	tmp.diffuse = 1.f;
-	tmp.specular = 0.f;
-	tmp.refraction = 0.f;
-	tmp.type = sphere;
-	tmp.primitive.sphere.r= 490;
-	scene->obj[4] = tmp;
-
-	tmp.primitive.sphere.pos.x = 0;
-	tmp.primitive.sphere.pos.y = 500;
-	tmp.primitive.sphere.pos.z = 0;
-	tmp.color.x = 1.0f;
-	tmp.color.y = 1.0f;
-	tmp.color.z = 1.0f;
-	tmp.emission.x = 0;
-	tmp.emission.y = 0;
-	tmp.emission.z = 0;
-	tmp.roughness = 1.f;
-	tmp.diffuse = 1.f;
-	tmp.specular = 0.f;
-	tmp.refraction = 0.f;
-	tmp.type = sphere;
-	tmp.primitive.sphere.r= 490;
-	scene->obj[5] = tmp;
-
-	tmp.primitive.sphere.pos.x = 0;
-	tmp.primitive.sphere.pos.y = -500;
-	tmp.primitive.sphere.pos.z = 0;
-	tmp.color.x = 1.0f;
-	tmp.color.y = 0.5f;
-	tmp.color.z = 0.5f;
-	tmp.emission.x = 0;
-	tmp.emission.y = 0;
-	tmp.emission.z = 0;
-	tmp.roughness = 1.f;
-	tmp.diffuse = 1.f;
-	tmp.specular = 0.f;
-	tmp.refraction = 0.f;
-	tmp.type = sphere;
-	tmp.primitive.sphere.r= 490;
-	scene->obj[6] = tmp;
-
-	tmp.primitive.sphere.pos.x = 0;
-	tmp.primitive.sphere.pos.y = 0;
-	tmp.primitive.sphere.pos.z = 5000;
-	tmp.color.x = 1.0f;
-	tmp.color.y = 0.0f;
-	tmp.color.z = 1.f;
-	tmp.emission.x = 0;
-	tmp.emission.y = 0;
-	tmp.emission.z = 0;
-	tmp.roughness = 1.f;
-	tmp.diffuse = 1.f;
-	tmp.specular = 0.f;
-	tmp.refraction = 0.f;
-	tmp.type = sphere;
-	tmp.primitive.sphere.r= 490;
-	scene->obj[7] = tmp;
-
-	tmp.primitive.sphere.pos.x = 0;
-	tmp.primitive.sphere.pos.y = 13;
-	tmp.primitive.sphere.pos.z = -60;
-	tmp.color.x = 1.0f;
-	tmp.color.y = 1.0f;
-	tmp.color.z = 1.0f;
-	tmp.emission.x = 0;
-	tmp.emission.y = 0;
-	tmp.emission.z = 0;
-	tmp.type = sphere;
-	tmp.primitive.sphere.r= 4;
-	scene->obj[8] = tmp;
-
-	tmp.primitive.sphere.pos.x = 2.5;
-	tmp.primitive.sphere.pos.y = 0;
-	tmp.primitive.sphere.pos.z = -60;
-	tmp.color.x = 0.f;
-	tmp.color.y = 1.f;
-	tmp.color.z = 0.f;
-	tmp.emission.x = 0;
-	tmp.emission.y = 0;
-	tmp.emission.z = 0;
-	tmp.roughness = 0.0f;
-	tmp.diffuse = 0.f;
-	tmp.specular = 1.f;
-	tmp.refraction = 0.f;
-	tmp.type = sphere;
-	tmp.primitive.sphere.r= 5;
-	scene->obj[9] = tmp;
-
-	tmp.primitive.sphere.pos.x = -2;
-	tmp.primitive.sphere.pos.y = -2;
-	tmp.primitive.sphere.pos.z = -40;
-	tmp.color.x = 1.f;
-	tmp.color.y = 1.f;
-	tmp.color.z = 1.f;
-	tmp.emission.x = 0;
-	tmp.emission.y = 0;
-	tmp.emission.z = 0;
-	tmp.roughness = 0.1f;
-	tmp.diffuse = 0.9f;
-	tmp.specular = 0.1f;
-	tmp.refraction = 0.f;
-	tmp.type = sphere;
-	tmp.primitive.sphere.r= 3;
-	scene->obj[10] = tmp;
-
-	tmp.primitive.sphere.pos.x = -5;
-	tmp.primitive.sphere.pos.y = 3;
-	tmp.primitive.sphere.pos.z = -60;
-	tmp.color.x = 1.f;
-	tmp.color.y = 1.f;
-	tmp.color.z = 1.f;
-	tmp.emission.x = 0;
-	tmp.emission.y = 0;
-	tmp.emission.z = 0;
-	tmp.roughness = 0.f;
-	tmp.diffuse = 0.f;
-	tmp.specular = 0.f;
-	tmp.refraction = 1.f;
-	tmp.type = sphere;
-	tmp.primitive.sphere.r= 3.5;
-	scene->obj[11] = tmp;
-
-	tmp.primitive.cylinder.pos.x = -5;
-	tmp.primitive.cylinder.pos.y = 3;
-	tmp.primitive.cylinder.pos.z = -60;
-	tmp.color.x = 1.f;
-	tmp.color.y = 1.f;
-	tmp.color.z = 1.f;
-	tmp.emission.x = 3;
-	tmp.emission.y = 0;
-	tmp.emission.z = 3;
-	tmp.roughness = 1.f;
-	tmp.diffuse = 1.f;
-	tmp.specular = 0.f;
-	tmp.refraction = 0.f;
-	tmp.primitive.cylinder.r = 2;
-	tmp.primitive.cylinder.rot.x = 0;
-	tmp.primitive.cylinder.rot.y = 1;
-	tmp.primitive.cylinder.rot.z = 0;
-	tmp.type = cylinder;
-	scene->obj[12] = tmp;
-
-	tmp.primitive.cone.pos.x = -2;
-	tmp.primitive.cone.pos.y = -2;
-	tmp.primitive.cone.pos.z = -40;
-	tmp.primitive.cone.rot.x = 1;
-	tmp.primitive.cone.rot.y = 0;
-	tmp.primitive.cone.rot.z = 0;
-	tmp.primitive.cone.tng = 0.1;
-	tmp.color.x = 1.f;
-	tmp.color.y = 1.f;
-	tmp.color.z = 1.f;
-	tmp.emission.x = 3;
-	tmp.emission.y = 3;
-	tmp.emission.z = 3;
-	tmp.roughness = 1.f;
-	tmp.diffuse = 1.f;
-	tmp.specular = 0.f;
-	tmp.refraction = 0.f;
-	tmp.type = cone;
-	scene->obj[13] = tmp;
-
-	tmp.primitive.plane.pos.x = 10;
-	tmp.primitive.plane.pos.y = -10;
-	tmp.primitive.plane.pos.z = 0;
-	tmp.primitive.plane.rot.x = -1;
-	tmp.primitive.plane.rot.y = 1;
-	tmp.primitive.plane.rot.z = 0;
-	tmp.primitive.plane.rot = NORMAL(tmp.primitive.plane.rot);
-	tmp.color.x = 1.f;
-	tmp.color.y = 1.f;
-	tmp.color.z = 1.f;
-	tmp.emission.x = 1;
-	tmp.emission.y = 1;
-	tmp.emission.z = 1;
-	tmp.roughness = 1.f;
-	tmp.diffuse = 1.f;
-	tmp.specular = 0.f;
-	tmp.refraction = 0.f;
-	tmp.type = plane;
-	scene->obj[14] = tmp;
-
-	scene->cam.pos.x = 0;
-	scene->cam.pos.y = 0;
-	scene->cam.pos.z = 0;
-	scene->cam.dir.x = 0;
-	scene->cam.dir.y = 0;
-	scene->cam.dir.z = -1;
-	scene->cam.updir.x = 0;
-	scene->cam.updir.y = 1;
-	scene->cam.updir.z = 0;
-	scene->cam.ldir.x = -1;
-	scene->cam.ldir.y = 0;
-	scene->cam.ldir.z = 0;
-	scene->cam.f_length = 60.f;
-	scene->cam.aperture = 0.f;
-	scene->cam.fov = 90;
-	scene->cam.ratio = scene->cam.f_length / calculate_ppd(scene->cam.fov); //935.f for 60 degree fov
-	scene->cam.pr_pl_w = g_win_width;
-	scene->cam.pr_pl_h = g_win_height;
-	scene->cam.dust = 0.f;
-	printf("ratio: %f\n", scene->cam.ratio);
-}
-*/
-
