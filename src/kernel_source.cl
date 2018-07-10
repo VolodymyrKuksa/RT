@@ -1,21 +1,14 @@
+#include "kernel.h"
+
 __constant float EPSILON = 0.001;
 __constant float PI = 3.14159265359f;
 __constant int max_bounces = 20;
 __constant int min_bounces = 5;
 
 
-//#include "../src/intersections_and_normals.cl"
-#include "kernel.h"
-
-
-
-
 t_ray get_camera_ray(int x, int y, t_cam *cam, uint2 *seeds);
-//float	check_sphere(t_ray *ray, t_sphere sphere);
 static float get_random(uint2 *seeds);
 float	solve_quad(t_quad q);
-//float3	sphere_normal_point(float3 pt, t_sphere sphere);
-//float3	sphere_normal_ray(t_ray r, t_sphere sphere, float t);
 float	get_intersection(t_ray *r, __global t_obj *obj, int n_obj, int *id);
 float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds);
 t_ray	diffuse(t_ray ray, float3 n, float3 hitpoint, uint2 *seeds);
@@ -148,8 +141,6 @@ t_ray	reflect(t_ray ray, float3 n, float3 hitpoint, t_obj sp, uint2 *seeds)
 t_ray	refract(t_ray ray, __float3 hitpoint, t_obj object, uint2 *seeds)
 {
 	float3	n = get_normal_obj(hitpoint, ray, object);
-
-	//тут, наверное, будет проблема с enter (я поменял направление ещё в функции normal_sphere)
 
 	bool	enter = dot(ray.dir, n) > 0 ? false : true;
 	n = enter ? n : n * -1;

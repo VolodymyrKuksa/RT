@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.9)
-project(rt C)
+project(RT C)
 
 FILE(GLOB_RECURSE LIBFT_DIR "libft/src/*.c")
 add_library(libft STATIC ${LIBFT_DIR})
@@ -16,13 +16,13 @@ include_directories(${PROJECT_SOURCE_DIR}/frameworks/SDL2.framework/Headers incl
 
 find_library(OPENCL OpenCL)
 
-add_executable(rt includes/rt_types.h includes/rt.h src/main.c src/read_file.c
+add_executable(RT includes/rt_types.h includes/rt.h src/main.c src/read_file.c
         src/sdl_utils.c src/scene_init.c src/cl_initialization.c src/cl_exec.c
         src/keyboard_events.c includes/keys.h src/movement_events.c src/rotate.c
-        src/write_png.c src/write_ppm.c src/window_event.c src/scene_utils.c)
+        src/write_png.c src/write_ppm.c src/window_event.c src/scene_utils.c src/rot_obj.c src/mv_obj.c)
 
-target_link_libraries(rt ${SDL2_LIBRARY} ${OPENCL} libft libvec lib_json
+target_link_libraries(RT ${SDL2_LIBRARY} ${OPENCL} libft libvec lib_json
         ${SDL} "-F ${PROJECT_SOURCE_DIR}/frameworks -framework SDL2"
         ${SDL2_IMG} "-rpath ${PROJECT_SOURCE_DIR}/frameworks -framework SDL2_image")
 
-target_compile_definitions(rt PUBLIC CLION_BUILD)
+target_compile_definitions(RT PUBLIC CLION_BUILD)

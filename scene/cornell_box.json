@@ -10,7 +10,7 @@
 	  "f_length" : 60.0,
 	  "dust" : 0.0,
 	  "fov" : 90.0,
-	  "aperture" : 0.0
+	  "aperture" : 0.00001
 	},
 	"plane" :
 	{
@@ -56,8 +56,8 @@
 	"color y" : 1.0,
 	"color z" : 1.0,
 	"light" : {
-	  "diffuse" : 0.1,
-	  "specular" : 1.0,
+	  "diffuse" : 1.0,
+	  "specular" : 0.0,
 	  "refraction" : 0.0,
 	  "roughness" : 0.0,
 	  "emission z" : 0.0
@@ -75,8 +75,8 @@
 	"color y" : 1.0,
 	"color z" : 1.0,
 	"light" : {
-	  "diffuse" : 0.1,
-	  "specular" : 1.0,
+	  "diffuse" : 1.0,
+	  "specular" : 0.0,
 	  "refraction" : 0.0,
 	  "roughness" : 0.0,
 	  "emission z" : 0.0

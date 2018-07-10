@@ -505,8 +505,8 @@ void	fillthescene(json_value *value, t_scene *scene)
 	l = value->u.object.length;
 	if (l <= 1)
 		error_fedun("objects are not defined");
-	scene->num_obj = l;
-	scene->obj = (t_obj *)malloc(sizeof(t_obj) * l);
+	scene->num_obj = l - 1;		//quick fix
+	scene->obj = (t_obj *)malloc(sizeof(t_obj) * scene->num_obj);	//quick fix
 	i = 0;
 	if (ft_strcmp(value->u.object.values[i++].name, "scene"))
 		error_fedun("scene must be first");

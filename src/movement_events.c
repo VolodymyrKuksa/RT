@@ -39,16 +39,14 @@ void	write_scene_to_kernel(t_env *env)
 
 void	turn(float d, t_env *env, cl_float3 (*f)(float, cl_float3, t_mvdata))
 {
-	int i;
+	static void	(*rt[4])(float, t_obj *,
+		t_mvdata, cl_float3 (*fun)(float, cl_float3, t_mvdata)) = {rot_sphere,
+		rot_plane, rot_cylinder, rot_cone};
+	int			i;
 
 	i = -1;
 	while (++i < env->sc.num_obj)
-	{
-		env->sc.obj[i].primitive.sphere.pos =
-			f(d, env->sc.obj[i].primitive.sphere.pos, env->mv_data);
-		env->sc.obj[i].primitive.sphere.rot =
-			f(d, env->sc.obj[i].primitive.sphere.rot, env->mv_data);
-	}
+		rt[env->sc.obj[i].type](d, &env->sc.obj[i], env->mv_data, f);
 	env->num_samples = 0;
 	clear_pixels(&env->cl);
 	write_scene_to_kernel(env);
@@ -56,15 +54,17 @@ void	turn(float d, t_env *env, cl_float3 (*f)(float, cl_float3, t_mvdata))
 
 void	move(t_env *env, float x, float y, float z)
 {
-	int i;
+	static void	(*mv[4])(cl_float3, t_obj *, t_mvdata) = {mv_sphere, mv_plane,
+		mv_cylinder, mv_cone};
+	int			i;
+	cl_float3	d;
 
+	d.x = x;
+	d.y = y;
+	d.z = z;
 	i = -1;
 	while (++i < env->sc.num_obj)
-	{
-		env->sc.obj[i].primitive.sphere.pos.x += x * env->mv_data.move_spd;
-		env->sc.obj[i].primitive.sphere.pos.y += y * env->mv_data.move_spd;
-		env->sc.obj[i].primitive.sphere.pos.z += z * env->mv_data.move_spd;
-	}
+		mv[env->sc.obj[i].type](d, &env->sc.obj[i], env->mv_data);
 	env->num_samples = 0;
 	clear_pixels(&env->cl);
 	write_scene_to_kernel(env);

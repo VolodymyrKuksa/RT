@@ -45,7 +45,7 @@ HEAD_FILES = rt.h rt_types.h parser.h
 
 C_FILES = main.c read_file.c sdl_utils.c scene_init.c cl_initialization.c\
 cl_exec.c keyboard_events.c movement_events.c rotate.c write_png.c write_ppm.c\
-window_event.c scene_utils.c
+window_event.c scene_utils.c rot_obj.c mv_obj.c
 
 
 SRC = $(addprefix $(D_SRC), $(C_FILES))
