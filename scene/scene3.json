@@ -20,6 +20,9 @@
 		"color x": 1.0,
 		"color y": 0.9,
 		"color z" : 1.0,
+		"rot x" : 0.0,
+		"rot y" : -98.0,
+		"rot z" : 0.0,
 		"texture" : "textures/Wood1.jpg",
 		"light": {
 			"emission x": 1.0,
@@ -39,6 +42,9 @@
 		"color x": 0.0,
 		"color y": 0.9,
 		"color z" : 1.0,
+		"rot x" : 20.0,
+		"rot y" : 100.0,
+		"rot z" : 5.0,
 		"texture" : "textures/Red1.png",
 		"light": {
 			"emission x": 0.0,
@@ -58,6 +64,9 @@
 		"color x": 1.0,
 		"color y": 1.0,
 		"color z": 1.0,
+		"rot x" : 45.0,
+		"rot y" : 0.0,
+		"rot z" : 5.0,
 		"texture" : "textures",
 		"light": {
 			"emission x": 1.0,

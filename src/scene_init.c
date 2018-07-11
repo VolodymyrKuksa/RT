@@ -30,6 +30,7 @@ void		minus_camera(cl_float3 *pos, cl_float3 cam_pos)
 	pos->z -= cam_pos.z;
 }
 
+/*
 void fill_u(char *s, float value, cl_float3 *u)
 {
 	if (ft_strcmp(s, "rot x") == 0)
@@ -42,6 +43,8 @@ void fill_u(char *s, float value, cl_float3 *u)
 	{u->z = value;
 		printf("uuuuu zzzz = %f\n", u->z);}
 }
+*/
+
 void	print_sphere(t_obj obj)
 {
 	printf("----------------------shpere---------------------------\n");
@@ -52,6 +55,9 @@ void	print_sphere(t_obj obj)
 	printf("color x = %f\n", obj.color.x);
 	printf("color y = %f\n", obj.color.y);
 	printf("color z = %f\n", obj.color.z);
+	printf("u x = %f\n", obj.basis.u.x);
+	printf("u y = %f\n", obj.basis.u.y);
+	printf("u z = %f\n", obj.basis.u.z);
 	printf("emission x = %f\n", obj.emission.x);
 	printf("emission y = %f\n", obj.emission.y);
 	printf("emission z = %f\n", obj.emission.z);
@@ -160,7 +166,7 @@ void	fill_color(char *name, cl_float value, t_obj *tmp)
 	if (tmp->color.z < 0 || tmp->color.z > 1)
 		error_fedun("0 <= color z <= 1");
 }
-/*
+
 void	fill_rotate(char *name, cl_float value, cl_float3 *rot)
 {
 	if (ft_strcmp(name, "rot x") == 0)
@@ -170,7 +176,7 @@ void	fill_rotate(char *name, cl_float value, cl_float3 *rot)
 	if (ft_strcmp(name, "rot z") == 0)
 		rot->z = value;
 }
-*/
+
 t_obj	default_sphere(void)
 {
 	t_obj	tmp;
@@ -284,6 +290,21 @@ t_obj	default_plane(void)
 	return (tmp);
 }
 
+void		init_rotate(t_basis *basis, cl_float3 rot)
+{
+	basis->u = clvec_rot_x(basis->u, DTR(rot.x));
+	basis->u = clvec_rot_y(basis->u, DTR(rot.y));
+	basis->u = clvec_rot_z(basis->u, DTR(rot.z));
+
+	basis->v = clvec_rot_x(basis->v, DTR(rot.x));
+	basis->v = clvec_rot_y(basis->v, DTR(rot.y));
+	basis->v = clvec_rot_z(basis->v, DTR(rot.z));
+
+	basis->w = clvec_rot_x(basis->w, DTR(rot.x));
+	basis->w = clvec_rot_y(basis->w, DTR(rot.y));
+	basis->w = clvec_rot_z(basis->w, DTR(rot.z));
+}
+
 void	checksumandemiss(t_obj *tmp)
 {
 	float	sum;
@@ -341,10 +362,12 @@ void	fillthecylind(json_value *value, t_scene *scene)
 	int l;
 	t_obj	tmp;
 	json_value v;
+	cl_float3	rot;
 
 	i = 0;
 	tmp = default_cylinder();
 	l = value->u.object.length;
+	rot = (cl_float3){0.0, 0.0, 0.0};
 	while (i < l)
 	{
 		v = *(value->u.object.values[i].value);
@@ -353,14 +376,15 @@ void	fillthecylind(json_value *value, t_scene *scene)
 		if (ft_strcmp(value->u.object.values[i].name, "radius") == 0)
 			tmp.primitive.cylinder.r = (cl_float)v.u.dbl;
 		fill_color(value->u.object.values[i].name, (cl_float)v.u.dbl, &tmp);
-		//fill_rotate(value->u.object.values[i].name, (cl_float)v.u.dbl, &(tmp.primitive.cylinder.rot));
+		fill_rotate(value->u.object.values[i].name, (cl_float)v.u.dbl, &(rot));
 		if (ft_strcmp(value->u.object.values[i].name, "light") == 0)
 			parselight(&v, &tmp);
 		if (ft_strcmp(value->u.object.values[i].name, "texture") == 0)
 			tmp.tex_id = load_texture(v.u.string.ptr);
-		fill_u(value->u.object.values[i].name, (cl_float)v.u.dbl, &(tmp.basis.u));
+		//fill_u(value->u.object.values[i].name, (cl_float)v.u.dbl, &(tmp.basis.u));
 		i++;
 	}
+	init_rotate(&(tmp.basis), rot);
 	tmp.type = cylinder;
 	minus_camera(&(tmp.primitive.cylinder.pos), scene->cam.pos);
 	//tmp.primitive.cylinder.rot = NORMAL(tmp.primitive.cylinder.rot);
@@ -375,10 +399,12 @@ void	fillthecone(json_value *value, t_scene *scene)
 	int l;
 	t_obj	tmp;
 	json_value v;
+	cl_float3	rot;
 
 	i = 0;
 	tmp = default_cone();
 	l = value->u.object.length;
+	rot = (cl_float3){0.0, 0.0, 0.0};
 	while (i < l)
 	{
 		v = *(value->u.object.values[i].value);
@@ -388,15 +414,16 @@ void	fillthecone(json_value *value, t_scene *scene)
 		if (ft_strcmp(value->u.object.values[i].name, "tng") == 0)
 			tmp.primitive.cone.tng = (cl_float)v.u.dbl;
 		fill_color(value->u.object.values[i].name, (cl_float)v.u.dbl, &tmp);
-		//fill_rotate(value->u.object.values[i].name,
-		//	(cl_float)v.u.dbl, &(tmp.primitive.cone.rot));
+		fill_rotate(value->u.object.values[i].name,
+			(cl_float)v.u.dbl, &(rot));
 		if (ft_strcmp(value->u.object.values[i].name, "light") == 0)
 			parselight(&v, &tmp);
 		if (ft_strcmp(value->u.object.values[i].name, "texture") == 0)
 			tmp.tex_id = load_texture(v.u.string.ptr);
-		fill_u(value->u.object.values[i].name, (cl_float)v.u.dbl, &(tmp.basis.u));
+		//fill_u(value->u.object.values[i].name, (cl_float)v.u.dbl, &(tmp.basis.u));
 		i++;
 	}
+	init_rotate(&(tmp.basis), rot);
 	minus_camera(&(tmp.primitive.cone.pos), scene->cam.pos);
 	tmp.type = cone;
 	//tmp.primitive.cone.rot = NORMAL(tmp.primitive.cone.rot);
@@ -412,9 +439,11 @@ void	filltheplane(json_value *value, t_scene *scene)
 	int l;
 	t_obj	tmp;
 	json_value v;
+	cl_float3	rot;
 
 	i = 0;
 	tmp = default_plane();
+	rot = (cl_float3){0.0, 0.0, 0.0};
 	l = value->u.object.length;
 	while (i < l)
 	{
@@ -422,15 +451,16 @@ void	filltheplane(json_value *value, t_scene *scene)
 		fill_position(value->u.object.values[i].name,
 			(cl_float)v.u.dbl, &(tmp.primitive.plane.pos));
 		fill_color(value->u.object.values[i].name, (cl_float)v.u.dbl, &tmp);
-		//fill_rotate(value->u.object.values[i].name,
-		//	(cl_float)v.u.dbl, &(tmp.primitive.plane.rot));
+		fill_rotate(value->u.object.values[i].name,
+			(cl_float)v.u.dbl, &rot);
 		if (ft_strcmp(value->u.object.values[i].name, "light") == 0)
 			parselight(&v, &tmp);
 		if (ft_strcmp(value->u.object.values[i].name, "texture") == 0)
 			tmp.tex_id = load_texture(v.u.string.ptr);
-		fill_u(value->u.object.values[i].name, (cl_float)v.u.dbl, &(tmp.basis.u));
+		//fill_u(value->u.object.values[i].name, (cl_float)v.u.dbl, &(tmp.basis.u));
 		i++;
 	}
+	init_rotate(&(tmp.basis), rot);
 	minus_camera(&(tmp.primitive.plane.pos), scene->cam.pos);
 	//tmp.primitive.plane.rot = NORMAL(tmp.primitive.plane.rot);
 	tmp.type = plane;
@@ -444,10 +474,12 @@ void			fillthesphere(json_value *value, t_scene *scene)
 	int			l;
 	t_obj		tmp;
 	json_value	v;
+	cl_float3	rot;
 
 	i = 0;
 	tmp = default_sphere();
 	l = value->u.object.length;
+	rot = (cl_float3){0.0, 0.0, 0.0};
 	while (i < l)
 	{
 		//printf("%s\n", value->u.object.values[i].name);
@@ -459,12 +491,15 @@ void			fillthesphere(json_value *value, t_scene *scene)
 		fill_color(value->u.object.values[i].name, (cl_float)v.u.dbl, &tmp);
 		if (ft_strcmp(value->u.object.values[i].name, "light") == 0)
 			parselight(&v, &tmp);
+		fill_rotate(value->u.object.values[i].name,
+			(cl_float)v.u.dbl, &rot);
 		if (ft_strcmp(value->u.object.values[i].name, "texture") == 0)
 			tmp.tex_id = load_texture(v.u.string.ptr);
-		fill_u(value->u.object.values[i].name, (cl_float)v.u.dbl, &(tmp.basis.u));
+		//fill_u(value->u.object.values[i].name, (cl_float)v.u.dbl, &(tmp.basis.u));
 		i++;
 	}
 	tmp.type = sphere;
+	init_rotate(&(tmp.basis), rot);
 	minus_camera(&(tmp.primitive.sphere.pos), scene->cam.pos);
 	if (SUKA(tmp.primitive.sphere.r, 0) == 0)
 		error_fedun("radius of sphere is bad");
