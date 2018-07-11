@@ -10,7 +10,7 @@ t_ray get_camera_ray(int x, int y, t_cam *cam, uint2 *seeds);
 static float get_random(uint2 *seeds);
 float	solve_quad(t_quad q);
 float	get_intersection(t_ray *r, __global t_obj *obj, int n_obj, int *id);
-float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds);
+float3	trace_ray(t_ray, __global t_obj *, int, uint2 *, t_texture);
 t_ray	diffuse(t_ray ray, float3 n, float3 hitpoint, uint2 *seeds);
 t_ray	reflect(t_ray ray, float3 n, float3 hitpt, t_obj sp, uint2 *seeds);
 t_ray	refract(t_ray ray, float3 hitpoint, t_obj hitsphere, uint2 *seeds);
@@ -29,7 +29,9 @@ __float3	normal_cylinder(__float3 , __float3 , t_cylinder * , __float3);
 
 float3		get_normal_obj(float3 hitpoint, t_ray ray, t_obj hitobj);
 
-float3		get_texture_col(__global t_rgb *tx, __global t_txdata *txdata, int tx_count, int x, int y, int tx_id);
+float3		get_texture_col(t_texture texture, int x, int y, int tx_id);
+float3		change_of_basis(float3 vec, t_basis basis);
+float3	get_point_color(t_obj hitobj, float3 hitpoint, t_texture texture);
 
 t_ray get_camera_ray(int x, int y, t_cam *cam, uint2 *seeds)
 {
@@ -203,8 +205,30 @@ bool	participating_media(t_ray *ray, float t, uint2 *seeds)
 	}
 	return false;
 }
+
+float3	change_of_basis(float3 vec, t_basis basis)
+{
+	float3	tmp;
+
+	tmp.x = vec.x * basis.v.x + vec.y * basis.v.y + vec.z * basis.v.z;
+	tmp.y = vec.x * basis.u.x + vec.y * basis.u.y + vec.z * basis.u.z;
+	tmp.z = vec.x * basis.w.x + vec.y * basis.w.y + vec.z * basis.w.z;
+
+	return tmp;
+}
+
+float3	get_point_color(t_obj hitobj, float3 hitpoint, t_texture texture)
+{
+	if (hitobj.tex_id < 0 || hitobj.type != plane)
+		return hitobj.color;
+	hitpoint -= hitobj.primitive.plane.pos;
+	hitpoint = change_of_basis(hitpoint, hitobj.basis);
+	hitpoint *= 20;
+	return get_texture_col(texture, hitpoint.x, hitpoint.z, hitobj.tex_id);
+}
+
 //------------------------------------------------------------------------------\/
-float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds)
+float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds, t_texture texture)
 {
 	float3	mask = (float3)(1.f, 1.f, 1.f);
 	float3	res = (float3)(0, 0, 0);
@@ -239,7 +263,8 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds)
 		rand -= hitobj.diffuse;
 		if (rand <= 0.f)
 		{
-			mask *= hitobj.color;
+//			mask *= hitobj.color;
+			mask *= get_point_color(hitobj, hitpoint, texture);
 			ray = diffuse(ray, n, hitpoint, seeds);
 			float	cosine = dot(n, ray.dir);
 			cosine = cosine < 0 ? -cosine : cosine;
@@ -259,15 +284,16 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds)
 //------------------------------------------------------------------------------/\
 
 
-float3		get_texture_col(__global t_rgb *tx, __global t_txdata *txdata, int tx_count, int x, int y, int tx_id)
+float3		get_texture_col(t_texture texture, int x, int y, int tx_id)
 {
-	x = x % txdata[tx_id].width;
-	y = y % txdata[tx_id].height;
-	if (tx_id >= tx_count)
+	x = x % texture.txdata[tx_id].width;
+	y = y % texture.txdata[tx_id].height;
+	if (!texture.tx || !texture.txdata || tx_id >= texture.tx_count)
 		return ((float3)(-1.f, -1.f, -1.f));
-	int		index = txdata[tx_id].start + txdata[tx_id].width * y + x;
-	float3		res =
-		(float3)(tx[index].bgra[2], tx[index].bgra[1], tx[index].bgra[0]);
+	int		index = texture.txdata[tx_id].start + texture.txdata[tx_id].width *
+		y + x;
+	float3		res = (float3)(texture.tx[index].bgra[2],
+		texture.tx[index].bgra[1], texture.tx[index].bgra[0]);
 	return (res/ 256);
 }
 
@@ -291,12 +317,14 @@ float3		get_texture_col(__global t_rgb *tx, __global t_txdata *txdata, int tx_co
 	seeds.x = seed[id];
 	seeds.y = seed[id + w * h];
 
-//	int		tx_id = 1;
-//	pixels[id] = get_texture_col(tx, txdata, tx_count, x, y, tx_id);
+	t_texture	texture = {tx, txdata, tx_count};
+
+//	int		tx_id = 2;
+//	pixels[id] = get_texture_col(texture, x, y, tx_id);
 
 	t_ray ray = get_camera_ray(x, y, &cam, &seeds);
 	pixels[id] = (float3)(0,0,0);
-	pixels[id] += trace_ray(ray, obj, num_obj, &seeds);
+	pixels[id] += trace_ray(ray, obj, num_obj, &seeds, texture);
 	seed[id] = seeds.x;
 	seed[id + w * h] = seeds.y;
 }

@@ -45,7 +45,7 @@
 		"rot x" : 20.0,
 		"rot y" : 100.0,
 		"rot z" : 5.0,
-		"texture" : "textures/Red1.png",
+		"texture" : "textures/Pattern3.jpg",
 		"light": {
 			"emission x": 0.0,
 			"emission y": 0.0,
@@ -67,7 +67,7 @@
 		"rot x" : 45.0,
 		"rot y" : 0.0,
 		"rot z" : 5.0,
-		"texture" : "textures",
+		"texture" : "textures/Paper1.jpg",
 		"light": {
 			"emission x": 1.0,
 			"emission y": 1.0,
