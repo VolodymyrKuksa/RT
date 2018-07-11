@@ -112,7 +112,8 @@ int		main(int argc, char **argv)
 	printf("load3: %d\n", load_texture("textures/Wood3.jpg"));
 	printf("load1: %d\n", load_texture("textures/Wood1.jpg"));
 	printf("load4: %d\n", load_texture("textures/Red1.png"));
-	printf("load5: %d\n", load_texture("textures/Bricks1.jpg"));
+	printf("load5: %d\n", load_texture("textures/Pattern3.jpg"));
+	printf("load6: %d\n", load_texture("textures/Sand1.jpg"));
 	printf("load not existing: %d\n", load_texture("tutu"));
 	printf("load directory: %d\n", load_texture("textures"));
 	printf("load no rules: %d\n", load_texture("norules"));
@@ -122,15 +123,16 @@ int		main(int argc, char **argv)
 	printf("\n");
 
 	printf("compress_texture ret: %d\n\n", compress_texture(&env.textures));
-	int index = env.textures.txdata[3].start;
-	printf("x: %f; y: %f; z: %f\n", env.textures.tx[index].x,
-		env.textures.tx[index].y, env.textures.tx[index].z);
+//	free_txlst();
+//	int index = env.textures.txdata[3].start;
+//	printf("x: %f; y: %f; z: %f\n", env.textures.tx[index].x,
+//		env.textures.tx[index].y, env.textures.tx[index].z);
 
 	system("leaks -q RT"); //DEBUG
 
 	printf("\n============== texture loader test ==============\n\n");
 
-//	SDL_Surface		*surf = get_texture(1);
+//	SDL_Surface		*surf = get_texture(4);
 //
 //	if (surf)
 //		SDL_BlitSurface(surf, 0, env.screen.surface, 0);

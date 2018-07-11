@@ -37,19 +37,7 @@ int			fill_txdata(t_txdata *txdata)
 	return (start);
 }
 
-cl_float3	rgb_to_float3(unsigned int rgb)
-{
-	t_rgb		col;
-	cl_float3	res;
-
-	col.c = rgb;
-	res.x = (float)col.bgra[2] / 256;
-	res.y = (float)col.bgra[1] / 256;
-	res.z = (float)col.bgra[0] / 256;
-	return (res);
-}
-
-void		write_tx(cl_float3 *tx, SDL_Surface *surf)
+void		write_tx(t_rgb *tx, SDL_Surface *surf)
 {
 	int		i;
 	int		j;
@@ -59,10 +47,8 @@ void		write_tx(cl_float3 *tx, SDL_Surface *surf)
 	{
 		j = -1;
 		while (++j < surf->w)
-		{
-			tx[i * surf->w + j] =
-				rgb_to_float3(((unsigned int *)surf->pixels)[i * surf->w + j]);
-		}
+			tx[i * surf->w + j].c =
+				((unsigned int *)surf->pixels)[i * surf->w + j];
 	}
 }
 
@@ -107,7 +93,7 @@ int			compress_texture(t_txgpu *txg)
 		free(txg->txdata);
 		return (-1);
 	}
-	if (!(txg->tx = (cl_float3*)malloc(sizeof(cl_float3) * txg->total_size)))
+	if (!(txg->tx = (t_rgb*)malloc(sizeof(t_rgb) * txg->total_size)))
 	{
 		free(txg->txdata);
 		return (-1);
@@ -119,4 +105,20 @@ int			compress_texture(t_txgpu *txg)
 		return (-1);
 	}
 	return (1);
+}
+
+void		free_txlst(void)
+{
+	t_txlst		*tmp;
+	t_txlst		*tmp1;
+
+	tmp = g_txlst;
+	while (tmp)
+	{
+		SDL_FreeSurface(tmp->surf);
+		free(tmp->filename);
+		tmp1 = tmp;
+		tmp = tmp->next;
+		free(tmp1);
+	}
 }
