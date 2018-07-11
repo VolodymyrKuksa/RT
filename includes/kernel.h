@@ -66,27 +66,23 @@ typedef enum		e_obj_type
 typedef struct		s_sphere
 {
 	__float3	pos;
-	float3		rot;
 	float		r;
 }					t_sphere;
 
 typedef struct		s_cylinder
 {
 	__float3	pos;
-	__float3	rot;
 	float		r;
 }					t_cylinder;
 
 typedef struct		s_plane
 {
 	__float3	pos;
-	__float3	rot;
 }					t_plane;
 
 typedef struct		s_cone
 {
 	__float3	pos;
-	__float3	rot;
 	float		tng;
 }					t_cone;
 
@@ -98,10 +94,18 @@ typedef	union		u_primitive
 	t_cone		cone;
 }					t_primitive;
 
+typedef struct		s_basis
+{
+	__float3		u;
+	__float3		v;
+	__float3		w;
+}					t_basis;
+
 typedef struct		s_object
 {
 	t_obj_type	type;
 	t_primitive	primitive;
+	t_basis		basis;
 	float		diffuse;
 	float		specular;
 	float		refraction;

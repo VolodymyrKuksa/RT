@@ -18,9 +18,9 @@ float3	sample_hemisphere(float3 w, float max_r, uint2 *seeds);
 bool	participating_media(t_ray *ray, float t, uint2 *seeds);
 
 float	intersection_sphere(t_ray*,t_sphere);
-float	intersection_cone(t_ray*,t_cone);
-float	intersection_plane(t_ray*,t_plane);
-float	intersection_cylinder(t_ray*,t_cylinder);
+float	intersection_cone(t_ray*,t_cone,__float3);
+float	intersection_plane(t_ray*,t_plane,__float3);
+float	intersection_cylinder(t_ray*,t_cylinder,__float3);
 
 __float3	normal_sphere(__float3 , __float3 , t_sphere *);
 __float3	normal_cone(__float3 , __float3 , t_cone *);
@@ -82,13 +82,13 @@ float	get_intersection(t_ray *r, __global t_obj *object, int num_obj, int *id)
 				tmp = intersection_sphere(r, object[i].primitive.sphere);
 				break;
 			case cylinder:
-				tmp = intersection_cylinder(r, object[i].primitive.cylinder);
+				tmp = intersection_cylinder(r, object[i].primitive.cylinder, object[i].basis.u);
 				break;
 			case plane:
-				tmp = intersection_plane(r, object[i].primitive.plane);
+				tmp = intersection_plane(r, object[i].primitive.plane, object[i].basis.u);
 				break;
 			case cone:
-				tmp = intersection_cone(r, object[i].primitive.cone);
+				tmp = intersection_cone(r, object[i].primitive.cone, object[i].basis.u);
 				break;
 			default:
 				break;
@@ -291,7 +291,7 @@ float3		get_texture_col(__global t_rgb *tx, __global t_txdata *txdata, int tx_co
 	seeds.x = seed[id];
 	seeds.y = seed[id + w * h];
 
-	int		tx_id = 5;
+	int		tx_id = 1;
 	pixels[id] = get_texture_col(tx, txdata, tx_count, x, y, tx_id);
 
 //	t_ray ray = get_camera_ray(x, y, &cam, &seeds);

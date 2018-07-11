@@ -18,15 +18,15 @@ float	intersection_sphere(t_ray *ray,t_sphere sphere)
 	//return(1.f);
 }
 
-float	intersection_cylinder(t_ray *ray,t_cylinder cylinder)
+float	intersection_cylinder(t_ray *ray,t_cylinder cylinder, __float3 c_rot)
 {
 	t_quad		q;
 	__float3 	x;
 	float	tmp[2];
 
 	x = ray->pos - cylinder.pos;
-	tmp[0] = dot(ray->dir, cylinder.rot);
-	tmp[1] = dot(x, cylinder.rot);
+	tmp[0] = dot(ray->dir, c_rot);
+	tmp[1] = dot(x, c_rot);
 	q.a = 2.0 * (dot(ray->dir, ray->dir) - tmp[0] * tmp[0]);
 	q.b = 2.0 * (dot(ray->dir, x) - tmp[0] * tmp[1]);
 	q.c = dot(x, x) - tmp[1] * tmp[1] - cylinder.r * cylinder.r;
@@ -36,15 +36,15 @@ float	intersection_cylinder(t_ray *ray,t_cylinder cylinder)
 	return ((q.res = (-q.b - q.d) / q.a) > 0 ? q.res : (-q.b + q.d) / q.a);
 }
 
-float	intersection_plane(t_ray *ray,t_plane plane)
+float	intersection_plane(t_ray *ray,t_plane plane, __float3 p_rot)
 {
 	__float3 	x;
 
 	x = ray->pos - plane.pos;
-	return (-dot(x, plane.rot) / dot(ray->dir,plane.rot));
+	return (-dot(x, p_rot) / dot(ray->dir,p_rot));
 }
 
-float	intersection_cone(t_ray *ray,t_cone cone)
+float	intersection_cone(t_ray *ray,t_cone cone, __float3 c_rot)
 {
 	__float3 	x;
 	float	tmp[3];
@@ -52,8 +52,8 @@ float	intersection_cone(t_ray *ray,t_cone cone)
 
 	x = ray->pos - cone.pos;
 	tmp[0] = cone.tng * cone.tng + 1.0;
-	tmp[1] = dot(ray->dir, cone.rot);
-	tmp[2] = dot(x, cone.rot);
+	tmp[1] = dot(ray->dir, c_rot);
+	tmp[2] = dot(x, c_rot);
 	q.a = 2.0 * (dot(ray->dir, ray->dir) - tmp[0] * tmp[1] * tmp[1]);
 	q.b = 2.0 * (dot(ray->dir, x) - tmp[0] * tmp[1] * tmp[2]);
 	q.c = dot(x, x) - tmp[0] * tmp[2] * tmp[2];
@@ -83,10 +83,10 @@ __float3	normal_cylinder(__float3  hitpoint, __float3  dir, t_cylinder *cylinder
 	__float3 	normal;
 	float	t;
 
-	t = dot(cylinder->rot, cylinder->pos) -
-		dot(cylinder->rot, hitpoint);
-	t /= dot(cylinder->rot, cylinder->rot);
-	normal = hitpoint - cylinder->pos + cylinder->rot * t;
+	t = dot(cylinder->c_rot, cylinder->pos) -
+		dot(cylinder->c_rot, hitpoint);
+	t /= dot(cylinder->c_rot, cylinder->c_rot);
+	normal = hitpoint - cylinder->pos + cylinder->c_rot * t;
 	normal = normalize(normal);
 //	if (dot(dir, normal) > 0)
 //		normal *= -1.f;
@@ -97,7 +97,7 @@ __float3	normal_plane(__float3  hitpoint, __float3  dir, t_plane *plane)
 {
 	__float3  normal;
 
-	normal = plane->rot;
+	normal = plane->c_rot;
 //	if (dot(dir, normal) > 0)
 //		normal *=  -1.f;
 	return (normal);
@@ -107,11 +107,11 @@ __float3	normal_cone(__float3  hitpoint, __float3  dir, t_cone *cone)
 {
 	__float3  normal;
 
-	if (dot(cone->rot, cone->pos - hitpoint) < 0)
-		normal = cone->rot * length(cone->pos - hitpoint)
+	if (dot(cone->c_rot, cone->pos - hitpoint) < 0)
+		normal = cone->c_rot * length(cone->pos - hitpoint)
 										* sqrt(cone->tng * cone->tng + 1);
 	else
-		normal = cone->rot * -1 * length(cone->pos - hitpoint) *
+		normal = cone->c_rot * -1 * length(cone->pos - hitpoint) *
 							 sqrt(cone->tng * cone->tng + 1);
 	normal += cone->pos;
 	normal = hitpoint - normal;

@@ -72,28 +72,28 @@ void	move(t_env *env, float x, float y, float z)
 
 void	movement_events(t_env *env)
 {
-	if (env->mv_data.move_keys & KEY_W)
-		turn(-1, env, rotate_x);
-	if (env->mv_data.move_keys & KEY_S)
-		turn(1, env, rotate_x);
-	if (env->mv_data.move_keys & KEY_A)
-		turn(-1, env, rotate_y);
-	if (env->mv_data.move_keys & KEY_D)
-		turn(1, env, rotate_y);
-	if (env->mv_data.move_keys & KEY_Q)
-		turn(-1, env, rotate_z);
-	if (env->mv_data.move_keys & KEY_E)
-		turn(1, env, rotate_z);
-	if (env->mv_data.move_keys & KEY_UP)
-		move(env, 0, 0, 1);
-	if (env->mv_data.move_keys & KEY_DOWN)
-		move(env, 0, 0, -1);
-	if (env->mv_data.move_keys & KEY_RIGHT)
-		move(env, -1, 0, 0);
-	if (env->mv_data.move_keys & KEY_LEFT)
-		move(env, 1, 0, 0);
-	if (env->mv_data.move_keys & KEY_SPACE)
-		move(env, 0, -1, 0);
-	if (env->mv_data.move_keys & KEY_LSHIFT)
-		move(env, 0, 1, 0);
+//	if (env->mv_data.move_keys & KEY_W)
+//		turn(-1, env, rotate_x);
+//	if (env->mv_data.move_keys & KEY_S)
+//		turn(1, env, rotate_x);
+//	if (env->mv_data.move_keys & KEY_A)
+//		turn(-1, env, rotate_y);
+//	if (env->mv_data.move_keys & KEY_D)
+//		turn(1, env, rotate_y);
+//	if (env->mv_data.move_keys & KEY_Q)
+//		turn(-1, env, rotate_z);
+//	if (env->mv_data.move_keys & KEY_E)
+//		turn(1, env, rotate_z);
+//	if (env->mv_data.move_keys & KEY_UP)
+//		move(env, 0, 0, 1);
+//	if (env->mv_data.move_keys & KEY_DOWN)
+//		move(env, 0, 0, -1);
+//	if (env->mv_data.move_keys & KEY_RIGHT)
+//		move(env, -1, 0, 0);
+//	if (env->mv_data.move_keys & KEY_LEFT)
+//		move(env, 1, 0, 0);
+//	if (env->mv_data.move_keys & KEY_SPACE)
+//		move(env, 0, -1, 0);
+//	if (env->mv_data.move_keys & KEY_LSHIFT)
+//		move(env, 0, 1, 0);
 }
