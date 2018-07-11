@@ -14,7 +14,7 @@
 extern int	g_win_width;
 extern int	g_win_height;
 #define	LENGTH(a) sqrt(a.x * a.x + a.y * a.y + a.z * a.z)
-#define NORMAL(a) (cl_float3){a.x/LENGTH(a), a.y/LENGTH(a), a.z/LENGTH(a)}//just for test
+#define NORMAL(a) (cl_float3){a.x/LENGTH(a), a.y/LENGTH(a), a.z/LENGTH(a)}
 #define ABS3(a) (cl_float3){fabs(a.x), fabs(a.y), fabs(a.z)}
 
 void	error_fedun(char *er)
@@ -272,7 +272,6 @@ void	parselight(json_value *value, t_obj *tmp)
 	while (i < value->u.object.length)
 	{
 		v = *(value->u.object.values[i].value);
-		//printf("  %s   %f    \n ", pars->light[i], value->u.object.values[i].value->u.dbl);
 		if (!ft_strcmp(value->u.object.values[i].name, "emission x"))
 			tmp->emission.x = (cl_float)v.u.dbl;
 		if (!ft_strcmp(value->u.object.values[i].name, "emission y"))
@@ -320,8 +319,6 @@ void	fillthecylind(json_value *value, t_scene *scene)
 		error_fedun("radius of cylinder is bad");
 	scene->obj[scene->cur_obj++] = tmp;
 	print_cylinder(tmp);
-
-
 }
 void	fillthecone(json_value *value, t_scene *scene)
 {
@@ -369,7 +366,6 @@ void	filltheplane(json_value *value, t_scene *scene)
 	while (i < l)
 	{
 		v = *(value->u.object.values[i].value);
-		//printf("%s   %f\n", value->u.object.values[i].name, value->u.object.values[i].value->u.dbl);
 		fill_position(value->u.object.values[i].name,
 			(cl_float)v.u.dbl, &(tmp.primitive.plane.pos));
 		fill_color(value->u.object.values[i].name, (cl_float)v.u.dbl, &tmp);
@@ -381,17 +377,16 @@ void	filltheplane(json_value *value, t_scene *scene)
 	}
 	tmp.primitive.plane.rot = NORMAL(tmp.primitive.plane.rot);
 	tmp.type = plane;
-	//check_color(tmp);
 	scene->obj[scene->cur_obj++] = tmp;
 	print_plane(tmp);
 }
 
-void	fillthesphere(json_value *value, t_scene *scene)
+void			fillthesphere(json_value *value, t_scene *scene)
 {
-	int		i;
-	int l;
-	t_obj	tmp;
-	json_value v;
+	int			i;
+	int			l;
+	t_obj		tmp;
+	json_value	v;
 
 	i = 0;
 	tmp = default_sphere();
@@ -399,7 +394,6 @@ void	fillthesphere(json_value *value, t_scene *scene)
 	while (i < l)
 	{
 		v = *(value->u.object.values[i].value);
-		//printf("%s   %f\n", value->u.object.values[i].name, value->u.object.values[i].value->u.dbl);
 		fill_position(value->u.object.values[i].name,
 			(cl_float)v.u.dbl, &(tmp.primitive.sphere.pos));
 		if (ft_strcmp(value->u.object.values[i].name, "radius") == 0)
@@ -414,11 +408,7 @@ void	fillthesphere(json_value *value, t_scene *scene)
 		error_fedun("radius of sphere is bad");
 	scene->obj[scene->cur_obj++] = tmp;
 	print_sphere(tmp);
-
-
 }
-
-
 
 void	camera_default(t_cam *cam)
 {
@@ -437,9 +427,16 @@ void	camera_default(t_cam *cam)
 void	check_camera(t_cam *cam)
 {
 	if (cam->fov <= 10.0 || cam->fov >= 160.0)
-		camera_default(cam);
+	{
+		ft_putstr("fov of camera is wrong. setting to default 90..\n");
+		printf("\n%f\n", cam->fov);
+		cam->fov = 90.0;
+	}
 	if (cam->aperture < 0.f || cam->aperture >= 100.0)
-		camera_default(cam);
+	{
+		ft_putstr("aperture of camera is wrong. setting to def n0.00001..\n");
+		cam->aperture = 0.00001f;
+	}
 	cam->updir.x = 0;
 	cam->updir.y = 1;
 	cam->updir.z = 0;
@@ -451,20 +448,18 @@ void	check_camera(t_cam *cam)
 	cam->pr_pl_h = g_win_height;
 }
 
-void	get_camera_params(json_value *value, t_scene *scene)
+void			get_camera_params(json_value *value, t_scene *scene)
 {
-	int l;
-	int i;
-	json_value v;
+	int			l;
+	int			i;
+	json_value	v;
 
 	l = value->u.object.length;
 	i = 0;
 	if (l != 10)
 		error_fedun("wrong number of parameters in scene");
-	check_camera(&(scene->cam));
 	while (i < l)
 	{
-		
 		v = *(value->u.object.values[i].value);
 		fill_position(value->u.object.values[i].name, (cl_float)v.u.dbl, &(scene->cam.pos));
 		if (ft_strcmp(value->u.object.values[i].name, "dir x") == 0)
@@ -496,16 +491,16 @@ void	get_camera_params(json_value *value, t_scene *scene)
 		printf(" cam aperture  %f\n", scene->cam.aperture);
 }
 
-void	fillthescene(json_value *value, t_scene *scene)
+void			fillthescene(json_value *value, t_scene *scene)
 {
-	int l;
-	int i;
+	int			l;
+	int			i;
 
 	l = value->u.object.length;
 	if (l <= 1)
 		error_fedun("objects are not defined");
-	scene->num_obj = l - 1;		//quick fix
-	scene->obj = (t_obj *)malloc(sizeof(t_obj) * scene->num_obj);	//quick fix
+	scene->num_obj = l - 1;
+	scene->obj = (t_obj *)malloc(sizeof(t_obj) * scene->num_obj);
 	i = 0;
 	if (ft_strcmp(value->u.object.values[i++].name, "scene"))
 		error_fedun("scene must be first");
@@ -528,9 +523,9 @@ void	fillthescene(json_value *value, t_scene *scene)
 	}
 }
 
-void	parse_scene(int argc, char **argv, char **contents, size_t *len)
+void		parse_scene(int argc, char **argv, char **contents, size_t *len)
 {
-	int fd;
+	int		fd;
 
 	if (argc != 2)
 		error_fedun("second arg must be file");
@@ -544,17 +539,15 @@ void	parse_scene(int argc, char **argv, char **contents, size_t *len)
 	printf("--------------------------------\n\n");
 }
 
-void	init_scene(t_scene *scene, int argc, char **argv)
+void			init_scene(t_scene *scene, int argc, char **argv)
 {
-	json_value* value;
-	char *contents;
-	size_t len;
+	json_value*	value;
+	char*		contents;
+	size_t		len;
 
 	scene->cur_obj = 0;
 	parse_scene(argc, argv, &contents, &len);
-
 	value = json_parse(contents,len);
-
 	if (value == NULL)
 	{
 		error_fedun("Unable to parse data");
