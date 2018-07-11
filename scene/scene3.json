@@ -58,9 +58,6 @@
 		"color x": 1.0,
 		"color y": 1.0,
 		"color z": 1.0,
-		"rot z": 0.0,
-		"rot x" : -1.0,
-		"rot y" : 1.0,
 		"texture" : "textures",
 		"light": {
 			"emission x": 1.0,
