@@ -18,6 +18,12 @@
 # include <SDL_image.h>
 # include "libft.h"
 
+typedef union		u_rgb
+{
+	unsigned int	c;
+	unsigned char	bgra[4];
+}					t_rgb;
+
 typedef struct		s_txlst
 {
 	SDL_Surface		*surf;
@@ -36,7 +42,7 @@ typedef struct		s_txdata
 typedef struct		s_txgpu
 {
 	t_txdata		*txdata;
-	cl_float3		*tx;
+	t_rgb			*tx;
 	int				tx_count;
 	int				total_size;
 }					t_txgpu;
@@ -54,5 +60,6 @@ void				print_txtlst(void);//USES PRINTF
 */
 
 int					compress_texture(t_txgpu *txg);
+void				free_txlst(void);
 
 #endif

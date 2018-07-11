@@ -15,12 +15,6 @@
 
 # include "rt_textures.h"
 
-typedef union		u_rgb
-{
-	unsigned int	c;
-	unsigned char	bgra[4];
-}					t_rgb;
-
 typedef struct		s_scrn
 {
 	SDL_Window		*window;

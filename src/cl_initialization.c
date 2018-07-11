@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <assert.h>
 #include "rt.h"
 
 extern unsigned int		g_win_width;
@@ -72,12 +73,19 @@ void	cl_setup(t_env *e)
 		sizeof(t_obj) * e->sc.num_obj, e->sc.obj, 0);
 	e->cl.seed_gpu = clCreateBuffer(e->cl.context, CL_MEM_READ_WRITE,
 		sizeof(int) * e->cl.seeds.size, 0, 0);
+
+	int		err;
+
 	e->cl.tx_gpu = clCreateBuffer(e->cl.context, CL_MEM_READ_ONLY |
 		CL_MEM_HOST_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
-		sizeof(cl_float3) * e->textures.total_size, e->textures.tx, 0);
+		sizeof(t_rgb) * e->textures.total_size, e->textures.tx, &err);
+	printf("err: %d\n", err);
+	assert(err == CL_SUCCESS);
 	e->cl.txdata_gpu = clCreateBuffer(e->cl.context, CL_MEM_READ_ONLY |
 		CL_MEM_HOST_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
-		sizeof(t_txdata) * e->textures.tx_count, e->textures.txdata, 0);
+		sizeof(t_txdata) * e->textures.tx_count, e->textures.txdata, &err);
+	assert(err == CL_SUCCESS);
+
 	clSetKernelArg(e->cl.kernel, 0, sizeof(e->cl.px_gpu), &e->cl.px_gpu);
 	clSetKernelArg(e->cl.kernel, 1, sizeof(e->cl.obj_gpu), &e->cl.obj_gpu);
 	clSetKernelArg(e->cl.kernel, 2, sizeof(e->sc.num_obj), &e->sc.num_obj);

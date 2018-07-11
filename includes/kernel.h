@@ -13,6 +13,12 @@
 #ifndef KERNEL_H
 # define KERNEL_H
 
+typedef union		u_rgb
+{
+	unsigned int	c;
+	unsigned char	bgra[4];
+}					t_rgb;
+
 typedef struct		s_txdata
 {
 	unsigned int	width;
