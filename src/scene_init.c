@@ -30,6 +30,18 @@ void		minus_camera(cl_float3 *pos, cl_float3 cam_pos)
 	pos->z -= cam_pos.z;
 }
 
+void fill_u(char *s, float value, cl_float3 *u)
+{
+	if (ft_strcmp(s, "rot x") == 0)
+	{u->x = value;
+		printf("uuuuu xxxx = %f\n", u->x);}
+	if (ft_strcmp(s, "rot y") == 0)
+	{u->y = value;
+		printf("uuuuu yyyy = %f\n", u->y);}
+	if (ft_strcmp(s, "rot z") == 0)
+	{u->z = value;
+		printf("uuuuu zzzz = %f\n", u->z);}
+}
 void	print_sphere(t_obj obj)
 {
 	printf("----------------------shpere---------------------------\n");
@@ -56,9 +68,9 @@ void	print_cylinder(t_obj obj)
 	printf("pos x = %f\n", obj.primitive.cylinder.pos.x);
 	printf("pos y = %f\n", obj.primitive.cylinder.pos.y);
 	printf("pos z = %f\n", obj.primitive.cylinder.pos.z);
-	//printf("rot x = %f\n", obj.primitive.cylinder.rot.x);
-	//printf("rot y = %f\n", obj.primitive.cylinder.rot.y);
-	//printf("rot z = %f\n", obj.primitive.cylinder.rot.z);
+	printf("u x = %f\n", obj.basis.u.x);
+	printf("u y = %f\n", obj.basis.u.y);
+	printf("u z = %f\n", obj.basis.u.z);
 	printf("radius = %f\n", obj.primitive.cylinder.r);
 	printf("color x = %f\n", obj.color.x);
 	printf("color y = %f\n", obj.color.y);
@@ -86,6 +98,9 @@ void	print_cone(t_obj obj)
 	printf("color x = %f\n", obj.color.x);
 	printf("color y = %f\n", obj.color.y);
 	printf("color z = %f\n", obj.color.z);
+	printf("u x = %f\n", obj.basis.u.x);
+	printf("u y = %f\n", obj.basis.u.y);
+	printf("u z = %f\n", obj.basis.u.z);
 	printf("emission x = %f\n", obj.emission.x);
 	printf("emission y = %f\n", obj.emission.y);
 	printf("emission z = %f\n", obj.emission.z);
@@ -107,6 +122,9 @@ void	print_plane(t_obj obj)
 	printf("color x = %f\n", obj.color.x);
 	printf("color y = %f\n", obj.color.y);
 	printf("color z = %f\n", obj.color.z);
+	printf("u x = %f\n", obj.basis.u.x);
+	printf("u y = %f\n", obj.basis.u.y);
+	printf("u z = %f\n", obj.basis.u.z);
 	printf("emission x = %f\n", obj.emission.x);
 	printf("emission y = %f\n", obj.emission.y);
 	printf("emission z = %f\n", obj.emission.z);
@@ -175,6 +193,7 @@ t_obj	default_sphere(void)
 	tmp.specular = 0;
 	tmp.refraction = 0;
 	tmp.type = sphere;
+	tmp.tex_id = -1;
 	return (tmp);
 }
 
@@ -203,6 +222,7 @@ t_obj	default_cone(void)
 	tmp.specular = 0.f;
 	tmp.refraction = 0.f;
 	tmp.type = cone;
+	tmp.tex_id = -1;
 	return (tmp);
 }
 
@@ -227,6 +247,7 @@ t_obj	default_cylinder(void)
 	tmp.specular = 0.f;
 	tmp.refraction = 0.f;
 	tmp.primitive.cylinder.r = 2;
+	tmp.tex_id = -1;
 	//tmp.primitive.cylinder.rot.x = 0;
 	//tmp.primitive.cylinder.rot.y = 1;
 	//tmp.primitive.cylinder.rot.z = 0;
@@ -259,6 +280,7 @@ t_obj	default_plane(void)
 	tmp.specular = 0.f;
 	tmp.refraction = 0.f;
 	tmp.type = plane;
+	tmp.tex_id = -1;
 	return (tmp);
 }
 
@@ -336,6 +358,7 @@ void	fillthecylind(json_value *value, t_scene *scene)
 			parselight(&v, &tmp);
 		if (ft_strcmp(value->u.object.values[i].name, "texture") == 0)
 			tmp.tex_id = load_texture(v.u.string.ptr);
+		fill_u(value->u.object.values[i].name, (cl_float)v.u.dbl, &(tmp.basis.u));
 		i++;
 	}
 	tmp.type = cylinder;
@@ -371,6 +394,7 @@ void	fillthecone(json_value *value, t_scene *scene)
 			parselight(&v, &tmp);
 		if (ft_strcmp(value->u.object.values[i].name, "texture") == 0)
 			tmp.tex_id = load_texture(v.u.string.ptr);
+		fill_u(value->u.object.values[i].name, (cl_float)v.u.dbl, &(tmp.basis.u));
 		i++;
 	}
 	minus_camera(&(tmp.primitive.cone.pos), scene->cam.pos);
@@ -404,6 +428,7 @@ void	filltheplane(json_value *value, t_scene *scene)
 			parselight(&v, &tmp);
 		if (ft_strcmp(value->u.object.values[i].name, "texture") == 0)
 			tmp.tex_id = load_texture(v.u.string.ptr);
+		fill_u(value->u.object.values[i].name, (cl_float)v.u.dbl, &(tmp.basis.u));
 		i++;
 	}
 	minus_camera(&(tmp.primitive.plane.pos), scene->cam.pos);
@@ -436,6 +461,7 @@ void			fillthesphere(json_value *value, t_scene *scene)
 			parselight(&v, &tmp);
 		if (ft_strcmp(value->u.object.values[i].name, "texture") == 0)
 			tmp.tex_id = load_texture(v.u.string.ptr);
+		fill_u(value->u.object.values[i].name, (cl_float)v.u.dbl, &(tmp.basis.u));
 		i++;
 	}
 	tmp.type = sphere;

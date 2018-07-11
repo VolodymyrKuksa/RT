@@ -23,9 +23,9 @@ float	intersection_plane(t_ray*,t_plane,__float3);
 float	intersection_cylinder(t_ray*,t_cylinder,__float3);
 
 __float3	normal_sphere(__float3 , __float3 , t_sphere *);
-__float3	normal_cone(__float3 , __float3 , t_cone *);
-__float3	normal_plane(__float3 , __float3  , t_plane *);
-__float3	normal_cylinder(__float3 , __float3 , t_cylinder *);
+__float3	normal_cone(__float3 , __float3 , t_cone * , __float3);
+__float3	normal_plane(__float3 , __float3  , t_plane * , __float3);
+__float3	normal_cylinder(__float3 , __float3 , t_cylinder * , __float3);
 
 float3		get_normal_obj(float3 hitpoint, t_ray ray, t_obj hitobj);
 
@@ -291,12 +291,12 @@ float3		get_texture_col(__global t_rgb *tx, __global t_txdata *txdata, int tx_co
 	seeds.x = seed[id];
 	seeds.y = seed[id + w * h];
 
-	int		tx_id = 1;
-	pixels[id] = get_texture_col(tx, txdata, tx_count, x, y, tx_id);
+//	int		tx_id = 1;
+//	pixels[id] = get_texture_col(tx, txdata, tx_count, x, y, tx_id);
 
-//	t_ray ray = get_camera_ray(x, y, &cam, &seeds);
-//	pixels[id] = (float3)(0,0,0);
-//	pixels[id] += trace_ray(ray, obj, num_obj, &seeds);
+	t_ray ray = get_camera_ray(x, y, &cam, &seeds);
+	pixels[id] = (float3)(0,0,0);
+	pixels[id] += trace_ray(ray, obj, num_obj, &seeds);
 	seed[id] = seeds.x;
 	seed[id + w * h] = seeds.y;
 }

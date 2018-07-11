@@ -110,7 +110,6 @@ typedef struct		s_object
 	float		specular;
 	float		refraction;
 	float		roughness;
-	float		ior;
 	__float3	color;
 	__float3	emission;
 	int			tex_id;

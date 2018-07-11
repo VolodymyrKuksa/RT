@@ -24,4 +24,9 @@ typedef struct	s_parser
 	char		**light;
 }				t_parser;
 
+void	print_plane(t_obj obj);
+void	print_cone(t_obj obj);
+void	print_cylinder(t_obj obj);
+void	print_sphere(t_obj obj);
+
 #endif

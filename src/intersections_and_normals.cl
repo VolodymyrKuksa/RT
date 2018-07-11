@@ -73,51 +73,43 @@ __float3	normal_sphere(__float3  hitpoint, __float3  dir, t_sphere *sphere)
 
 	normal = hitpoint - sphere->pos;
 	normal = normalize(normal);
-//	if (dot(dir, normal) > 0)
-//		normal *= -1.f;
 	return (normal);
 }
 
-__float3	normal_cylinder(__float3  hitpoint, __float3  dir, t_cylinder *cylinder)
+__float3	normal_cylinder(__float3  hitpoint, __float3  dir, t_cylinder *cylinder, __float3 c_rot)
 {
 	__float3 	normal;
 	float	t;
 
-	t = dot(cylinder->c_rot, cylinder->pos) -
-		dot(cylinder->c_rot, hitpoint);
-	t /= dot(cylinder->c_rot, cylinder->c_rot);
-	normal = hitpoint - cylinder->pos + cylinder->c_rot * t;
+	t = dot(c_rot, cylinder->pos) -
+		dot(c_rot, hitpoint);
+	t /= dot(c_rot, c_rot);
+	normal = hitpoint - cylinder->pos + c_rot * t;
 	normal = normalize(normal);
-//	if (dot(dir, normal) > 0)
-//		normal *= -1.f;
 	return (normal);
 }
 
-__float3	normal_plane(__float3  hitpoint, __float3  dir, t_plane *plane)
+__float3	normal_plane(__float3  hitpoint, __float3  dir, t_plane *plane, __float3 p_rot)
 {
 	__float3  normal;
 
-	normal = plane->c_rot;
-//	if (dot(dir, normal) > 0)
-//		normal *=  -1.f;
+	normal = p_rot;
 	return (normal);
 }
 
-__float3	normal_cone(__float3  hitpoint, __float3  dir, t_cone *cone)
+__float3	normal_cone(__float3  hitpoint, __float3  dir, t_cone *cone, __float3 c_rot)
 {
 	__float3  normal;
 
-	if (dot(cone->c_rot, cone->pos - hitpoint) < 0)
-		normal = cone->c_rot * length(cone->pos - hitpoint)
+	if (dot(c_rot, cone->pos - hitpoint) < 0)
+		normal = c_rot * length(cone->pos - hitpoint)
 										* sqrt(cone->tng * cone->tng + 1);
 	else
-		normal = cone->c_rot * -1 * length(cone->pos - hitpoint) *
+		normal = c_rot * -1 * length(cone->pos - hitpoint) *
 							 sqrt(cone->tng * cone->tng + 1);
 	normal += cone->pos;
 	normal = hitpoint - normal;
 	normal = normalize(normal);
-//	if (dot(dir, normal) > 0)
-//		normal *= -1.f;
 	return (normal);
 }
 
@@ -130,13 +122,13 @@ float3		get_normal_obj(float3 hitpoint, t_ray ray, t_obj hitobj)
 			n = normal_sphere(hitpoint, ray.dir, &(hitobj.primitive.sphere));
 			break;
 		case cylinder:
-			n = normal_cylinder(hitpoint, ray.dir, &(hitobj.primitive.cylinder));
+			n = normal_cylinder(hitpoint, ray.dir, &(hitobj.primitive.cylinder), hitobj.basis.u);
 			break;
 		case plane:
-			n = normal_plane(hitpoint, ray.dir, &(hitobj.primitive.plane));
+			n = normal_plane(hitpoint, ray.dir, &(hitobj.primitive.plane), hitobj.basis.u);
 			break;
 		case cone:
-			n = normal_cone(hitpoint, ray.dir, &(hitobj.primitive.cone));
+			n = normal_cone(hitpoint, ray.dir, &(hitobj.primitive.cone), hitobj.basis.u);
 			break;
 		default:
 			break;
