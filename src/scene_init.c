@@ -23,6 +23,13 @@ void	error_fedun(char *er)
 	exit(-1);
 }
 
+void		minus_camera(cl_float3 *pos, cl_float3 cam_pos)
+{
+	pos->x -= cam_pos.x;
+	pos->y -= cam_pos.y;
+	pos->z -= cam_pos.z;
+}
+
 void	print_sphere(t_obj obj)
 {
 	printf("----------------------shpere---------------------------\n");
@@ -40,6 +47,7 @@ void	print_sphere(t_obj obj)
 	printf("diffuse = %f\n", obj.diffuse);
 	printf("specular = %f\n", obj.specular);
 	printf("refraction = %f\n", obj.refraction);
+		printf("texture id= %d\n", obj.tex_id);
 }
 
 void	print_cylinder(t_obj obj)
@@ -62,6 +70,7 @@ void	print_cylinder(t_obj obj)
 	printf("diffuse = %f\n", obj.diffuse);
 	printf("specular = %f\n", obj.specular);
 	printf("refraction = %f\n", obj.refraction);
+		printf("texture id= %d\n", obj.tex_id);
 }
 
 void	print_cone(t_obj obj)
@@ -84,6 +93,7 @@ void	print_cone(t_obj obj)
 	printf("diffuse = %f\n", obj.diffuse);
 	printf("specular = %f\n", obj.specular);
 	printf("refraction = %f\n", obj.refraction);
+	printf("texture id= %d\n", obj.tex_id);
 }
 void	print_plane(t_obj obj)
 {
@@ -104,6 +114,7 @@ void	print_plane(t_obj obj)
 	printf("diffuse = %f\n", obj.diffuse);
 	printf("specular = %f\n", obj.specular);
 	printf("refraction = %f\n", obj.refraction);
+	printf("texture id= %d\n", obj.tex_id);
 }
 
 void	fill_position(char *name, cl_float value, cl_float3 *pos)
@@ -311,10 +322,13 @@ void	fillthecylind(json_value *value, t_scene *scene)
 		fill_rotate(value->u.object.values[i].name, (cl_float)v.u.dbl, &(tmp.primitive.cylinder.rot));
 		if (ft_strcmp(value->u.object.values[i].name, "light") == 0)
 			parselight(&v, &tmp);
+		if (ft_strcmp(value->u.object.values[i].name, "texture") == 0)
+			tmp.tex_id = load_texture(v.u.string.ptr);
 		i++;
 	}
 	tmp.type = cylinder;
-	tmp.primitive.plane.rot = NORMAL(tmp.primitive.plane.rot);
+	minus_camera(&(tmp.primitive.cylinder.pos), scene->cam.pos);
+	tmp.primitive.cylinder.rot = NORMAL(tmp.primitive.cylinder.rot);
 	if (SUKA(tmp.primitive.sphere.r, 0) == 0)
 		error_fedun("radius of cylinder is bad");
 	scene->obj[scene->cur_obj++] = tmp;
@@ -343,10 +357,13 @@ void	fillthecone(json_value *value, t_scene *scene)
 			(cl_float)v.u.dbl, &(tmp.primitive.cone.rot));
 		if (ft_strcmp(value->u.object.values[i].name, "light") == 0)
 			parselight(&v, &tmp);
+		if (ft_strcmp(value->u.object.values[i].name, "texture") == 0)
+			tmp.tex_id = load_texture(v.u.string.ptr);
 		i++;
 	}
+	minus_camera(&(tmp.primitive.cone.pos), scene->cam.pos);
 	tmp.type = cone;
-	tmp.primitive.plane.rot = NORMAL(tmp.primitive.plane.rot);
+	tmp.primitive.cone.rot = NORMAL(tmp.primitive.cone.rot);
 	scene->obj[scene->cur_obj++] = tmp;
 	print_cone(tmp);
 
@@ -373,8 +390,11 @@ void	filltheplane(json_value *value, t_scene *scene)
 			(cl_float)v.u.dbl, &(tmp.primitive.plane.rot));
 		if (ft_strcmp(value->u.object.values[i].name, "light") == 0)
 			parselight(&v, &tmp);
+		if (ft_strcmp(value->u.object.values[i].name, "texture") == 0)
+			tmp.tex_id = load_texture(v.u.string.ptr);
 		i++;
 	}
+	minus_camera(&(tmp.primitive.plane.pos), scene->cam.pos);
 	tmp.primitive.plane.rot = NORMAL(tmp.primitive.plane.rot);
 	tmp.type = plane;
 	scene->obj[scene->cur_obj++] = tmp;
@@ -393,6 +413,7 @@ void			fillthesphere(json_value *value, t_scene *scene)
 	l = value->u.object.length;
 	while (i < l)
 	{
+		//printf("%s\n", value->u.object.values[i].name);
 		v = *(value->u.object.values[i].value);
 		fill_position(value->u.object.values[i].name,
 			(cl_float)v.u.dbl, &(tmp.primitive.sphere.pos));
@@ -401,9 +422,12 @@ void			fillthesphere(json_value *value, t_scene *scene)
 		fill_color(value->u.object.values[i].name, (cl_float)v.u.dbl, &tmp);
 		if (ft_strcmp(value->u.object.values[i].name, "light") == 0)
 			parselight(&v, &tmp);
+		if (ft_strcmp(value->u.object.values[i].name, "texture") == 0)
+			tmp.tex_id = load_texture(v.u.string.ptr);
 		i++;
 	}
 	tmp.type = sphere;
+	minus_camera(&(tmp.primitive.sphere.pos), scene->cam.pos);
 	if (SUKA(tmp.primitive.sphere.r, 0) == 0)
 		error_fedun("radius of sphere is bad");
 	scene->obj[scene->cur_obj++] = tmp;
