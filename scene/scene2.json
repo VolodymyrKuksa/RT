@@ -1,16 +1,16 @@
 {
 	"scene" :
 	{
-		"pos x" : 20.0,
+		"pos x" : 0.0,
 		"pos y" : 0.0,
-		"pos z" : 5.0,
+		"pos z" : 0.0,
 		"dir z" : 0.0,
 		"dir y" : 0.0,
 		"dir z" : -1.0,
 		"f_length" : 60.0,
 		"dust" : 0.0,
 		"fov" : 180,
-		"aperture" : 0.01
+		"aperture" : 0.0
 	},
 	"sphere" : {
 		"pos x": -5.0,
@@ -71,9 +71,9 @@
 		"pos x": -2.0,
 		"pos y": -2.0,
 		"pos z": -40.0,
-		"rot x": 1.0,
+		"rot x": 0.0,
 		"rot y": 0.0,
-		"rot z": 0.0,
+		"rot z": 90.0,
 		"tng": 0.1,
 		"color x": 0.0,
 		"color y": 1.0,
@@ -94,7 +94,7 @@
 		"pos y": -2.0,
 		"pos z": -40.0,
 		"rot x": 0.0,
-		"rot y": 1.0,
+		"rot y": 0.0,
 		"rot z": 0.0,
 		"color x": 1.0,
 		"color y": 0.56,
