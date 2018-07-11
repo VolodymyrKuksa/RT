@@ -76,15 +76,16 @@ void	cl_setup(t_env *e)
 
 	int		err;
 
+	compress_texture(&e->textures);
 	e->cl.tx_gpu = clCreateBuffer(e->cl.context, CL_MEM_READ_ONLY |
 		CL_MEM_HOST_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
 		sizeof(t_rgb) * e->textures.total_size, e->textures.tx, &err);
-	printf("err: %d\n", err);
-	assert(err == CL_SUCCESS);	//might throw CL_OUT_OF_HOST_MEMORY
+//	printf("err: %d\n", err);
+	assert(err == CL_SUCCESS || err == CL_INVALID_HOST_PTR);	//might throw CL_OUT_OF_HOST_MEMORY
 	e->cl.txdata_gpu = clCreateBuffer(e->cl.context, CL_MEM_READ_ONLY |
 		CL_MEM_HOST_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
 		sizeof(t_txdata) * e->textures.tx_count, e->textures.txdata, &err);
-	assert(err == CL_SUCCESS);
+	assert(err == CL_SUCCESS || err == CL_INVALID_HOST_PTR);
 
 	clSetKernelArg(e->cl.kernel, 0, sizeof(e->cl.px_gpu), &e->cl.px_gpu);
 	clSetKernelArg(e->cl.kernel, 1, sizeof(e->cl.obj_gpu), &e->cl.obj_gpu);

@@ -46,7 +46,12 @@ void	turn(float d, t_env *env, cl_float3 (*f)(float, cl_float3, t_mvdata))
 
 	i = -1;
 	while (++i < env->sc.num_obj)
+	{
 		rt[env->sc.obj[i].type](d, &env->sc.obj[i], env->mv_data, f);
+		env->sc.obj[i].basis.u = f(d, env->sc.obj[i].basis.u, env->mv_data);
+		env->sc.obj[i].basis.v = f(d, env->sc.obj[i].basis.v, env->mv_data);
+		env->sc.obj[i].basis.w = f(d, env->sc.obj[i].basis.w, env->mv_data);
+	}
 	env->num_samples = 0;
 	clear_pixels(&env->cl);
 	write_scene_to_kernel(env);
@@ -72,28 +77,28 @@ void	move(t_env *env, float x, float y, float z)
 
 void	movement_events(t_env *env)
 {
-//	if (env->mv_data.move_keys & KEY_W)
-//		turn(-1, env, rotate_x);
-//	if (env->mv_data.move_keys & KEY_S)
-//		turn(1, env, rotate_x);
-//	if (env->mv_data.move_keys & KEY_A)
-//		turn(-1, env, rotate_y);
-//	if (env->mv_data.move_keys & KEY_D)
-//		turn(1, env, rotate_y);
-//	if (env->mv_data.move_keys & KEY_Q)
-//		turn(-1, env, rotate_z);
-//	if (env->mv_data.move_keys & KEY_E)
-//		turn(1, env, rotate_z);
-//	if (env->mv_data.move_keys & KEY_UP)
-//		move(env, 0, 0, 1);
-//	if (env->mv_data.move_keys & KEY_DOWN)
-//		move(env, 0, 0, -1);
-//	if (env->mv_data.move_keys & KEY_RIGHT)
-//		move(env, -1, 0, 0);
-//	if (env->mv_data.move_keys & KEY_LEFT)
-//		move(env, 1, 0, 0);
-//	if (env->mv_data.move_keys & KEY_SPACE)
-//		move(env, 0, -1, 0);
-//	if (env->mv_data.move_keys & KEY_LSHIFT)
-//		move(env, 0, 1, 0);
+	if (env->mv_data.move_keys & KEY_W)
+		turn(-1, env, rotate_x);
+	if (env->mv_data.move_keys & KEY_S)
+		turn(1, env, rotate_x);
+	if (env->mv_data.move_keys & KEY_A)
+		turn(-1, env, rotate_y);
+	if (env->mv_data.move_keys & KEY_D)
+		turn(1, env, rotate_y);
+	if (env->mv_data.move_keys & KEY_Q)
+		turn(-1, env, rotate_z);
+	if (env->mv_data.move_keys & KEY_E)
+		turn(1, env, rotate_z);
+	if (env->mv_data.move_keys & KEY_UP)
+		move(env, 0, 0, 1);
+	if (env->mv_data.move_keys & KEY_DOWN)
+		move(env, 0, 0, -1);
+	if (env->mv_data.move_keys & KEY_RIGHT)
+		move(env, -1, 0, 0);
+	if (env->mv_data.move_keys & KEY_LEFT)
+		move(env, 1, 0, 0);
+	if (env->mv_data.move_keys & KEY_SPACE)
+		move(env, 0, -1, 0);
+	if (env->mv_data.move_keys & KEY_LSHIFT)
+		move(env, 0, 1, 0);
 }
