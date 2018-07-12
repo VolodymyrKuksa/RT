@@ -30,7 +30,7 @@ __float3	normal_cylinder(__float3 , __float3 , t_cylinder * , __float3);
 
 float3		get_normal_obj(float3 hitpoint, t_ray ray, t_obj hitobj);
 
-float3	get_point_color(t_obj hitobj, float3 hitpoint, t_texture texture);
+float3	get_point_color(t_obj *hitobj, float3 hitpoint, t_texture texture);
 
 t_ray get_camera_ray(int x, int y, t_cam *cam, uint2 *seeds)
 {
@@ -240,7 +240,8 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds, t_te
 		rand -= hitobj.diffuse;
 		if (rand <= 0.f)
 		{
-			mask *= get_point_color(hitobj, hitpoint, texture);
+			mask *= hitobj.tex_id < 0 ? hitobj.color : get_point_color(&hitobj, hitpoint, texture);
+			//mask *= /*hitobj.color */ get_point_color(hitobj, hitpoint, texture);
 			ray = diffuse(ray, n, hitpoint, seeds);
 			float	cosine = dot(n, ray.dir);
 			cosine = cosine < 0 ? -cosine : cosine;

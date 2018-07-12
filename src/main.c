@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "rt.h"
-
+#include <time.h>
 unsigned int	g_win_width = 1080;
 unsigned int	g_win_height = 720;
 
@@ -79,6 +79,8 @@ void	main_loop(t_env *env)
 			movement_events(env);
 		cl_exec(&env->cl);
 		update_window(env);
+		if (env->num_samples == 500)
+			exit(0);
 	}
 }
 

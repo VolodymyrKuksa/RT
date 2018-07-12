@@ -85,7 +85,7 @@
 			"roughness": 1.0,
 			"diffuse": 1.0,
 			"specular": 0.0,
-			"refraction": 1.0
+			"refraction": 0.0
 		}
 	},
 	"plane" :

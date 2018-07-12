@@ -213,6 +213,8 @@ t_obj	default_cone(void)
 	tmp.basis.u = (cl_float3){0.0, 1.0, 0.0};
 	tmp.basis.v = (cl_float3){1.0, 0.0, 0.0};
 	tmp.basis.w = (cl_float3){0.0, 0.0, 1.0};
+	tmp.primitive.cone.m1 = 0.0f;
+	tmp.primitive.cone.m2 = 200.0f;
 	//tmp.primitive.cone.rot.x = 0;
 	//tmp.primitive.cone.rot.y = 0;
 	//tmp.primitive.cone.rot.z = 0;

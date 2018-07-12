@@ -5,9 +5,9 @@ float3		change_of_basis(float3 vec, t_basis basis);
 float3		get_texture_col(t_texture, int, int, int);
 float3		get_texture_col_float(t_texture, float, float, int);
 
-float3		texture_plane(t_obj plane, float3 hitpoint, t_texture texture);
-float3		texture_sphere(t_obj sphere, float3 hitpoint, t_texture texture);
-float3		texture_cylinder(t_obj sphere, float3 hitpoint, t_texture texture);
+float3		texture_plane(t_obj *plane, float3 hitpoint, t_texture texture);
+float3		texture_sphere(t_obj *sphere, float3 hitpoint, t_texture texture);
+float3		texture_cylinder(t_obj *sphere, float3 hitpoint, t_texture texture);
 
 /*============================================================================*/
 
@@ -56,50 +56,50 @@ float3	change_of_basis(float3 vec, t_basis basis)
 
 /*===========================TEXTURE MAPPING==================================*/
 
-float3	texture_plane(t_obj plane, float3 hitpoint, t_texture texture)
+float3	texture_plane(t_obj *plane, float3 hitpoint, t_texture texture)
 {
-	hitpoint -= plane.primitive.plane.pos;
-	hitpoint = change_of_basis(hitpoint, plane.basis);
+	hitpoint -= plane->primitive.plane.pos;
+	hitpoint = change_of_basis(hitpoint, plane->basis);
 	hitpoint /= 20;		//should be parsed as a variable
-	return get_texture_col_float(texture, hitpoint.x, hitpoint.z, plane.tex_id);
+	return get_texture_col_float(texture, hitpoint.x, hitpoint.z, plane->tex_id);
 }
 
-float3	texture_sphere(t_obj sphere, float3 hitpoint, t_texture texture)
+float3	texture_sphere(t_obj *sphere, float3 hitpoint, t_texture texture)
 {
-//	return (float3)(1,1,0);
-	hitpoint -= sphere.primitive.sphere.pos;
-	hitpoint = change_of_basis(hitpoint, sphere.basis);
-	hitpoint /= sphere.primitive.sphere.r;
+	//return (float3)(1,1,0);
+	hitpoint -= sphere->primitive.sphere.pos;
+	hitpoint = change_of_basis(hitpoint, sphere->basis);
+	hitpoint /= sphere->primitive.sphere.r;
 	float	theta = acos(hitpoint.y) / PI;
 	float2	tmp = (float2)(hitpoint.x, hitpoint.z);
 	tmp = normalize(tmp);
 	float	phi = acos(tmp.x) / PI_2;
 	phi = hitpoint.z > 0 ? 1.f - phi : phi;
 
-	return get_texture_col_float(texture, phi, theta, sphere.tex_id);
+	return get_texture_col_float(texture, phi, theta, sphere->tex_id);
 }
 
-float3	texture_cylinder(t_obj cylinder, float3 hitpoint, t_texture texture)
+float3	texture_cylinder(t_obj *cylinder, float3 hitpoint, t_texture texture)
 {
-//	return (float3)(1,1,0);
-	hitpoint -= cylinder.primitive.cylinder.pos;
-	hitpoint = change_of_basis(hitpoint, cylinder.basis);
-	float	phi = acos(hitpoint.x / cylinder.primitive.cylinder.r) / PI_2;
+	//return (float3)(1,1,0);
+	hitpoint -= cylinder->primitive.cylinder.pos;
+	hitpoint = change_of_basis(hitpoint, cylinder->basis);
+	float	phi = acos(hitpoint.x / cylinder->primitive.cylinder.r) / PI_2;
 	hitpoint /= 20;		//should be parsed as a variable
-	return get_texture_col_float(texture, phi, hitpoint.y, cylinder.tex_id);
+	return get_texture_col_float(texture, phi, hitpoint.y, cylinder->tex_id);
 }
 
 /*============================================================================*/
 
-float3	get_point_color(t_obj hitobj, float3 hitpoint, t_texture texture)
+inline float3	get_point_color(t_obj *hitobj, float3 hitpoint, t_texture texture)
 {
-	if (hitobj.tex_id < 0)
-		return hitobj.color;
-	if (hitobj.type == plane)
+	if (hitobj->tex_id < 0)
+		return hitobj->color;
+	else if (hitobj->type == plane)
 		return texture_plane(hitobj, hitpoint, texture);
-	else if (hitobj.type == cylinder)
+	else if (hitobj->type == cylinder)
 		return texture_cylinder(hitobj, hitpoint, texture);
-	else if (hitobj.type == sphere)
+	else if (hitobj->type == sphere)
 		return texture_sphere(hitobj, hitpoint, texture);
-	return hitobj.color;
+	return hitobj->color;
 }
