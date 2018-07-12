@@ -15,7 +15,6 @@ float	intersection_sphere(t_ray *ray,t_sphere sphere)
 		return (-1.0f);
 	q.d = sqrt(q.d);
 	return ((q.res = ((-q.b - q.d) / q.a)) > 0 ? q.res : (-q.b + q.d) / q.a); // if x1 > 0 -> ret x1 else ret x2
-	//return(1.f);
 }
 
 float	intersection_cylinder(t_ray *ray,t_cylinder cylinder, __float3 c_rot)
@@ -23,6 +22,7 @@ float	intersection_cylinder(t_ray *ray,t_cylinder cylinder, __float3 c_rot)
 	t_quad		q;
 	__float3 	x;
 	float	tmp[2];
+	float	res2;
 
 	x = ray->pos - cylinder.pos;
 	tmp[0] = dot(ray->dir, c_rot);
@@ -48,23 +48,39 @@ float	intersection_cone(t_ray *ray,t_cone cone, __float3 c_rot)
 {
 	__float3 	x;
 	float	tmp[3];
+	__float3	hitpoint;
 	t_quad		q;
+	float	res, length;
 
 	x = ray->pos - cone.pos;
-	tmp[0] = cone.tng * cone.tng + 1.0;
+	tmp[0] = cone.tng * cone.tng + 1.f;
 	tmp[1] = dot(ray->dir, c_rot);
 	tmp[2] = dot(x, c_rot);
-	q.a = 2.0 * (dot(ray->dir, ray->dir) - tmp[0] * tmp[1] * tmp[1]);
-	q.b = 2.0 * (dot(ray->dir, x) - tmp[0] * tmp[1] * tmp[2]);
+	q.a = 2.f * (1.f - tmp[0] * tmp[1] * tmp[1]);
+	q.b = 2.f * (dot(ray->dir, x) - tmp[0] * tmp[1] * tmp[2]);
 	q.c = dot(x, x) - tmp[0] * tmp[2] * tmp[2];
-	if ((q.d = q.b * q.b - 2.0 * q.a * q.c) < 0)
-		return (-1.0);
+	if ((q.d = q.b * q.b - 2.f * q.a * q.c) < 0.f)
+		return (-1.f);
 	q.d = sqrt(q.d);
-	return ((q.res = (-q.b - q.d) / q.a) > 0 ? q.res : (-q.b + q.d) / q.a);
+	res = (-q.b - q.d) / q.a;
+	if (res > 0)
+	{
+		hitpoint = res * ray->dir + x;
+		length = dot(c_rot, hitpoint);
+		if (length < cone.m2 && length > cone.m1)
+			return (res);
+	}
+	res = (-q.b + q.d) / q.a;
+	if (res > 0)
+	{
+		hitpoint = res * ray->dir + x;
+		length = dot(c_rot, hitpoint);
+		if (length > cone.m1 && length < cone.m2)
+			return (res);
+	}
+	return (-1);
 }
 //-----------------------------------------------------------------------------^
-// ray->pos точка на сфере 
-// ray->dir текущий вектор
 
 //-------------------------------------normal---------------------------------\/
 __float3	normal_sphere(__float3  hitpoint, __float3  dir, t_sphere *sphere)
@@ -100,15 +116,9 @@ __float3	normal_plane(__float3  hitpoint, __float3  dir, t_plane *plane, __float
 __float3	normal_cone(__float3  hitpoint, __float3  dir, t_cone *cone, __float3 c_rot)
 {
 	__float3  normal;
+	hitpoint -= cone->pos;
+	normal = hitpoint - (cone->tng * cone->tng + 1.f) * c_rot * dot(hitpoint,c_rot);
 
-	if (dot(c_rot, cone->pos - hitpoint) < 0)
-		normal = c_rot * length(cone->pos - hitpoint)
-										* sqrt(cone->tng * cone->tng + 1);
-	else
-		normal = c_rot * -1 * length(cone->pos - hitpoint) *
-							 sqrt(cone->tng * cone->tng + 1);
-	normal += cone->pos;
-	normal = hitpoint - normal;
 	normal = normalize(normal);
 	return (normal);
 }

@@ -98,6 +98,8 @@ typedef struct		s_cone
 {
 	cl_float3	pos;
 	float		tng;
+	float 		m1;
+	float 		m2;
 }					t_cone;
 
 typedef	union		u_primitive

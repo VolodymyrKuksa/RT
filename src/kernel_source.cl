@@ -136,7 +136,7 @@ t_ray	reflect(t_ray ray, float3 n, float3 hitpoint, t_obj sp, uint2 *seeds)
 
 	reflected_dir = tmp - 2 * dot(tmp, n) * n;
 	ray.dir = sample_hemisphere(reflected_dir, sp.roughness, seeds);
-	ray.pos = hitpoint + EPSILON * ray.dir;
+	ray.pos = hitpoint + EPSILON * n;
 	return (ray);
 }
 
@@ -145,17 +145,17 @@ t_ray	refract(t_ray ray, __float3 hitpoint, t_obj object, uint2 *seeds)
 	float3	n = get_normal_obj(hitpoint, ray, object);
 
 	bool	enter = dot(ray.dir, n) > 0 ? false : true;
-	n = enter ? n : n * -1;
+	n = enter ? n : -n;
 
 	float	cosine_theta = dot(ray.dir, n);
 	float	cosine_theta_r;
 
 	if (enter && ray.refractions > 0) {
-		ray.pos = hitpoint + EPSILON * ray.dir;
-		ray.refractions++;
+		ray.pos = hitpoint + EPSILON * n;
+		ray.refractions++;//Поговорить с Вовчиком
 		return (ray);
 	} else if (!enter && ray.refractions > 1) {
-		ray.pos = hitpoint + EPSILON * ray.dir;
+		ray.pos = hitpoint + EPSILON * n;
 		ray.refractions--;
 		return (ray);
 	}
@@ -228,14 +228,11 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds)
 		t_obj hitobj = obj[hitobj_id];
 		if (ray.dust > 0.f && participating_media(&ray, t, seeds))
 			continue;
-
-		float3 hitpoint = ray.pos + t * ray.dir;
+		__float3 hitpoint = ray.pos + t * ray.dir;
 		res += mask * hitobj.emission;
-		float3 n = get_normal_obj(hitpoint, ray, hitobj);
-		n = dot(n, ray.dir) > 0 ? n * -1.f : n;
-
+		__float3 n = get_normal_obj(hitpoint, ray, hitobj);
+		n = dot(n, ray.dir) > 0 ? -n : n;
 		float rand = get_random(seeds);
-
 		rand -= hitobj.diffuse;
 		if (rand <= 0.f)
 		{
