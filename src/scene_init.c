@@ -210,8 +210,8 @@ t_obj	default_cone(void)
 	tmp.primitive.cone.pos.x = -2;
 	tmp.primitive.cone.pos.y = -2;
 	tmp.primitive.cone.pos.z = -2;
-	tmp.basis.u = (cl_float3){0.0, 1.0, 0.0};
-	tmp.basis.v = (cl_float3){1.0, 0.0, 0.0};
+	tmp.basis.u = (cl_float3){1.0, 0.0, 0.0};
+	tmp.basis.v = (cl_float3){0.0, 1.0, 0.0};
 	tmp.basis.w = (cl_float3){0.0, 0.0, 1.0};
 	tmp.primitive.cone.m1 = 0.0f;
 	tmp.primitive.cone.m2 = 200.0f;
@@ -231,6 +231,8 @@ t_obj	default_cone(void)
 	tmp.refraction = 0.f;
 	tmp.type = cone;
 	tmp.tex_id = -1;
+	tmp.primitive.cone.m1 = 3.f;
+	tmp.primitive.cone.m2 = 7.f;
 	return (tmp);
 }
 
