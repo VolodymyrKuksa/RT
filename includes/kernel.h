@@ -26,6 +26,13 @@ typedef struct		s_txdata
 	unsigned int	start;
 }					t_txdata;
 
+typedef struct		s_texture
+{
+	__global t_rgb		*tx;
+	__global t_txdata	*txdata;
+	int					tx_count;
+}					t_texture;
+
 typedef struct		s_cam
 {
 	__float3		pos;

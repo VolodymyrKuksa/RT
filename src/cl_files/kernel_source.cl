@@ -2,6 +2,7 @@
 
 __constant float EPSILON = 0.001;
 __constant float PI = 3.14159265359f;
+__constant float PI_2 = 6.28318530718f;
 __constant int max_bounces = 20;
 __constant int min_bounces = 5;
 
@@ -10,7 +11,7 @@ t_ray get_camera_ray(int x, int y, t_cam *cam, uint2 *seeds);
 static float get_random(uint2 *seeds);
 float	solve_quad(t_quad q);
 float	get_intersection(t_ray *r, __global t_obj *obj, int n_obj, int *id);
-float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds);
+float3	trace_ray(t_ray, __global t_obj *, int, uint2 *, t_texture);
 t_ray	diffuse(t_ray ray, float3 n, float3 hitpoint, uint2 *seeds);
 t_ray	reflect(t_ray ray, float3 n, float3 hitpt, t_obj sp, uint2 *seeds);
 t_ray	refract(t_ray ray, float3 hitpoint, t_obj hitsphere, uint2 *seeds);
@@ -29,7 +30,7 @@ __float3	normal_cylinder(__float3 , __float3 , t_cylinder * , __float3);
 
 float3		get_normal_obj(float3 hitpoint, t_ray ray, t_obj hitobj);
 
-float3		get_texture_col(__global t_rgb *tx, __global t_txdata *txdata, int tx_count, int x, int y, int tx_id);
+float3	get_point_color(t_obj hitobj, float3 hitpoint, t_texture texture);
 
 t_ray get_camera_ray(int x, int y, t_cam *cam, uint2 *seeds)
 {
@@ -203,12 +204,12 @@ bool	participating_media(t_ray *ray, float t, uint2 *seeds)
 	}
 	return false;
 }
+
 //------------------------------------------------------------------------------\/
-float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds)
+float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds, t_texture texture)
 {
 	float3	mask = (float3)(1.f, 1.f, 1.f);
 	float3	res = (float3)(0, 0, 0);
-	int		bounce = 0;
 	for (int bounce = 0; bounce < max_bounces; ++bounce)
 	{
 		//if ray cant transfer much light, it will be break earlier
@@ -236,7 +237,7 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds)
 		rand -= hitobj.diffuse;
 		if (rand <= 0.f)
 		{
-			mask *= hitobj.color;
+			mask *= get_point_color(hitobj, hitpoint, texture);
 			ray = diffuse(ray, n, hitpoint, seeds);
 			float	cosine = dot(n, ray.dir);
 			cosine = cosine < 0 ? -cosine : cosine;
@@ -254,20 +255,6 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds)
 	return (res);
 }
 //------------------------------------------------------------------------------/\
-
-
-float3		get_texture_col(__global t_rgb *tx, __global t_txdata *txdata, int tx_count, int x, int y, int tx_id)
-{
-	x = x % txdata[tx_id].width;
-	y = y % txdata[tx_id].height;
-	if (tx_id >= tx_count)
-		return ((float3)(-1.f, -1.f, -1.f));
-	int		index = txdata[tx_id].start + txdata[tx_id].width * y + x;
-	float3		res =
-		(float3)(tx[index].bgra[2], tx[index].bgra[1], tx[index].bgra[0]);
-	return (res/ 256);
-}
-
 
  __kernel void	render_pixel(
 	__global float3 *pixels,
@@ -288,12 +275,14 @@ float3		get_texture_col(__global t_rgb *tx, __global t_txdata *txdata, int tx_co
 	seeds.x = seed[id];
 	seeds.y = seed[id + w * h];
 
-//	int		tx_id = 1;
-//	pixels[id] = get_texture_col(tx, txdata, tx_count, x, y, tx_id);
+	t_texture	texture = {tx, txdata, tx_count};
+
+//	int		tx_id = 2;
+//	pixels[id] = get_texture_col(texture, x, y, tx_id);
 
 	t_ray ray = get_camera_ray(x, y, &cam, &seeds);
 	pixels[id] = (float3)(0,0,0);
-	pixels[id] += trace_ray(ray, obj, num_obj, &seeds);
+	pixels[id] += trace_ray(ray, obj, num_obj, &seeds, texture);
 	seed[id] = seeds.x;
 	seed[id + w * h] = seeds.y;
 }
