@@ -237,7 +237,7 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds, t_te
 		rand -= hitobj.diffuse;
 		if (rand <= 0.f)
 		{
-			mask *= get_point_color(hitobj, hitpoint, texture);
+			mask *= hitobj.tex_id < 0 ? hitobj.color : get_point_color(hitobj, hitpoint, texture);
 			ray = diffuse(ray, n, hitpoint, seeds);
 			float	cosine = dot(n, ray.dir);
 			cosine = cosine < 0 ? -cosine : cosine;

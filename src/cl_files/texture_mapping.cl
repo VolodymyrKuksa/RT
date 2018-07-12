@@ -93,13 +93,13 @@ float3	texture_cylinder(t_obj cylinder, float3 hitpoint, t_texture texture)
 
 float3	get_point_color(t_obj hitobj, float3 hitpoint, t_texture texture)
 {
-	if (hitobj.tex_id < 0)
-		return hitobj.color;
-	if (hitobj.type == plane)
-		return texture_plane(hitobj, hitpoint, texture);
-	else if (hitobj.type == cylinder)
-		return texture_cylinder(hitobj, hitpoint, texture);
-	else if (hitobj.type == sphere)
-		return texture_sphere(hitobj, hitpoint, texture);
+//	if (hitobj.tex_id < 0)
+//		return hitobj.color;
+//	if (hitobj.type == plane)
+//		return texture_plane(hitobj, hitpoint, texture);
+//	else if (hitobj.type == cylinder)
+//		return texture_cylinder(hitobj, hitpoint, texture);
+//	else if (hitobj.type == sphere)
+//		return texture_sphere(hitobj, hitpoint, texture);
 	return hitobj.color;
 }
