@@ -137,7 +137,7 @@ t_ray	reflect(t_ray ray, float3 n, float3 hitpoint, t_obj sp, uint2 *seeds)
 
 	reflected_dir = tmp - 2 * dot(tmp, n) * n;
 	ray.dir = sample_hemisphere(reflected_dir, sp.roughness, seeds);
-	ray.pos = hitpoint + EPSILON * n;
+	ray.pos = hitpoint + EPSILON * ray.dir;
 	return (ray);
 }
 
@@ -152,11 +152,11 @@ t_ray	refract(t_ray ray, __float3 hitpoint, t_obj object, uint2 *seeds)
 	float	cosine_theta_r;
 
 	if (enter && ray.refractions > 0) {
-		ray.pos = hitpoint + EPSILON * n;
+		ray.pos = hitpoint + EPSILON *ray.dir;
 		ray.refractions++;//Поговорить с Вовчиком
 		return (ray);
 	} else if (!enter && ray.refractions > 1) {
-		ray.pos = hitpoint + EPSILON * n;
+		ray.pos = hitpoint + EPSILON * ray.dir;
 		ray.refractions--;
 		return (ray);
 	}
