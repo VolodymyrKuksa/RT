@@ -49,7 +49,8 @@ void	init_opencl(t_cldata *cl)
 	cl->command_queue = clCreateCommandQueue(cl->context, cl->dev_id, 0, 0);
 	cl->source[0] = read_file(open(KERNEL_PATH0, O_RDONLY), 0);
 	cl->source[1] = read_file(open(KERNEL_PATH1, O_RDONLY), 0);
-	cl->program = clCreateProgramWithSource(cl->context, 2,
+	cl->source[2] = read_file(open(KERNEL_PATH2, O_RDONLY), 0);
+	cl->program = clCreateProgramWithSource(cl->context, 3,
 		(const char**)(&cl->source), 0, 0);
 	err = clBuildProgram(cl->program, 0, 0, KERNEL_INC_DIR, 0, 0);
 	if (err != CL_SUCCESS)

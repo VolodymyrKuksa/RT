@@ -30,12 +30,14 @@
 # include "json.h"
 
 # ifdef CLION_BUILD
-# define KERNEL_PATH0 "../src/kernel_source.cl"
-# define KERNEL_PATH1 "../src/intersections_and_normals.cl"
+# define KERNEL_PATH0 "../src/cl_files/kernel_source.cl"
+# define KERNEL_PATH1 "../src/cl_files/intersections_and_normals.cl"
+# define KERNEL_PATH2 "../src/cl_files/texture_mapping.cl"
 # define KERNEL_INC_DIR "-I ../includes"
 # else
-# define KERNEL_PATH0 "src/kernel_source.cl"
-# define KERNEL_PATH1 "src/intersections_and_normals.cl"
+# define KERNEL_PATH0 "src/cl_files/kernel_source.cl"
+# define KERNEL_PATH1 "src/cl_files/intersections_and_normals.cl"
+# define KERNEL_PATH2 "src/cl_files/texture_mapping.cl"
 # define KERNEL_INC_DIR "-I includes"
 # endif
 

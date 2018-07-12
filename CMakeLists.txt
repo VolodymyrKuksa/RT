@@ -8,7 +8,7 @@ FILE(GLOB_RECURSE LIBVEC_DIR "libvec/src/*.c")
 add_library(libvec STATIC ${LIBVEC_DIR})
 
 FILE(GLOB_RECURSE JSON_DIR "libJSON/*.c")
-add_library(lib_json STATIC ${JSON_DIR} src/textures/load_texture.c includes/rt_textures.h src/textures/compress_texture.c)
+add_library(lib_json STATIC ${JSON_DIR})
 
 include_directories(${PROJECT_SOURCE_DIR}/frameworks/SDL2.framework/Headers includes
         ${PROJECT_SOURCE_DIR}/frameworks/SDL2_image.framework/Headers
@@ -19,9 +19,11 @@ find_library(OPENCL OpenCL)
 add_executable(RT includes/rt_types.h includes/rt.h src/main.c src/read_file.c
         src/sdl_utils.c src/scene_init.c src/cl_initialization.c src/cl_exec.c
         src/keyboard_events.c includes/keys.h src/movement_events.c src/rotate.c
-        src/write_png.c src/write_ppm.c src/window_event.c src/scene_utils.c src/rot_obj.c src/mv_obj.c)
+        src/write_png.c src/write_ppm.c src/window_event.c src/scene_utils.c
+        src/rot_obj.c src/mv_obj.c  src/textures/load_texture.c
+        includes/rt_textures.h src/textures/compress_texture.c)
 
-target_link_libraries(RT ${SDL2_LIBRARY} ${OPENCL} libft libvec lib_json
+target_link_libraries(RT ${OPENCL} libft libvec lib_json
         ${SDL} "-F ${PROJECT_SOURCE_DIR}/frameworks -framework SDL2"
         ${SDL2_IMG} "-rpath ${PROJECT_SOURCE_DIR}/frameworks -framework SDL2_image")
 

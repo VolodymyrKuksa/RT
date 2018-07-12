@@ -2,6 +2,7 @@
 
 __constant float EPSILON = 0.001;
 __constant float PI = 3.14159265359f;
+__constant float PI_2 = 6.28318530718f;
 __constant int max_bounces = 20;
 __constant int min_bounces = 5;
 
@@ -29,8 +30,6 @@ __float3	normal_cylinder(__float3 , __float3 , t_cylinder * , __float3);
 
 float3		get_normal_obj(float3 hitpoint, t_ray ray, t_obj hitobj);
 
-float3		get_texture_col(t_texture texture, int x, int y, int tx_id);
-float3		change_of_basis(float3 vec, t_basis basis);
 float3	get_point_color(t_obj hitobj, float3 hitpoint, t_texture texture);
 
 t_ray get_camera_ray(int x, int y, t_cam *cam, uint2 *seeds)
@@ -206,33 +205,11 @@ bool	participating_media(t_ray *ray, float t, uint2 *seeds)
 	return false;
 }
 
-float3	change_of_basis(float3 vec, t_basis basis)
-{
-	float3	tmp;
-
-	tmp.x = vec.x * basis.v.x + vec.y * basis.v.y + vec.z * basis.v.z;
-	tmp.y = vec.x * basis.u.x + vec.y * basis.u.y + vec.z * basis.u.z;
-	tmp.z = vec.x * basis.w.x + vec.y * basis.w.y + vec.z * basis.w.z;
-
-	return tmp;
-}
-
-float3	get_point_color(t_obj hitobj, float3 hitpoint, t_texture texture)
-{
-	if (hitobj.tex_id < 0 || hitobj.type != plane)
-		return hitobj.color;
-	hitpoint -= hitobj.primitive.plane.pos;
-	hitpoint = change_of_basis(hitpoint, hitobj.basis);
-	hitpoint *= 20;
-	return get_texture_col(texture, hitpoint.x, hitpoint.z, hitobj.tex_id);
-}
-
 //------------------------------------------------------------------------------\/
 float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds, t_texture texture)
 {
 	float3	mask = (float3)(1.f, 1.f, 1.f);
 	float3	res = (float3)(0, 0, 0);
-	int		bounce = 0;
 	for (int bounce = 0; bounce < max_bounces; ++bounce)
 	{
 		//if ray cant transfer much light, it will be break earlier
@@ -263,7 +240,6 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds, t_te
 		rand -= hitobj.diffuse;
 		if (rand <= 0.f)
 		{
-//			mask *= hitobj.color;
 			mask *= get_point_color(hitobj, hitpoint, texture);
 			ray = diffuse(ray, n, hitpoint, seeds);
 			float	cosine = dot(n, ray.dir);
@@ -282,21 +258,6 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds, t_te
 	return (res);
 }
 //------------------------------------------------------------------------------/\
-
-
-float3		get_texture_col(t_texture texture, int x, int y, int tx_id)
-{
-	x = x % texture.txdata[tx_id].width;
-	y = y % texture.txdata[tx_id].height;
-	if (!texture.tx || !texture.txdata || tx_id >= texture.tx_count)
-		return ((float3)(-1.f, -1.f, -1.f));
-	int		index = texture.txdata[tx_id].start + texture.txdata[tx_id].width *
-		y + x;
-	float3		res = (float3)(texture.tx[index].bgra[2],
-		texture.tx[index].bgra[1], texture.tx[index].bgra[0]);
-	return (res/ 256);
-}
-
 
  __kernel void	render_pixel(
 	__global float3 *pixels,
