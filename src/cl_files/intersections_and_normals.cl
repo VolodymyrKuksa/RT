@@ -22,7 +22,6 @@ float	intersection_cylinder(t_ray *ray,t_cylinder cylinder, __float3 c_rot)
 	t_quad		q;
 	__float3 	x;
 	float	tmp[2];
-	float	res2;
 
 	x = ray->pos - cylinder.pos;
 	tmp[0] = dot(ray->dir, c_rot);

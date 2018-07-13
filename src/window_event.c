@@ -53,7 +53,7 @@ void	window_event(SDL_Event e, t_env *env)
 		g_win_width = (unsigned int)e.window.data1;
 		g_win_height = (unsigned int)e.window.data2;
 		handle_resize(env);
-		if (env->cl.local_size < 50)
-			SDL_SetWindowSize(env->screen.window, ++g_win_width, g_win_height);
+//		if (env->cl.local_size < 50)
+//			SDL_SetWindowSize(env->screen.window, ++g_win_width, g_win_height);
 	}
 }

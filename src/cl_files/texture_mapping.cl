@@ -17,17 +17,17 @@ float3		get_texture_col_float(t_texture texture, float fx, float fy,
 {
 	if (!texture.tx || !texture.txdata || tx_id >= texture.tx_count)
 		return ((float3)(-1.f, -1.f, -1.f));
-	fx = fx - (int)fx;
-	fy = fy - (int)fy;
-	fx = fx < 0 ? fx + 1 : fx;
-	fy = fy < 0 ? fy + 1 : fy;
-	int x = texture.txdata[tx_id].width * fx;
-	int y = texture.txdata[tx_id].height * fy;
+
+	fx = fx < 0 ? fx - ((int)fx - 1) : fx;
+	fy = fy < 0 ? fy - ((int)fy - 1) : fy;
+
+	int x = (int)(texture.txdata[tx_id].width * fx) % texture.txdata[tx_id].width;
+	int y = (int)(texture.txdata[tx_id].height * fy) % texture.txdata[tx_id].height;
 	int		index = texture.txdata[tx_id].start + texture.txdata[tx_id].width *
 		y + x;
 	float3		res = (float3)(texture.tx[index].bgra[2],
-		texture.tx[index].bgra[1], texture.tx[index].bgra[0]);
-	return (res / 256);
+		texture.tx[index].bgra[1], texture.tx[index].bgra[0]) / 256;
+	return (res);
 }
 
 float3		get_texture_col(t_texture texture, int x, int y, int tx_id)
@@ -85,8 +85,9 @@ float3	texture_cylinder(t_obj *cylinder, float3 hitpoint, t_texture texture)
 	hitpoint -= cylinder->primitive.cylinder.pos;
 	hitpoint = change_of_basis(hitpoint, cylinder->basis);
 	float	phi = acos(hitpoint.x / cylinder->primitive.cylinder.r) / PI_2;
+	phi = hitpoint.z > 0 ? 1.f - phi : phi;
 	hitpoint /= 20;		//should be parsed as a variable
-	return get_texture_col_float(texture, phi, hitpoint.y, cylinder->tex_id);
+	return get_texture_col_float(texture, phi, -hitpoint.y, cylinder->tex_id);
 }
 
 /*============================================================================*/

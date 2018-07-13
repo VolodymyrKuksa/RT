@@ -79,8 +79,8 @@ void	main_loop(t_env *env)
 			movement_events(env);
 		cl_exec(&env->cl);
 		update_window(env);
-		if (env->num_samples == 500)
-			exit(0);
+//		if (env->num_samples == 500)
+//			exit(0);
 	}
 }
 
