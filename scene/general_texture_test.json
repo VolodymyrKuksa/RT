@@ -137,7 +137,7 @@
 	},
 	"radius" : 5.0
   },
-  "cylinder" :
+  "cone" :
   {
 	"pos x" : 0.0,
 	"pos y" : 0.0,
@@ -145,7 +145,7 @@
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
-	"texture" : "textures/Bricks1.jpg",
+	"texture" : "textures/Globe2.jpg",
 	"rot x" : 0.0,
 	"rot y" : 0.0,
 	"rot z" : 0.0,
@@ -157,7 +157,7 @@
 	  "specular" : 0.0,
 	  "refraction" : 0.0
 	},
-	"radius" : 4.0
+	"tng" : 0.3,
   },
   "sphere" :
   {

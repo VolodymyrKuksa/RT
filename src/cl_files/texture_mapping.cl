@@ -8,6 +8,7 @@ float3		get_texture_col_float(t_texture, float, float, int);
 float3		texture_plane(t_obj *plane, float3 hitpoint, t_texture texture);
 float3		texture_sphere(t_obj *sphere, float3 hitpoint, t_texture texture);
 float3		texture_cylinder(t_obj *sphere, float3 hitpoint, t_texture texture);
+float3		texture_cone(t_obj *cone, float3 hitpoint, t_texture texture);
 
 /*============================================================================*/
 
@@ -90,6 +91,17 @@ float3	texture_cylinder(t_obj *cylinder, float3 hitpoint, t_texture texture)
 	return get_texture_col_float(texture, phi, -hitpoint.y, cylinder->tex_id);
 }
 
+float3	texture_cone(t_obj *cone, float3 hitpoint, t_texture texture)
+{
+	hitpoint -= cone->primitive.cone.pos;
+	hitpoint = change_of_basis(hitpoint, cone->basis);
+	float2	tmp = normalize((float2)(hitpoint.x, hitpoint.z));
+	float	phi = acos(tmp.x) / PI_2;
+	phi = tmp.y > 0 ? 1.f - phi : phi;
+	hitpoint /= 20;		//should be parsed as a variable
+	return get_texture_col_float(texture, phi, -hitpoint.y, cone->tex_id);
+}
+
 /*============================================================================*/
 
 inline float3	get_point_color(t_obj *hitobj, float3 hitpoint, t_texture texture)
@@ -102,5 +114,7 @@ inline float3	get_point_color(t_obj *hitobj, float3 hitpoint, t_texture texture)
 		return texture_cylinder(hitobj, hitpoint, texture);
 	else if (hitobj->type == sphere)
 		return texture_sphere(hitobj, hitpoint, texture);
+	else if (hitobj->type == cone)
+		return texture_cone(hitobj, hitpoint, texture);
 	return hitobj->color;
 }

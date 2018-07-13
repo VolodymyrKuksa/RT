@@ -210,9 +210,9 @@ t_obj	default_cone(void)
 	tmp.primitive.cone.pos.x = -2;
 	tmp.primitive.cone.pos.y = -2;
 	tmp.primitive.cone.pos.z = -2;
-	tmp.basis.u = (cl_float3){1.0, 0.0, 0.0};
-	tmp.basis.v = (cl_float3){0.0, 1.0, 0.0};
-	tmp.basis.w = (cl_float3){0.0, 0.0, 1.0};
+	tmp.basis.u = (cl_float3){0.0, 1.0, 0.0}; //up
+	tmp.basis.v = (cl_float3){1.0, 0.0, 0.0}; //right
+	tmp.basis.w = (cl_float3){0.0, 0.0, 1.0}; //from the screen
 	tmp.primitive.cone.m1 = 0.0f;
 	tmp.primitive.cone.m2 = 200.0f;
 	//tmp.primitive.cone.rot.x = 0;
