@@ -123,22 +123,22 @@ __float3	normal_cone(__float3  hitpoint, __float3  dir, t_cone *cone, __float3 c
 	return (normal);
 }
 
-float3		get_normal_obj(float3 hitpoint, t_ray ray, t_obj hitobj)
+float3		get_normal_obj(float3 hitpoint, t_ray ray, t_obj *hitobj)
 {
 	float3 n;
-	switch (hitobj.type)
+	switch (hitobj->type)
 	{
 		case sphere:
-			n = normal_sphere(hitpoint, ray.dir, &(hitobj.primitive.sphere));
+			n = normal_sphere(hitpoint, ray.dir, &(hitobj->primitive.sphere));
 			break;
 		case cylinder:
-			n = normal_cylinder(hitpoint, ray.dir, &(hitobj.primitive.cylinder), hitobj.basis.u);
+			n = normal_cylinder(hitpoint, ray.dir, &(hitobj->primitive.cylinder), hitobj->basis.u);
 			break;
 		case plane:
-			n = normal_plane(hitpoint, ray.dir, &(hitobj.primitive.plane), hitobj.basis.u);
+			n = normal_plane(hitpoint, ray.dir, &(hitobj->primitive.plane), hitobj->basis.u);
 			break;
 		case cone:
-			n = normal_cone(hitpoint, ray.dir, &(hitobj.primitive.cone), hitobj.basis.u);
+			n = normal_cone(hitpoint, ray.dir, &(hitobj->primitive.cone), hitobj->basis.u);
 			break;
 		default:
 			break;
