@@ -385,6 +385,8 @@ void	fillthecylind(json_value *value, t_scene *scene)
 			parselight(&v, &tmp);
 		if (ft_strcmp(value->u.object.values[i].name, "texture") == 0)
 			tmp.tex_id = load_texture(v.u.string.ptr);
+		if (ft_strcmp(value->u.object.values[i].name, "material texture") == 0)
+			tmp.mater_tex_id = load_texture(v.u.string.ptr);
 		//fill_u(value->u.object.values[i].name, (cl_float)v.u.dbl, &(tmp.basis.u));
 		i++;
 	}
@@ -424,6 +426,8 @@ void	fillthecone(json_value *value, t_scene *scene)
 			parselight(&v, &tmp);
 		if (ft_strcmp(value->u.object.values[i].name, "texture") == 0)
 			tmp.tex_id = load_texture(v.u.string.ptr);
+		if (ft_strcmp(value->u.object.values[i].name, "material texture") == 0)
+			tmp.mater_tex_id = load_texture(v.u.string.ptr);
 		//fill_u(value->u.object.values[i].name, (cl_float)v.u.dbl, &(tmp.basis.u));
 		i++;
 	}
@@ -461,6 +465,8 @@ void	filltheplane(json_value *value, t_scene *scene)
 			parselight(&v, &tmp);
 		if (ft_strcmp(value->u.object.values[i].name, "texture") == 0)
 			tmp.tex_id = load_texture(v.u.string.ptr);
+		if (ft_strcmp(value->u.object.values[i].name, "material texture") == 0)
+			tmp.mater_tex_id = load_texture(v.u.string.ptr);
 		//fill_u(value->u.object.values[i].name, (cl_float)v.u.dbl, &(tmp.basis.u));
 		i++;
 	}
@@ -499,6 +505,8 @@ void			fillthesphere(json_value *value, t_scene *scene)
 			(cl_float)v.u.dbl, &rot);
 		if (ft_strcmp(value->u.object.values[i].name, "texture") == 0)
 			tmp.tex_id = load_texture(v.u.string.ptr);
+		if (ft_strcmp(value->u.object.values[i].name, "material texture") == 0)
+			tmp.mater_tex_id = load_texture(v.u.string.ptr);
 		//fill_u(value->u.object.values[i].name, (cl_float)v.u.dbl, &(tmp.basis.u));
 		i++;
 	}

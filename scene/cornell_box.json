@@ -39,15 +39,17 @@
 	"color x" : 1.0,
 	"color y" : 0.0,
 	"color z" : 0.0,
+	  "texture" : "textures/test_texture.png",
 	"light" : {
 		"diffuse" : 1.0,
-		"emission z" : 0.0
+		"emission z" : 0.0,
+		"roughness" : 0.0
 	  }
 	},
   "plane" :
   {
-	"pos x" : 0.0,
-	"pos y" : 0.0,
+	"pos x" : -4.0,
+	"pos y" : -9.0,
 	"pos z" : -90.0,
 	"rot x" : 90.0,
 	"rot y" : 0.0,
@@ -55,12 +57,14 @@
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
+	  "material texture" : "textures/test_texture.png",
+	"texture" : "textures/Bricks1.jpg",
 	"light" : {
 	  "diffuse" : 1.0,
 	  "specular" : 0.0,
 	  "refraction" : 0.0,
 	  "roughness" : 0.0,
-	  "emission z" : 0.0
+	  "emission z" : 0.0,
 	}
   },
   "plane" :
@@ -140,6 +144,7 @@
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
+    "texture" : "textures/test_stripes.png",
 	"light" : {
 	  "emission x" : 0.0,
 	  "emission y" : 0.0,
@@ -156,9 +161,11 @@
 	"pos x" : 0.0,
 	"pos y" : -7.0,
 	"pos z" : -45.0,
+	  "rot y" : 120.0,
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
+	  "material texture" : "textures/test_texture2.png",
 	"light" : {
 	  "emission x" : 0.0,
 	  "emission y" : 0.0,

@@ -129,6 +129,7 @@ typedef struct		s_object
 	cl_float3	color;
 	cl_float3	emission;
 	int			tex_id;
+	int			mater_tex_id;
 }					t_obj;
 
 typedef struct		s_scene

@@ -8,15 +8,30 @@ void	get_hitpoint_material(t_obj *hitobj,
 {
 	float2	coord;
 
-	if (hitobj->tex_id >=0)
-	{
-		get_texture_coord(hitobj, hitpoint, texture, &coord);
-		coord.x = coord.x < 0 ? coord.x - ((int)coord.x - 1) : coord.x;
-		coord.y = coord.y < 0 ? coord.y - ((int)coord.y - 1) : coord.y;
-	}
+	get_texture_coord(hitobj, hitpoint, texture, &coord);
+	coord.x = coord.x < 0 ? coord.x - ((int)coord.x - 1) : coord.x;
+	coord.y = coord.y < 0 ? coord.y - ((int)coord.y - 1) : coord.y;
+
 	material->diffuse = hitobj->diffuse;
 	material->specular = hitobj->specular;
 	material->refraction = hitobj->refraction;
+
+	if (hitobj->mater_tex_id >= 0)
+	{
+		float3 tmp = get_texture_col_float(texture, coord.x, coord.y, hitobj->mater_tex_id);
+
+		float sum = tmp.x + tmp.y + tmp.z;
+		if (sum > 0.1f)
+		{
+			material->diffuse = tmp.x;
+			material->specular = tmp.y;
+			material->refraction = tmp.z;
+			material->diffuse /= sum;
+			material->specular /= sum;
+			material->refraction /= sum;
+		}
+	}
+
 	material->roughness = hitobj->roughness;
 	material->emission = hitobj->emission;
 	material->color = hitobj->tex_id >= 0 ? get_texture_col_float(texture, coord.x, coord.y, hitobj->tex_id) : hitobj->color;
