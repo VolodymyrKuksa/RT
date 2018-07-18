@@ -13,8 +13,8 @@ float	solve_quad(t_quad q);
 float	get_intersection(t_ray *r, __global t_obj *obj, int n_obj, int *id);
 float3	trace_ray(t_ray, __global t_obj *, int, uint2 *, t_texture);
 t_ray	diffuse(t_ray ray, float3 n, float3 hitpoint, uint2 *seeds);
-t_ray	reflect(t_ray ray, float3 n, float3 hitpt, t_obj sp, uint2 *seeds);
-t_ray	refract(t_ray ray, float3 hitpoint, t_obj hitsphere, uint2 *seeds);
+t_ray	reflect(t_ray ray, float3 hitpt, t_material material, uint2 *seeds);
+t_ray	refract(t_ray ray, float3 hitpoint, t_material material, uint2 *seeds);
 float3	sample_hemisphere(float3 w, float max_r, uint2 *seeds);
 bool	participating_media(t_ray *ray, float t, uint2 *seeds);
 
@@ -29,9 +29,11 @@ __float3	normal_cone(__float3  , t_cone * , __float3);
 __float3	normal_plane(__float3  , t_plane * , __float3);
 __float3	normal_cylinder(__float3 , t_cylinder * , __float3);
 
-float3		get_normal_obj(float3 hitpoint, t_ray ray, t_obj hitobj);
+float3		get_normal_obj(float3 hitpoint, t_ray ray, t_obj *hitobj);
 
 float3	get_point_color(t_obj *hitobj, float3 hitpoint, t_texture texture);
+void	get_hitpoint_material(t_obj *, float3, t_material *, t_texture, t_ray);
+void	get_texture_coord(t_obj *, float3, t_texture, float2 *);
 
 t_ray get_camera_ray(int x, int y, t_cam *cam, uint2 *seeds)
 {
@@ -133,55 +135,50 @@ t_ray	diffuse(t_ray ray, float3 n, float3 hitpoint, uint2 *seeds)
 	return (ray);
 }
 
-t_ray	reflect(t_ray ray, float3 n, float3 hitpoint, t_obj sp, uint2 *seeds)
+t_ray	reflect(t_ray ray, float3 hitpoint, t_material material, uint2 *seeds)
 {
 	float3 tmp = ray.dir;
 	float3 reflected_dir;
 
-	reflected_dir = tmp - 2 * dot(tmp, n) * n;
-	ray.dir = sample_hemisphere(reflected_dir, sp.roughness, seeds);
+	reflected_dir = tmp - 2 * dot(tmp, material.normal) * material.normal;
+	ray.dir = sample_hemisphere(reflected_dir, material.roughness, seeds);
 	ray.pos = hitpoint + EPSILON * ray.dir;
 	return (ray);
 }
 
-t_ray	refract(t_ray ray, __float3 hitpoint, t_obj object, uint2 *seeds)
+t_ray	refract(t_ray ray, __float3 hitpoint, t_material material, uint2 *seeds)
 {
-	float3	n = get_normal_obj(hitpoint, ray, object);
-
-	bool	enter = dot(ray.dir, n) > 0 ? false : true;
-	n = enter ? n : -n;
-
-	float	cosine_theta = dot(ray.dir, n);
+	float	cosine_theta = dot(ray.dir, material.normal);
 	float	cosine_theta_r;
 
-	if (enter && ray.refractions > 0) {
+	if (material.enter && ray.refractions > 0) {
 		ray.pos = hitpoint + EPSILON *ray.dir;
 		ray.refractions++;//Поговорить с Вовчиком
 		return (ray);
-	} else if (!enter && ray.refractions > 1) {
+	} else if (!material.enter && ray.refractions > 1) {
 		ray.pos = hitpoint + EPSILON * ray.dir;
 		ray.refractions--;
 		return (ray);
 	}
 
 	float3	t;
-	if (enter)
+	if (material.enter)
 	{
 		cosine_theta_r = 1.f - (1.f - cosine_theta * cosine_theta)
 			/ 2.25f;
 		ray.refractions++;
 		cosine_theta_r = sqrt(cosine_theta_r);
-		t = ((ray.dir - n * cosine_theta) / 1.5f) - n * cosine_theta_r;
+		t = ((ray.dir - material.normal * cosine_theta) / 1.5f) - material.normal * cosine_theta_r;
 	}
 	else
 	{
 		cosine_theta_r = 1.f - (2.25f * (1 - cosine_theta * cosine_theta));
 		ray.refractions--;
 		cosine_theta_r = sqrt(cosine_theta_r);
-		t = (1.5f * (ray.dir - n * cosine_theta)) - n * cosine_theta_r;
+		t = (1.5f * (ray.dir - material.normal * cosine_theta)) - material.normal * cosine_theta_r;
 	}
 
-	ray.dir = sample_hemisphere(t, object.roughness, seeds);
+	ray.dir = sample_hemisphere(t, material.roughness, seeds);
 	ray.pos = hitpoint + EPSILON * ray.dir;
 
 	return (ray);
@@ -213,6 +210,7 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds, t_te
 {
 	float3	mask = (float3)(1.f, 1.f, 1.f);
 	float3	res = (float3)(0, 0, 0);
+	t_material	material;
 	for (int bounce = 0; bounce < max_bounces; ++bounce)
 	{
 		//if ray cant transfer much light, it will be break earlier
@@ -223,39 +221,42 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds, t_te
 			if (r > light)
 				break;
 		}
+
 		int hitobj_id = -1;
 		float t = get_intersection(&ray, obj, num_obj, &hitobj_id);
+
 		if (t < 0)
 			break;
 		t_obj hitobj = obj[hitobj_id];
 		if (ray.dust > 0.f && participating_media(&ray, t, seeds))
 			continue;
 		__float3 hitpoint = ray.pos + t * ray.dir;
-		res += mask * hitobj.emission;
-		__float3 n = get_normal_obj(hitpoint, ray, hitobj);
-		n = dot(n, ray.dir) > 0 ? -n : n;
-hitpoint += EPSILON * n;
+
+		get_hitpoint_material(&hitobj, hitpoint, &material, texture, ray);
+
+		res += mask * material.emission;
 		float rand = get_random(seeds);
-		rand -= hitobj.diffuse;
+		rand -= material.diffuse;
 		if (rand <= 0.f)
 		{
-			mask *= hitobj.tex_id < 0 ? hitobj.color : get_point_color(&hitobj, hitpoint, texture);
-			ray = diffuse(ray, n, hitpoint, seeds);
-			float	cosine = dot(n, ray.dir);
+			mask *= material.color;
+			ray = diffuse(ray, material.normal, hitpoint, seeds);
+			float	cosine = dot(material.normal, ray.dir);
 			cosine = cosine < 0 ? -cosine : cosine;
 			mask *= sqrt(cosine);//poor gamma-correction
 		}
-		else if (rand - hitobj.specular <= 0.f)
+		else if (rand - material.specular <= 0.f)
 		{
-			ray = reflect(ray, n, hitpoint, hitobj, seeds);
-			if (dot(n, ray.dir) < 0)
+			ray = reflect(ray, hitpoint, material, seeds);
+			if (dot(material.normal, ray.dir) < 0)
 				break;
 		}
 		else
-			ray = refract(ray, hitpoint, hitobj, seeds);
+			ray = refract(ray, hitpoint, material, seeds);
 	}
 	return (res);
 }
+
 //------------------------------------------------------------------------------/\
 
  __kernel void	render_pixel(
@@ -276,6 +277,7 @@ hitpoint += EPSILON * n;
 	uint2	seeds;
 	seeds.x = seed[id];
 	seeds.y = seed[id + w * h];
+
 	t_texture	texture = {tx, txdata, tx_count};
 	t_ray ray = get_camera_ray(x, y, &cam, &seeds);
 	pixels[id] = (float3)(0,0,0);

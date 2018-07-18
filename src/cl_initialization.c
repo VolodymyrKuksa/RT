@@ -50,8 +50,13 @@ void	init_opencl(t_cldata *cl)
 	cl->source[0] = read_file(open(KERNEL_PATH0, O_RDONLY), 0);
 	cl->source[1] = read_file(open(KERNEL_PATH1, O_RDONLY), 0);
 	cl->source[2] = read_file(open(KERNEL_PATH2, O_RDONLY), 0);
-	cl->program = clCreateProgramWithSource(cl->context, 3,
+	cl->source[3] = read_file(open(KERNEL_PATH3, O_RDONLY), 0);
+	cl->program = clCreateProgramWithSource(cl->context, 4,
 		(const char**)(&cl->source), 0, 0);
+	free(cl->source[0]);
+	free(cl->source[1]);
+	free(cl->source[2]);
+	free(cl->source[3]);
 	err = clBuildProgram(cl->program, 0, 0, KERNEL_INC_DIR, 0, 0);
 	if (err != CL_SUCCESS)
 	{

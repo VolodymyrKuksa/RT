@@ -137,6 +137,19 @@ typedef struct		s_object
 	__float3	color;
 	__float3	emission;
 	int			tex_id;
+	int			mater_tex_id;
 }					t_obj;
+
+typedef struct		s_material
+{
+	float		diffuse;
+	float		specular;
+	float		refraction;
+	float		roughness;
+	float3		color;
+	float3		emission;
+	float3		normal;
+	bool		enter;
+}					t_material;
 
 #endif

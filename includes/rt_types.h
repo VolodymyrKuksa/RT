@@ -145,6 +145,7 @@ typedef struct		s_object
 	cl_float3	color;
 	cl_float3	emission;
 	int			tex_id;
+	int			mater_tex_id;
 }					t_obj;
 
 typedef struct		s_scene
@@ -160,7 +161,7 @@ typedef struct		s_cldata
 	cl_device_id		dev_id;
 	cl_context			context;
 	cl_command_queue	command_queue;
-	char				*source[3];
+	char				*source[4];
 	cl_program			program;
 	cl_kernel			kernel;
 	size_t				global_size;
