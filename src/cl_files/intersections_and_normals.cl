@@ -56,16 +56,16 @@ float	intersection_cylinder(t_ray *ray,t_cylinder cylinder, __float3 c_rot)
 	if (res > 0)
 	{
 		hitpoint = res * ray->dir + x;
-		len = length(hitpoint);
-		if (len < cylinder.h)
+		len = dot(hitpoint, c_rot);
+		if (len < cylinder.h && len > 0)
 			return (res);
 	}
 	res = (-q.b + q.d) / q.a;
 	if (res > 0)
 	{
 		hitpoint = res * ray->dir + x;
-		len = length(hitpoint);
-		if (len > cylinder.h)
+		len = dot(hitpoint, c_rot);
+		if (len < cylinder.h && len > 0)
 			return (res);
 	}
 	return (-1.f);
@@ -341,16 +341,16 @@ float3		get_normal_obj(float3 hitpoint, t_ray ray, t_obj *hitobj)
 	switch (hitobj->type)
 	{
 		case sphere:
-			n = normal_sphere(hitpoint, ray.dir, &(hitobj->primitive.sphere));
+			n = normal_sphere(hitpoint, &(hitobj->primitive.sphere));
 			break;
 		case cylinder:
-			n = normal_cylinder(hitpoint, ray.dir, &(hitobj->primitive.cylinder), hitobj->basis.u);
+			n = normal_cylinder(hitpoint, &(hitobj->primitive.cylinder), hitobj->basis.u);
 			break;
 		case plane:
-			n = normal_plane(hitpoint, ray.dir, &(hitobj->primitive.plane), hitobj->basis.u);
+			n = normal_plane(hitpoint, &(hitobj->primitive.plane), hitobj->basis.u);
 			break;
 		case cone:
-			n = normal_cone(hitpoint, ray.dir, &(hitobj->primitive.cone), hitobj->basis.u);
+			n = normal_cone(hitpoint, &(hitobj->primitive.cone), hitobj->basis.u);
 			break;
 		default:
 			break;

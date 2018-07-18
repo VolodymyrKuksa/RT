@@ -135,7 +135,7 @@
 	  "emission y" : 3.0,
 	  "emission z" : 3.0
 	},
-	"radius" : 15.0
+	"radius" : 5.0
   },
   "cone" :
   {

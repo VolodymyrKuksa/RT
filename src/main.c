@@ -234,8 +234,8 @@ int		main(int argc, char **argv)
 	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
 	init_defaults(&env);
 	init_scene(&env.sc, argc, argv);
-//	init_torus(&env.sc);
-//	ccamera_default(&env.sc.cam);
+	//init_torus(&env.sc);
+	//ccamera_default(&env.sc.cam);
 	init_seeds(&env.cl.seeds);
 	get_work_group_size(&env.cl);
 	init_win(&env.screen);
