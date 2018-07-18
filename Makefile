@@ -6,7 +6,7 @@
 #    By: vkuksa <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/22 18:23:38 by vkuksa            #+#    #+#              #
-#    Updated: 2018/05/22 18:23:42 by vkuksa           ###   ########.fr        #
+#    Updated: 2018/07/18 18:19:54 by vkuksa           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,11 +43,28 @@ LJSON = $(D_JSON)$(N_JSON)
 
 HEAD_FILES = rt.h rt_types.h parser.h keys.h rt_textures.h
 
-C_FILES = main.c check_params1.c sdl_utils.c scene_init.c init_cam.c cl_initialization.c\
-cl_exec.c keyboard_events.c parse.c fill_each_obj.c movement_events.c rotate.c write_png.c write_ppm.c\
-window_event.c scene_utils.c rot_obj.c default_objs.c mv_obj.c textures/load_texture.c\
-textures/compress_texture.c
 
+C_FILES = cl_exec.c\
+cl_initialization.c\
+events/keyboard_events.c\
+events/movement_events.c\
+events/mv_obj.c\
+events/rot_obj.c\
+events/rotate.c\
+events/window_event.c\
+events/write_png.c\
+events/write_ppm.c\
+main.c\
+parser/check_params1.c\
+parser/default_objs.c\
+parser/fill_each_obj.c\
+parser/init_cam.c\
+parser/parse.c\
+parser/scene_init.c\
+scene_utils.c\
+sdl_utils.c\
+textures/compress_texture.c\
+textures/load_texture.c
 
 SRC = $(addprefix $(D_SRC), $(C_FILES))
 OBJ = $(addprefix $(D_OBJ), $(C_FILES:.c=.o))
@@ -85,6 +102,8 @@ $(NAME): $(D_OBJ) $(OBJ)
 $(D_OBJ):
 	@mkdir $(D_OBJ)
 	@mkdir $(D_OBJ)textures
+	@mkdir $(D_OBJ)parser
+	@mkdir $(D_OBJ)events
 	@printf "$(C_CYAN)%-10s$(C_NONE)%-25s$(C_GREEN)[done]$(C_NONE)\n" $(NAME): $@
 
 $(D_OBJ)%.o: $(D_SRC)%.c $(HEADERS)

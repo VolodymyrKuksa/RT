@@ -13,13 +13,13 @@
 #include "rt.h"
 #include "parser.h"
 
-void			error_fedun(char *er)
+void		error_fedun(char *er)
 {
 	ft_putendl(er);
 	exit(-1);
 }
 
-void			parse_scene(int argc, char **argv, char **contents, size_t *len)
+void		parse_scene(int argc, char **argv, char **contents, size_t *len)
 {
 	int			fd;
 

@@ -17,13 +17,13 @@ include_directories(${PROJECT_SOURCE_DIR}/frameworks/SDL2.framework/Headers incl
 find_library(OPENCL OpenCL)
 
 add_executable(RT includes/rt_types.h includes/rt.h src/main.c src/sdl_utils.c
-        src/scene_init.c src/cl_initialization.c src/cl_exec.c
-        src/keyboard_events.c includes/keys.h src/movement_events.c src/rotate.c
-        src/write_png.c src/write_ppm.c src/window_event.c src/scene_utils.c
-        src/rot_obj.c src/mv_obj.c  src/textures/load_texture.c
+        src/parser/scene_init.c src/cl_initialization.c src/cl_exec.c
+        src/events/keyboard_events.c includes/keys.h src/events/movement_events.c src/events/rotate.c
+        src/events/write_png.c src/events/write_ppm.c src/events/window_event.c src/scene_utils.c
+        src/events/rot_obj.c src/events/mv_obj.c src/textures/load_texture.c
         includes/rt_textures.h src/textures/compress_texture.c
-        src/check_params1.c src/default_objs.c src/fill_each_obj.c
-        src/init_cam.c src/parse.c)
+        src/parser/check_params1.c src/parser/default_objs.c src/parser/fill_each_obj.c
+        src/parser/init_cam.c src/parser/parse.c)
 
 target_link_libraries(RT ${OPENCL} libft libvec lib_json
         ${SDL} "-F ${PROJECT_SOURCE_DIR}/frameworks -framework SDL2"
