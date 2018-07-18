@@ -135,7 +135,7 @@
 	  "emission y" : 3.0,
 	  "emission z" : 3.0
 	},
-	"radius" : 5.0
+	"radius" : 15.0
   },
   "cone" :
   {
@@ -157,7 +157,7 @@
 	  "specular" : 0.0,
 	  "refraction" : 0.0
 	},
-	"tng" : 0.3,
+	"tng" : 0.3
   },
   "sphere" :
   {
@@ -167,7 +167,7 @@
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
-	"texture" : "textures/Globe2.jpg",
+	"texture" : "textures/Ball8.jpg",
 	"rot x" : 0.0,
 	"rot y" : 0.0,
 	"rot z" : 0.0,
@@ -177,7 +177,7 @@
 	  "emission z" : 0.0,
 	  "diffuse" : 1.0,
 	  "specular" : 0.0,
-	  "refraction" : 0.0
+	  "refraction" : 5.0
 	},
 	"radius" : 4.0
   }

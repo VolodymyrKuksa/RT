@@ -22,11 +22,12 @@ float	intersection_sphere(t_ray*,t_sphere);
 float	intersection_cone(t_ray*,t_cone,__float3);
 float	intersection_plane(t_ray*,t_plane,__float3);
 float	intersection_cylinder(t_ray*,t_cylinder,__float3);
+float	intersection_torus(t_ray*,t_torus,__float3);
 
-__float3	normal_sphere(__float3 , __float3 , t_sphere *);
-__float3	normal_cone(__float3 , __float3 , t_cone * , __float3);
-__float3	normal_plane(__float3 , __float3  , t_plane * , __float3);
-__float3	normal_cylinder(__float3 , __float3 , t_cylinder * , __float3);
+__float3	normal_sphere(__float3 , t_sphere *);
+__float3	normal_cone(__float3  , t_cone * , __float3);
+__float3	normal_plane(__float3  , t_plane * , __float3);
+__float3	normal_cylinder(__float3 , t_cylinder * , __float3);
 
 float3		get_normal_obj(float3 hitpoint, t_ray ray, t_obj hitobj);
 
@@ -91,6 +92,9 @@ float	get_intersection(t_ray *r, __global t_obj *object, int num_obj, int *id)
 			case cone:
 				tmp = intersection_cone(r, object[i].primitive.cone, object[i].basis.u);
 				break;
+			case torus:
+				tmp = intersection_torus(r, object[i].primitive.torus, object[i].basis.u);
+				break;
 			default:
 				break;
 		}
@@ -100,7 +104,6 @@ float	get_intersection(t_ray *r, __global t_obj *object, int num_obj, int *id)
 			*id = i;
 		}
 	}
-//t = 0.5f;
 	return t;
 }
 
@@ -220,10 +223,8 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds, t_te
 			if (r > light)
 				break;
 		}
-
 		int hitobj_id = -1;
 		float t = get_intersection(&ray, obj, num_obj, &hitobj_id);
-
 		if (t < 0)
 			break;
 		t_obj hitobj = obj[hitobj_id];
@@ -233,12 +234,12 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds, t_te
 		res += mask * hitobj.emission;
 		__float3 n = get_normal_obj(hitpoint, ray, hitobj);
 		n = dot(n, ray.dir) > 0 ? -n : n;
+hitpoint += EPSILON * n;
 		float rand = get_random(seeds);
 		rand -= hitobj.diffuse;
 		if (rand <= 0.f)
 		{
 			mask *= hitobj.tex_id < 0 ? hitobj.color : get_point_color(&hitobj, hitpoint, texture);
-			//mask *= /*hitobj.color */ get_point_color(hitobj, hitpoint, texture);
 			ray = diffuse(ray, n, hitpoint, seeds);
 			float	cosine = dot(n, ray.dir);
 			cosine = cosine < 0 ? -cosine : cosine;
@@ -275,12 +276,7 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds, t_te
 	uint2	seeds;
 	seeds.x = seed[id];
 	seeds.y = seed[id + w * h];
-
 	t_texture	texture = {tx, txdata, tx_count};
-
-//	int		tx_id = 2;
-//	pixels[id] = get_texture_col(texture, x, y, tx_id);
-
 	t_ray ray = get_camera_ray(x, y, &cam, &seeds);
 	pixels[id] = (float3)(0,0,0);
 	pixels[id] += trace_ray(ray, obj, num_obj, &seeds, texture);

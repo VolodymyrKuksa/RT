@@ -39,3 +39,10 @@ void	mv_cone(cl_float3 d, t_obj *c, t_mvdata mvdata)
 	c->primitive.cone.pos.y += d.y * mvdata.move_spd;
 	c->primitive.cone.pos.z += d.z * mvdata.move_spd;
 }
+
+void	mv_torus(cl_float3 d, t_obj *c, t_mvdata mvdata)
+{
+	c->primitive.torus.pos.x += d.x * mvdata.move_spd;
+	c->primitive.torus.pos.y += d.y * mvdata.move_spd;
+	c->primitive.torus.pos.z += d.z * mvdata.move_spd;
+}

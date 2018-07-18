@@ -35,3 +35,9 @@ void	rot_cone(float d, t_obj *c, t_mvdata mvdata,
 {
 	c->primitive.cylinder.pos = f(d, c->primitive.cylinder.pos, mvdata);
 }
+
+void	rot_torus(float d, t_obj *c, t_mvdata mvdata,
+				 cl_float3 (*f)(float, cl_float3, t_mvdata))
+{
+	c->primitive.torus.pos = f(d, c->primitive.torus.pos, mvdata);
+}
