@@ -64,7 +64,7 @@
 	  "specular" : 0.0,
 	  "refraction" : 0.0,
 	  "roughness" : 0.0,
-	  "emission z" : 0.0,
+	  "emission z" : 0.0
 	}
   },
   "plane" :
