@@ -43,9 +43,9 @@ LJSON = $(D_JSON)$(N_JSON)
 
 HEAD_FILES = rt.h rt_types.h parser.h keys.h rt_textures.h
 
-C_FILES = main.c read_file.c sdl_utils.c scene_init.c cl_initialization.c\
-cl_exec.c keyboard_events.c movement_events.c rotate.c write_png.c write_ppm.c\
-window_event.c scene_utils.c rot_obj.c mv_obj.c textures/load_texture.c\
+C_FILES = main.c check_params1.c sdl_utils.c scene_init.c init_cam.c cl_initialization.c\
+cl_exec.c keyboard_events.c parse.c fill_each_obj.c movement_events.c rotate.c write_png.c write_ppm.c\
+window_event.c scene_utils.c rot_obj.c default_objs.c mv_obj.c textures/load_texture.c\
 textures/compress_texture.c
 
 
