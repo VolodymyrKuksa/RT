@@ -23,7 +23,8 @@ add_executable(RT includes/rt_types.h includes/rt.h src/main.c src/sdl_utils.c
         src/events/rot_obj.c src/events/mv_obj.c src/textures/load_texture.c
         includes/rt_textures.h src/textures/compress_texture.c
         src/parser/check_params1.c src/parser/default_objs.c src/parser/fill_each_obj.c
-        src/parser/init_cam.c src/parser/parse.c)
+        src/parser/init_cam.c src/parser/parse.c src/server-client/thread_pool.c
+        includes/server_client.h src/server-client/run_server.c)
 
 target_link_libraries(RT ${OPENCL} libft libvec lib_json
         ${SDL} "-F ${PROJECT_SOURCE_DIR}/frameworks -framework SDL2"

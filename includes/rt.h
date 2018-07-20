@@ -28,6 +28,7 @@
 # include "keys.h"
 # include "parser.h"
 # include "json.h"
+# include "server_client.h"
 
 # ifdef CLION_BUILD
 #define KERNEL_PATH0 "../src/cl_files/kernel_source.cl"

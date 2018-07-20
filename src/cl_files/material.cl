@@ -30,7 +30,7 @@ int	get_hitpoint_material(t_obj *hitobj,
 			material->specular /= sum;
 			material->refraction /= sum;
 		}
-		else if(sum == 0.f)
+		else if(sum >= 0.f)
 			return (0);
 	}
 

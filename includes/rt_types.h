@@ -197,6 +197,7 @@ typedef struct		s_env
 	t_scene				sc;
 	t_mvdata			mv_data;
 	t_txgpu				textures;
+	//add server data
 
 	unsigned int		num_samples;
 }					t_env;

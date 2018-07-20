@@ -79,6 +79,7 @@ void	main_loop(t_env *env)
 			else if (e.type == SDL_WINDOWEVENT)
 				window_event(e, env);
 		}
+		//check out messages from clients
 		if (env->mv_data.move_keys)
 			movement_events(env);
 		cl_exec(&env->cl);
@@ -255,9 +256,10 @@ int		main(int argc, char **argv)
 	init_opencl(&env.cl);
 	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
 	init_defaults(&env);
-//	init_scene(&env.sc, argc, argv);
-	init_torus(&env.sc);
-	ccamera_default(&env.sc.cam);
+	init_scene(&env.sc, argc, argv);
+//	init_torus(&env.sc);
+//	ccamera_default(&env.sc.cam);
+//	run_server(&env);
 	init_seeds(&env.cl.seeds);
 	get_work_group_size(&env.cl);
 	init_win(&env.screen);
