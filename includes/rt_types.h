@@ -75,7 +75,9 @@ typedef enum		e_obj_type
 	plane,
 	cylinder,
 	cone,
-	torus
+	torus,
+	disc,
+	rectangle
 }					t_obj_type;
 
 typedef struct		s_disk
@@ -117,6 +119,13 @@ typedef struct		s_torus
 	float		r;
 }					t_torus;
 
+typedef struct		s_rectangle
+{
+	cl_float3	pos;
+	float		h;
+	float		w;
+}					t_rectangle;
+
 typedef	union		u_primitive
 {
 	t_plane		plane;
@@ -124,6 +133,8 @@ typedef	union		u_primitive
 	t_cylinder	cylinder;
 	t_cone		cone;
 	t_torus		torus;
+	t_disk		disk;
+	t_rectangle	rectangle;
 }					t_primitive;
 
 typedef struct		s_basis

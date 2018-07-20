@@ -83,91 +83,113 @@ void	main_loop(t_env *env)
 			movement_events(env);
 		cl_exec(&env->cl);
 		update_window(env);
-//		if (env->num_samples == 500)
-//			exit(0);
+		if (env->num_samples == 500)
+			exit(0);
 	}
 }
 
 void init_torus(t_scene *scene)
 {
 	t_obj tmp;
-	scene->num_obj = 5;
+	scene->num_obj = 2;
 	scene->obj = (t_obj *)malloc(sizeof(t_obj) * scene->num_obj);
 
-	tmp.basis.u = (cl_float3){0.0, 1.0, 0.0};
-	tmp.basis.v = (cl_float3){0.0, 0.0, 1.0};
-	tmp.basis.w = (cl_float3){1.0, 0.0, 0.0};
-	tmp.primitive.torus.pos.x = 0;
-	tmp.primitive.torus.pos.y = 0;
-	tmp.primitive.torus.pos.z = -30;
-	tmp.primitive.torus.r = 1.f;
-	tmp.primitive.torus.R = 60.f;
-	tmp.color.x = 0.f;
-	tmp.color.y = 1.f;
-	tmp.color.z = 0.f;
-	tmp.emission.x = 0;
-	tmp.emission.y = 0;
-	tmp.emission.z = 0;
-	tmp.roughness = 1.f;
-	tmp.diffuse = 1.f;
-	tmp.specular = 0.f;
-	tmp.refraction = 0.f;
-	tmp.type = torus;
-	tmp.tex_id = -1;
-	scene->obj[0] = tmp;
+//	tmp.basis.u = (cl_float3){0.0, 1.0, 0.0};
+//	tmp.basis.v = (cl_float3){0.0, 0.0, 1.0};
+//	tmp.basis.w = (cl_float3){1.0, 0.0, 0.0};
+//	tmp.primitive.torus.pos.x = 0;
+//	tmp.primitive.torus.pos.y = 0;
+//	tmp.primitive.torus.pos.z = -30;
+//	tmp.primitive.torus.r = 1.f;
+//	tmp.primitive.torus.R = 60.f;
+//	tmp.color.x = 0.f;
+//	tmp.color.y = 1.f;
+//	tmp.color.z = 0.f;
+//	tmp.emission.x = 0;
+//	tmp.emission.y = 0;
+//	tmp.emission.z = 0;
+//	tmp.roughness = 1.f;
+//	tmp.diffuse = 1.f;
+//	tmp.specular = 0.f;
+//	tmp.refraction = 0.f;
+//	tmp.type = torus;
+//	tmp.tex_id = -1;
+//	scene->obj[0] = tmp;
+//
+//	tmp.basis.u = (cl_float3){0.0, 0.0, 1.0};
+//	tmp.basis.v = (cl_float3){0.0, 1.0, 0.0};
+//	tmp.basis.w = (cl_float3){1.0, 0.0, 0.0};
+//	tmp.primitive.torus.pos.x = 0;
+//	tmp.primitive.torus.pos.y = 0;
+//	tmp.primitive.torus.pos.z = -30;
+//	tmp.primitive.torus.r = 1.f;
+//	tmp.primitive.torus.R = 60.f;
+//	tmp.color.x = 1.f;
+//	tmp.color.y = 0.f;
+//	tmp.color.z = 0.f;
+//	tmp.emission.x = 0;
+//	tmp.emission.y = 0;
+//	tmp.emission.z = 0;
+//	tmp.roughness = 1.f;
+//	tmp.diffuse = 1.f;
+//	tmp.specular = 0.f;
+//	tmp.refraction = 0.f;
+//	tmp.type = torus;
+//	tmp.tex_id = -1;
+//	scene->obj[1] = tmp;
+//
+//	tmp.basis.u = (cl_float3){1.0, 0.0, 0.0};
+//	tmp.basis.v = (cl_float3){0.0, 0.0, 1.0};
+//	tmp.basis.w = (cl_float3){0.0, 1.0, 0.0};
+//	tmp.primitive.torus.pos.x = 0;
+//	tmp.primitive.torus.pos.y = 0;
+//	tmp.primitive.torus.pos.z = -30;
+//	tmp.primitive.torus.r = 1.f;
+//	tmp.primitive.torus.R = 60.f;
+//	tmp.color.x = 0.f;
+//	tmp.color.y = 0.f;
+//	tmp.color.z = 1.f;
+//	tmp.emission.x = 0;
+//	tmp.emission.y = 0;
+//	tmp.emission.z = 0;
+//	tmp.roughness = 1.f;
+//	tmp.diffuse = 1.f;
+//	tmp.specular = 0.f;
+//	tmp.refraction = 0.f;
+//	tmp.type = torus;
+//	tmp.tex_id = -1;
+//	scene->obj[2] = tmp;
+//
+//	tmp.basis.u = (cl_float3){0.0, 1.0, 0.0};
+//	tmp.basis.v = (cl_float3){1.0, 0.0, 0.0};
+//	tmp.basis.w = (cl_float3){0.0, 0.0, 1.0};
+//	tmp.primitive.sphere.pos.x = 0;
+//	tmp.primitive.sphere.pos.y = 0;
+//	tmp.primitive.sphere.pos.z = -30;
+//	tmp.primitive.sphere.r = 20;
+//	tmp.color.x = 0.f;
+//	tmp.color.y = 0.f;
+//	tmp.color.z = 0.f;
+//	tmp.emission.x = 0.f;
+//	tmp.emission.y = 0.f;
+//	tmp.emission.z = 0.f;
+//	tmp.roughness = 0.0f;
+//	tmp.diffuse = 1.f;
+//	tmp.specular = 0;
+//	tmp.refraction = 0;
+//	tmp.type = sphere;
+//	tmp.tex_id = -1;
+//	scene->obj[3] = tmp;
 
 	tmp.basis.u = (cl_float3){0.0, 0.0, 1.0};
-	tmp.basis.v = (cl_float3){0.0, 1.0, 0.0};
-	tmp.basis.w = (cl_float3){1.0, 0.0, 0.0};
-	tmp.primitive.torus.pos.x = 0;
-	tmp.primitive.torus.pos.y = 0;
-	tmp.primitive.torus.pos.z = -30;
-	tmp.primitive.torus.r = 1.f;
-	tmp.primitive.torus.R = 60.f;
-	tmp.color.x = 1.f;
-	tmp.color.y = 0.f;
-	tmp.color.z = 0.f;
-	tmp.emission.x = 0;
-	tmp.emission.y = 0;
-	tmp.emission.z = 0;
-	tmp.roughness = 1.f;
-	tmp.diffuse = 1.f;
-	tmp.specular = 0.f;
-	tmp.refraction = 0.f;
-	tmp.type = torus;
-	tmp.tex_id = -1;
-	scene->obj[1] = tmp;
-
-	tmp.basis.u = (cl_float3){1.0, 0.0, 0.0};
-	tmp.basis.v = (cl_float3){0.0, 0.0, 1.0};
-	tmp.basis.w = (cl_float3){0.0, 1.0, 0.0};
-	tmp.primitive.torus.pos.x = 0;
-	tmp.primitive.torus.pos.y = 0;
-	tmp.primitive.torus.pos.z = -30;
-	tmp.primitive.torus.r = 1.f;
-	tmp.primitive.torus.R = 60.f;
-	tmp.color.x = 0.f;
-	tmp.color.y = 0.f;
-	tmp.color.z = 1.f;
-	tmp.emission.x = 0;
-	tmp.emission.y = 0;
-	tmp.emission.z = 0;
-	tmp.roughness = 1.f;
-	tmp.diffuse = 1.f;
-	tmp.specular = 0.f;
-	tmp.refraction = 0.f;
-	tmp.type = torus;
-	tmp.tex_id = -1;
-	scene->obj[2] = tmp;
-
-	tmp.basis.u = (cl_float3){0.0, 1.0, 0.0};
 	tmp.basis.v = (cl_float3){1.0, 0.0, 0.0};
-	tmp.basis.w = (cl_float3){0.0, 0.0, 1.0};
-	tmp.primitive.sphere.pos.x = 0;
-	tmp.primitive.sphere.pos.y = 0;
-	tmp.primitive.sphere.pos.z = -30;
-	tmp.primitive.sphere.r = 20;
-	tmp.color.x = 0.f;
+	tmp.basis.w = (cl_float3){0.0, 1.0, 0.0};
+	tmp.primitive.rectangle.pos.x = 0;
+	tmp.primitive.rectangle.pos.y = 0;
+	tmp.primitive.rectangle.pos.z = -30;
+	tmp.primitive.rectangle.w = 5.f;
+	tmp.primitive.rectangle.h = 10.f;
+	tmp.color.x = 1.f;
 	tmp.color.y = 0.f;
 	tmp.color.z = 0.f;
 	tmp.emission.x = 0.f;
@@ -177,9 +199,9 @@ void init_torus(t_scene *scene)
 	tmp.diffuse = 1.f;
 	tmp.specular = 0;
 	tmp.refraction = 0;
-	tmp.type = sphere;
+	tmp.type = rectangle;
 	tmp.tex_id = -1;
-	scene->obj[3] = tmp;
+	scene->obj[0] = tmp;
 
 
 	tmp.basis.u = (cl_float3){0.0, 0.0, 1.0};
@@ -200,7 +222,7 @@ void init_torus(t_scene *scene)
 	tmp.refraction = 0;
 	tmp.type = plane;
 	tmp.tex_id = -1;
-	scene->obj[4] = tmp;
+	scene->obj[1] = tmp;
 }
 
 void	ccamera_default(t_cam *cam)
@@ -233,9 +255,9 @@ int		main(int argc, char **argv)
 	init_opencl(&env.cl);
 	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
 	init_defaults(&env);
-	init_scene(&env.sc, argc, argv);
-	//init_torus(&env.sc);
-	//ccamera_default(&env.sc.cam);
+//	init_scene(&env.sc, argc, argv);
+	init_torus(&env.sc);
+	ccamera_default(&env.sc.cam);
 	init_seeds(&env.cl.seeds);
 	get_work_group_size(&env.cl);
 	init_win(&env.screen);

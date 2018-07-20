@@ -1,6 +1,6 @@
 #include "kernel.h"
 
-void	get_hitpoint_material(t_obj *hitobj,
+int	get_hitpoint_material(t_obj *hitobj,
 	float3 hitpoint,
 	t_material *material,
 	t_texture texture,
@@ -30,6 +30,8 @@ void	get_hitpoint_material(t_obj *hitobj,
 			material->specular /= sum;
 			material->refraction /= sum;
 		}
+		else if(sum == 0.f)
+			return (0);
 	}
 
 	material->roughness = hitobj->roughness;
@@ -38,4 +40,5 @@ void	get_hitpoint_material(t_obj *hitobj,
 	material->normal = get_normal_obj(hitpoint, ray, hitobj);
 	material->enter = dot(ray.dir, material->normal) < 0 ? true : false;
 	material->normal = material->enter ? material->normal : -(material->normal);
+	return (1);
 }

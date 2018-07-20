@@ -67,7 +67,7 @@ typedef struct		s_quad
 
 typedef enum		e_obj_type
 {
-	sphere, plane, cylinder, cone, torus
+	sphere, plane, cylinder, cone, torus, disk,rectangle
 }					t_obj_type;
 
 typedef struct		s_sphere
@@ -109,6 +109,13 @@ typedef struct		s_disk
 	float	r;
 }					t_disk;
 
+typedef struct		s_rectangle
+{
+    __float3	pos;
+    float		h;
+    float		w;
+}					t_rectangle;
+
 typedef	union		u_primitive
 {
 	t_plane		plane;
@@ -116,7 +123,11 @@ typedef	union		u_primitive
 	t_cylinder	cylinder;
 	t_cone		cone;
 	t_torus		torus;
+	t_disk		disk;
+    t_rectangle rectangle;
 }					t_primitive;
+
+
 
 typedef struct		s_basis
 {

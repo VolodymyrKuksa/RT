@@ -123,7 +123,10 @@ void		rot_cone(float d, t_obj *c, t_mvdata mvdata,
 	cl_float3 (*f)(float, cl_float3, t_mvdata));
 void		rot_torus(float d, t_obj *c, t_mvdata mvdata,
 	cl_float3 (*f)(float, cl_float3, t_mvdata));
-
+void		rot_disk(float d, t_obj *c, t_mvdata mvdata,
+	cl_float3 (*f)(float, cl_float3, t_mvdata));
+void		rot_rectangle(float d, t_obj *c, t_mvdata mvdata,
+			cl_float3 (*f)(float, cl_float3, t_mvdata));
 /*
 **	mv_obj.c
 */
@@ -133,6 +136,8 @@ void		mv_plane(cl_float3 d, t_obj *p, t_mvdata mvdata);
 void		mv_cylinder(cl_float3 d, t_obj *c, t_mvdata mvdata);
 void		mv_cone(cl_float3 d, t_obj *c, t_mvdata mvdata);
 void		mv_torus(cl_float3 d, t_obj *c, t_mvdata mvdata);
+void		mv_disk(cl_float3 d, t_obj *c, t_mvdata mvdata);
+void		mv_rectangle(cl_float3 d, t_obj *c, t_mvdata mvdata);
 
 /*
 **	write_ppm.c

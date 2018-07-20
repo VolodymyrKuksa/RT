@@ -3,6 +3,21 @@
 //#include "kernel.h"
 //---------------------------------intersection-------------------------------\/
 
+float	intersection_rectangle(t_ray *ray,t_rectangle rectangle, __global t_basis *basis)
+{
+    __float3 	x;
+    float t;
+    __float3 hitpoint;
+
+    x = ray->pos - rectangle.pos;
+    t = -dot(x, basis->u) / dot(ray->dir,basis->u);
+    hitpoint = t * ray->dir + x;
+    if (fabs(dot(hitpoint, basis->v)) < rectangle.h && fabs(dot(hitpoint, basis->w)) < rectangle.w)
+        return (t);
+    return (-1.f);
+}
+
+
 float	intersection_disk(t_ray *ray,t_disk disk, float3 d_rot)
 {
 	__float3 	x;
@@ -13,7 +28,7 @@ float	intersection_disk(t_ray *ray,t_disk disk, float3 d_rot)
 	t = -dot(x, d_rot) / dot(ray->dir,d_rot);
 	hitpoint = t * ray->dir + x;
 	if (length(hitpoint) > disk.r)
-		return (-1);
+		return (-1.f);
 	return (t);
 }
 
@@ -34,14 +49,15 @@ float	intersection_sphere(t_ray *ray,t_sphere sphere)
 	if ((q.d = (q.b * q.b - 4.0f * q.c)) < 0)
 		return (-1.0f);
 	q.d = sqrt(q.d);
-	return ((q.res = ((-q.b - q.d) / 2.f)) > 0 ? q.res + dist: (-q.b + q.d) / 2.f);//починил вид издалека
+	return ((q.res = ((-q.b - q.d) / 2.f)) > 0 ? q.res + dist: (-q.b + q.d) / 2.f);
 }
 
 float	intersection_cylinder(t_ray *ray,t_cylinder cylinder, __float3 c_rot)
 {
 	t_quad		q;
 	__float3 	x, hitpoint;
-	float	tmp[2], res, len;
+	float	tmp[2], res[2], len;
+	t_disk disk;
 
 	x = ray->pos - cylinder.pos;
 	tmp[0] = dot(ray->dir, c_rot);
@@ -49,34 +65,36 @@ float	intersection_cylinder(t_ray *ray,t_cylinder cylinder, __float3 c_rot)
 	q.a = 2.0 * (dot(ray->dir, ray->dir) - tmp[0] * tmp[0]);
 	q.b = 2.0 * (dot(ray->dir, x) - tmp[0] * tmp[1]);
 	q.c = dot(x, x) - tmp[1] * tmp[1] - cylinder.r * cylinder.r;
-	if ((q.d = q.b * q.b - 2.0 * q.a * q.c) < 0)
-		return (-1.0);
-	q.d = sqrt(q.d);
-	res = (-q.b - q.d) / q.a;
-	if (res > 0)
+	if ((q.d = q.b * q.b - 2.0 * q.a * q.c) >= 0)
 	{
-		hitpoint = res * ray->dir + x;
-		len = dot(hitpoint, c_rot);
-		if (len < cylinder.h && len > 0)
-			return (res);
+		q.d = sqrt(q.d);
+		q.res = (-q.b - q.d) / q.a;
+		if (q.res > 0) {
+			hitpoint = q.res * ray->dir + x;
+			len = dot(hitpoint, c_rot);
+			if (len < cylinder.h && len > 0)
+				return (q.res);
+		}
+		q.res = (-q.b + q.d) / q.a;
+		if (q.res > 0) {
+			hitpoint = q.res * ray->dir + x;
+			len = dot(hitpoint, c_rot);
+			if (len < cylinder.h && len > 0)
+				return (q.res);
+		}
 	}
-	res = (-q.b + q.d) / q.a;
-	if (res > 0)
-	{
-		hitpoint = res * ray->dir + x;
-		len = dot(hitpoint, c_rot);
-		if (len < cylinder.h && len > 0)
-			return (res);
-	}
-	return (-1.f);
+	return (-1);
 }
 
 float	intersection_plane(t_ray *ray,t_plane plane, __float3 p_rot)
 {
 	__float3 	x;
-
+	float d = dot(ray->dir,p_rot);
 	x = ray->pos - plane.pos;
-	return (-dot(x, p_rot) / dot(ray->dir,p_rot));
+	if(d != 0)
+		return (-dot(x, p_rot) / d);
+	else
+		return (-1.f);
 }
 
 
@@ -116,20 +134,18 @@ float	intersection_cone(t_ray *ray,t_cone cone, __float3 c_rot)
 	}
 	return (-1.f);
 }
-//-----------------------------------------------------------------------------------------------------------||-
-//-------------------------------------------------------ОПАСНАЯ-ЗОНА----------------------------------------||
-//-----------------------------------------------------------------------------------------------------------\/-
-void positive_discriminant(double Q, __double2 koefs, double *slove, double b)
+
+void positive_discriminant(double Q, __double2 koefs, double *solve, double b)
 {
 	double alpha, betha, ntmp;
 
 	ntmp = -koefs[1] / 3.f;
 		alpha = cbrt(-koefs[0] / 2.f + sqrt(Q));
 		betha = -koefs[1] / (3.f * alpha);
-		*slove = alpha + betha - b;
+		*solve = alpha + betha - b;
 }
 
-void negative_discriminant(double Q, __double2 koefs, double *slove, double b)
+void negative_discriminant(double Q, __double2 koefs, double *solve, double b)
 {
 	double cosphi,tanphi, tmp, ntmp, phi;
 
@@ -137,14 +153,14 @@ void negative_discriminant(double Q, __double2 koefs, double *slove, double b)
 	ntmp = -koefs.y / 3.f;
 	cosphi = -koefs.x * 0.5f * sqrt(tmp * tmp * tmp);
 	phi = acos(cosphi);
-	slove[0] = 2 * sqrt(ntmp) * cos(phi / 3.f) - b;
+	solve[0] = 2 * sqrt(ntmp) * cos(phi / 3.f) - b;
 }
 
-void fourth_degree_equation_slover(__float4 koefs, __float2 *slove)
+void fourth_degree_equation_solver(__float4 koefs, __float2 *solve)
 {
 	__double3 ferrari_koefs, cubic_resol_koefs;
 	__double2 cubic_two_params_koefs;
-	double a2, a3, a4, p2, b2, Q, z, t, y, s, cubic_slove[3];
+	double a2, a3, a4, p2, b2, Q, z, t, y, s, cubic_solve[3];
 	int num_of_roots, i = 0;
 	t_quad q;
 
@@ -163,12 +179,12 @@ void fourth_degree_equation_slover(__float4 koefs, __float2 *slove)
 		if (q.d >= 0.f)
 		{
 			q.d = sqrt(q.d);
-			(*slove)[0] = (-q.b - q.d) / 2.f;
-			(*slove)[1] = (-q.b + q.d) / 2.f;
-			if ((*slove)[0] >= 0.f)
-				(*slove)[0] = (q.res = -sqrt((*slove)[0]) - koefs[3] / 4.f) > 0.f ? q.res : sqrt((*slove)[0]) - koefs[3] / 4.f;
-			if ((*slove)[1] >= 0.f)
-				(*slove)[1] = (q.res = -sqrt((*slove)[1]) - koefs[3] / 4.f) > 0.f ? q.res : sqrt((*slove)[1]) - koefs[3] / 4.f;
+			(*solve)[0] = (-q.b - q.d) / 2.f;
+			(*solve)[1] = (-q.b + q.d) / 2.f;
+			if ((*solve)[0] >= 0.f)
+				(*solve)[0] = (q.res = -sqrt((*solve)[0]) - koefs[3] / 4.f) > 0.f ? q.res : sqrt((*solve)[0]) - koefs[3] / 4.f;
+			if ((*solve)[1] >= 0.f)
+				(*solve)[1] = (q.res = -sqrt((*solve)[1]) - koefs[3] / 4.f) > 0.f ? q.res : sqrt((*solve)[1]) - koefs[3] / 4.f;
 		}
 		return;
 	}
@@ -184,35 +200,35 @@ void fourth_degree_equation_slover(__float4 koefs, __float2 *slove)
 	b2 = cubic_two_params_koefs[0] * cubic_two_params_koefs[0];
 	Q = cubic_two_params_koefs[1] * cubic_two_params_koefs[1] * cubic_two_params_koefs[1] / 27.f + cubic_two_params_koefs[0] * cubic_two_params_koefs[0] / 4.f;
 	if (Q > 0)
-		positive_discriminant(Q, cubic_two_params_koefs, &cubic_slove, cubic_resol_koefs[2] / 3.f);
+		positive_discriminant(Q, cubic_two_params_koefs, &cubic_solve, cubic_resol_koefs[2] / 3.f);
 	else
-		negative_discriminant(Q, cubic_two_params_koefs, &cubic_slove, cubic_resol_koefs[2] / 3.f);
-	if ((q.b = 2.f * cubic_slove[i] - ferrari_koefs[2]) > 0.f ) {
+		negative_discriminant(Q, cubic_two_params_koefs, &cubic_solve, cubic_resol_koefs[2] / 3.f);
+	if ((q.b = 2.f * cubic_solve[i] - ferrari_koefs[2]) > 0.f ) {
 		q.a = q.b;
 		q.b = -sqrt(q.b);
-		q.c = ferrari_koefs[1] / (-2.f * q.b) + cubic_slove[i];
+		q.c = ferrari_koefs[1] / (-2.f * q.b) + cubic_solve[i];
 		q.d = q.a - 4.f * q.c + 1e-4;
 		if (q.d >= 0.f)
 		{
 			q.d = sqrt(q.d);
-			(*slove)[0] =
+			(*solve)[0] =
 					(q.res = (-q.b - q.d) / 2.f - koefs[3] / 4.f) > 0.f
 					? q.res : (-q.b + q.d) / 2.f - koefs[3] / 4.f;
 		}
 		q.b = -q.b;
-		q.c = ferrari_koefs[1] / (-2.f * q.b) + cubic_slove[i];
+		q.c = ferrari_koefs[1] / (-2.f * q.b) + cubic_solve[i];
 		q.d = q.a - 4.f * q.c + 1e-4;
 		if (q.d >= 0.f)
 		{
 			q.d = sqrt(q.d);
-			(*slove)[1] =
+			(*solve)[1] =
 					(q.res = (-q.b - q.d) / 2.f - koefs[3] / 4.f) > 0.f
 					? q.res : (-q.b + q.d) / 2.f - koefs[3] / 4.f;
 		}
 	}
 }
 
-int check_sphere(t_ray *ray, radius, __float3 pos)
+int check_sphere(t_ray *ray, float radius, __float3 pos)
 {
 	t_quad		q;
 	__float3 	x;
@@ -229,7 +245,7 @@ float intersection_torus(t_ray *ray, t_torus torus, __float3 t_rot)
 {
 	__float3    x;
 	__float4 equation_koefs, dots,qq,u;
-	__float2 slove = (__float2){-1.f, -1.f};
+	__float2 solve = (__float2){-1.f, -1.f};
 	float R2, r2, Rr, dist;
 
 	Rr = torus.R + torus.r + 1;
@@ -257,32 +273,31 @@ float intersection_torus(t_ray *ray, t_torus torus, __float3 t_rot)
 	equation_koefs[2] = 2.0f * qq[3] + equation_koefs[3] * equation_koefs[3] * 0.25f - 4.0f * R2 * qq[0];
 	equation_koefs[1] = equation_koefs[3] * qq[3] - 4.0f * R2 * qq[1];
 	equation_koefs[0] = qq[3] * qq[3] - 4.0f * R2 * qq[2];
-	fourth_degree_equation_slover(equation_koefs, &slove);
+	fourth_degree_equation_solver(equation_koefs, &solve);
 
-	if(slove[0] > 0)
+	if(solve[0] > 0)
 	{
-		if(slove[1] > 0)
-			return (slove[0] < slove[1] ? slove[0] + dist : slove[1] + dist);
+		if(solve[1] > 0)
+			return (solve[0] < solve[1] ? solve[0] + dist : solve[1] + dist);
 		else
-			return (slove[0] + dist);
+			return (solve[0] + dist);
 	}
-	else if (slove[1] > 0)
-		return (slove[1] + dist);
+	else if (solve[1] > 0)
+		return (solve[1] + dist);
 	else
 		return(-1.f);
 }
-
-//-----------------------------------------------------------------------------------------------------------/\-
-//-------------------------------------------------------ОПАСНАЯ-ЗОНА----------------------------------------||
-//-----------------------------------------------------------------------------------------------------------||-
-
-
 //-----------------------------------------------------------------------------^
 
 //-------------------------------------normal---------------------------------\/
 
-
-__float3	normal_disk(__float3  hitpoint, t_plane *plane, __float3 d_rot)
+__float3	normal_rectangle(__float3  hitpoint, t_rectangle *disk, __float3 r_rot)
+{
+    __float3  normal;
+    normal = r_rot;
+    return (normal);
+}
+__float3	normal_disk(__float3  hitpoint, t_disk *disk, __float3 d_rot)
 {
 	__float3  normal;
 	normal = d_rot;
@@ -347,11 +362,19 @@ float3		get_normal_obj(float3 hitpoint, t_ray ray, t_obj *hitobj)
 			n = normal_cylinder(hitpoint, &(hitobj->primitive.cylinder), hitobj->basis.u);
 			break;
 		case plane:
-			n = normal_plane(hitpoint, &(hitobj->primitive.plane), hitobj->basis.u);
+			n = hitobj->basis.u;//normal_plane(hitpoint, &(hitobj->primitive.plane), hitobj->basis.u);
 			break;
 		case cone:
 			n = normal_cone(hitpoint, &(hitobj->primitive.cone), hitobj->basis.u);
 			break;
+		case torus:
+			n = normal_torus(hitpoint, &(hitobj->primitive.torus), hitobj->basis.u);
+			break;
+		case disk:
+			n = hitobj->basis.u;//normal_disk(hitpoint, &(hitobj->primitive.disk), hitobj->basis.u);
+			break;
+        case rectangle:
+            n = hitobj->basis.u;//normal_rectangle(hitpoint, &(hitobj->primitive.rectangle), hitobj->basis.u);
 		default:
 			break;
 	}

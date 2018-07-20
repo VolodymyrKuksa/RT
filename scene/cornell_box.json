@@ -10,7 +10,7 @@
 	  "f_length" : 60.0,
 	  "dust" : 0.0,
 	  "fov" : 90.0,
-	  "aperture" : 0.01
+	  "aperture" : 0.0
 	},
 	"plane" :
 	{
@@ -39,7 +39,7 @@
 	"color x" : 1.0,
 	"color y" : 0.0,
 	"color z" : 0.0,
-	  "texture" : "textures/test_texture.png",
+	  "material texture" : "textures/test_texture.png",
 	"light" : {
 		"diffuse" : 1.0,
 		"emission z" : 0.0,
@@ -58,7 +58,7 @@
 	"color y" : 1.0,
 	"color z" : 1.0,
 	  "material texture" : "textures/test_texture.png",
-	"texture" : "textures/Bricks1.jpg",
+	"texture" : "textures/test_texture.png",
 	"light" : {
 	  "diffuse" : 1.0,
 	  "specular" : 0.0,
@@ -126,13 +126,13 @@
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
-	"rot x" : 90.0,
+	"rot x" : -90.0,
 	"rot y" : 0.0,
 	"rot z" : 0.0,
 	"light" : {
-	  "emission x" : 2.0,
-	  "emission y" : 2.0,
-	  "emission z" : 2.0
+	  "emission x" : 3.0,
+	  "emission y" : 3.0,
+	  "emission z" : 3.0
 	},
 	"radius" : 5.0
   },
@@ -144,14 +144,15 @@
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
-    "texture" : "textures/test_stripes.png",
+	  "rot y" : 90.0,
+    "material texture" : "textures/test_texture.png",
 	"light" : {
 	  "emission x" : 0.0,
 	  "emission y" : 0.0,
 	  "emission z" : 0.0,
-	  "diffuse" : 0.0,
+	  "diffuse" : 1.0,
 	  "specular" : 0.0,
-	  "refraction" : 1.0,
+	  "refraction" : 0.0,
 	  "roughness" : 0.0
 	},
 	"radius" : 4.0
@@ -165,7 +166,7 @@
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
-	  "material texture" : "textures/test_texture2.png",
+	  "material texture" : "textures/test_texture.png",
 	"light" : {
 	  "emission x" : 0.0,
 	  "emission y" : 0.0,
