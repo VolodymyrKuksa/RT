@@ -97,7 +97,6 @@ int		main(int argc, char **argv)
 	get_work_group_size(&env.cl);
 	init_win(&env.screen);
 	main_loop(&env);
-	env.server.active = 0;
 	quit_server(&env.server);
 	close_sdl(&env.screen);
 	IMG_Quit();

@@ -20,7 +20,7 @@ t_obj			default_sphere(void)
 	tmp.basis.u = (cl_float3){0.0, 1.0, 0.0};
 	tmp.basis.v = (cl_float3){1.0, 0.0, 0.0};
 	tmp.basis.w = (cl_float3){0.0, 0.0, 1.0};
-	tmp.primitive.sphere.pos = (cl_float3){-5.0, -60, -5.0};
+	tmp.primitive.sphere.pos = (cl_float3){-5.0f, -60, -5.0f};
 	tmp.primitive.sphere.r = 5;
 	tmp.color.x = 1.f;
 	tmp.color.y = 1.f;
@@ -69,8 +69,8 @@ t_obj			default_cylinder(void)
 	tmp.basis.u = (cl_float3){0.0, 1.0, 0.0};
 	tmp.basis.v = (cl_float3){1.0, 0.0, 0.0};
 	tmp.basis.w = (cl_float3){0.0, 0.0, 1.0};
-	tmp.primitive.cylinder.pos = (cl_float3){-5.0, -5.0, -5.0};
-	tmp.primitive.cylinder.h = 15000.f;
+	tmp.primitive.cylinder.pos = (cl_float3){-5.0f, -5.0f, -5.0f};
+	tmp.primitive.cylinder.h = 150.f;
 	tmp.color = (cl_float3){1.0, 1.0, 1.0};
 	tmp.emission = (cl_float3){0.0, 0.0, 0.0};
 	tmp.roughness = 1.f;
@@ -103,6 +103,33 @@ t_obj			default_plane(void)
 	tmp.diffuse = 1.f;
 	tmp.specular = 0.f;
 	tmp.type = plane;
+	tmp.tex_id = -1;
+	return (tmp);
+}
+
+t_obj           default_torus(void)
+{
+	t_obj tmp;
+
+	tmp.basis.u = (cl_float3){0.0, 1.0, 0.0};
+	tmp.basis.v = (cl_float3){0.0, 0.0, 1.0};
+	tmp.basis.w = (cl_float3){1.0, 0.0, 0.0};
+	tmp.primitive.torus.pos.x = 0;
+	tmp.primitive.torus.pos.y = 0;
+	tmp.primitive.torus.pos.z = -30;
+	tmp.primitive.torus.r = 40.f;
+	tmp.primitive.torus.R = 60.f;
+	tmp.color.x = 0.f;
+	tmp.color.y = 1.f;
+	tmp.color.z = 0.f;
+	tmp.emission.x = 0;
+	tmp.emission.y = 0;
+	tmp.emission.z = 0;
+	tmp.roughness = 1.f;
+	tmp.diffuse = 1.f;
+	tmp.specular = 0.f;
+	tmp.refraction = 0.f;
+	tmp.type = torus;
 	tmp.tex_id = -1;
 	return (tmp);
 }
