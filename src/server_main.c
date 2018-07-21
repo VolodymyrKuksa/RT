@@ -101,6 +101,8 @@ int		main(int argc, char **argv)
 	quit_server(&env.server);
 	close_sdl(&env.screen);
 	IMG_Quit();
+	write_scene(&env.scene);
+	print_scene(&env.scene);
 	system("leaks -q RT"); //DEBUG
 	return (0);
 }

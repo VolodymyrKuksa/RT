@@ -149,6 +149,7 @@ typedef struct		s_object
 	__float3	emission;
 	int			tex_id;
 	int			mater_tex_id;
+	__float3	rot;
 }					t_obj;
 
 typedef struct		s_material

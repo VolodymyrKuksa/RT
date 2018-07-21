@@ -61,6 +61,8 @@ parser/default_objs.c\
 parser/fill_each_obj.c\
 parser/init_cam.c\
 parser/parse.c\
+parser/ftoa.c\
+parser/write_to_file.c\
 parser/scene_init.c\
 scene_utils.c\
 sdl_utils.c\

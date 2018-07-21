@@ -24,7 +24,6 @@ void            print_scene(t_scene *scene)
 	int         i;
 
 	printf("PRINTIN ALL THE SCENE >>>>>>>>\n\n");
-
 	i = 0;
 	printf(" cam pos x  %f\n", scene->cam.pos.x);
 	printf(" cam pos y  %f\n", scene->cam.pos.y);
@@ -46,6 +45,12 @@ void            print_scene(t_scene *scene)
 			print_cone(scene->obj[i]);
 		else if (scene->obj[i].type == plane)
 			print_plane(scene->obj[i]);
+		else if (scene->obj[i].type == torus)
+			print_torus(scene->obj[i]);
+		else if (scene->obj[i].type == rectangle)
+			print_rectangle(scene->obj[i]);
+		else if (scene->obj[i].type == disk)
+			print_disk(scene->obj[i]);
 		i++;
 	}
 }
@@ -73,6 +78,26 @@ void			print_sphere(t_obj obj)
 	printf("texture id= %d\n", obj.tex_id);
 }
 
+void			print_disk(t_obj obj)
+{
+	printf("----------------------disk---------------------------\n");
+	printf("pos x = %f\n", obj.primitive.disk.pos.x);
+	printf("pos y = %f\n", obj.primitive.disk.pos.y);
+	printf("pos z = %f\n", obj.primitive.disk.pos.z);
+	printf("radius = %f\n", obj.primitive.disk.r);
+	printf("color x = %f\n", obj.color.x);
+	printf("color y = %f\n", obj.color.y);
+	printf("color z = %f\n", obj.color.z);
+	printf("emission x = %f\n", obj.emission.x);
+	printf("emission y = %f\n", obj.emission.y);
+	printf("emission z = %f\n", obj.emission.z);
+	printf("roughness = %f\n", obj.roughness);
+	printf("diffuse = %f\n", obj.diffuse);
+	printf("specular = %f\n", obj.specular);
+	printf("refraction = %f\n", obj.refraction);
+	printf("texture id= %d\n", obj.tex_id);
+}
+
 void			print_cylinder(t_obj obj)
 {
 	printf("-----------------------cylinder------------------------\n");
@@ -83,6 +108,27 @@ void			print_cylinder(t_obj obj)
 	printf("u y = %f\n", obj.basis.u.y);
 	printf("u z = %f\n", obj.basis.u.z);
 	printf("radius = %f\n", obj.primitive.cylinder.r);
+	printf("color x = %f\n", obj.color.x);
+	printf("color y = %f\n", obj.color.y);
+	printf("color z = %f\n", obj.color.z);
+	printf("emission x = %f\n", obj.emission.x);
+	printf("emission y = %f\n", obj.emission.y);
+	printf("emission z = %f\n", obj.emission.z);
+	printf("roughness = %f\n", obj.roughness);
+	printf("diffuse = %f\n", obj.diffuse);
+	printf("specular = %f\n", obj.specular);
+	printf("refraction = %f\n", obj.refraction);
+	printf("texture id= %d\n", obj.mater_tex_id);
+}
+
+void			print_torus(t_obj obj)
+{
+	printf("-----------------------torus------------------------\n");
+	printf("pos x = %f\n", obj.primitive.torus.pos.x);
+	printf("pos y = %f\n", obj.primitive.torus.pos.y);
+	printf("pos z = %f\n", obj.primitive.torus.pos.z);
+	printf("radius small = %f\n", obj.primitive.torus.r);
+	printf("radius big = %f\n", obj.primitive.torus.R);
 	printf("color x = %f\n", obj.color.x);
 	printf("color y = %f\n", obj.color.y);
 	printf("color z = %f\n", obj.color.z);
@@ -141,6 +187,27 @@ void			print_plane(t_obj obj)
 	printf("texture id= %d\n", obj.tex_id);
 }
 
+void			print_rectangle(t_obj obj)
+{
+	printf("--------------------rectangle-----------------------------\n");
+	printf("pos x = %f\n", obj.primitive.rectangle.pos.x);
+	printf("pos y = %f\n", obj.primitive.rectangle.pos.y);
+	printf("pos z = %f\n", obj.primitive.rectangle.pos.z);
+	printf("color x = %f\n", obj.color.x);
+	printf("color y = %f\n", obj.color.y);
+	printf("color z = %f\n", obj.color.z);
+	printf("w = %f\n", obj.primitive.rectangle.w);
+	printf("h = %f\n", obj.primitive.rectangle.h);
+	printf("emission x = %f\n", obj.emission.x);
+	printf("emission y = %f\n", obj.emission.y);
+	printf("emission z = %f\n", obj.emission.z);
+	printf("roughness = %f\n", obj.roughness);
+	printf("diffuse = %f\n", obj.diffuse);
+	printf("specular = %f\n", obj.specular);
+	printf("refraction = %f\n", obj.refraction);
+	printf("texture id= %d\n", obj.tex_id);
+}
+
 void			parselight(json_value *value, t_obj *tmp)
 {
 	int			i;
@@ -188,6 +255,7 @@ void			fill_common(char *name, t_obj *tmp, json_value *v, cl_float3 *rot)
 
 void            fill_scene_obj(json_value *value, t_scene *scene, int i)
 {
+	printf("name is ::: %s\n\n", value->u.object.values[i].name);
 	if (ft_strcmp("sphere", value->u.object.values[i].name) == 0)
 		fillthesphere(value->u.object.values[i].value, scene);
 	else if (ft_strcmp("cone", value->u.object.values[i].name) == 0)
@@ -196,8 +264,12 @@ void            fill_scene_obj(json_value *value, t_scene *scene, int i)
 		filltheplane(value->u.object.values[i].value, scene);
 	else if (ft_strcmp("cylinder", value->u.object.values[i].name) == 0)
 		fillthecylind(value->u.object.values[i].value, scene);
-	else if (ft_strcmp("torus", value->u.object.values[i].name))
+	else if (ft_strcmp("torus", value->u.object.values[i].name) == 0)
 		filltorus(value->u.object.values[i].value, scene);
+	else if (ft_strcmp("rectangle", value->u.object.values[i].name) == 0)
+		fillrectangle(value->u.object.values[i].value, scene);
+	else if (ft_strcmp("disk", value->u.object.values[i].name) == 0)
+		filldisk(value->u.object.values[i].value, scene);
 	else
 		error_fedun("wrong key in root");
 }
@@ -241,7 +313,8 @@ void            init_scene(t_scene *scene, int argc, char **argv)
 		exit(1);
 	}
 	fillthescene(value, scene);
-	print_scene(scene);
+	//print_scene(scene);
 	json_value_free(value);
 	free(contents);
+	//write_scene(scene);
 }

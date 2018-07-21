@@ -89,7 +89,7 @@ typedef enum		e_obj_type
 	cylinder,
 	cone,
 	torus,
-	disc,
+	disk,
 	rectangle
 }					t_obj_type;
 
@@ -170,6 +170,7 @@ typedef struct		s_object
 	cl_float3	emission;
 	int			tex_id;
 	int			mater_tex_id;
+	cl_float3   rot;
 }					t_obj;
 
 typedef struct		s_scene

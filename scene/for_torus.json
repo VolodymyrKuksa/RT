@@ -33,8 +33,8 @@
 		}
 	},
 	"torus" : {
-		"pos x": 10.0,
-		"pos y": -10.0,
+		"pos x": -10.0,
+		"pos y": 10.0,
 		"pos z": 0.0,
 		"color x": 1.0,
 		"color y": 0.0,
@@ -42,15 +42,58 @@
 		"rot z": 45.0,
 		"rot x": 0.0,
 		"rot y": 0.0,
-		"radius big": 60.0,
-		"radius small": 40.0,
+		"radius big": 10.0,
+		"radius small": 6.0,
 		"light": {
 			"emission x": 0.0,
-			"emission y": 1.0,
+			"emission y": 0.0,
 			"emission z": 1.0,
 			"roughness": 1.0,
 			"diffuse": 0.0,
 			"specular": 1.0,
+			"refraction": 0.0
+		}
+	},
+	"rectangle" : {
+		"pos x": -5.0,
+		"pos y": -5.0,
+		"pos z": 2.0,
+		"color x": 1.0,
+		"color y": 1.0,
+		"color z": 1.0,
+		"rot z": 45.0,
+		"rot x": 0.0,
+		"rot y": 0.0,
+		"w": 4.0,
+		"h": 10.0,
+		"light": {
+			"emission x": 1.0,
+			"emission y": 0.0,
+			"emission z": 0.0,
+			"roughness": 1.0,
+			"diffuse": 1.0,
+			"specular": 0.0,
+			"refraction": 0.0
+		}
+	},
+	"disk" : {
+		"pos x": -5.0,
+		"pos y": -5.0,
+		"pos z": -5.0,
+		"color x": 1.0,
+		"color y": 0.0,
+		"color z": 1.0,
+		"rot z": 40.0,
+		"rot x": 0.0,
+		"rot y": 0.0,
+		"radius":30.0,
+		"light": {
+			"emission x": 0.0,
+			"emission y": 0.0,
+			"emission z": 1.0,
+			"roughness": 1.0,
+			"diffuse": 1.0,
+			"specular": 0.0,
 			"refraction": 0.0
 		}
 	}
