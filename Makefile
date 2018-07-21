@@ -41,7 +41,7 @@ LJSON = $(D_JSON)$(N_JSON)
 
 #--------------FILES------------------------------------------------------------
 
-HEAD_FILES = rt.h rt_types.h parser.h keys.h rt_textures.h
+HEAD_FILES = rt.h rt_types.h parser.h keys.h rt_textures.h server_client.h
 
 
 C_FILES = cl_exec.c\
@@ -66,7 +66,9 @@ parser/scene_init.c\
 scene_utils.c\
 sdl_utils.c\
 textures/compress_texture.c\
-textures/load_texture.c
+textures/load_texture.c\
+server-client/run_server.c\
+server-client/thread_pool.c
 
 SRC = $(addprefix $(D_SRC), $(C_FILES))
 OBJ = $(addprefix $(D_OBJ), $(C_FILES:.c=.o))
@@ -106,6 +108,7 @@ $(D_OBJ):
 	@mkdir $(D_OBJ)textures
 	@mkdir $(D_OBJ)parser
 	@mkdir $(D_OBJ)events
+	@mkdir $(D_OBJ)server-client
 	@printf "$(C_CYAN)%-10s$(C_NONE)%-25s$(C_GREEN)[done]$(C_NONE)\n" $(NAME): $@
 
 $(D_OBJ)%.o: $(D_SRC)%.c $(HEADERS)

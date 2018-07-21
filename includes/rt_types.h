@@ -13,7 +13,9 @@
 #ifndef RT_TYPES_H
 # define RT_TYPES_H
 
+#include <stdatomic.h>
 # include "rt_textures.h"
+# include "server_client.h"
 
 typedef struct		s_scrn
 {
@@ -191,14 +193,32 @@ typedef struct		s_cldata
 	t_seeds				seeds;
 }					t_cldata;
 
+/*
+* int	serv_socket_fd
+* int	port_no
+* struct sockaddr_in	serv_addr
+* t_tpool	*t_pool
+*/
+
+typedef struct		s_server
+{
+	atomic_int			active;
+	pthread_t			pid;
+	int					serv_socket_fd;
+	int					port_no;
+	struct sockaddr_in	serv_addr;
+	unsigned int		num_threads;
+	t_tpool				*tpool;
+}					t_server;
+
 typedef struct		s_env
 {
 	t_cldata			cl;
 	t_scrn				screen;
-	t_scene				sc;
+	t_scene				scene;
 	t_mvdata			mv_data;
 	t_txgpu				textures;
-	//add server data
+	t_server			server;
 
 	unsigned int		num_samples;
 }					t_env;

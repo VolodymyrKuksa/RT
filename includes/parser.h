@@ -59,6 +59,9 @@ void			filldisk(json_value *value, t_scene *scene);
 
 
 void			parse_scene(int argc, char **argv, char **contents, size_t *len);
+
+int				parse_server_data(int ac, char **av, t_server *server);
+
 void            write_scene(t_scene *scene);
 
 

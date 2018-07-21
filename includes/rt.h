@@ -24,11 +24,11 @@
 # include "libvec.h"
 # include "get_next_line.h"
 # include "rt_textures.h"
+# include "server_client.h"
 # include "rt_types.h"
 # include "keys.h"
 # include "parser.h"
 # include "json.h"
-# include "server_client.h"
 
 # ifdef CLION_BUILD
 #define KERNEL_PATH0 "../src/cl_files/kernel_source.cl"
@@ -139,6 +139,13 @@ void		mv_cone(cl_float3 d, t_obj *c, t_mvdata mvdata);
 void		mv_torus(cl_float3 d, t_obj *c, t_mvdata mvdata);
 void		mv_disk(cl_float3 d, t_obj *c, t_mvdata mvdata);
 void		mv_rectangle(cl_float3 d, t_obj *c, t_mvdata mvdata);
+
+/*
+**	run_server.c
+*/
+
+void		run_server(t_env *env);
+void		quit_server(t_server *server);
 
 /*
 **	write_ppm.c
