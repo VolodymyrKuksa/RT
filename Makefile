@@ -44,9 +44,7 @@ LJSON = $(D_JSON)$(N_JSON)
 
 HEAD_FILES = rt.h rt_types.h parser.h keys.h rt_textures.h server_client.h
 
-
-C_FILES_RT = server_main.c\
-cl_exec.c\
+C_FILES = cl_exec.c\
 cl_initialization.c\
 events/keyboard_events.c\
 events/movement_events.c\
@@ -69,11 +67,12 @@ sdl_utils.c\
 textures/compress_texture.c\
 textures/load_texture.c\
 server-client/run_server.c\
-server-client/thread_pool.c
+server-client/thread_pool.c\
+main_loop.c
 
-C_FILES_CLIENT = client_main.c\
-server-client/run_server.c\
-server-client/thread_pool.c
+C_FILES_RT = server_main.c $(C_FILES)
+
+C_FILES_CLIENT = client_main.c $(C_FILES)
 
 SRC_RT = $(addprefix $(D_SRC), $(C_FILES_RT))
 OBJ_RT = $(addprefix $(D_OBJ), $(C_FILES_RT:.c=.o))
@@ -115,7 +114,7 @@ $(NAME): $(D_OBJ) $(OBJ_RT)
 $(CLIENT): $(D_OBJ) $(OBJ_CLIENT)
 	@make -C $(D_LFT)
 	@printf "$(C_CYAN)%-10s$(C_NONE)%-25s$(C_GREEN)[done]$(C_NONE)\n" $(CLIENT): $(N_LFT)
-	@$(CC) $(OBJ_CLIENT) $(LFT) $(FRW) -o $(CLIENT)
+	@$(CC) $(OBJ_CLIENT) $(LFT) $(LVEC) $(LJSON) $(FRW) -o $(CLIENT)
 	@printf "$(C_CYAN)%-10s$(C_NONE)%-25s$(C_GREEN)[done]$(C_NONE)\n" $(CLIENT): $@
 
 $(D_OBJ):

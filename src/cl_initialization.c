@@ -16,6 +16,18 @@
 extern unsigned int		g_win_width;
 extern unsigned int		g_win_height;
 
+void	init_seeds(t_seeds *s)
+{
+	int		i;
+
+	s->size = (uint)(g_win_height * g_win_width * 2);
+	s->seeds = (uint*)malloc(sizeof(uint) * s->size);
+	srand((uint)clock());
+	i = -1;
+	while (++i < s->size)
+		s->seeds[i] = (uint)rand();
+}
+
 void	print_log(t_cldata *cl)
 {
 	char	*build_log;

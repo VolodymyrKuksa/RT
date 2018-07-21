@@ -221,7 +221,10 @@ enum				e_status
 enum				e_message
 {
 	STRING,
-	SCENE,
+	OBJ,
+	CAM,
+	TEXTURES,
+	TEX_DATA,
 	QUIT,
 	PIXELS,
 	CONNECTION

@@ -56,10 +56,16 @@ void		close_sdl(t_scrn *screen);
 void		init_scene(t_scene *scene, int argc, char **argv);
 
 /*
-**	main.c
+**	server_main.c
 */
 
 void		init_seeds(t_seeds *s);
+
+/*
+**	main_loop.c
+*/
+
+void		main_loop(t_env *env);
 
 /*
 **	cl_initialization.c

@@ -73,6 +73,32 @@ void		check_message_out(t_thread *thread)
 		pthread_mutex_unlock(&(*thread->message_out)->message_queue_lock);
 }
 
+//============================================================================//
+//============================================================================//
+
+void		send_starting_data(t_thread *thread)
+{
+	unsigned int	size;
+	void			*data;
+
+	size = sizeof(t_cam);
+	data = compose_message(&thread->env->scene.cam, CAM, &size);
+	write(thread->client_fd, data, size);
+	free(data);
+	size = sizeof(t_obj) * thread->env->scene.num_obj;
+	data = compose_message(thread->env->scene.obj, OBJ, &size);
+	write(thread->client_fd, data, size);
+	free(data);
+	size = (unsigned int)thread->env->textures.total_size * sizeof(t_rgb);
+	data = compose_message(thread->env->textures.tx, TEXTURES, &size);
+	write(thread->client_fd, data, size);
+	free(data);
+	size = sizeof(t_txdata) * thread->env->textures.tx_count;
+	data = compose_message(thread->env->textures.txdata, TEX_DATA, &size);
+	write(thread->client_fd, data, size);
+	free(data);
+}
+
 void		tpool_execute_logic(t_thread *this)
 {
 	time_t			t;
@@ -86,8 +112,7 @@ void		tpool_execute_logic(t_thread *this)
 	write(this->client_fd, data, size);
 	free(data);
 
-
-
+	send_starting_data(this);
 
 	t = time(NULL);
 	while (this->status == BUSY)
@@ -112,6 +137,9 @@ void		tpool_execute_logic(t_thread *this)
 			tpool_kick_client(this);
 	}
 }
+
+//============================================================================//
+//============================================================================//
 
 void		thread_grab_client(t_thread *thread)
 {
