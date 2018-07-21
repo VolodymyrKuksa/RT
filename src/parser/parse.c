@@ -16,6 +16,7 @@
 void		error_fedun(char *er)
 {
 	ft_putendl(er);
+	system("leaks -q RT");
 	exit(-1);
 }
 

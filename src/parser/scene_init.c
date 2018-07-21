@@ -11,12 +11,44 @@
 /* ************************************************************************** */
 
 #include "rt.h"
+#include "parser.h"
 
 extern int	g_win_width;
 extern int	g_win_height;
 #define	LENGTH(a) sqrt(a.x * a.x + a.y * a.y + a.z * a.z)
 #define NORMAL(a) (cl_float3){a.x/LENGTH(a), a.y/LENGTH(a), a.z/LENGTH(a)}
 #define ABS3(a) (cl_float3){fabs(a.x), fabs(a.y), fabs(a.z)}
+
+void            print_scene(t_scene *scene)
+{
+	int         i;
+
+	printf("PRINTIN ALL THE SCENE >>>>>>>>\n\n");
+
+	i = 0;
+	printf(" cam pos x  %f\n", scene->cam.pos.x);
+	printf(" cam pos y  %f\n", scene->cam.pos.y);
+	printf(" cam pos z  %f\n", scene->cam.pos.z);
+	printf(" cam dir x  %f\n", scene->cam.dir.x);
+	printf(" cam dir y  %f\n", scene->cam.dir.y);
+	printf(" cam dir z  %f\n", scene->cam.dir.z);
+	printf(" cam f_length  %f\n", scene->cam.f_length);
+	printf(" cam dust  %f\n", scene->cam.dust);
+	printf(" cam fov  %f\n", scene->cam.fov);
+	printf(" cam aperture  %f\n", scene->cam.aperture);
+	while (i < scene->num_obj)
+	{
+		if (scene->obj[i].type == sphere)
+			print_sphere(scene->obj[i]);
+		else if (scene->obj[i].type == cylinder)
+			print_cylinder(scene->obj[i]);
+		else if (scene->obj[i].type == cone)
+			print_cone(scene->obj[i]);
+		else if (scene->obj[i].type == plane)
+			print_plane(scene->obj[i]);
+		i++;
+	}
+}
 
 void			print_sphere(t_obj obj)
 {
@@ -164,6 +196,8 @@ void            fill_scene_obj(json_value *value, t_scene *scene, int i)
 		filltheplane(value->u.object.values[i].value, scene);
 	else if (ft_strcmp("cylinder", value->u.object.values[i].name) == 0)
 		fillthecylind(value->u.object.values[i].value, scene);
+	else if (ft_strcmp("torus", value->u.object.values[i].name))
+		filltorus(value->u.object.values[i].value, scene);
 	else
 		error_fedun("wrong key in root");
 }
@@ -207,6 +241,7 @@ void            init_scene(t_scene *scene, int argc, char **argv)
 		exit(1);
 	}
 	fillthescene(value, scene);
+	print_scene(scene);
 	json_value_free(value);
 	free(contents);
 }

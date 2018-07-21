@@ -15,6 +15,7 @@
 # define CYLINDER_ID 3
 # define SUKA(x, y) ((x > y) ? x : y)
 
+void            print_scene(t_scene *scene);
 void	        print_plane(t_obj obj);
 void	        print_cone(t_obj obj);
 void	        print_cylinder(t_obj obj);
@@ -24,6 +25,7 @@ char		    *read_file(int fd, size_t *size);
 t_obj			default_cone(void);
 t_obj			default_cylinder(void);
 t_obj			default_plane(void);
+t_obj			default_torus(void);
 
 void			camera_default(t_cam *cam);
 void			check_camera(t_cam *cam);
@@ -44,5 +46,6 @@ void			fillthecylind(json_value *value, t_scene *scene);
 void			fillthecone(json_value *value, t_scene *scene);
 void			filltheplane(json_value *value, t_scene *scene);
 void			fillthesphere(json_value *value, t_scene *scene);
+void			filltorus(json_value *value, t_scene *scene);
 void			parse_scene(int argc, char **argv, char **contents, size_t *len);
 #endif
