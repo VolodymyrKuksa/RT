@@ -8,6 +8,7 @@ libvec/libvec.a
 libJSON/libjson.a
 libJSON/obj
 RT
+client
 obj
 norules
 *~

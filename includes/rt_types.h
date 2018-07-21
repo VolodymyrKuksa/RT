@@ -15,7 +15,18 @@
 
 #include <stdatomic.h>
 # include "rt_textures.h"
-# include "server_client.h"
+
+# include <stdlib.h>
+# include <pthread.h>
+# include <sys/types.h>
+# include <sys/uio.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <sys/socket.h>
+# include <netdb.h>
+# include "libft.h"
+
+typedef struct		s_env t_env;
 
 typedef struct		s_scrn
 {
@@ -192,12 +203,68 @@ typedef struct		s_cldata
 	t_seeds				seeds;
 }					t_cldata;
 
-/*
-* int	serv_socket_fd
-* int	port_no
-* struct sockaddr_in	serv_addr
-* t_tpool	*t_pool
-*/
+typedef struct		s_client
+{
+	int					socket_fd;
+	int					portno;
+	struct hostent		*server;
+	struct sockaddr_in	server_addr;
+}					t_client;
+
+enum				e_status
+{
+	BUSY,
+	FREE
+};
+
+enum				e_message
+{
+	STRING,
+	SCENE,
+	QUIT,
+	PIXELS,
+	CONNECTION
+};
+
+typedef struct		s_client_queue
+{
+	pthread_mutex_t			client_queue_lock;
+	int						client_fd;
+	struct s_client_queue	*next;
+}					t_client_queue;
+
+typedef struct		s_message_queue
+{
+	pthread_mutex_t			message_queue_lock;
+	enum e_message			type;
+	unsigned int			size;
+	void					*message;
+	int						*destinations;
+	size_t					dest_size;
+	struct s_message_queue	*next;
+}					t_message_queue;
+
+typedef struct		s_thread
+{
+	int				thread_id;
+	pthread_t		pid;
+	unsigned int	status;
+	unsigned int	alive;
+	int				client_fd;
+	char			*client_hostname;
+	t_client_queue	**client_queue;
+	t_message_queue	**message_out;
+	t_env			*env;
+}					t_thread;
+
+typedef struct		s_tpool
+{
+	unsigned int	total_threads;
+	t_thread		*threads;
+	t_client_queue	*client_queue;
+	t_message_queue	*message_out;
+	t_env			*env;
+}					t_tpool;
 
 typedef struct		s_server
 {
@@ -218,6 +285,7 @@ typedef struct		s_env
 	t_mvdata			mv_data;
 	t_txgpu				textures;
 	t_server			server;
+	t_client			client;
 
 	unsigned int		num_samples;
 }					t_env;

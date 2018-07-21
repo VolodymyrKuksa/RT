@@ -26,7 +26,7 @@ void	set_nonblock(int fd)
 	fcntl(fd, F_SETFL, flags | O_NONBLOCK);
 }
 
-void	init_server(t_server *server)
+void	init_server(t_server *server, t_env *env)
 {
 	if ((server->serv_socket_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
 		put_error("Cannot create server socket");
@@ -39,7 +39,7 @@ void	init_server(t_server *server)
 		put_error("Cannot bind socket");
 	listen(server->serv_socket_fd, 5);
 	set_nonblock(server->serv_socket_fd);
-	if (!(server->tpool = init_tpool(server->num_threads)))
+	if (!(server->tpool = init_tpool(server->num_threads, env)))
 		put_error("Cannot initialize thread pool");
 	server->active = 1;
 }
@@ -69,7 +69,7 @@ void	*check_new_connection(void *data)
 
 void	run_server(t_env *env)
 {
-	init_server(&env->server);
+	init_server(&env->server, env);
 	printf("server init success\n");
 	//infinite loop to check new connections and push clients in a separate thread
 	pthread_create(&env->server.pid, NULL, check_new_connection, &env->server);
@@ -77,6 +77,8 @@ void	run_server(t_env *env)
 
 void	quit_server(t_server *server)
 {
+	if (!server->active)
+		return ;
 	push_message_for_all(server->tpool, NULL, 0, QUIT);
 	server->active = 0;
 	pthread_join(server->pid, NULL);

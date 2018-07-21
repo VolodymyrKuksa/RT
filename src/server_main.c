@@ -63,6 +63,7 @@ void	main_loop(t_env *env)
 {
 	SDL_Event	e;
 
+	compress_texture(&env->textures);
 	cl_setup(env);
 	while (!(env->mv_data.move_keys & KEY_ESC))
 	{

@@ -82,7 +82,6 @@ void	cl_setup(t_env *e)
 
 	int		err;
 
-	compress_texture(&e->textures);
 	e->cl.tx_gpu = clCreateBuffer(e->cl.context, CL_MEM_READ_ONLY |
 		CL_MEM_HOST_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
 		sizeof(t_rgb) * e->textures.total_size, e->textures.tx, &err);

@@ -22,6 +22,7 @@ void		error_fedun(char *er)
 
 int			parse_server_data(int ac, char **av, t_server *server)
 {
+	server->active = 0;
 	if (ac < 3)
 		return (0);
 	server->port_no = ft_atoi(av[2]);

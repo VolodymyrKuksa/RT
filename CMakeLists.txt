@@ -16,7 +16,7 @@ include_directories(${PROJECT_SOURCE_DIR}/frameworks/SDL2.framework/Headers incl
 
 find_library(OPENCL OpenCL)
 
-add_executable(RT includes/rt_types.h includes/rt.h src/main.c src/sdl_utils.c
+add_executable(RT includes/rt_types.h includes/rt.h src/server_main.c src/sdl_utils.c
         src/parser/scene_init.c src/cl_initialization.c src/cl_exec.c
         src/events/keyboard_events.c includes/keys.h src/events/movement_events.c src/events/rotate.c
         src/events/write_png.c src/events/write_ppm.c src/events/window_event.c src/scene_utils.c
@@ -26,8 +26,12 @@ add_executable(RT includes/rt_types.h includes/rt.h src/main.c src/sdl_utils.c
         src/parser/init_cam.c src/parser/parse.c src/server-client/thread_pool.c
         includes/server_client.h src/server-client/run_server.c)
 
+add_executable(client src/client_main.c src/server-client/thread_pool.c src/server-client/run_server.c)
+
 target_link_libraries(RT ${OPENCL} libft libvec lib_json
         ${SDL} "-F ${PROJECT_SOURCE_DIR}/frameworks -framework SDL2"
         ${SDL2_IMG} "-rpath ${PROJECT_SOURCE_DIR}/frameworks -framework SDL2_image")
+
+target_link_libraries(client libft)
 
 target_compile_definitions(RT PUBLIC CLION_BUILD)

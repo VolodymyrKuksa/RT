@@ -80,6 +80,15 @@ void		tpool_execute_logic(t_thread *this)
 	unsigned int	size;
 	void			*data;
 
+	size = 8;
+	type = STRING;
+	data = compose_message("Hello!\n", type, &size);
+	write(this->client_fd, data, size);
+	free(data);
+
+
+
+
 	t = time(NULL);
 	while (this->status == BUSY)
 	{
@@ -99,7 +108,7 @@ void		tpool_execute_logic(t_thread *this)
 		if (*(this->message_out) &&
 			!pthread_mutex_trylock(&(*this->message_out)->message_queue_lock))
 			check_message_out(this);
-		if (time(NULL) - t > 30)
+		if (time(NULL) - t > 15)
 			tpool_kick_client(this);
 	}
 }
@@ -155,7 +164,7 @@ void		init_threads(t_tpool *tpool)
 		tpool->threads[i].client_fd = -1;
 		tpool->threads[i].client_queue = &tpool->client_queue;
 		tpool->threads[i].message_out = &tpool->message_out;
-		tpool->threads[i].message_in = &tpool->message_in;
+		tpool->threads[i].env = tpool->env;
 		tpool->threads[i].alive = 1;
 		tpool->threads[i].client_hostname = NULL;
 		pthread_create(&tpool->threads[i].pid, NULL, (void*)thread_do,
@@ -163,7 +172,7 @@ void		init_threads(t_tpool *tpool)
 	}
 }
 
-t_tpool		*init_tpool(unsigned int count)
+t_tpool		*init_tpool(unsigned int count, t_env *env)
 {
 	t_tpool		*tpool;
 
@@ -177,7 +186,7 @@ t_tpool		*init_tpool(unsigned int count)
 	tpool->total_threads = count;
 	tpool->client_queue = NULL;
 	tpool->message_out = NULL;
-	tpool->message_in = NULL;
+	tpool->env = env;
 	init_threads(tpool);
 	return (tpool);
 }
