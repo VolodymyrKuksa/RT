@@ -34,7 +34,7 @@ void	clear_pixels(t_cldata *cl)
 void	write_scene_to_kernel(t_env *env)
 {
 	clEnqueueWriteBuffer(env->cl.command_queue, env->cl.obj_gpu, CL_TRUE, 0,
-		sizeof(t_obj) * env->sc.num_obj, env->sc.obj, 0, 0, 0);
+		sizeof(t_obj) * env->scene.num_obj, env->scene.obj, 0, 0, 0);
 }
 
 void	turn(float d, t_env *env, cl_float3 (*f)(float, cl_float3, t_mvdata))
@@ -45,12 +45,12 @@ void	turn(float d, t_env *env, cl_float3 (*f)(float, cl_float3, t_mvdata))
 	int			i;
 
 	i = -1;
-	while (++i < env->sc.num_obj)
+	while (++i < env->scene.num_obj)
 	{
-		rt[env->sc.obj[i].type](d, &env->sc.obj[i], env->mv_data, f);
-		env->sc.obj[i].basis.u = f(d, env->sc.obj[i].basis.u, env->mv_data);
-		env->sc.obj[i].basis.v = f(d, env->sc.obj[i].basis.v, env->mv_data);
-		env->sc.obj[i].basis.w = f(d, env->sc.obj[i].basis.w, env->mv_data);
+		rt[env->scene.obj[i].type](d, &env->scene.obj[i], env->mv_data, f);
+		env->scene.obj[i].basis.u = f(d, env->scene.obj[i].basis.u, env->mv_data);
+		env->scene.obj[i].basis.v = f(d, env->scene.obj[i].basis.v, env->mv_data);
+		env->scene.obj[i].basis.w = f(d, env->scene.obj[i].basis.w, env->mv_data);
 	}
 	env->num_samples = 0;
 	clear_pixels(&env->cl);
@@ -68,8 +68,8 @@ void	move(t_env *env, float x, float y, float z)
 	d.y = y;
 	d.z = z;
 	i = -1;
-	while (++i < env->sc.num_obj)
-		mv[env->sc.obj[i].type](d, &env->sc.obj[i], env->mv_data);
+	while (++i < env->scene.num_obj)
+		mv[env->scene.obj[i].type](d, &env->scene.obj[i], env->mv_data);
 	env->num_samples = 0;
 	clear_pixels(&env->cl);
 	write_scene_to_kernel(env);

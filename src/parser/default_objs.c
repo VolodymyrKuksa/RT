@@ -70,7 +70,7 @@ t_obj			default_cylinder(void)
 	tmp.basis.v = (cl_float3){1.0, 0.0, 0.0};
 	tmp.basis.w = (cl_float3){0.0, 0.0, 1.0};
 	tmp.primitive.cylinder.pos = (cl_float3){-5.0, -5.0, -5.0};
-	tmp.primitive.cylinder.h = 150.f;
+	tmp.primitive.cylinder.h = 15000.f;
 	tmp.color = (cl_float3){1.0, 1.0, 1.0};
 	tmp.emission = (cl_float3){0.0, 0.0, 0.0};
 	tmp.roughness = 1.f;

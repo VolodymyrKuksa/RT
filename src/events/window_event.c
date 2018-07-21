@@ -29,9 +29,9 @@ void	cl_free(t_cldata *cl)
 
 void	handle_resize(t_env *env)
 {
-	env->sc.cam.pr_pl_w = g_win_width;
-	env->sc.cam.pr_pl_h = g_win_height;
-	env->sc.cam.ratio = env->sc.cam.f_length / calculate_ppd(env->sc.cam.fov);
+	env->scene.cam.pr_pl_w = g_win_width;
+	env->scene.cam.pr_pl_h = g_win_height;
+	env->scene.cam.ratio = env->scene.cam.f_length / calculate_ppd(env->scene.cam.fov);
 	cl_free(&env->cl);
 	cl_setup(env);
 	get_work_group_size(&env->cl);

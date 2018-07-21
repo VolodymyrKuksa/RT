@@ -19,11 +19,25 @@ void		error_fedun(char *er)
 	exit(-1);
 }
 
+int			parse_server_data(int ac, char **av, t_server *server)
+{
+	if (ac < 3)
+		return (0);
+	server->port_no = ft_atoi(av[2]);
+	if (ac >= 4)
+		server->num_threads = (unsigned int)ft_atoi(av[3]);
+	if (ac < 4 || server->num_threads < 1 || server->num_threads > 20)
+		server->num_threads = 4;
+	if (server->port_no < 2000)
+		return (0);
+	return (1);
+}
+
 void		parse_scene(int argc, char **argv, char **contents, size_t *len)
 {
 	int			fd;
 
-	if (argc != 2)
+	if (argc < 2)
 		error_fedun("second arg must be file");
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
