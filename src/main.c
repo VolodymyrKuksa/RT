@@ -182,27 +182,27 @@ void init_torus(t_scene *scene)
 //	tmp.tex_id = -1;
 //	scene->obj[3] = tmp;
 
-//	tmp.basis.u = (cl_float3){0.0, 0.0, 1.0};
-//	tmp.basis.v = (cl_float3){1.0, 0.0, 0.0};
-//	tmp.basis.w = (cl_float3){0.0, 1.0, 0.0};
-//	tmp.primitive.rectangle.pos.x = 0;
-//	tmp.primitive.rectangle.pos.y = 0;
-//	tmp.primitive.rectangle.pos.z = -30;
-//	tmp.primitive.rectangle.w = 5.f;
-//	tmp.primitive.rectangle.h = 10.f;
-//	tmp.color.x = 1.f;
-//	tmp.color.y = 0.f;
-//	tmp.color.z = 0.f;
-//	tmp.emission.x = 0.f;
-//	tmp.emission.y = 0.f;
-//	tmp.emission.z = 0.f;
-//	tmp.roughness = 0.0f;
-//	tmp.diffuse = 1.f;
-//	tmp.specular = 0;
-//	tmp.refraction = 0;
-//	tmp.type = rectangle;
-//	tmp.tex_id = -1;
-//	scene->obj[0] = tmp;
+	tmp.basis.u = (cl_float3){0.0, 0.0, 1.0};
+	tmp.basis.v = (cl_float3){1.0, 0.0, 0.0};
+	tmp.basis.w = (cl_float3){0.0, 1.0, 0.0};
+	tmp.primitive.rectangle.pos.x = 0;
+	tmp.primitive.rectangle.pos.y = 0;
+	tmp.primitive.rectangle.pos.z = -30;
+	tmp.primitive.rectangle.w = 5.f;
+	tmp.primitive.rectangle.h = 10.f;
+	tmp.color.x = 1.f;
+	tmp.color.y = 0.f;
+	tmp.color.z = 0.f;
+	tmp.emission.x = 0.f;
+	tmp.emission.y = 0.f;
+	tmp.emission.z = 0.f;
+	tmp.roughness = 0.0f;
+	tmp.diffuse = 1.f;
+	tmp.specular = 0;
+	tmp.refraction = 0;
+	tmp.type = rectangle;
+	tmp.tex_id = -1;
+	scene->obj[0] = tmp;
 
 
 	tmp.basis.u = (cl_float3){0.0, 0.0, 1.0};
@@ -266,6 +266,8 @@ int		main(int argc, char **argv)
 	main_loop(&env);
 	close_sdl(&env.screen);
 	IMG_Quit();
+	write_scene(&env.sc);
+	print_scene(&env.sc);
 	system("leaks -q RT"); //DEBUG
 	return (0);
 }

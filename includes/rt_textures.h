@@ -53,6 +53,7 @@ typedef struct		s_txgpu
 
 int					load_texture(char *filename);
 SDL_Surface			*get_texture(int id);
+char				*get_texture_name(int id);
 void				print_txtlst(void);//USES PRINTF
 
 /*

@@ -13,7 +13,7 @@
 #include "rt.h"
 #include "parser.h"
 
-void			minus_camera(cl_float3 *pos, cl_float3 cam_pos)
+void			minus_camera(cl_float3 *pos, cl_float3 cam_pos, int znak)
 {
 	pos->x -= cam_pos.x;
 	pos->y -= cam_pos.y;
