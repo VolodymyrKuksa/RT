@@ -52,6 +52,10 @@ void			print_scene(t_scene *scene)
 			print_disk(scene->obj[i]);
 		else if (scene->obj[i].type == ellipse)
 			print_ellipse(scene->obj[i]);
+		else if (scene->obj[i].type == parallelogram)
+			print_parallelogram(scene->obj[i]);
+		else if (scene->obj[i].type == triangle)
+			print_triangle(scene->obj[i]);
 		i++;
 	}
 }
