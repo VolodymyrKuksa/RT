@@ -90,7 +90,10 @@ typedef enum		e_obj_type
 	cone,
 	torus,
 	disk,
-	rectangle
+	rectangle,
+	ellipse,
+	parallelogram,
+	triangle
 }					t_obj_type;
 
 typedef struct		s_disk
@@ -132,12 +135,34 @@ typedef struct		s_torus
 	float		r;
 }					t_torus;
 
+typedef struct		s_ellipse
+{
+	cl_float3	c1;
+	cl_float3	c2;
+	float	r;
+}					t_ellipse;
+
 typedef struct		s_rectangle
 {
 	cl_float3	pos;
 	float		h;
 	float		w;
 }					t_rectangle;
+
+typedef struct		s_triangle
+{
+	cl_float3	d1;
+	cl_float3	d2;
+	cl_float3	d3;
+}					t_triangle;
+
+typedef struct		s_parallelogram
+{
+	cl_float3	pos;
+	float		h;
+	float		w;
+	float		l;
+}					t_parallelogram;
 
 typedef	union		u_primitive
 {
@@ -148,6 +173,9 @@ typedef	union		u_primitive
 	t_torus		torus;
 	t_disk		disk;
 	t_rectangle	rectangle;
+	t_ellipse	ellipse;
+	t_triangle	triangle;
+	t_parallelogram	parallelogram;
 }					t_primitive;
 
 typedef struct		s_basis

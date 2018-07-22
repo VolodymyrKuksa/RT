@@ -96,5 +96,49 @@
 			"specular": 0.0,
 			"refraction": 0.0
 		}
+	},
+	"triangle" : {
+		"d1 x": -5.0,
+		"d1 y": -5.0,
+		"d1 z": -5.0,
+		"d2 x": 5.0,
+		"d2 y": 5.0,
+		"d2 z": 5.0,
+		"d3 x": -2.0,
+		"d3 y": 20.0,
+		"d3 z": 45.0,
+		"color x": 1.0,
+		"color y": 0.0,
+		"color z": 1.0,
+		"rot z": 40.0,
+		"rot x": 0.0,
+		"rot y": 0.0,
+		"light": {
+			"emission x": 0.0,
+			"emission y": 0.0,
+			"emission z": 1.0,
+			"roughness": 1.0,
+			"diffuse": 1.0,
+			"specular": 0.0,
+			"refraction": 0.0
+		}
+	},
+	"parallelogram" : {
+		"pos x": 5.0,
+		"pos y": -5.0,
+		"pos z": 2.0,
+		"color x": 1.0,
+		"color y": 1.0,
+		"color z": 1.0,
+		"rot z": 45.0,
+		"light": {
+			"emission x": 1.0,
+			"emission y": 0.0,
+			"emission z": 0.0,
+			"roughness": 1.0,
+			"diffuse": 1.0,
+			"specular": 0.0,
+			"refraction": 0.0
+		}
 	}
 }

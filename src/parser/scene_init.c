@@ -11,17 +11,16 @@
 /* ************************************************************************** */
 
 #include "rt.h"
-#include "parser.h"
 
 extern int	g_win_width;
 extern int	g_win_height;
-#define	LENGTH(a) sqrt(a.x * a.x + a.y * a.y + a.z * a.z)
-#define NORMAL(a) (cl_float3){a.x/LENGTH(a), a.y/LENGTH(a), a.z/LENGTH(a)}
-#define ABS3(a) (cl_float3){fabs(a.x), fabs(a.y), fabs(a.z)}
+# define LENGTH(a) sqrt(a.x * a.x + a.y * a.y + a.z * a.z)
+# define NORMAL(a) (cl_float3){a.x/LENGTH(a), a.y/LENGTH(a), a.z/LENGTH(a)}
+# define ABS3(a) (cl_float3){fabs(a.x), fabs(a.y), fabs(a.z)}
 
-void            print_scene(t_scene *scene)
+void			print_scene(t_scene *scene)
 {
-	int         i;
+	int			i;
 
 	printf("PRINTIN ALL THE SCENE >>>>>>>>\n\n");
 	i = 0;
@@ -51,6 +50,8 @@ void            print_scene(t_scene *scene)
 			print_rectangle(scene->obj[i]);
 		else if (scene->obj[i].type == disk)
 			print_disk(scene->obj[i]);
+		else if (scene->obj[i].type == ellipse)
+			print_ellipse(scene->obj[i]);
 		i++;
 	}
 }
@@ -68,6 +69,29 @@ void			print_sphere(t_obj obj)
 	printf("u x = %f\n", obj.basis.u.x);
 	printf("u y = %f\n", obj.basis.u.y);
 	printf("u z = %f\n", obj.basis.u.z);
+	printf("emission x = %f\n", obj.emission.x);
+	printf("emission y = %f\n", obj.emission.y);
+	printf("emission z = %f\n", obj.emission.z);
+	printf("roughness = %f\n", obj.roughness);
+	printf("diffuse = %f\n", obj.diffuse);
+	printf("specular = %f\n", obj.specular);
+	printf("refraction = %f\n", obj.refraction);
+	printf("texture id= %d\n", obj.tex_id);
+}
+
+void			print_ellipse(t_obj obj)
+{
+	printf("----------------------ellipse---------------------------\n");
+	printf("c1 x = %f\n", obj.primitive.ellipse.c1.x);
+	printf("c1 y = %f\n", obj.primitive.ellipse.c1.y);
+	printf("c1 z = %f\n", obj.primitive.ellipse.c1.z);
+	printf("c2 x = %f\n", obj.primitive.ellipse.c2.x);
+	printf("c2 y = %f\n", obj.primitive.ellipse.c2.y);
+	printf("c2 z = %f\n", obj.primitive.ellipse.c2.z);
+	printf("radius = %f\n", obj.primitive.ellipse.r);
+	printf("color x = %f\n", obj.color.x);
+	printf("color y = %f\n", obj.color.y);
+	printf("color z = %f\n", obj.color.z);
 	printf("emission x = %f\n", obj.emission.x);
 	printf("emission y = %f\n", obj.emission.y);
 	printf("emission z = %f\n", obj.emission.z);
@@ -208,6 +232,53 @@ void			print_rectangle(t_obj obj)
 	printf("texture id= %d\n", obj.tex_id);
 }
 
+void			print_parallelogram(t_obj obj)
+{
+	printf("--------------------parallelogram---------------------------\n");
+	printf("pos x = %f\n", obj.primitive.parallelogram.pos.x);
+	printf("pos y = %f\n", obj.primitive.parallelogram.pos.y);
+	printf("pos z = %f\n", obj.primitive.parallelogram.pos.z);
+	printf("w = %f\n", obj.primitive.parallelogram.w);
+	printf("h = %f\n", obj.primitive.parallelogram.h);
+	printf("l = %f\n", obj.primitive.parallelogram.l);
+	printf("color x = %f\n", obj.color.x);
+	printf("color y = %f\n", obj.color.y);
+	printf("color z = %f\n", obj.color.z);
+	printf("emission x = %f\n", obj.emission.x);
+	printf("emission y = %f\n", obj.emission.y);
+	printf("emission z = %f\n", obj.emission.z);
+	printf("roughness = %f\n", obj.roughness);
+	printf("diffuse = %f\n", obj.diffuse);
+	printf("specular = %f\n", obj.specular);
+	printf("refraction = %f\n", obj.refraction);
+	printf("texture id= %d\n", obj.tex_id);
+}
+
+void			print_triangle(t_obj obj)
+{
+	printf("--------------------triangle-----------------------------\n");
+	printf("d1 x = %f\n", obj.primitive.triangle.d1.x);
+	printf("d1 y = %f\n", obj.primitive.triangle.d1.y);
+	printf("d1 z = %f\n", obj.primitive.triangle.d1.z);
+	printf("d2 x = %f\n", obj.primitive.triangle.d2.x);
+	printf("d2 y = %f\n", obj.primitive.triangle.d2.y);
+	printf("d2 z = %f\n", obj.primitive.triangle.d2.z);
+	printf("d3 x = %f\n", obj.primitive.triangle.d3.x);
+	printf("d3 y = %f\n", obj.primitive.triangle.d3.y);
+	printf("d3 z = %f\n", obj.primitive.triangle.d3.z);
+	printf("color x = %f\n", obj.color.x);
+	printf("color y = %f\n", obj.color.y);
+	printf("color z = %f\n", obj.color.z);
+	printf("emission x = %f\n", obj.emission.x);
+	printf("emission y = %f\n", obj.emission.y);
+	printf("emission z = %f\n", obj.emission.z);
+	printf("roughness = %f\n", obj.roughness);
+	printf("diffuse = %f\n", obj.diffuse);
+	printf("specular = %f\n", obj.specular);
+	printf("refraction = %f\n", obj.refraction);
+	printf("texture id= %d\n", obj.tex_id);
+}
+
 void			parselight(json_value *value, t_obj *tmp)
 {
 	int			i;
@@ -236,7 +307,8 @@ void			parselight(json_value *value, t_obj *tmp)
 	checksumandemiss(tmp);
 }
 
-void			fill_common(char *name, t_obj *tmp, json_value *v, cl_float3 *rot)
+void			fill_common(char *name, t_obj *tmp,
+							json_value *v, cl_float3 *rot)
 {
 	fill_color(name, (cl_float)(v->u.dbl), tmp);
 	if (ft_strcmp(name, "light") == 0)
@@ -253,9 +325,8 @@ void			fill_common(char *name, t_obj *tmp, json_value *v, cl_float3 *rot)
 		rot->z = (cl_float)(v->u.dbl);
 }
 
-void            fill_scene_obj(json_value *value, t_scene *scene, int i)
+void			fill_scene_obj(json_value *value, t_scene *scene, int i)
 {
-	printf("name is ::: %s\n\n", value->u.object.values[i].name);
 	if (ft_strcmp("sphere", value->u.object.values[i].name) == 0)
 		fillthesphere(value->u.object.values[i].value, scene);
 	else if (ft_strcmp("cone", value->u.object.values[i].name) == 0)
@@ -270,6 +341,12 @@ void            fill_scene_obj(json_value *value, t_scene *scene, int i)
 		fillrectangle(value->u.object.values[i].value, scene);
 	else if (ft_strcmp("disk", value->u.object.values[i].name) == 0)
 		filldisk(value->u.object.values[i].value, scene);
+	else if (ft_strcmp("ellipse", value->u.object.values[i].name) == 0)
+		fillellipse(value->u.object.values[i].value, scene);
+	else if (ft_strcmp("triangle", value->u.object.values[i].name) == 0)
+		filltriangle(value->u.object.values[i].value, scene);
+	else if (ft_strcmp("parallelogram", value->u.object.values[i].name) == 0)
+		fillparallelogram(value->u.object.values[i].value, scene);
 	else
 		error_fedun("wrong key in root");
 }
@@ -297,11 +374,11 @@ void			fillthescene(json_value *value, t_scene *scene)
 	}
 }
 
-void            init_scene(t_scene *scene, int argc, char **argv)
+void			init_scene(t_scene *scene, int argc, char **argv)
 {
-	json_value  *value;
-	char        *contents;
-	size_t      len;
+	json_value	*value;
+	char		*contents;
+	size_t		len;
 
 	scene->cur_obj = 0;
 	parse_scene(argc, argv, &contents, &len);

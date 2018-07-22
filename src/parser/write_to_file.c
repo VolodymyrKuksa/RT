@@ -164,6 +164,50 @@ void			write_torus(t_obj obj, int fd)
 	write_light(obj, fd);
 }
 
+void			write_ellipse(t_obj obj, int fd)
+{
+	ft_putstr_fd("\t\"ellipse\" :\n\t{\n\t\t", fd);
+	write_feature("c1 x", obj.primitive.ellipse.c1.x, fd);
+	write_feature("c1 y", obj.primitive.ellipse.c1.y, fd);
+	write_feature("c1 z", obj.primitive.ellipse.c1.z, fd);
+	write_feature("c2 x", obj.primitive.ellipse.c2.x, fd);
+	write_feature("c2 y", obj.primitive.ellipse.c2.y, fd);
+	write_feature("c2 z", obj.primitive.ellipse.c2.z, fd);
+	write_feature("radius", obj.primitive.ellipse.r, fd);
+	write_pos_color_rot((cl_float3){0, 0, 0}, obj.rot, obj.color, fd, obj.basis.v);
+	write_texture(obj.mater_tex_id, obj.tex_id, fd);
+	write_light(obj, fd);
+}
+
+void			write_triangle(t_obj obj, int fd)
+{
+	ft_putstr_fd("\t\"triangle\" :\n\t{\n\t\t", fd);
+	write_feature("d1 x", obj.primitive.triangle.d1.x, fd);
+	write_feature("d1 y", obj.primitive.triangle.d1.y, fd);
+	write_feature("d1 z", obj.primitive.triangle.d1.z, fd);
+	write_feature("d2 x", obj.primitive.triangle.d2.x, fd);
+	write_feature("d2 y", obj.primitive.triangle.d2.y, fd);
+	write_feature("d2 z", obj.primitive.triangle.d2.z, fd);
+	write_feature("d3 x", obj.primitive.triangle.d3.x, fd);
+	write_feature("d3 y", obj.primitive.triangle.d3.y, fd);
+	write_feature("d3 z", obj.primitive.triangle.d3.z, fd);
+	write_pos_color_rot((cl_float3){0, 0, 0}, obj.rot, obj.color, fd, obj.basis.v);
+	write_texture(obj.mater_tex_id, obj.tex_id, fd);
+	write_light(obj, fd);
+}
+
+void			write_parallelogram(t_obj obj, int fd)
+{
+	ft_putstr_fd("\t\"parallelogram\" :\n\t{\n\t\t", fd);
+	write_pos_color_rot(obj.primitive.parallelogram.pos,
+						obj.rot, obj.color, fd, obj.basis.v);
+	write_feature("h", obj.primitive.parallelogram.h, fd);
+	write_feature("w", obj.primitive.parallelogram.w, fd);
+	write_feature("l", obj.primitive.parallelogram.w, fd);
+	write_texture(obj.mater_tex_id, obj.tex_id, fd);
+	write_light(obj, fd);
+}
+
 void			write_which_obj(t_scene *scene, int i, int fd)
 {
 	if (scene->obj[i].type == sphere)
@@ -180,6 +224,12 @@ void			write_which_obj(t_scene *scene, int i, int fd)
 		write_disk(scene->obj[i], fd);
 	else if (scene->obj[i].type == rectangle)
 		write_rectangle(scene->obj[i], fd);
+	else if (scene->obj[i].type == ellipse)
+		write_ellipse(scene->obj[i], fd);
+	else if (scene->obj[i].type == triangle)
+		write_triangle(scene->obj[i], fd);
+	else if (scene->obj[i].type == parallelogram)
+		write_parallelogram(scene->obj[i], fd);
 }
 
 void				write_scene(t_scene *scene)

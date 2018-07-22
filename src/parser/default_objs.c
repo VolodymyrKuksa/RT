@@ -190,3 +190,82 @@ t_obj			default_disk(void)
 	tmp.mater_tex_id = -1;
 	return (tmp);
 }
+
+t_obj			default_ellipse(void)
+{
+	t_obj		tmp;
+
+	tmp.basis.u = (cl_float3){0.0, 1.0, 0.0};
+	tmp.basis.v = (cl_float3){1.0, 0.0, 0.0};
+	tmp.basis.w = (cl_float3){0.0, 0.0, 1.0};
+	tmp.primitive.ellipse.c1 = (cl_float3){-5.0f, -5.0f, -5.0f};
+	tmp.primitive.ellipse.c2 = (cl_float3){5.0f, 5.0f, 5.0f};
+	tmp.primitive.ellipse.r = 9.0f;
+	tmp.color.x = 1.f;
+	tmp.color.y = 1.f;
+	tmp.color.z = 1.f;
+	tmp.emission.x = 0.f;
+	tmp.emission.y = 0.f;
+	tmp.emission.z = 0.f;
+	tmp.roughness = 0.0f;
+	tmp.diffuse = 1.f;
+	tmp.specular = 0;
+	tmp.refraction = 0;
+	tmp.type = ellipse;
+	tmp.tex_id = -1;
+	tmp.mater_tex_id = -1;
+	return (tmp);
+}
+
+t_obj			default_triangle(void)
+{
+	t_obj		tmp;
+
+	tmp.basis.u = (cl_float3){0.0, 1.0, 0.0};
+	tmp.basis.v = (cl_float3){1.0, 0.0, 0.0};
+	tmp.basis.w = (cl_float3){0.0, 0.0, 1.0};
+	tmp.primitive.triangle.d1 = (cl_float3){0.0f, 5.0f, 0.0f};
+	tmp.primitive.triangle.d2 = (cl_float3){0.0f, 0.0f, 5.0f};
+	tmp.primitive.triangle.d3 = (cl_float3){5.0f, 0.0f, 0.0f};
+	tmp.color.x = 1.f;
+	tmp.color.y = 1.f;
+	tmp.color.z = 1.f;
+	tmp.emission.x = 0.f;
+	tmp.emission.y = 0.f;
+	tmp.emission.z = 0.f;
+	tmp.roughness = 0.0f;
+	tmp.diffuse = 1.f;
+	tmp.specular = 0;
+	tmp.refraction = 0;
+	tmp.type = triangle;
+	tmp.tex_id = -1;
+	tmp.mater_tex_id = -1;
+	return (tmp);
+}
+
+t_obj			default_parallelogram(void)
+{
+	t_obj		tmp;
+
+	tmp.basis.u = (cl_float3){0.0, 1.0, 0.0};
+	tmp.basis.v = (cl_float3){1.0, 0.0, 0.0};
+	tmp.basis.w = (cl_float3){0.0, 0.0, 1.0};
+	tmp.primitive.parallelogram.pos = (cl_float3){0.0, 0.0, -30.0f};
+	tmp.primitive.parallelogram.w = 5.f;
+	tmp.primitive.parallelogram.h = 10.f;
+	tmp.primitive.parallelogram.l = 1.f;
+	tmp.color.x = 1.f;
+	tmp.color.y = 0.f;
+	tmp.color.z = 0.f;
+	tmp.emission.x = 0.f;
+	tmp.emission.y = 0.f;
+	tmp.emission.z = 0.f;
+	tmp.roughness = 0.0f;
+	tmp.diffuse = 1.f;
+	tmp.specular = 0;
+	tmp.refraction = 0;
+	tmp.type = parallelogram;
+	tmp.tex_id = -1;
+	tmp.mater_tex_id = -1;
+	return (tmp);
+}
