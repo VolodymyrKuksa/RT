@@ -18,6 +18,9 @@
 #include <poll.h>
 #include "server_client.h"
 
+extern unsigned int	g_win_width;
+extern unsigned int g_win_height;
+
 void		tpool_kick_client(t_thread *thread)
 {
 	ft_putstr(thread->client_hostname);
@@ -101,6 +104,14 @@ void		send_starting_data(t_thread *thread)
 	free(data);
 	size = sizeof(t_txdata) * thread->env->textures.tx_count;
 	data = compose_message(thread->env->textures.txdata, ++thread->env->server.message_id, TEX_DATA, &size);
+	write(thread->client_fd, data, size);
+	free(data);
+	size = sizeof(g_win_width);
+	data = compose_message(&g_win_width, ++thread->env->server.message_id, WND_W, &size);
+	write(thread->client_fd, data, size);
+	free(data);
+	size = sizeof(g_win_height);
+	data = compose_message(&g_win_height, ++thread->env->server.message_id, WND_H, &size);
 	write(thread->client_fd, data, size);
 	free(data);
 	set_nonblock(thread->client_fd);

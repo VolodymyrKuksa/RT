@@ -56,7 +56,7 @@ void	read_scene(t_env *env)
 	unsigned int	size;
 	int				types_got;
 
-	types_got = OBJ | CAM | TEXTURES | TEX_DATA;
+	types_got = OBJ | CAM | TEXTURES | TEX_DATA | WND_W | WND_H;
 	env->scene.num_obj = 0;//
 	env->textures.tx = NULL;//
 	while (types_got)
@@ -88,6 +88,10 @@ void	read_scene(t_env *env)
 			ft_memcpy(env->textures.txdata, msg, size);
 			env->textures.tx_count = size / (int)sizeof(t_txdata);
 		}
+		else if (type == WND_W)
+			g_win_width = *(unsigned int*)msg;
+		else if (type == WND_H)
+			g_win_height = *(unsigned int*)msg;
 		free(msg);
 	}
 	printf("message id: %d\n", env->client.message_id);
@@ -112,7 +116,7 @@ int		main(int argc, char **argv)
 	close(env.client.socket_fd);
 	close_sdl(&env.screen);
 	IMG_Quit();
-	system("leaks -q client"); //DEBUG
+//	system("leaks -q client"); //DEBUG
 
 	return (0);
 }

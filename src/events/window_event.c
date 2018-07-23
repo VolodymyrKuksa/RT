@@ -63,6 +63,10 @@ void	window_event(SDL_Event e, t_env *env)
 				sizeof(g_win_width), WND_W);
 			push_message_for_all(env->server.tpool, &g_win_height,
 				sizeof(g_win_height), WND_H);
+			push_message_for_all(env->server.tpool, &g_win_width,
+				sizeof(g_win_width), WND_W);
+			push_message_for_all(env->server.tpool, &g_win_height,
+				sizeof(g_win_height), WND_H);
 		}
 	}
 }
