@@ -105,6 +105,7 @@ void		write_scene_to_kernel(t_env *env);
 */
 
 void		window_event(SDL_Event e, t_env *env);
+void		window_event_client(SDL_Event e, t_env *env);
 
 /*
 **	scene_init.c

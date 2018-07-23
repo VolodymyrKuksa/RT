@@ -46,6 +46,7 @@ void	init_client(t_client *client)
 		put_error("Could not connect to server");
 	set_nonblock(client->socket_fd);
 	client->message_id = 0;
+	client->active = 1;
 }
 
 void	read_scene(t_env *env)
@@ -96,6 +97,7 @@ int		main(int argc, char **argv)
 {
 	t_env	env;
 
+	env.server.active = 0;
 	parse_client_data(&env.client, argc, argv);
 	init_client(&env.client);
 	read_scene(&env);

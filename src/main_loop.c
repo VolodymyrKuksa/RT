@@ -12,6 +12,9 @@
 
 #include "rt.h"
 
+extern unsigned int g_win_width;
+extern unsigned int g_win_height;
+
 void	clamp(cl_float3 *px)
 {
 	px->x = px->x > 1.f ? 1.f : px->x;
@@ -67,10 +70,13 @@ void	handle_events_client(t_env *env)
 	{
 		if (e.type == SDL_QUIT)
 			env->mv_data.move_keys |= KEY_ESC;
+		else if (e.type == SDL_WINDOWEVENT)
+		{
+			printf("tutu\n");
+			window_event(e, env);
+		}
 //		else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
 //			keyboard_event(e, env);
-//		else if (e.type == SDL_WINDOWEVENT)
-//			window_event(e, env);
 	}
 }
 
@@ -125,7 +131,6 @@ void	main_loop_client(t_env *env)
 		{
 			if (type == OBJ)
 			{
-				printf("yoyoyo!\n");
 				free(env->scene.obj);
 				if (!(env->scene.obj = (t_obj *) malloc(size)))
 					put_error("Could not allocate memory for objects");
@@ -134,6 +139,17 @@ void	main_loop_client(t_env *env)
 				env->num_samples = 0;
 				ft_bzero(env->cl.pixels, sizeof(cl_float3) * env->cl.global_size);
 				write_scene_to_kernel(env);
+			}
+			else if (type == WND_W)
+			{
+//				g_win_width = *(unsigned int*)msg;
+				printf("width\n");
+				SDL_SetWindowSize(env->screen.window, *(unsigned int*)msg, g_win_height);
+			}
+			else if (type == WND_H)
+			{
+				printf("height\n");
+				SDL_SetWindowSize(env->screen.window, g_win_width, *(unsigned int*)msg);
 			}
 			free(msg);
 		}

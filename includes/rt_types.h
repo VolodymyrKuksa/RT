@@ -235,6 +235,7 @@ typedef struct		s_cldata
 
 typedef struct		s_client
 {
+	int					active;
 	int					socket_fd;
 	int					portno;
 	struct hostent		*server;
@@ -250,14 +251,16 @@ enum				e_status
 
 enum				e_message
 {
-	STRING = 0b0,
-	OBJ = 0b1,
-	CAM = 0b10,
-	TEXTURES = 0b100,
-	TEX_DATA = 0b1000,
-	PIXELS = 0b10000,
-	CONNECTION = 0b100000,
-	QUIT = 0b1000000
+	STRING =     0b0,
+	OBJ =        0b1,
+	CAM =        0b10,
+	TEXTURES =   0b100,
+	TEX_DATA =   0b1000,
+	PIXELS =     0b10000,
+	WND_W =      0b100000,
+	WND_H =      0b1000000,
+	CONNECTION = 0b10000000,
+	QUIT =       0b100000000
 };
 
 typedef struct		s_client_queue
