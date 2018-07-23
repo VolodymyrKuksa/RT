@@ -177,7 +177,7 @@ void		tpool_execute_logic(t_thread *this)
 		if (*(this->message_out) &&
 			!pthread_mutex_trylock(&(*this->message_out)->message_queue_lock))
 			check_message_out(this);
-		if (time(NULL) - t > 1500)
+		if (time(NULL) - t > 15)
 			tpool_kick_client(this);
 	}
 }

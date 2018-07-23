@@ -75,8 +75,8 @@ void	handle_events_client(t_env *env)
 			printf("tutu\n");
 			window_event(e, env);
 		}
-//		else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
-//			keyboard_event(e, env);
+		else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
+			env->mv_data.move_keys |= KEY_ESC;
 	}
 }
 
@@ -120,8 +120,10 @@ void	main_loop_client(t_env *env)
 	void			*msg;
 	int				type;
 	unsigned int	size;
+	time_t			t;
 
 	cl_setup(env);
+	t = time(NULL);
 	while (!(env->mv_data.move_keys & KEY_ESC))
 	{
 		handle_events_client(env);
@@ -151,12 +153,30 @@ void	main_loop_client(t_env *env)
 				printf("height\n");
 				SDL_SetWindowSize(env->screen.window, g_win_width, *(unsigned int*)msg);
 			}
+			else if (type == QUIT)
+				env->mv_data.move_keys |= KEY_ESC;
 			free(msg);
 		}
 
 		cl_exec(&env->cl);
 		update_window(env);
 		if (env->num_samples == CLIENT_WORK_SIZE)
+		{
 			send_pixels(env);
+			t = time(NULL);
+		}
+		else if (time(NULL) - t > 10)
+		{
+			size = 0;
+			msg = compose_message(NULL, env->client.message_id, CONNECTION, &size);
+			write(env->client.socket_fd, msg, size);
+			free(msg);
+			t = time(NULL);
+			printf("connection message sent\n");
+		}
 	}
+	size = 0;
+	msg = compose_message(NULL, env->client.message_id, QUIT, &size);
+	write(env->client.socket_fd, msg, size);
+	free(msg);
 }

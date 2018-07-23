@@ -108,7 +108,9 @@ int		main(int argc, char **argv)
 	init_seeds(&env.cl.seeds);
 	get_work_group_size(&env.cl);
 	init_win(&env.screen);
+	SDL_SetWindowResizable(env.screen.window, SDL_FALSE);
 	main_loop_client(&env);
+	close(env.client.socket_fd);
 	close_sdl(&env.screen);
 	IMG_Quit();
 	system("leaks -q client"); //DEBUG
