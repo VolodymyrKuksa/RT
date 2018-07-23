@@ -89,8 +89,9 @@ void	main_loop_server(t_env *env)
 		if (env->mv_data.move_keys)
 		{
 			movement_events(env);
-			push_message_for_all(env->server.tpool, env->scene.obj,
-				env->scene.num_obj * sizeof(t_obj), OBJ);
+			if (env->server.active)
+				push_message_for_all(env->server.tpool, env->scene.obj,
+					env->scene.num_obj * sizeof(t_obj), OBJ);
 		}
 		cl_exec(&env->cl);
 		while (pthread_mutex_trylock(&env->cl.pixel_lock) != 0);

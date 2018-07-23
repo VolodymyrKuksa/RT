@@ -55,12 +55,14 @@ void	window_event(SDL_Event e, t_env *env)
 		g_win_width = (unsigned int)e.window.data1;
 		g_win_height = (unsigned int)e.window.data2;
 		handle_resize(env);
-		if (!env->client.active)
+		if (env->cl.local_size < 50)
+			SDL_SetWindowSize(env->screen.window, ++g_win_width, g_win_height);
+		if (env->server.active)
 		{
-			if (env->cl.local_size < 50)
-				SDL_SetWindowSize(env->screen.window, ++g_win_width, g_win_height);
-			push_message_for_all(env->server.tpool, &e.window.data1, sizeof(e.window.data1), WND_W);
-			push_message_for_all(env->server.tpool, &e.window.data2, sizeof(e.window.data2), WND_H);
+			push_message_for_all(env->server.tpool, &g_win_width,
+				sizeof(g_win_width), WND_W);
+			push_message_for_all(env->server.tpool, &g_win_height,
+				sizeof(g_win_height), WND_H);
 		}
 	}
 }

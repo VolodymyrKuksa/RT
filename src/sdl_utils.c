@@ -15,7 +15,7 @@
 extern unsigned int	g_win_width;
 extern unsigned int g_win_height;
 
-int		init_win(t_scrn *screen)
+int		init_win(t_scrn *screen, int server)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -25,9 +25,18 @@ int		init_win(t_scrn *screen)
 	}
 	else
 	{
-		screen->window = SDL_CreateWindow("CANCER RT", SDL_WINDOWPOS_UNDEFINED,
-		SDL_WINDOWPOS_UNDEFINED, g_win_width, g_win_height,
-		SDL_WINDOW_RESIZABLE);
+		if (server)
+		{
+			screen->window = SDL_CreateWindow("CANCER RT",
+			SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, g_win_width,
+			g_win_height, SDL_WINDOW_RESIZABLE);
+		}
+		else
+		{
+			screen->window = SDL_CreateWindow("RT CLIENT", SDL_WINDOWPOS_UNDEFINED,
+			SDL_WINDOWPOS_UNDEFINED, g_win_width, g_win_height,
+			SDL_WINDOW_SHOWN);
+		}
 		if (screen->window == NULL)
 		{
 			ft_putstr("Window could not be created! Error: ");

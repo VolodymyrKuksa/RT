@@ -12,20 +12,9 @@
 
 #include "rt.h"
 #include <time.h>
+
 unsigned int	g_win_width = 1080;
 unsigned int	g_win_height = 720;
-
-//void	init_seeds(t_seeds *s)
-//{
-//	int		i;
-//
-//	s->size = (uint)(g_win_height * g_win_width * 2);
-//	s->seeds = (uint*)malloc(sizeof(uint) * s->size);
-//	srand((uint)clock());
-//	i = -1;
-//	while (++i < s->size)
-//		s->seeds[i] = (uint)rand();
-//}
 
 int		main(int argc, char **argv)
 {
@@ -42,13 +31,11 @@ int		main(int argc, char **argv)
 		run_server(&env);
 	init_seeds(&env.cl.seeds);
 	get_work_group_size(&env.cl);
-	init_win(&env.screen);
+	init_win(&env.screen, 1);
 	main_loop_server(&env);
 	quit_server(&env.server);
 	close_sdl(&env.screen);
 	IMG_Quit();
-//	write_scene(&env.scene);
-//	print_scene(&env.scene);
 	system("leaks -q RT"); //DEBUG
 	return (0);
 }

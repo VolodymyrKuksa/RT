@@ -107,8 +107,7 @@ int		main(int argc, char **argv)
 	init_defaults(&env);
 	init_seeds(&env.cl.seeds);
 	get_work_group_size(&env.cl);
-	init_win(&env.screen);
-	SDL_SetWindowResizable(env.screen.window, SDL_FALSE);
+	init_win(&env.screen, 0);
 	main_loop_client(&env);
 	close(env.client.socket_fd);
 	close_sdl(&env.screen);
