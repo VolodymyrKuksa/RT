@@ -43,7 +43,7 @@ int		main(int argc, char **argv)
 	init_seeds(&env.cl.seeds);
 	get_work_group_size(&env.cl);
 	init_win(&env.screen);
-	main_loop(&env);
+	main_loop_server(&env);
 	quit_server(&env.server);
 	close_sdl(&env.screen);
 	IMG_Quit();

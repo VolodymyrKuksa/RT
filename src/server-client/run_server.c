@@ -22,8 +22,18 @@ void	set_nonblock(int fd)
 {
 	int flags;
 
-	flags = fcntl(fd, F_SETFL, 0);
-	fcntl(fd, F_SETFL, flags | O_NONBLOCK);
+	flags = fcntl(fd, F_GETFL, 0);
+	flags |= O_NONBLOCK;
+	fcntl(fd, F_SETFL, flags);
+}
+
+void	set_block(int fd)
+{
+	int flags;
+
+	flags = fcntl(fd, F_GETFL, 0);
+	flags ^= O_NONBLOCK;
+	fcntl(fd, F_SETFL, flags);
 }
 
 void	init_server(t_server *server, t_env *env)

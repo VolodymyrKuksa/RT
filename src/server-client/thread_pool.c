@@ -13,6 +13,9 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+#include <errno.h>
+#include <rt.h>
+#include <poll.h>
 #include "server_client.h"
 
 void		tpool_kick_client(t_thread *thread)
@@ -127,13 +130,19 @@ void		tpool_execute_logic(t_thread *this)
 				this->status = FREE;
 				printf("client %s left\n", this->client_hostname);
 			}
+			else if (type == PIXELS)
+			{
+				printf("got pixels\n");
+			}
+			printf("before free\n");
 			free(data);
+			printf("after free\n");
 			t = time(NULL);
 		}
 		if (*(this->message_out) &&
 			!pthread_mutex_trylock(&(*this->message_out)->message_queue_lock))
 			check_message_out(this);
-		if (time(NULL) - t > 15)
+		if (time(NULL) - t > 1500)
 			tpool_kick_client(this);
 	}
 }
@@ -309,6 +318,28 @@ void	fill_destinations(t_tpool *tpool, int *destinations)
 	}
 }
 
+ssize_t		readn(int fd, void *data, size_t size)
+{
+	char			*ptr;
+	ssize_t			n;
+	size_t			n_left;
+
+	ptr = data;
+	n_left = size;
+	while (n_left > 0)
+	{
+		if ((n = read(fd, ptr, n_left)) < 0)
+		{
+			n = 0;
+		}
+		else if (n == 0)
+			break ;
+		ptr += n;
+		n_left -= n;
+	}
+	return (size - n_left);
+}
+
 void	*read_message(int fd, int *type, unsigned int *size)
 {
 	unsigned int	head[2];
@@ -322,10 +353,10 @@ void	*read_message(int fd, int *type, unsigned int *size)
 	if (n <= 0 || !(msg = malloc(head[1])))
 		return (NULL);
 	printf("read_message: type: %d; size: %u\n", head[0], head[1]);
-	n = read(fd, msg, head[1]);
-	if (n <= 0 && head[1])
+	if (readn(fd, msg, head[1]) < 0)
 	{
 		free(msg);
+		perror("READ FAIL");
 		return (NULL);
 	}
 	*type = head[0];

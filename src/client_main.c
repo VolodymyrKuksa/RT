@@ -75,7 +75,6 @@ int		main(int argc, char **argv)
 			ft_putendl("Got CAM");
 			env.scene.cam = *(t_cam*)msg;
 			free(msg);
-//			print_scene(&env.scene);
 		}
 		else if (type == OBJ && msg)
 		{
@@ -83,7 +82,6 @@ int		main(int argc, char **argv)
 			ft_memcpy(env.scene.obj, msg, size);
 			env.scene.num_obj = size / (int)sizeof(t_obj);
 			ft_putendl("Got OBJ");
-//			print_scene(&env.scene);
 			free(msg);
 		}
 		else if (type == TEXTURES)
@@ -99,15 +97,11 @@ int		main(int argc, char **argv)
 			env.textures.txdata = (t_txdata*)malloc(size);
 			ft_memcpy(env.textures.txdata, msg, size);
 			env.textures.tx_count = size / (int)sizeof(t_txdata);
-//			printf("%d\n", env.textures.tx_count);
 			ft_putendl("Got TEX_DATA");
 			free(msg);
 			break ;
 		}
 	}
-
-	printf("tx count: %d\n", env.textures.tx_count);
-	printf("tx size: %d\n", env.textures.total_size);
 
 	init_opencl(&env.cl);
 	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
@@ -115,7 +109,7 @@ int		main(int argc, char **argv)
 	init_seeds(&env.cl.seeds);
 	get_work_group_size(&env.cl);
 	init_win(&env.screen);
-	main_loop(&env);
+	main_loop_client(&env);
 	close_sdl(&env.screen);
 	IMG_Quit();
 	system("leaks -q RT"); //DEBUG

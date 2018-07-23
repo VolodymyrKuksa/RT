@@ -44,26 +44,60 @@ void	update_window(t_env *env)
 	SDL_UpdateWindowSurface(env->screen.window);
 }
 
-void	main_loop(t_env *env)
+void	handle_events(t_env *env)
 {
 	SDL_Event	e;
 
+	while (SDL_PollEvent(&e) != 0)
+	{
+		if (e.type == SDL_QUIT)
+			env->mv_data.move_keys |= KEY_ESC;
+		else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
+			keyboard_event(e, env);
+		else if (e.type == SDL_WINDOWEVENT)
+			window_event(e, env);
+	}
+}
+
+void	main_loop_server(t_env *env)
+{
 	cl_setup(env);
 	while (!(env->mv_data.move_keys & KEY_ESC))
 	{
-		while (SDL_PollEvent(&e) != 0)
-		{
-			if (e.type == SDL_QUIT)
-				env->mv_data.move_keys |= KEY_ESC;
-			else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
-				keyboard_event(e, env);
-			else if (e.type == SDL_WINDOWEVENT)
-				window_event(e, env);
-		}
-		//check out messages from clients
+		handle_events(env);
 		if (env->mv_data.move_keys)
 			movement_events(env);
 		cl_exec(&env->cl);
 		update_window(env);
+	}
+}
+
+void	main_loop_client(t_env *env)
+{
+	void			*msg;
+	unsigned int	size;
+
+	cl_setup(env);
+	while (!(env->mv_data.move_keys & KEY_ESC))
+	{
+		handle_events(env);
+		if (env->mv_data.move_keys)
+			movement_events(env);
+		cl_exec(&env->cl);
+		update_window(env);
+		if (env->num_samples == 100)
+		{
+			size = (unsigned int)(sizeof(cl_float3) * env->cl.global_size);
+			msg = compose_message(env->cl.pixels, PIXELS, &size);
+//			size = 14;
+//			msg = compose_message("Hello World!\n", STRING, &size);
+			set_block(env->client.socket_fd);
+			if (write(env->client.socket_fd, msg, size) > 0)
+				printf("sent pixels\n");
+			set_nonblock(env->client.socket_fd);
+			free(msg);
+			ft_bzero(env->cl.pixels, env->cl.global_size * sizeof(cl_float3));
+			env->num_samples = 0;
+		}
 	}
 }

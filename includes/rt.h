@@ -65,7 +65,8 @@ void		init_seeds(t_seeds *s);
 **	main_loop.c
 */
 
-void		main_loop(t_env *env);
+void		main_loop_server(t_env *env);
+void		main_loop_client(t_env *env);
 
 /*
 **	cl_initialization.c
@@ -154,6 +155,7 @@ void		run_server(t_env *env);
 void		quit_server(t_server *server);
 void		put_error(char *str);
 void		set_nonblock(int fd);
+void		set_block(int fd);
 
 /*
 **	write_ppm.c
