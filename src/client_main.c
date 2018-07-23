@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 #include "rt.h"
-unsigned int	g_win_width = 1080;
-unsigned int	g_win_height = 720;
+unsigned int		g_win_width = 1080;
+unsigned int		g_win_height = 720;
 
 void	print_usage(char *name)
 {
@@ -45,6 +45,51 @@ void	init_client(t_client *client)
 		sizeof(client->server_addr))) < 0)
 		put_error("Could not connect to server");
 	set_nonblock(client->socket_fd);
+	client->message_id = 0;
+}
+
+void	read_scene(t_env *env)
+{
+	void			*msg;
+	int				type;
+	unsigned int	size;
+	int				types_got;
+
+	types_got = OBJ | CAM | TEXTURES | TEX_DATA;
+	env->scene.num_obj = 0;//
+	env->textures.tx = NULL;//
+	while (types_got)
+	{
+		msg = read_message(env->client.socket_fd, &env->client.message_id, &type, &size);
+		types_got ^= type;
+		if (type == STRING && msg)
+			ft_putstr((char *) msg);
+		else if (type == CAM && msg)
+			env->scene.cam = *(t_cam*)msg;
+		else if (type == OBJ && msg)
+		{
+			if (!(env->scene.obj = (t_obj*)malloc(size)))
+				put_error("Could not allocate memory for objects");
+			ft_memcpy(env->scene.obj, msg, size);
+			env->scene.num_obj = size / (int)sizeof(t_obj);
+		}
+		else if (type == TEXTURES)
+		{
+			if (!(env->textures.tx = (t_rgb*)malloc(size)))
+				put_error("Could not allocate memory for textures");
+			ft_memcpy(env->textures.tx, msg, size);
+			env->textures.total_size = size / (int)sizeof(t_rgb);
+		}
+		else if (type == TEX_DATA)
+		{
+			if (!(env->textures.txdata = (t_txdata*)malloc(size)))
+				put_error("Could not allocat memory for texture data");
+			ft_memcpy(env->textures.txdata, msg, size);
+			env->textures.tx_count = size / (int)sizeof(t_txdata);
+		}
+		free(msg);
+	}
+	printf("message id: %d\n", env->client.message_id);
 }
 
 int		main(int argc, char **argv)
@@ -53,56 +98,8 @@ int		main(int argc, char **argv)
 
 	parse_client_data(&env.client, argc, argv);
 	init_client(&env.client);
+	read_scene(&env);
 	set_nonblock(STDIN_FILENO);
-//	execute_logic(env.client.socket_fd);
-
-	void			*msg;
-	int				type;
-	unsigned int	size;
-
-	env.scene.num_obj = 0;
-
-	while (1)
-	{
-		msg = read_message(env.client.socket_fd, &type, &size);
-		if (type == STRING && msg)
-		{
-			ft_putstr((char *) msg);
-			free(msg);
-		}
-		else if (type == CAM && msg)
-		{
-			ft_putendl("Got CAM");
-			env.scene.cam = *(t_cam*)msg;
-			free(msg);
-		}
-		else if (type == OBJ && msg)
-		{
-			env.scene.obj = (t_obj*)malloc(size);
-			ft_memcpy(env.scene.obj, msg, size);
-			env.scene.num_obj = size / (int)sizeof(t_obj);
-			ft_putendl("Got OBJ");
-			free(msg);
-		}
-		else if (type == TEXTURES)
-		{
-			env.textures.tx = (t_rgb*)malloc(size);
-			ft_memcpy(env.textures.tx, msg, size);
-			env.textures.total_size = size / (int)sizeof(t_rgb);
-			ft_putendl("Got textures");
-			free(msg);
-		}
-		else if (type == TEX_DATA)
-		{
-			env.textures.txdata = (t_txdata*)malloc(size);
-			ft_memcpy(env.textures.txdata, msg, size);
-			env.textures.tx_count = size / (int)sizeof(t_txdata);
-			ft_putendl("Got TEX_DATA");
-			free(msg);
-			break ;
-		}
-	}
-
 	init_opencl(&env.cl);
 	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
 	init_defaults(&env);
@@ -112,7 +109,7 @@ int		main(int argc, char **argv)
 	main_loop_client(&env);
 	close_sdl(&env.screen);
 	IMG_Quit();
-	system("leaks -q RT"); //DEBUG
+	system("leaks -q client"); //DEBUG
 
 	return (0);
 }

@@ -22,7 +22,7 @@ int			push_client(t_tpool *tpool, int client_fd);
 int			push_message_for_all(t_tpool *tpo, void *message,
 	unsigned int message_size, enum e_message type);
 void		destroy_tpool(t_tpool *tpool);
-void		*read_message(int fd, int *type, unsigned int *size);
-void		*compose_message(void *message, int type, unsigned int *size);
+void		*read_message(int fd, atomic_int *id, int *type, unsigned int *size);
+void		*compose_message(void *message, int id, int type, unsigned int *size);
 
 #endif

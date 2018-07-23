@@ -222,6 +222,7 @@ typedef struct		s_cldata
 
 	cl_float3			*px_host;
 	cl_float3			*pixels;
+	pthread_mutex_t		pixel_lock;
 
 	cl_mem				px_gpu;
 	cl_mem				obj_gpu;
@@ -238,6 +239,7 @@ typedef struct		s_client
 	int					portno;
 	struct hostent		*server;
 	struct sockaddr_in	server_addr;
+	atomic_int			message_id;
 }					t_client;
 
 enum				e_status
@@ -248,14 +250,14 @@ enum				e_status
 
 enum				e_message
 {
-	STRING,
-	OBJ,
-	CAM,
-	TEXTURES,
-	TEX_DATA,
-	QUIT,
-	PIXELS,
-	CONNECTION
+	STRING = 0b0,
+	OBJ = 0b1,
+	CAM = 0b10,
+	TEXTURES = 0b100,
+	TEX_DATA = 0b1000,
+	PIXELS = 0b10000,
+	CONNECTION = 0b100000,
+	QUIT = 0b1000000
 };
 
 typedef struct		s_client_queue
@@ -307,6 +309,7 @@ typedef struct		s_server
 	struct sockaddr_in	serv_addr;
 	unsigned int		num_threads;
 	t_tpool				*tpool;
+	atomic_int			message_id;
 }					t_server;
 
 typedef struct		s_env

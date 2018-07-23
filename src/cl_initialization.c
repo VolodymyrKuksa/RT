@@ -77,6 +77,7 @@ void	init_opencl(t_cldata *cl)
 	}
 	cl->kernel = clCreateKernel(cl->program, "render_pixel", 0);
 	cl->global_size = g_win_height * g_win_width;
+	pthread_mutex_init(&cl->pixel_lock, NULL);
 }
 
 void	cl_setup(t_env *e)
@@ -97,12 +98,13 @@ void	cl_setup(t_env *e)
 	e->cl.tx_gpu = clCreateBuffer(e->cl.context, CL_MEM_READ_ONLY |
 		CL_MEM_HOST_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
 		sizeof(t_rgb) * e->textures.total_size, e->textures.tx, &err);
+//	printf("total_size: %d\n", e->textures.total_size);
 //	printf("err: %d\n", err);
-	assert(err == CL_SUCCESS || err == CL_INVALID_HOST_PTR);	//might throw CL_OUT_OF_HOST_MEMORY
+	assert(err == CL_SUCCESS || err == CL_INVALID_HOST_PTR || err == CL_INVALID_BUFFER_SIZE);	//might throw CL_OUT_OF_HOST_MEMORY
 	e->cl.txdata_gpu = clCreateBuffer(e->cl.context, CL_MEM_READ_ONLY |
 		CL_MEM_HOST_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
 		sizeof(t_txdata) * e->textures.tx_count, e->textures.txdata, &err);
-	assert(err == CL_SUCCESS || err == CL_INVALID_HOST_PTR);
+	assert(err == CL_SUCCESS || err == CL_INVALID_HOST_PTR || err == CL_INVALID_BUFFER_SIZE);
 
 	clSetKernelArg(e->cl.kernel, 0, sizeof(e->cl.px_gpu), &e->cl.px_gpu);
 	clSetKernelArg(e->cl.kernel, 1, sizeof(e->cl.obj_gpu), &e->cl.obj_gpu);

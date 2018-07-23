@@ -45,6 +45,7 @@
 # endif
 
 # define DEVICE_TYPE CL_DEVICE_TYPE_GPU
+# define CLIENT_WORK_SIZE 100
 
 /*
 **	returns a string with file content and writes it`s in the size variable
@@ -67,6 +68,7 @@ void		init_seeds(t_seeds *s);
 
 void		main_loop_server(t_env *env);
 void		main_loop_client(t_env *env);
+void		clamp(cl_float3 *px);
 
 /*
 **	cl_initialization.c
@@ -96,6 +98,7 @@ int			key_down_event(SDL_Event e, t_env *env);
 */
 
 void		movement_events(t_env *env);
+void		write_scene_to_kernel(t_env *env);
 
 /*
 **	window_event.c

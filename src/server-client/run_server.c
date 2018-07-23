@@ -52,6 +52,7 @@ void	init_server(t_server *server, t_env *env)
 	if (!(server->tpool = init_tpool(server->num_threads, env)))
 		put_error("Cannot initialize thread pool");
 	server->active = 1;
+	server->message_id = 0;
 }
 
 void	*check_new_connection(void *data)
