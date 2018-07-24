@@ -143,6 +143,7 @@ void		combine_pixels(t_thread *thread, cl_float3 *client_px)
 		env->screen.surf_arr[i].bgra[2] = (u_char)(env->cl.pixels[i].x * 0xff);
 	}
 	env->num_samples += CLIENT_WORK_SIZE;
+	ft_putendl("Combined pixels");
 	pthread_mutex_unlock(&env->cl.pixel_lock);
 }
 

@@ -43,7 +43,7 @@ void	update_window(t_env *env)
 		env->screen.surf_arr[i].bgra[1] = (u_char)(env->cl.pixels[i].y * 0xff);
 		env->screen.surf_arr[i].bgra[2] = (u_char)(env->cl.pixels[i].x * 0xff);
 	}
-//	printf("samples: %u, influence: %f\n", env->num_samples, sample_influence);
+	printf("samples: %u, influence: %f\n", env->num_samples, sample_influence);
 	SDL_UpdateWindowSurface(env->screen.window);
 }
 

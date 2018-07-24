@@ -47,6 +47,11 @@ int		init_win(t_scrn *screen, int server)
 			screen->surface = SDL_GetWindowSurface(screen->window);
 	}
 	screen->surf_arr = (t_rgb *)screen->surface->pixels;
+	SDL_Surface		*icon;
+
+	icon = IMG_Load("textures/icon.png");
+	SDL_SetWindowIcon(screen->window, icon);
+	SDL_FreeSurface(icon);
 	return (1);
 }
 

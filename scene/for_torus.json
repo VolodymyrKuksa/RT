@@ -1,7 +1,7 @@
 {
 	"scene" :
 	{
-	  "pos x" : 3.0,
+	  "pos x" : 0.0,
 	  "pos y" : 0.0,
 	  "pos z" : 0.0,
 	  "dir y" : 0.0,
@@ -13,13 +13,13 @@
 	  "aperture" : 0.0
 	},
 	"plane" : {
-		"pos x": 10.0,
-		"pos y": -10.0,
+		"pos x": 0.0,
+		"pos y": -100.0,
 		"pos z": 0.0,
 		"color x": 1.0,
 		"color y": 1.0,
 		"color z": 1.0,
-		"rot z": 45.0,
+		"rot z": 0.0,
 		"rot x": 0.0,
 		"rot y": 0.0,
 		"light": {
@@ -32,113 +32,92 @@
 			"refraction": 0.0
 		}
 	},
+  "sphere" :
+  {
+	"pos x" : 0.0,
+	"pos y" : 100.0,
+	"pos z" : 0.0,
+	"color x" : 1.0,
+	"color y" : 1.0,
+	"color z" : 1.0,
+	"light" : {
+	  "emission x" : 1.0,
+	  "emission y" : 1.0,
+	  "emission z" : 1.0,
+	  "diffuse" : 1.0,
+	  "specular" : 0.0,
+	  "refraction" : 0.0,
+	  "roughness" : 0.0
+	},
+	"radius" : 40.0
+  },
 	"torus" : {
-		"pos x": -10.0,
-		"pos y": 10.0,
-		"pos z": 0.0,
-		"color x": 1.0,
-		"color y": 0.0,
-		"color z": 0.3,
-		"rot z": 45.0,
-		"rot x": 0.0,
-		"rot y": 0.0,
-		"radius big": 10.0,
-		"radius small": 6.0,
-		"light": {
-			"emission x": 0.0,
-			"emission y": 0.0,
-			"emission z": 1.0,
-			"roughness": 1.0,
-			"diffuse": 0.0,
-			"specular": 1.0,
-			"refraction": 0.0
-		}
+	  "pos x": 0.0,
+	  "pos y": 0.0,
+	  "pos z": -20.0,
+	  "color x": 1.0,
+	  "color y": 0.5,
+	  "color z": 0.5,
+	  "rot x": -45.0,
+	  "rot y": 0.0,
+	  "rot z": 0.0,
+	  "radius big": 4.0,
+	  "radius small": 2.0,
+	  "texture" : "textures/helper.jpg",
+	  "light": {
+		"emission x": 0.0,
+		"emission y": 0.0,
+		"emission z": 0.0,
+		"roughness": 0.0,
+		"diffuse": 1.0,
+		"specular": 0.0,
+		"refraction": 0.0
+	  }
 	},
-	"rectangle" : {
-		"pos x": -5.0,
-		"pos y": -5.0,
-		"pos z": 2.0,
-		"color x": 1.0,
-		"color y": 1.0,
-		"color z": 1.0,
-		"rot z": 45.0,
-		"rot x": 0.0,
-		"rot y": 0.0,
-		"w": 4.0,
-		"h": 10.0,
-		"light": {
-			"emission x": 1.0,
-			"emission y": 0.0,
-			"emission z": 0.0,
-			"roughness": 1.0,
-			"diffuse": 1.0,
-			"specular": 0.0,
-			"refraction": 0.0
-		}
-	},
-	"disk" : {
-		"pos x": -5.0,
-		"pos y": -5.0,
-		"pos z": -5.0,
-		"color x": 1.0,
-		"color y": 0.0,
-		"color z": 1.0,
-		"rot z": 40.0,
-		"rot x": 0.0,
-		"rot y": 0.0,
-		"radius":30.0,
-		"light": {
-			"emission x": 0.0,
-			"emission y": 0.0,
-			"emission z": 1.0,
-			"roughness": 1.0,
-			"diffuse": 1.0,
-			"specular": 0.0,
-			"refraction": 0.0
-		}
-	},
-	"triangle" : {
-		"d1 x": -5.0,
-		"d1 y": -5.0,
-		"d1 z": -5.0,
-		"d2 x": 5.0,
-		"d2 y": 5.0,
-		"d2 z": 5.0,
-		"d3 x": -2.0,
-		"d3 y": 20.0,
-		"d3 z": 45.0,
-		"color x": 1.0,
-		"color y": 0.0,
-		"color z": 1.0,
-		"rot z": 40.0,
-		"rot x": 0.0,
-		"rot y": 0.0,
-		"light": {
-			"emission x": 0.0,
-			"emission y": 0.0,
-			"emission z": 1.0,
-			"roughness": 1.0,
-			"diffuse": 1.0,
-			"specular": 0.0,
-			"refraction": 0.0
-		}
-	},
-	"parallelogram" : {
-		"pos x": 5.0,
-		"pos y": -5.0,
-		"pos z": 2.0,
-		"color x": 1.0,
-		"color y": 1.0,
-		"color z": 1.0,
-		"rot z": 45.0,
-		"light": {
-			"emission x": 1.0,
-			"emission y": 0.0,
-			"emission z": 0.0,
-			"roughness": 1.0,
-			"diffuse": 1.0,
-			"specular": 0.0,
-			"refraction": 0.0
-		}
+  "rectangle" : {
+	"pos x": 0.0,
+	"pos y": 1.0,
+	"pos z": -20.0,
+	"color x": 0.5,
+	"color y": 1.0,
+	"color z": 0.5,
+	"rot x": 45.0,
+	"rot y": 0.0,
+	"rot z": 0.0,
+	"w": 10.0,
+	"h": 10.0,
+	"texture" : "textures/helper.jpg",
+	"light": {
+	  "emission x": 0.0,
+	  "emission y": 0.0,
+	  "emission z": 0.0,
+	  "roughness": 0.0,
+	  "diffuse": 1.0,
+	  "specular": 0.0,
+	  "refraction": 0.0
 	}
+  },
+  "disk" : {
+	"pos x": -5.0,
+	"pos y": 2.0,
+	"pos z": -20.0,
+	"color x": 1.0,
+	"color y": 0.0,
+	"color z": 1.0,
+	"rot x": 0.0,
+	"rot y": 0.0,
+	"rot z": 40.0,
+	"radius":7.0,
+	"texture" : "textures/helper.jpg",
+	"light": {
+	  "emission x": 0.0,
+	  "emission y": 0.0,
+	  "emission z": 0.0,
+	  "roughness": 0.0,
+	  "diffuse": 1.0,
+	  "specular": 0.0,
+	  "refraction": 0.0
+	}
+  }
 }
+

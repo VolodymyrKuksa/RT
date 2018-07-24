@@ -5,10 +5,12 @@ float3		change_of_basis(float3 vec, t_basis basis);
 float3		get_texture_col(t_texture, int, int, int);
 float3		get_texture_col_float(t_texture, float, float, int);
 
-void		texture_plane(t_obj *, float3, t_texture, float2 *);
-void		texture_sphere(t_obj *, float3, t_texture, float2 *);
-void		texture_cylinder(t_obj *, float3, t_texture, float2 *);
-void		texture_cone(t_obj *, float3, t_texture, float2 *);
+void		texture_plane(t_obj *, float3, float2 *);
+void		texture_sphere(t_obj *, float3, float2 *);
+void		texture_cylinder(t_obj *, float3, float2 *);
+void		texture_cone(t_obj *, float3, float2 *);
+void		texture_torus(t_obj *, float3, float2 *);
+void		texture_disk(t_obj *, float3, float2 *);
 
 /*============================================================================*/
 
@@ -54,7 +56,7 @@ float3	change_of_basis(float3 vec, t_basis basis)
 
 /*===========================TEXTURE MAPPING==================================*/
 
-void	texture_plane(t_obj *plane, float3 hitpoint, t_texture texture, float2 *coord)
+void	texture_plane(t_obj *plane, float3 hitpoint, float2 *coord)
 {
 	hitpoint -= plane->primitive.plane.pos;
 	hitpoint = change_of_basis(hitpoint, plane->basis);
@@ -63,7 +65,7 @@ void	texture_plane(t_obj *plane, float3 hitpoint, t_texture texture, float2 *coo
 	coord->y = hitpoint.z;
 }
 
-void	texture_sphere(t_obj *sphere, float3 hitpoint, t_texture texture, float2 *coord)
+void	texture_sphere(t_obj *sphere, float3 hitpoint, float2 *coord)
 {
 	hitpoint -= sphere->primitive.sphere.pos;
 	hitpoint = change_of_basis(hitpoint, sphere->basis);
@@ -77,7 +79,7 @@ void	texture_sphere(t_obj *sphere, float3 hitpoint, t_texture texture, float2 *c
 	coord->y = theta;
 }
 
-void	texture_cylinder(t_obj *cylinder, float3 hitpoint, t_texture texture, float2 *coord)
+void	texture_cylinder(t_obj *cylinder, float3 hitpoint, float2 *coord)
 {
 	hitpoint -= cylinder->primitive.cylinder.pos;
 	hitpoint = change_of_basis(hitpoint, cylinder->basis);
@@ -88,7 +90,7 @@ void	texture_cylinder(t_obj *cylinder, float3 hitpoint, t_texture texture, float
 	coord->y = -hitpoint.y;
 }
 
-void	texture_cone(t_obj *cone, float3 hitpoint, t_texture texture, float2 *coord)
+void	texture_cone(t_obj *cone, float3 hitpoint, float2 *coord)
 {
 	hitpoint -= cone->primitive.cone.pos;
 	hitpoint = change_of_basis(hitpoint, cone->basis);
@@ -100,16 +102,53 @@ void	texture_cone(t_obj *cone, float3 hitpoint, t_texture texture, float2 *coord
 	coord->y = -hitpoint.y;
 }
 
+void	texture_torus(t_obj *torus, float3 hitpint, float2 *coord)
+{
+	hitpint -= torus->primitive.torus.pos;
+	hitpint = change_of_basis(hitpint, torus->basis);
+	float3	projected = (float3)(hitpint.x, 0, hitpint.z);
+	projected = normalize(projected);
+	float	phi = acos(projected.x) / PI_2;
+	phi = hitpint.z > 0 ? 1.f - phi : phi;
+
+	float3	cent = projected * torus->primitive.torus.R;
+	float3	to_pt = normalize(hitpint - cent);
+	float3	to_cent = -projected;
+
+	float	theta = acos(dot(to_cent, to_pt)) / PI_2;
+	theta = hitpint.y < 0 ? 1.f - theta : theta;
+
+	coord->x = phi;
+	coord->y = theta;
+}
+
+void	texture_disk(t_obj *disk, float3 hitpoint, float2 *coord)
+{
+	hitpoint -= disk->primitive.disk.pos;
+	hitpoint = change_of_basis(hitpoint, disk->basis);
+	coord->y = length(hitpoint) / disk->primitive.disk.r;
+
+	hitpoint = normalize(hitpoint);
+	float	phi = acos(hitpoint.x) / PI_2;
+	phi = hitpoint.z > 0 ? 1.f - phi : phi;
+
+	coord->x = phi;
+}
+
 /*============================================================================*/
 
-void		get_texture_coord(t_obj *hitobj, float3 hitpoint, t_texture texture, float2 *coord)
+void		get_texture_coord(t_obj *hitobj, float3 hitpoint, float2 *coord)
 {
-	if (hitobj->type == plane)
-		texture_plane(hitobj, hitpoint, texture, coord);
+	if (hitobj->type == plane || hitobj->type == rectangle)
+		texture_plane(hitobj, hitpoint, coord);
 	else if (hitobj->type == cylinder)
-		texture_cylinder(hitobj, hitpoint, texture, coord);
+		texture_cylinder(hitobj, hitpoint, coord);
 	else if (hitobj->type == sphere)
-		texture_sphere(hitobj, hitpoint, texture, coord);
+		texture_sphere(hitobj, hitpoint, coord);
 	else if (hitobj->type == cone)
-		texture_cone(hitobj, hitpoint, texture, coord);
+		texture_cone(hitobj, hitpoint, coord);
+	else if (hitobj->type == torus)
+		texture_torus(hitobj, hitpoint, coord);
+	else if (hitobj->type == disk)
+		texture_disk(hitobj, hitpoint, coord);
 }

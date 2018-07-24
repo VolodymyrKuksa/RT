@@ -8,7 +8,7 @@ int	get_hitpoint_material(t_obj *hitobj,
 {
 	float2	coord;
 
-	get_texture_coord(hitobj, hitpoint, texture, &coord);
+	get_texture_coord(hitobj, hitpoint, &coord);
 	coord.x = coord.x < 0 ? coord.x - ((int)coord.x - 1) : coord.x;
 	coord.y = coord.y < 0 ? coord.y - ((int)coord.y - 1) : coord.y;
 

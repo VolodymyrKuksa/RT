@@ -35,7 +35,7 @@ float3		get_normal_obj(float3 hitpoint, t_ray ray, t_obj *hitobj);
 
 float3	get_point_color(t_obj *hitobj, float3 hitpoint, t_texture texture);
 int	get_hitpoint_material(t_obj *, float3, t_material *, t_texture, t_ray);
-void	get_texture_coord(t_obj *, float3, t_texture, float2 *);
+void	get_texture_coord(t_obj *, float3, float2 *);
 
 t_ray get_camera_ray(int x, int y, t_cam *cam, uint2 *seeds)
 {
