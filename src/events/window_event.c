@@ -31,7 +31,8 @@ void	handle_resize(t_env *env)
 {
 	env->scene.cam.pr_pl_w = g_win_width;
 	env->scene.cam.pr_pl_h = g_win_height;
-	env->scene.cam.ratio = env->scene.cam.f_length / calculate_ppd(env->scene.cam.fov);
+	env->scene.cam.ratio = env->scene.cam.f_length /
+		calculate_ppd(env->scene.cam.fov);
 	cl_free(&env->cl);
 	cl_setup(env);
 	get_work_group_size(&env->cl);

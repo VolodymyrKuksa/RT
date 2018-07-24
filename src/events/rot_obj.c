@@ -37,19 +37,19 @@ void	rot_cone(float d, t_obj *c, t_mvdata mvdata,
 }
 
 void	rot_torus(float d, t_obj *c, t_mvdata mvdata,
-				 cl_float3 (*f)(float, cl_float3, t_mvdata))
+	cl_float3 (*f)(float, cl_float3, t_mvdata))
 {
 	c->primitive.torus.pos = f(d, c->primitive.torus.pos, mvdata);
 }
 
 void	rot_disk(float d, t_obj *c, t_mvdata mvdata,
-				  cl_float3 (*f)(float, cl_float3, t_mvdata))
+	cl_float3 (*f)(float, cl_float3, t_mvdata))
 {
 	c->primitive.disk.pos = f(d, c->primitive.disk.pos, mvdata);
 }
 
 void	rot_rectangle(float d, t_obj *c, t_mvdata mvdata,
-				 cl_float3 (*f)(float, cl_float3, t_mvdata))
+	cl_float3 (*f)(float, cl_float3, t_mvdata))
 {
 	c->primitive.rectangle.pos = f(d, c->primitive.rectangle.pos, mvdata);
 }

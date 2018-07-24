@@ -12,30 +12,6 @@
 
 #include "rt.h"
 
-void	put_error(char *str)
-{
-	perror(str);
-	exit(1);
-}
-
-void	set_nonblock(int fd)
-{
-	int flags;
-
-	flags = fcntl(fd, F_GETFL, 0);
-	flags |= O_NONBLOCK;
-	fcntl(fd, F_SETFL, flags);
-}
-
-void	set_block(int fd)
-{
-	int flags;
-
-	flags = fcntl(fd, F_GETFL, 0);
-	flags ^= O_NONBLOCK;
-	fcntl(fd, F_SETFL, flags);
-}
-
 void	init_server(t_server *server, t_env *env)
 {
 	if ((server->serv_socket_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
@@ -82,7 +58,6 @@ void	run_server(t_env *env)
 {
 	init_server(&env->server, env);
 	printf("server init success\n");
-	//infinite loop to check new connections and push clients in a separate thread
 	pthread_create(&env->server.pid, NULL, check_new_connection, &env->server);
 }
 

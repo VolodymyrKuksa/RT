@@ -69,6 +69,9 @@ textures/compress_texture.c\
 textures/load_texture.c\
 server-client/run_server.c\
 server-client/thread_pool.c\
+server-client/socket_utils.c\
+server-client/tpool_new_msg.c\
+server-client/tpool_read_send_msg.c\
 main_loop.c
 
 C_FILES_RT = server_main.c $(C_FILES)

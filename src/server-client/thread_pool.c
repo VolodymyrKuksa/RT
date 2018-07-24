@@ -45,18 +45,6 @@ void		delete_message(t_message_queue **message)
 	printf("message entry deleted from queue\n");
 }
 
-void		send_message(t_thread *thread)
-{
-	ssize_t		n;
-
-	set_block(thread->client_fd);
-	n = write(thread->client_fd, (*thread->message_out)->message,
-		(*thread->message_out)->size);
-	if (n > 0)
-		printf("Message sent to %s\n", thread->client_hostname);
-	set_nonblock(thread->client_fd);
-}
-
 void		check_message_out(t_thread *thread)
 {
 	int			i;
@@ -91,27 +79,33 @@ void		send_starting_data(t_thread *thread)
 
 	set_block(thread->client_fd);
 	size = sizeof(t_cam);
-	data = compose_message(&thread->env->scene.cam, ++thread->env->server.message_id, CAM, &size);
+	data = compose_message(&thread->env->scene.cam,
+	++thread->env->server.message_id, CAM, &size);
 	write(thread->client_fd, data, size);
 	free(data);
 	size = sizeof(t_obj) * thread->env->scene.num_obj;
-	data = compose_message(thread->env->scene.obj, ++thread->env->server.message_id, OBJ, &size);
+	data = compose_message(thread->env->scene.obj,
+	++thread->env->server.message_id, OBJ, &size);
 	write(thread->client_fd, data, size);
 	free(data);
 	size = (unsigned int)thread->env->textures.total_size * sizeof(t_rgb);
-	data = compose_message(thread->env->textures.tx, ++thread->env->server.message_id, TEXTURES, &size);
+	data = compose_message(thread->env->textures.tx,
+	++thread->env->server.message_id, TEXTURES, &size);
 	write(thread->client_fd, data, size);
 	free(data);
 	size = sizeof(t_txdata) * thread->env->textures.tx_count;
-	data = compose_message(thread->env->textures.txdata, ++thread->env->server.message_id, TEX_DATA, &size);
+	data = compose_message(thread->env->textures.txdata,
+	++thread->env->server.message_id, TEX_DATA, &size);
 	write(thread->client_fd, data, size);
 	free(data);
 	size = sizeof(g_win_width);
-	data = compose_message(&g_win_width, ++thread->env->server.message_id, WND_W, &size);
+	data = compose_message(&g_win_width,
+	++thread->env->server.message_id, WND_W, &size);
 	write(thread->client_fd, data, size);
 	free(data);
 	size = sizeof(g_win_height);
-	data = compose_message(&g_win_height, ++thread->env->server.message_id, WND_H, &size);
+	data = compose_message(&g_win_height,
+	++thread->env->server.message_id, WND_H, &size);
 	write(thread->client_fd, data, size);
 	free(data);
 	set_nonblock(thread->client_fd);
@@ -157,7 +151,8 @@ void		tpool_execute_logic(t_thread *this)
 
 	size = 8;
 	type = STRING;
-	data = compose_message("Hello!\n", ++this->env->server.message_id, type, &size);
+	data = compose_message("Hello!\n",
+	++this->env->server.message_id, type, &size);
 	write(this->client_fd, data, size);
 	free(data);
 
@@ -349,115 +344,6 @@ int			push_client(t_tpool *tpool, int client_fd) //mutex
 	new->next = tpool->client_queue;
 	tpool->client_queue = new;
 	return (0);
-}
-
-void	fill_destinations(t_tpool *tpool, int *destinations)
-{
-	int		i;
-
-	i = -1;
-	while (++i < tpool->total_threads)
-	{
-		if (tpool->threads[i].status == BUSY)
-			destinations[i] = tpool->threads[i].thread_id;
-		else
-			destinations[i] = -1;
-	}
-}
-
-ssize_t		readn(int fd, void *data, size_t size)
-{
-	char			*ptr;
-	ssize_t			n;
-	size_t			n_left;
-
-	ptr = data;
-	n_left = size;
-	while (n_left > 0)
-	{
-		if ((n = read(fd, ptr, n_left)) < 0)
-		{
-			n = 0;
-		}
-		else if (n == 0)
-			break ;
-		ptr += n;
-		n_left -= n;
-	}
-	return (size - n_left);
-}
-
-void	*read_message(int fd, atomic_int *id, int *type, unsigned int *size)
-{
-	unsigned int	head[3];
-	static size_t	head_size = sizeof(head[0]) * 3;
-	ssize_t			n;
-	void			*msg;
-
-	*type = -1;
-	*size = 0;
-	n = read(fd, head, head_size);
-	if (n <= 0 || !(msg = malloc(head[2])))
-		return (NULL);
-	printf("read_message: id: %d; type: %d; size: %u\n", head[0], head[1], head[2]);
-	if (readn(fd, msg, head[2]) < 0)
-	{
-		free(msg);
-		perror("READ FAIL");
-		return (NULL);
-	}
-	*id = head[0];
-	*type = head[1];
-	*size = head[2];
-	printf("read message success\n");
-	return (msg);
-}
-
-void	*compose_message(void *message, int id, int type, unsigned int *size)
-{
-	void	*res;
-	int		tmp;
-
-	tmp = sizeof(type) * 3;
-	if (!(res = malloc(*size + tmp)))
-		return (NULL);
-	printf("message id: %d\n", id);
-	printf("type: %d\n", type);
-	ft_memcpy(res, &id, sizeof(id));
-	printf("size: %u\n", *size);
-	ft_memcpy(res + sizeof(id), &type, sizeof(type));
-	ft_memcpy(res + sizeof(id) + sizeof(type), size, sizeof(*size));
-	if (message)
-		ft_memcpy(res + tmp, message, *size);
-	*size += tmp;
-	return (res);
-}
-
-t_message_queue	*new_message(t_tpool *tpool, void *message,
-	unsigned int message_size, enum e_message type)
-{
-	t_message_queue	*new;
-
-	if (!(new = (t_message_queue*)malloc(sizeof(t_message_queue))))
-		return (NULL);
-	if (!(new->destinations = (int*)malloc(sizeof(int) * tpool->total_threads)))
-	{
-		free(new);
-		return (NULL);
-	}
-	new->size = message_size;
-	if (!(new->message = compose_message(message, ++tpool->env->server.message_id, type, &new->size))
-		|| (pthread_mutex_init(&new->message_queue_lock, NULL) != 0))
-	{
-		free(new->destinations);
-		free(new);
-		return (NULL);
-	}
-	new->dest_size = tpool->total_threads;
-	new->type = type;
-	new->next = NULL;
-	fill_destinations(tpool, new->destinations);
-	return (new);
 }
 
 int		push_message_for_all(t_tpool *tpool, void *message,

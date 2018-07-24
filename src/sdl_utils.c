@@ -15,6 +15,27 @@
 extern unsigned int	g_win_width;
 extern unsigned int g_win_height;
 
+void	set_icon(t_scrn *screen)
+{
+	SDL_Surface		*icon;
+
+	icon = IMG_Load("textures/icon.png");
+	SDL_SetWindowIcon(screen->window, icon);
+	SDL_FreeSurface(icon);
+}
+
+void	create_window(SDL_Window **window, int server)
+{
+	if (server)
+		*window = SDL_CreateWindow("CANCER RT",
+		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, g_win_width,
+		g_win_height, SDL_WINDOW_RESIZABLE);
+	else
+		*window = SDL_CreateWindow("RT CLIENT",
+		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, g_win_width,
+		g_win_height, SDL_WINDOW_SHOWN);
+}
+
 int		init_win(t_scrn *screen, int server)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -25,33 +46,17 @@ int		init_win(t_scrn *screen, int server)
 	}
 	else
 	{
-		if (server)
-		{
-			screen->window = SDL_CreateWindow("CANCER RT",
-			SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, g_win_width,
-			g_win_height, SDL_WINDOW_RESIZABLE);
-		}
-		else
-		{
-			screen->window = SDL_CreateWindow("RT CLIENT", SDL_WINDOWPOS_UNDEFINED,
-			SDL_WINDOWPOS_UNDEFINED, g_win_width, g_win_height,
-			SDL_WINDOW_SHOWN);
-		}
+		create_window(&screen->window, server);
 		if (screen->window == NULL)
 		{
 			ft_putstr("Window could not be created! Error: ");
 			ft_putendl(SDL_GetError());
 			return (0);
 		}
-		else
-			screen->surface = SDL_GetWindowSurface(screen->window);
 	}
+	screen->surface = SDL_GetWindowSurface(screen->window);
 	screen->surf_arr = (t_rgb *)screen->surface->pixels;
-	SDL_Surface		*icon;
-
-	icon = IMG_Load("textures/icon.png");
-	SDL_SetWindowIcon(screen->window, icon);
-	SDL_FreeSurface(icon);
+	set_icon(screen);
 	return (1);
 }
 

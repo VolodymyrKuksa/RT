@@ -48,9 +48,12 @@ void	turn(float d, t_env *env, cl_float3 (*f)(float, cl_float3, t_mvdata))
 	while (++i < env->scene.num_obj)
 	{
 		rt[env->scene.obj[i].type](d, &env->scene.obj[i], env->mv_data, f);
-		env->scene.obj[i].basis.u = f(d, env->scene.obj[i].basis.u, env->mv_data);
-		env->scene.obj[i].basis.v = f(d, env->scene.obj[i].basis.v, env->mv_data);
-		env->scene.obj[i].basis.w = f(d, env->scene.obj[i].basis.w, env->mv_data);
+		env->scene.obj[i].basis.u = f(d, env->scene.obj[i].basis.u,
+			env->mv_data);
+		env->scene.obj[i].basis.v = f(d, env->scene.obj[i].basis.v,
+			env->mv_data);
+		env->scene.obj[i].basis.w = f(d, env->scene.obj[i].basis.w,
+			env->mv_data);
 	}
 	env->num_samples = 0;
 	clear_pixels(&env->cl);

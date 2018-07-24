@@ -163,6 +163,11 @@ void		mv_rectangle(cl_float3 d, t_obj *c, t_mvdata mvdata);
 
 void		run_server(t_env *env);
 void		quit_server(t_server *server);
+
+/*
+**	socket_utils.c
+*/
+
 void		put_error(char *str);
 void		set_nonblock(int fd);
 void		set_block(int fd);
