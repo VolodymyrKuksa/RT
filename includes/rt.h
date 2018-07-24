@@ -97,6 +97,7 @@ int			key_down_event(SDL_Event e, t_env *env);
 **	movement_events.c
 */
 
+void		clear_pixels(t_cldata *cl);
 void		movement_events(t_env *env);
 void		write_scene_to_kernel(t_env *env);
 
@@ -105,7 +106,12 @@ void		write_scene_to_kernel(t_env *env);
 */
 
 void		window_event(SDL_Event e, t_env *env);
-void		window_event_client(SDL_Event e, t_env *env);
+
+/*
+**	mouse_event.c
+*/
+
+void		mouse_wheel_event(SDL_Event e, t_env *env);
 
 /*
 **	scene_init.c

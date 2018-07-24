@@ -17,6 +17,10 @@ extern unsigned int g_win_height;
 
 void	clamp(cl_float3 *px)
 {
+//	float	brightness = 0.8f;
+//	px->x *= brightness;
+//	px->y *= brightness;
+//	px->z *= brightness;
 	px->x = px->x > 1.f ? 1.f : px->x;
 	px->y = px->y > 1.f ? 1.f : px->y;
 	px->z = px->z > 1.f ? 1.f : px->z;
@@ -43,7 +47,7 @@ void	update_window(t_env *env)
 		env->screen.surf_arr[i].bgra[1] = (u_char)(env->cl.pixels[i].y * 0xff);
 		env->screen.surf_arr[i].bgra[2] = (u_char)(env->cl.pixels[i].x * 0xff);
 	}
-	printf("samples: %u, influence: %f\n", env->num_samples, sample_influence);
+//	printf("samples: %u, influence: %f\n", env->num_samples, sample_influence);
 	SDL_UpdateWindowSurface(env->screen.window);
 }
 
@@ -59,6 +63,8 @@ void	handle_events(t_env *env)
 			keyboard_event(e, env);
 		else if (e.type == SDL_WINDOWEVENT)
 			window_event(e, env);
+		else if (e.type == SDL_MOUSEWHEEL)
+			mouse_wheel_event(e, env);
 	}
 }
 
@@ -142,6 +148,12 @@ void	main_loop_client(t_env *env)
 				env->num_samples = 0;
 				ft_bzero(env->cl.pixels, sizeof(cl_float3) * env->cl.global_size);
 				write_scene_to_kernel(env);
+			}
+			else if (type == CAM)
+			{
+				ft_memcpy(&env->scene.cam, msg, size);
+				env->num_samples = 0;
+				clSetKernelArg(env->cl.kernel, 3, sizeof(env->scene.cam), &env->scene.cam);
 			}
 			else if (type == WND_W)
 			{

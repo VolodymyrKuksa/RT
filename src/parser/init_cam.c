@@ -28,6 +28,7 @@ void			camera_default(t_cam *cam)
 	cam->aperture = 0.00001f;
 	cam->fov = 90;
 	cam->dust = 0.f;
+//	cam->filter = (cl_float3){1.f, 1.f, 1.f};
 }
 
 void			check_camera(t_cam *cam)
@@ -99,4 +100,6 @@ void			get_camera_params(json_value *value, t_scene *scene)
 	printf(" cam dust  %f\n", scene->cam.dust);
 	printf(" cam fov  %f\n", scene->cam.fov);
 	printf(" cam aperture  %f\n", scene->cam.aperture);
+	scene->cam.filter = (cl_float3){1.f,1.f,1.f}; // <- Just do it, Fedun!
+	scene->cam.brightness = 1.f; //and this
 }

@@ -11,7 +11,7 @@ t_ray get_camera_ray(int x, int y, t_cam *cam, uint2 *seeds);
 static float get_random(uint2 *seeds);
 float	solve_quad(t_quad q);
 float	get_intersection(t_ray *r, __global t_obj *obj, int n_obj, int *id);
-float3	trace_ray(t_ray, __global t_obj *, int, uint2 *, t_texture);
+float3	trace_ray(t_ray, __global t_obj *, int, uint2 *, t_texture, float3);
 t_ray	diffuse(t_ray ray, float3 n, float3 hitpoint, uint2 *seeds);
 t_ray	reflect(t_ray ray, float3 hitpt, t_material material, uint2 *seeds);
 t_ray	refract(t_ray ray, float3 hitpoint, t_material material, uint2 *seeds);
@@ -213,42 +213,22 @@ bool	participating_media(t_ray *ray, float t, uint2 *seeds)
 	return false;
 }
 
-float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds, t_texture texture)
+float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds,
+t_texture texture, float3 mask)
 {
-	float3	mask = (float3)(1.f, 1.f, 1.f);
+//	float3	mask = (float3)(1.f, 1.f, 1.f);
 	float3	res = (float3)(0, 0, 0);
 	t_material	material;
 	for (int bounce = 0; bounce < max_bounces; ++bounce)
 	{
-
-
-
 		float r = get_random(seeds);
 //		float light = mask.x > mask.y && mask.x > mask.z ? mask.x :
 //			  (mask.y > mask.z ? mask.y : mask.z);
 		float light = mask.x + mask.y + mask.z;
 		if (r > light)
 			break;
-
-
-
-
-
-
-
-
 		int hitobj_id = -1;
 		float t = get_intersection(&ray, obj, num_obj, &hitobj_id);
-
-
-
-
-
-
-
-
-
-
 		if (t < 0)
 			break;
 		t_obj hitobj = obj[hitobj_id];
@@ -305,7 +285,7 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds, t_te
 	t_texture	texture = {tx, txdata, tx_count};
 	t_ray ray = get_camera_ray(x, y, &cam, &seeds);
 	pixels[id] = (float3)(0,0,0);
-	pixels[id] += trace_ray(ray, obj, num_obj, &seeds, texture);
+	pixels[id] += trace_ray(ray, obj, num_obj, &seeds, texture, cam.filter) * cam.brightness;
 	seed[id] = seeds.x;
 	seed[id + w * h] = seeds.y;
 }

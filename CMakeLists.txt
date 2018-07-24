@@ -25,7 +25,7 @@ add_executable(RT includes/rt_types.h includes/rt.h src/server_main.c src/sdl_ut
         src/parser/check_params1.c src/parser/default_objs.c src/parser/fill_each_obj.c
         src/parser/init_cam.c src/parser/parse.c src/server-client/thread_pool.c
         src/parser/ftoa.c src/parser/write_to_file.c
-        includes/server_client.h src/server-client/run_server.c src/main_loop.c)
+        includes/server_client.h src/server-client/run_server.c src/main_loop.c src/events/mouse_event.c)
 
 add_executable(client src/client_main.c src/server-client/thread_pool.c src/server-client/run_server.c src/main_loop.c)
 

@@ -48,6 +48,7 @@ C_FILES = cl_exec.c\
 cl_initialization.c\
 events/keyboard_events.c\
 events/movement_events.c\
+events/mouse_event.c\
 events/mv_obj.c\
 events/rot_obj.c\
 events/rotate.c\

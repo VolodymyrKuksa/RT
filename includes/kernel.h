@@ -39,6 +39,7 @@ typedef struct		s_cam
 	__float3		dir;
 	__float3		updir;
 	__float3		ldir;
+	__float3		filter;
 	double			fov;
 	float			f_length;
 	float			aperture;
@@ -46,6 +47,7 @@ typedef struct		s_cam
 	float			pr_pl_w;
 	float			pr_pl_h;
 	float			dust;
+	float			brightness;
 }					t_cam;
 
 typedef struct		s_ray
