@@ -60,7 +60,7 @@ void	texture_plane(t_obj *plane, float3 hitpoint, float2 *coord)
 {
 	hitpoint -= plane->primitive.plane.pos;
 	hitpoint = change_of_basis(hitpoint, plane->basis);
-	hitpoint /= 20;		//should be parsed as a variable
+	hitpoint /= plane->primitive.plane.tex_scale;	//should be parsed as a variable
 	coord->x = hitpoint.x;
 	coord->y = hitpoint.z;
 }
@@ -85,7 +85,7 @@ void	texture_cylinder(t_obj *cylinder, float3 hitpoint, float2 *coord)
 	hitpoint = change_of_basis(hitpoint, cylinder->basis);
 	float	phi = acos(hitpoint.x / cylinder->primitive.cylinder.r) / PI_2;
 	phi = hitpoint.z > 0 ? 1.f - phi : phi;
-	hitpoint /= 20;		//should be parsed as a variable
+	hitpoint /= cylinder->primitive.cylinder.tex_scale;		//should be parsed as a variable
 	coord->x = phi;
 	coord->y = -hitpoint.y;
 }
@@ -97,7 +97,7 @@ void	texture_cone(t_obj *cone, float3 hitpoint, float2 *coord)
 	float2	tmp = normalize((float2)(hitpoint.x, hitpoint.z));
 	float	phi = acos(tmp.x) / PI_2;
 	phi = tmp.y > 0 ? 1.f - phi : phi;
-	hitpoint /= 20;		//should be parsed as a variable
+	hitpoint /= cone->primitive.cone.tex_scale;		//should be parsed as a variable
 	coord->x = phi;
 	coord->y = -hitpoint.y;
 }

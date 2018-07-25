@@ -115,19 +115,22 @@ typedef struct		s_cylinder
 	cl_float3	pos;
 	float		r;
 	float		h;
+	float		tex_scale;
 }					t_cylinder;
 
 typedef struct		s_plane
 {
 	cl_float3	pos;
+	float		tex_scale;
 }					t_plane;
 
 typedef struct		s_cone
 {
 	cl_float3	pos;
 	float		tng;
-	float 		m1;
-	float 		m2;
+	float		m1;
+	float		m2;
+	float		tex_scale;
 }					t_cone;
 
 typedef struct		s_torus

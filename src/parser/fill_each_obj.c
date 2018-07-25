@@ -43,6 +43,7 @@ void			fillthecylind(json_value *value, t_scene *scene)
 	tmp.rot = rot;
 	init_rotate(&(tmp.basis), rot);
 	tmp.type = cylinder;
+	tmp.primitive.cylinder.tex_scale = 20;	// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	minus_camera(&(tmp.primitive.cylinder.pos), scene->cam.pos, -1);
 	if (SUKA(tmp.primitive.sphere.r, 0) == 0)
 		error_fedun("radius of cylinder is bad");
@@ -83,6 +84,7 @@ void			fillthecone(json_value *value, t_scene *scene)
 	init_rotate(&(tmp.basis), rot);
 	minus_camera(&(tmp.primitive.cone.pos), scene->cam.pos, -1);
 	tmp.type = cone;
+	tmp.primitive.cone.tex_scale = 20;	// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	if (tmp.primitive.cone.m2 <= tmp.primitive.cone.m1 ||
 			tmp.primitive.cone.m1 <= 0 || tmp.primitive.cone.m2 <= 0)
 		error_fedun("m1 and m2 must be greater 0; m2 > m1");
@@ -112,6 +114,7 @@ void			filltheplane(json_value *value, t_scene *scene)
 	init_rotate(&(tmp.basis), rot);
 	minus_camera(&(tmp.primitive.plane.pos), scene->cam.pos, -1);
 	tmp.type = plane;
+	tmp.primitive.plane.tex_scale = 20;	// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	scene->obj[scene->cur_obj++] = tmp;
 	print_plane(tmp);
 }

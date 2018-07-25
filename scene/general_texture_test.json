@@ -123,7 +123,7 @@
   {
 	"pos x" : 0.0,
 	"pos y" : 15.0,
-	"pos z" : 0,
+	"pos z" : 0.0,
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
@@ -134,6 +134,25 @@
 	  "emission x" : 3.0,
 	  "emission y" : 3.0,
 	  "emission z" : 3.0
+	},
+	"radius" : 5.0
+  },
+  "cylinder" :
+  {
+	"pos x" : -10.0,
+	"pos y" : -15.0,
+	"pos z" : -30.0,
+	"color x" : 1.0,
+	"color y" : 1.0,
+	"color z" : 1.0,
+	"rot x" : 0.0,
+	"rot y" : 0.0,
+	"rot z" : 0.0,
+	"texture" : "textures/helper.jpg",
+	"light" : {
+	  "emission x" : 0.0,
+	  "emission y" : 0.0,
+	  "emission z" : 0.0
 	},
 	"radius" : 5.0
   },
