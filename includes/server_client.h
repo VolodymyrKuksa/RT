@@ -15,15 +15,17 @@
 
 # include "rt_types.h"
 
-
 t_tpool			*init_tpool(unsigned int count, t_env *env);
 int				push_client(t_tpool *tpool, int client_fd);
-int				push_message_for_all(t_tpool *tpo, void *message,
-	unsigned int message_size, enum e_message type);
+int				push_message_for_all(t_tpool *tpool, void *message,
+				unsigned int message_size, enum e_message type);
 void			destroy_tpool(t_tpool *tpool);
-void			*read_message(int, atomic_int *, int *, unsigned int *);
-void			*compose_message(void *, int, int, unsigned int *);
-t_message_queue	*new_message(t_tpool *, void *, unsigned int, enum e_message);
+void			*read_message(int fd, atomic_int *id, int *type,
+				unsigned int *size);
+void			*compose_message(void *message, int id, int type,
+				unsigned int *size);
+t_message_queue	*new_message(t_tpool *tpool, void *message,
+				unsigned int message_size, enum e_message type);
 void			send_message(t_thread *thread);
 void			delete_message(t_message_queue **message);
 void			tpool_kick_client(t_thread *thread);

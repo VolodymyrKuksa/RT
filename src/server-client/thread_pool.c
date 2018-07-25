@@ -19,21 +19,25 @@ void		check_message_out(t_thread *thread)
 
 	to_del = 1;
 	i = -1;
-	while (++i < (*thread->message_out)->dest_size)
+	if (!(*thread->message_queue))
 	{
-		to_del = (*thread->message_out)->destinations[i] >= 0 &&
-			(*thread->message_out)->destinations[i] != thread->thread_id &&
+		pthread_mutex_unlock(thread->message_queue_lock);
+		return ;
+	}
+	while (++i < (*thread->message_queue)->dest_size)
+	{
+		to_del = (*thread->message_queue)->destinations[i] >= 0 &&
+			(*thread->message_queue)->destinations[i] != thread->thread_id &&
 			to_del == 1 ? 0 : to_del;
-		if ((*thread->message_out)->destinations[i] == thread->thread_id)
+		if ((*thread->message_queue)->destinations[i] == thread->thread_id)
 		{
 			send_message(thread);
-			(*thread->message_out)->destinations[i] = -1;
+			(*thread->message_queue)->destinations[i] = -1;
 		}
 	}
 	if (to_del)
-		delete_message(thread->message_out);
-	else
-		pthread_mutex_unlock(&(*thread->message_out)->message_queue_lock);
+		delete_message(thread->message_queue);
+	pthread_mutex_unlock(thread->message_queue_lock);
 }
 
 void		put_host_log(char *name, char *log)
@@ -52,8 +56,7 @@ void		tpool_execute_logic(t_thread *this)
 	while (this->status == BUSY)
 	{
 		process_client_input(this, &t);
-		if (*(this->message_out) &&
-			!pthread_mutex_trylock(&(*this->message_out)->message_queue_lock))
+		if (!pthread_mutex_trylock(this->message_queue_lock))
 			check_message_out(this);
 		if (time(NULL) - t > 15)
 			tpool_kick_client(this);
@@ -71,9 +74,19 @@ t_tpool		*init_tpool(unsigned int count, t_env *env)
 		free(tpool);
 		return (NULL);
 	}
+	if (pthread_mutex_init(&tpool->client_queue_lock, NULL) != 0)
+	{
+		free(tpool);
+		return (NULL);
+	}
+	if (pthread_mutex_init(&tpool->message_queue_lock, NULL) != 0)
+	{
+		free(tpool);
+		return (NULL);
+	}
 	tpool->total_threads = count;
 	tpool->client_queue = NULL;
-	tpool->message_out = NULL;
+	tpool->message_queue = NULL;
 	tpool->env = env;
 	init_threads(tpool);
 	return (tpool);

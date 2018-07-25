@@ -21,7 +21,6 @@ void	clear_client_queue(t_client_queue *cq)
 	while (cq)
 	{
 		tmp = cq->next;
-		pthread_mutex_destroy(&cq->client_queue_lock);
 		free(cq);
 		cq = tmp;
 	}
@@ -38,7 +37,6 @@ void	clear_message_queue(t_message_queue *mq)
 		tmp = mq->next;
 		free(mq->message);
 		free(mq->destinations);
-		pthread_mutex_destroy(&mq->message_queue_lock);
 		free(mq);
 		mq = tmp;
 	}
@@ -57,6 +55,8 @@ void	destroy_tpool(t_tpool *tpool)
 	}
 	free(tpool->threads);
 	clear_client_queue(tpool->client_queue);
-	clear_message_queue(tpool->message_out);
+	pthread_mutex_destroy(&tpool->client_queue_lock);
+	clear_message_queue(tpool->message_queue);
+	pthread_mutex_destroy(&tpool->message_queue_lock);
 	free(tpool);
 }

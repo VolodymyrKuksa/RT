@@ -97,18 +97,3 @@ char			*get_texture_name(int id)
 		return (tmp->filename);
 	return (NULL);
 }
-
-
-void			print_txtlst(void)		//USES PRINTF (FOR DEBUG)
-{
-	t_txlst		*tmp;
-
-	tmp = g_txlst;
-	printf("g_txlst:\n>>>>>-----<<<<<\n");
-	while (tmp)
-	{
-		printf("filename: %s\nid: %d\nwidth: %d\nheight: %d\n>>>>>-----<<<<<\n",
-			tmp->filename, tmp->id, tmp->surf->w, tmp->surf->h);
-		tmp = tmp->next;
-	}
-}

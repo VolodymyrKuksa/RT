@@ -63,8 +63,8 @@ void		send_message(t_thread *thread)
 	ssize_t		n;
 
 	set_block(thread->client_fd);
-	n = write(thread->client_fd, (*thread->message_out)->message,
-		(*thread->message_out)->size);
+	n = write(thread->client_fd, (*thread->message_queue)->message,
+		(*thread->message_queue)->size);
 	if (n > 0)
 		printf("Message sent to %s\n", thread->client_hostname);
 	set_nonblock(thread->client_fd);
@@ -76,7 +76,6 @@ void		delete_message(t_message_queue **message)
 
 	if (!*message)
 		return ;
-	pthread_mutex_destroy(&(*message)->message_queue_lock);
 	tmp = (*message)->next;
 	if ((*message)->dest_size)
 		free((*message)->destinations);
@@ -94,7 +93,10 @@ int			push_message_for_all(t_tpool *tpool, void *message,
 
 	if (!(new = new_message(tpool, message, message_size, type)))
 		return (-1);
-	new->next = tpool->message_out;
-	tpool->message_out = new;
+	while (pthread_mutex_trylock(&tpool->message_queue_lock) != 0)
+		;
+	new->next = tpool->message_queue;
+	tpool->message_queue = new;
+	pthread_mutex_unlock(&tpool->message_queue_lock);
 	return (0);
 }

@@ -267,14 +267,12 @@ enum				e_message
 
 typedef struct		s_client_queue
 {
-	pthread_mutex_t			client_queue_lock;
 	int						client_fd;
 	struct s_client_queue	*next;
 }					t_client_queue;
 
 typedef struct		s_message_queue
 {
-	pthread_mutex_t			message_queue_lock;
 	enum e_message			type;
 	unsigned int			size;
 	void					*message;
@@ -292,7 +290,9 @@ typedef struct		s_thread
 	int				client_fd;
 	char			*client_hostname;
 	t_client_queue	**client_queue;
-	t_message_queue	**message_out;
+	pthread_mutex_t	*client_queue_lock;
+	t_message_queue	**message_queue;
+	pthread_mutex_t	*message_queue_lock;
 	t_env			*env;
 }					t_thread;
 
@@ -301,7 +301,9 @@ typedef struct		s_tpool
 	unsigned int	total_threads;
 	t_thread		*threads;
 	t_client_queue	*client_queue;
-	t_message_queue	*message_out;
+	pthread_mutex_t	client_queue_lock;
+	t_message_queue	*message_queue;
+	pthread_mutex_t	message_queue_lock;
 	t_env			*env;
 }					t_tpool;
 

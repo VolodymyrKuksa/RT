@@ -47,8 +47,7 @@ void	*check_new_connection(void *data)
 		if (client_socket_fd > 0)
 		{
 			set_nonblock(client_socket_fd);
-			if (push_client(server->tpool, client_socket_fd) == 0)
-				ft_putendl("New client detected");
+			push_client(server->tpool, client_socket_fd);
 		}
 	}
 	pthread_exit(0);
@@ -57,7 +56,7 @@ void	*check_new_connection(void *data)
 void	run_server(t_env *env)
 {
 	init_server(&env->server, env);
-	printf("server init success\n");
+	ft_putendl("server init success");
 	pthread_create(&env->server.pid, NULL, check_new_connection, &env->server);
 }
 

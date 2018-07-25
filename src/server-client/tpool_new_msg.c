@@ -58,8 +58,7 @@ t_message_queue	*new_message(t_tpool *tpool, void *message,
 	}
 	new->size = message_size;
 	if (!(new->message = compose_message(message,
-		++tpool->env->server.message_id, type, &new->size))
-		|| (pthread_mutex_init(&new->message_queue_lock, NULL) != 0))
+		++tpool->env->server.message_id, type, &new->size)))
 	{
 		free(new->destinations);
 		free(new);

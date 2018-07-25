@@ -19,6 +19,11 @@ void		thread_grab_client(t_thread *thread)
 	t_client_queue		*tmp;
 	struct sockaddr_in	client_addr;
 
+	if (!(*thread->client_queue))
+	{
+		pthread_mutex_unlock(thread->client_queue_lock);
+		return ;
+	}
 	addr_size = sizeof(client_addr);
 	thread->client_fd = (*thread->client_queue)->client_fd;
 	getpeername(thread->client_fd, (struct sockaddr *)&client_addr, &addr_size);
@@ -27,8 +32,8 @@ void		thread_grab_client(t_thread *thread)
 	thread->status = BUSY;
 	tmp = (*thread->client_queue);
 	(*thread->client_queue) = (*thread->client_queue)->next;
-	pthread_mutex_destroy(&tmp->client_queue_lock);
 	free(tmp);
+	pthread_mutex_unlock(thread->client_queue_lock);
 	tpool_execute_logic(thread);
 	free(thread->client_hostname);
 	close(thread->client_fd);
@@ -43,8 +48,7 @@ void		*thread_do(void *data)
 	this = (t_thread*)data;
 	while (this->alive)
 	{
-		if (*(this->client_queue) != NULL &&
-			!pthread_mutex_trylock(&(*this->client_queue)->client_queue_lock))
+		if (!pthread_mutex_trylock(this->client_queue_lock))
 			thread_grab_client(this);
 	}
 	pthread_exit(0);
@@ -61,10 +65,12 @@ void		init_threads(t_tpool *tpool)
 		tpool->threads[i].status = FREE;
 		tpool->threads[i].client_fd = -1;
 		tpool->threads[i].client_queue = &tpool->client_queue;
-		tpool->threads[i].message_out = &tpool->message_out;
+		tpool->threads[i].message_queue = &tpool->message_queue;
 		tpool->threads[i].env = tpool->env;
 		tpool->threads[i].alive = 1;
 		tpool->threads[i].client_hostname = NULL;
+		tpool->threads[i].client_queue_lock = &tpool->client_queue_lock;
+		tpool->threads[i].message_queue_lock = &tpool->message_queue_lock;
 		pthread_create(&tpool->threads[i].pid, NULL, (void*)thread_do,
 		&tpool->threads[i]);
 	}

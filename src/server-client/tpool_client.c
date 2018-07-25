@@ -27,21 +27,19 @@ t_client_queue	*new_client(int client_fd)
 		return (NULL);
 	new->next = NULL;
 	new->client_fd = client_fd;
-	if (pthread_mutex_init(&new->client_queue_lock, NULL) != 0)
-	{
-		free(new);
-		return (NULL);
-	}
 	return (new);
 }
 
-int				push_client(t_tpool *tpool, int client_fd) //mutex
+int				push_client(t_tpool *tpool, int client_fd)
 {
 	t_client_queue	*new;
 
 	if (!(new = new_client(client_fd)))
 		return (-1);
+	while (pthread_mutex_trylock(&tpool->client_queue_lock) != 0)
+		;
 	new->next = tpool->client_queue;
 	tpool->client_queue = new;
+	pthread_mutex_unlock(&tpool->client_queue_lock);
 	return (0);
 }

@@ -28,8 +28,7 @@ CFILES = \
 	clvec_rot_x.c\
 	clvec_rot_y.c\
 	clvec_rot_z.c\
-	clvec_add.c\
-	vec_print.c
+	clvec_add.c
 
 HFILES = libvec.h
 
