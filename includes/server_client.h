@@ -13,7 +13,6 @@
 #ifndef SERVER_CLIENT_H
 # define SERVER_CLIENT_H
 
-# include <stdio.h>//
 # include "rt_types.h"
 
 
@@ -26,5 +25,12 @@ void			*read_message(int, atomic_int *, int *, unsigned int *);
 void			*compose_message(void *, int, int, unsigned int *);
 t_message_queue	*new_message(t_tpool *, void *, unsigned int, enum e_message);
 void			send_message(t_thread *thread);
+void			delete_message(t_message_queue **message);
+void			tpool_kick_client(t_thread *thread);
+void			init_threads(t_tpool *tpool);
+void			tpool_execute_logic(t_thread *this);
+void			put_host_log(char *name, char *log);
+void			process_client_input(t_thread *thread, time_t *t);
+void			send_starting_data(t_thread *thread);
 
 #endif

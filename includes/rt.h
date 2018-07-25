@@ -24,6 +24,7 @@
 # include "libvec.h"
 # include "get_next_line.h"
 # include "rt_textures.h"
+# include <netinet/in.h>
 # include "server_client.h"
 # include "rt_types.h"
 # include "keys.h"

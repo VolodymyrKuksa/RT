@@ -10,40 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <errno.h>
-#include <rt.h>
-#include <poll.h>
-#include "server_client.h"
-
-extern unsigned int	g_win_width;
-extern unsigned int g_win_height;
-
-void		tpool_kick_client(t_thread *thread)
-{
-	ft_putstr(thread->client_hostname);
-	ft_putendl(" got kicked by server for not responding");
-	thread->status = FREE;
-}
-
-void		delete_message(t_message_queue **message)
-{
-	t_message_queue		*tmp;
-
-	if (!*message)
-		return ;
-	pthread_mutex_destroy(&(*message)->message_queue_lock);
-	tmp = (*message)->next;
-	if ((*message)->dest_size)
-		free((*message)->destinations);
-	if ((*message)->size)
-		free((*message)->message);
-	free(*message);
-	*message = tmp;
-	printf("message entry deleted from queue\n");
-}
+#include "rt.h"
 
 void		check_message_out(t_thread *thread)
 {
@@ -69,185 +36,27 @@ void		check_message_out(t_thread *thread)
 		pthread_mutex_unlock(&(*thread->message_out)->message_queue_lock);
 }
 
-//============================================================================//
-//============================================================================//
-
-void		send_starting_data(t_thread *thread)
+void		put_host_log(char *name, char *log)
 {
-	unsigned int	size;
-	void			*data;
-
-	set_block(thread->client_fd);
-	size = sizeof(t_cam);
-	data = compose_message(&thread->env->scene.cam,
-	++thread->env->server.message_id, CAM, &size);
-	write(thread->client_fd, data, size);
-	free(data);
-	size = sizeof(t_obj) * thread->env->scene.num_obj;
-	data = compose_message(thread->env->scene.obj,
-	++thread->env->server.message_id, OBJ, &size);
-	write(thread->client_fd, data, size);
-	free(data);
-	size = (unsigned int)thread->env->textures.total_size * sizeof(t_rgb);
-	data = compose_message(thread->env->textures.tx,
-	++thread->env->server.message_id, TEXTURES, &size);
-	write(thread->client_fd, data, size);
-	free(data);
-	size = sizeof(t_txdata) * thread->env->textures.tx_count;
-	data = compose_message(thread->env->textures.txdata,
-	++thread->env->server.message_id, TEX_DATA, &size);
-	write(thread->client_fd, data, size);
-	free(data);
-	size = sizeof(g_win_width);
-	data = compose_message(&g_win_width,
-	++thread->env->server.message_id, WND_W, &size);
-	write(thread->client_fd, data, size);
-	free(data);
-	size = sizeof(g_win_height);
-	data = compose_message(&g_win_height,
-	++thread->env->server.message_id, WND_H, &size);
-	write(thread->client_fd, data, size);
-	free(data);
-	set_nonblock(thread->client_fd);
-	printf("message id: %d\n", thread->env->server.message_id);
-}
-
-void		combine_pixels(t_thread *thread, cl_float3 *client_px)
-{
-	float	sample_influence;
-	int		i;
-	t_env	*env;
-
-	env = thread->env;
-	sample_influence = (float)CLIENT_WORK_SIZE /
-		(env->num_samples + CLIENT_WORK_SIZE);
-	i = -1;
-	while (pthread_mutex_trylock(&env->cl.pixel_lock) != 0);
-	while (++i < env->cl.global_size)
-	{
-		env->cl.pixels[i].x *= 1.0f - sample_influence;
-		env->cl.pixels[i].y *= 1.0f - sample_influence;
-		env->cl.pixels[i].z *= 1.0f - sample_influence;
-		env->cl.pixels[i].x += client_px[i].x * sample_influence;
-		env->cl.pixels[i].y += client_px[i].y * sample_influence;
-		env->cl.pixels[i].z += client_px[i].z * sample_influence;
-		clamp(env->cl.pixels + i);
-		env->screen.surf_arr[i].bgra[0] = (u_char)(env->cl.pixels[i].z * 0xff);
-		env->screen.surf_arr[i].bgra[1] = (u_char)(env->cl.pixels[i].y * 0xff);
-		env->screen.surf_arr[i].bgra[2] = (u_char)(env->cl.pixels[i].x * 0xff);
-	}
-	env->num_samples += CLIENT_WORK_SIZE;
-	ft_putendl("Combined pixels");
-	pthread_mutex_unlock(&env->cl.pixel_lock);
+	ft_putstr(name);
+	ft_putstr(": ");
+	ft_putendl(log);
 }
 
 void		tpool_execute_logic(t_thread *this)
 {
 	time_t			t;
-	int				type;
-	unsigned int	size;
-	void			*data;
-	atomic_int		msid;
-
-	size = 8;
-	type = STRING;
-	data = compose_message("Hello!\n",
-	++this->env->server.message_id, type, &size);
-	write(this->client_fd, data, size);
-	free(data);
 
 	send_starting_data(this);
-
 	t = time(NULL);
 	while (this->status == BUSY)
 	{
-		data = read_message(this->client_fd, &msid, &type, &size);
-		if (data)
-		{
-			if (type == STRING)
-				printf("%s: %s", this->client_hostname, (char*)data);
-			else if (type == QUIT)
-			{
-				this->status = FREE;
-				printf("client %s left\n", this->client_hostname);
-			}
-			else if (type == PIXELS && msid == this->env->server.message_id)
-			{
-				printf("got pixels\n");
-				combine_pixels(this, (cl_float3 *)data);
-			}
-			printf("before free\n");
-			free(data);
-			printf("after free\n");
-			t = time(NULL);
-		}
+		process_client_input(this, &t);
 		if (*(this->message_out) &&
 			!pthread_mutex_trylock(&(*this->message_out)->message_queue_lock))
 			check_message_out(this);
 		if (time(NULL) - t > 15)
 			tpool_kick_client(this);
-	}
-}
-
-//============================================================================//
-//============================================================================//
-
-void		thread_grab_client(t_thread *thread)
-{
-	struct hostent		*host;
-	socklen_t			addr_size;
-	t_client_queue		*tmp;
-	struct sockaddr_in	client_addr;
-
-	addr_size = sizeof(client_addr);
-	thread->client_fd = (*thread->client_queue)->client_fd;
-	getpeername(thread->client_fd, (struct sockaddr *)&client_addr, &addr_size);
-	host = gethostbyaddr(&client_addr.sin_addr, client_addr.sin_len, AF_INET);
-	printf("%s\n", host->h_name);
-	thread->client_hostname = ft_strdup(host->h_name);
-	thread->status = BUSY;
-	tmp = (*thread->client_queue);
-	(*thread->client_queue) = (*thread->client_queue)->next;
-	pthread_mutex_destroy(&tmp->client_queue_lock);
-	free(tmp);
-	tpool_execute_logic(thread);
-	free(thread->client_hostname);
-	close(thread->client_fd);
-	thread->client_hostname = NULL;
-	thread->status = FREE;
-}
-
-void		*thread_do(void *data)
-{
-	t_thread			*this;
-
-	this = (t_thread*)data;
-	while (this->alive)
-	{
-		if (*(this->client_queue) != NULL &&
-			!pthread_mutex_trylock(&(*this->client_queue)->client_queue_lock))
-			thread_grab_client(this);
-	}
-	pthread_exit(0);
-}
-
-void		init_threads(t_tpool *tpool)
-{
-	int		i;
-
-	i = -1;
-	while (++i < tpool->total_threads)
-	{
-		tpool->threads[i].thread_id = i;
-		tpool->threads[i].status = FREE;
-		tpool->threads[i].client_fd = -1;
-		tpool->threads[i].client_queue = &tpool->client_queue;
-		tpool->threads[i].message_out = &tpool->message_out;
-		tpool->threads[i].env = tpool->env;
-		tpool->threads[i].alive = 1;
-		tpool->threads[i].client_hostname = NULL;
-		pthread_create(&tpool->threads[i].pid, NULL, (void*)thread_do,
-			&tpool->threads[i]);
 	}
 }
 
@@ -268,92 +77,4 @@ t_tpool		*init_tpool(unsigned int count, t_env *env)
 	tpool->env = env;
 	init_threads(tpool);
 	return (tpool);
-}
-
-void	clear_client_queue(t_client_queue *cq)
-{
-	t_client_queue	*tmp;
-
-	if (!cq)
-		return ;
-	while (cq)
-	{
-		tmp = cq->next;
-		pthread_mutex_destroy(&cq->client_queue_lock);
-		free(cq);
-		cq = tmp;
-	}
-}
-
-void	clear_message_queue(t_message_queue *mq)
-{
-	t_message_queue	*tmp;
-
-	if (!mq)
-		return ;
-	while (mq)
-	{
-		tmp = mq->next;
-		free(mq->message);
-		free(mq->destinations);
-		pthread_mutex_destroy(&mq->message_queue_lock);
-		free(mq);
-		mq = tmp;
-	}
-}
-
-void	destroy_tpool(t_tpool *tpool)
-{
-	int i;
-
-	i = -1;
-	while (++i < tpool->total_threads)
-	{
-		tpool->threads[i].status = FREE;
-		tpool->threads[i].alive = 0;
-		pthread_join(tpool->threads[i].pid, NULL);
-	}
-	free(tpool->threads);
-	clear_client_queue(tpool->client_queue);
-	clear_message_queue(tpool->message_out);
-	free(tpool);
-}
-
-t_client_queue	*new_client(int client_fd)
-{
-	t_client_queue	*new;
-
-	if (!(new = (t_client_queue*)malloc(sizeof(t_client_queue))))
-		return (NULL);
-	new->next = NULL;
-	new->client_fd = client_fd;
-	if (pthread_mutex_init(&new->client_queue_lock, NULL) != 0)
-	{
-		free(new);
-		return (NULL);
-	}
-	return (new);
-}
-
-int			push_client(t_tpool *tpool, int client_fd) //mutex
-{
-	t_client_queue	*new;
-
-	if (!(new = new_client(client_fd)))
-		return (-1);
-	new->next = tpool->client_queue;
-	tpool->client_queue = new;
-	return (0);
-}
-
-int		push_message_for_all(t_tpool *tpool, void *message,
-	unsigned int message_size, enum e_message type)
-{
-	t_message_queue	*new;
-
-	if (!(new = new_message(tpool, message, message_size, type)))
-		return (-1);
-	new->next = tpool->message_out;
-	tpool->message_out = new;
-	return (0);
 }

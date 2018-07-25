@@ -69,3 +69,32 @@ void		send_message(t_thread *thread)
 		printf("Message sent to %s\n", thread->client_hostname);
 	set_nonblock(thread->client_fd);
 }
+
+void		delete_message(t_message_queue **message)
+{
+	t_message_queue		*tmp;
+
+	if (!*message)
+		return ;
+	pthread_mutex_destroy(&(*message)->message_queue_lock);
+	tmp = (*message)->next;
+	if ((*message)->dest_size)
+		free((*message)->destinations);
+	if ((*message)->size)
+		free((*message)->message);
+	free(*message);
+	*message = tmp;
+	printf("message entry deleted from queue\n");
+}
+
+int			push_message_for_all(t_tpool *tpool, void *message,
+								unsigned int message_size, enum e_message type)
+{
+	t_message_queue	*new;
+
+	if (!(new = new_message(tpool, message, message_size, type)))
+		return (-1);
+	new->next = tpool->message_out;
+	tpool->message_out = new;
+	return (0);
+}

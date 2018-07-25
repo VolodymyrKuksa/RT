@@ -72,6 +72,10 @@ server-client/thread_pool.c\
 server-client/socket_utils.c\
 server-client/tpool_new_msg.c\
 server-client/tpool_read_send_msg.c\
+server-client/tpool_cleanup.c\
+server-client/tpool_client.c\
+server-client/tpool_threads.c\
+server-client/tpool_client_logic.c\
 main_loop.c
 
 C_FILES_RT = server_main.c $(C_FILES)
