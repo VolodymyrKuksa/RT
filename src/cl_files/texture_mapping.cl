@@ -6,6 +6,7 @@ float3		get_texture_col(t_texture, int, int, int);
 float3		get_texture_col_float(t_texture, float, float, int);
 
 void		texture_plane(t_obj *, float3, float2 *);
+void		texture_rectangle(t_obj *, float3, float2 *);
 void		texture_sphere(t_obj *, float3, float2 *);
 void		texture_cylinder(t_obj *, float3, float2 *);
 void		texture_cone(t_obj *, float3, float2 *);
@@ -60,7 +61,16 @@ void	texture_plane(t_obj *plane, float3 hitpoint, float2 *coord)
 {
 	hitpoint -= plane->primitive.plane.pos;
 	hitpoint = change_of_basis(hitpoint, plane->basis);
-	hitpoint /= plane->primitive.plane.tex_scale;	//should be parsed as a variable
+	hitpoint /= plane->primitive.plane.tex_scale;
+	coord->x = hitpoint.x;
+	coord->y = hitpoint.z;
+}
+
+void	texture_rectangle(t_obj *rectangle, float3 hitpoint, float2 *coord)
+{
+	hitpoint -= rectangle->primitive.rectangle.pos;
+	hitpoint = change_of_basis(hitpoint, rectangle->basis);
+	hitpoint /= rectangle->primitive.rectangle.tex_scale;
 	coord->x = hitpoint.x;
 	coord->y = hitpoint.z;
 }
@@ -139,7 +149,7 @@ void	texture_disk(t_obj *disk, float3 hitpoint, float2 *coord)
 
 void		get_texture_coord(t_obj *hitobj, float3 hitpoint, float2 *coord)
 {
-	if (hitobj->type == plane || hitobj->type == rectangle)
+	if (hitobj->type == plane)
 		texture_plane(hitobj, hitpoint, coord);
 	else if (hitobj->type == cylinder)
 		texture_cylinder(hitobj, hitpoint, coord);
@@ -151,4 +161,9 @@ void		get_texture_coord(t_obj *hitobj, float3 hitpoint, float2 *coord)
 		texture_torus(hitobj, hitpoint, coord);
 	else if (hitobj->type == disk)
 		texture_disk(hitobj, hitpoint, coord);
+	else if (hitobj->type == rectangle)
+		texture_rectangle(hitobj, hitpoint, coord);
+	*coord -= hitobj->tex_offs;
+	coord->x += coord->x > 0 ? -(int)coord->x : (int)coord->x;
+	coord->y += coord->y > 0 ? -(int)coord->y : (int)coord->y;
 }

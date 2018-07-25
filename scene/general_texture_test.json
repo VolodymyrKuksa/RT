@@ -3,7 +3,7 @@
   {
 	"pos x" : 0.0,
 	"pos y" : 0.0,
-	"pos z" : 0.0,
+	"pos z" : 10.0,
 	"dir y" : 0.0,
 	"dir x" : -1.0,
 	"dir z" : -1.0,
@@ -11,40 +11,6 @@
 	"dust" : 0.0,
 	"fov" : 90.0,
 	"aperture" : 0.00001
-  },
-  "plane" :
-  {
-	"pos x" : 15.0,
-	"pos y" : 0.0,
-	"pos z" : -30.0,
-	"rot x" : 0.0,
-	"rot y" : 0.0,
-	"rot z" : 90.0,
-	"color x" : 1.0,
-	"color y" : 1.0,
-	"color z" : 1.0,
-	"texture" : "textures/Concrete2.jpg",
-	"light" : {
-	  "diffuse" : 1.0,
-	  "emission z" : 0.0
-	}
-  },
-  "plane" :
-  {
-	"pos x" : -15.0,
-	"pos y" : 0.0,
-	"pos z" : -30.0,
-	"rot x" : 0.0,
-	"rot y" : 0.0,
-	"rot z" : 90.0,
-	"color x" : 1.0,
-	"color y" : 1.0,
-	"color z" : 1.0,
-	"texture" : "textures/Pattern1.jpg",
-	"light" : {
-	  "diffuse" : 1.0,
-	  "emission z" : 0.0
-	}
   },
   "plane" :
   {
@@ -57,26 +23,7 @@
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
-	"texture" : "textures/Bricks2.jpg",
-	"light" : {
-	  "diffuse" : 1.0,
-	  "specular" : 0.0,
-	  "refraction" : 0.0,
-	  "roughness" : 0.0,
-	  "emission z" : 0.0
-	}
-  },
-  "plane" :
-  {
-	"pos x" : 0.0,
-	"pos y" : 0.0,
-	"pos z" : 1.0,
-	"rot x" : 90.0,
-	"rot y" : 0.0,
-	"rot z" : 0.0,
-	"color x" : 1.0,
-	"color y" : 1.0,
-	"color z" : 1.0,
+	"texture" : "textures/helper2.png",
 	"light" : {
 	  "diffuse" : 1.0,
 	  "specular" : 0.0,
@@ -96,52 +43,38 @@
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
-	"texture" : "textures/Pattern2.jpg",
 	"light" : {
 	  "diffuse" : 1.0,
-	  "emission z" : 0.0
-	}
-  },
-  "plane" :
-  {
-	"pos x" : 0.0,
-	"pos y" : 15.0,
-	"pos z" : -30.0,
-	"rot x" : 0.0,
-	"rot y" : 0.0,
-	"rot z" : 0.0,
-	"color x" : 1.0,
-	"color y" : 1.0,
-	"color z" : 1.0,
-	"texture" : "textures/Pattern3.jpg",
-	"light" : {
-	  "diffuse" : 1.0,
+	  "emission x" : 0.0,
+	  "emission y" : 0.0,
 	  "emission z" : 0.0
 	}
   },
   "cylinder" :
   {
-	"pos x" : 0.0,
-	"pos y" : 15.0,
-	"pos z" : 0.0,
+	"pos x" : -30.0,
+	"pos y" : -15.0,
+	"pos z" : -70.0,
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
-	"rot x" : 90.0,
-	"rot y" : 180.0,
+	"rot x" : 0.0,
+	"rot y" : 0.0,
 	"rot z" : 0.0,
+	"texture" : "textures/helper.jpg",
+	"h" : 20.0,
 	"light" : {
-	  "emission x" : 3.0,
-	  "emission y" : 3.0,
-	  "emission z" : 3.0
+	  "emission x" : 0.0,
+	  "emission y" : 0.0,
+	  "emission z" : 0.0
 	},
 	"radius" : 5.0
   },
-  "cylinder" :
+  "sphere" :
   {
-	"pos x" : -10.0,
-	"pos y" : -15.0,
-	"pos z" : -30.0,
+	"pos x" : -15.0,
+	"pos y" : -10.0,
+	"pos z" : -70.0,
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
@@ -152,22 +85,27 @@
 	"light" : {
 	  "emission x" : 0.0,
 	  "emission y" : 0.0,
-	  "emission z" : 0.0
+	  "emission z" : 0.0,
+	  "diffuse" : 1.0,
+	  "specular" : 0.0,
+	  "refraction" : 0.0
 	},
 	"radius" : 5.0
   },
   "cone" :
   {
 	"pos x" : 0.0,
-	"pos y" : 0.0,
-	"pos z" : -60.0,
+	"pos y" : 5.0,
+	"pos z" : -70.0,
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
-	"texture" : "textures/Globe2.jpg",
+	"texture" : "textures/helper.jpg",
 	"rot x" : 0.0,
 	"rot y" : 0.0,
 	"rot z" : 0.0,
+	"m1" : 0.0000001,
+	"m2" : 20.0,
 	"light" : {
 	  "emission x" : 0.0,
 	  "emission y" : 0.0,
@@ -178,26 +116,94 @@
 	},
 	"tng" : 0.3
   },
+  "torus" : {
+	"pos x": 15.0,
+	"pos y": -8.0,
+	"pos z": -70.0,
+	"color x": 1.0,
+	"color y": 1.0,
+	"color z": 1.0,
+	"rot x": 90.0,
+	"rot y": 0.0,
+	"rot z": 0.0,
+	"radius big": 5.0,
+	"radius small": 2.0,
+	"texture" : "textures/helper.jpg",
+	"light": {
+	  "emission x": 0.0,
+	  "emission y": 0.0,
+	  "emission z": 0.0,
+	  "roughness": 0.0,
+	  "diffuse": 1.0,
+	  "specular": 0.0,
+	  "refraction": 0.0
+	}
+  },
+  "rectangle" : {
+	"pos x": 30.0,
+	"pos y": -5.0,
+	"pos z": -70.0,
+	"color x": 0.5,
+	"color y": 1.0,
+	"color z": 0.5,
+	"rot x": 90.0,
+	"rot y": 0.0,
+	"rot z": 0.0,
+	"w": 10.0,
+	"h": 5.0,
+	"texture" : "textures/helper.jpg",
+	"light": {
+	  "emission x": 0.0,
+	  "emission y": 0.0,
+	  "emission z": 0.0,
+	  "roughness": 0.0,
+	  "diffuse": 1.0,
+	  "specular": 0.0,
+	  "refraction": 0.0
+	}
+  },
+  "disk" : {
+	"pos x": 0.0,
+	"pos y": 15.0,
+	"pos z": -70.0,
+	"color x": 1.0,
+	"color y": 1.0,
+	"color z": 1.0,
+	"rot x": 90.0,
+	"rot y": 0.0,
+	"rot z": 0.0,
+	"radius":7.5,
+	"texture" : "textures/helper.jpg",
+	"light": {
+	  "emission x": 0.0,
+	  "emission y": 0.0,
+	  "emission z": 0.0,
+	  "roughness": 0.0,
+	  "diffuse": 1.0,
+	  "specular": 0.0,
+	  "refraction": 0.0
+	}
+  },
   "sphere" :
   {
-	"pos x" : 5.0,
-	"pos y" : -5.0,
-	"pos z" : -40.0,
+	"pos x" : 0.0,
+	"pos y" : 45.0,
+	"pos z" : 50.0,
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
-	"texture" : "textures/Ball8.jpg",
 	"rot x" : 0.0,
 	"rot y" : 0.0,
 	"rot z" : 0.0,
+	"texture" : "textures/helper.jpg",
 	"light" : {
-	  "emission x" : 0.0,
-	  "emission y" : 0.0,
-	  "emission z" : 0.0,
+	  "emission x" : 10.0,
+	  "emission y" : 10.0,
+	  "emission z" : 10.0,
 	  "diffuse" : 1.0,
 	  "specular" : 0.0,
-	  "refraction" : 5.0
+	  "refraction" : 0.0
 	},
-	"radius" : 4.0
+	"radius" : 40.0
   }
 }

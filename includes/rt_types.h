@@ -152,6 +152,7 @@ typedef struct		s_rectangle
 	cl_float3	pos;
 	float		h;
 	float		w;
+	float		tex_scale;
 }					t_rectangle;
 
 typedef struct		s_triangle
@@ -190,6 +191,14 @@ typedef struct		s_basis
 	cl_float3		w;
 }					t_basis;
 
+enum				e_col_disrupt
+{
+	NODISRUPT,
+	CHESS,
+	COS,
+	CIRCLE
+};
+
 typedef struct		s_object
 {
 	t_obj_type	type;
@@ -202,6 +211,8 @@ typedef struct		s_object
 	cl_float3	color;
 	cl_float3	emission;
 	int			tex_id;
+	cl_float2	tex_offs;
+	int			col_disrupt;
 	int			mater_tex_id;
 	cl_float3   rot;
 }					t_obj;

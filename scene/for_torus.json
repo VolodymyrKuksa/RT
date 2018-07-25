@@ -51,52 +51,6 @@
 	},
 	"radius" : 40.0
   },
-	"torus" : {
-	  "pos x": 0.0,
-	  "pos y": 0.0,
-	  "pos z": -20.0,
-	  "color x": 1.0,
-	  "color y": 0.5,
-	  "color z": 0.5,
-	  "rot x": -45.0,
-	  "rot y": 0.0,
-	  "rot z": 0.0,
-	  "radius big": 4.0,
-	  "radius small": 2.0,
-	  "texture" : "textures/helper.jpg",
-	  "light": {
-		"emission x": 0.0,
-		"emission y": 0.0,
-		"emission z": 0.0,
-		"roughness": 0.0,
-		"diffuse": 1.0,
-		"specular": 0.0,
-		"refraction": 0.0
-	  }
-	},
-  "rectangle" : {
-	"pos x": 0.0,
-	"pos y": 1.0,
-	"pos z": -20.0,
-	"color x": 0.5,
-	"color y": 1.0,
-	"color z": 0.5,
-	"rot x": 45.0,
-	"rot y": 0.0,
-	"rot z": 0.0,
-	"w": 10.0,
-	"h": 10.0,
-	"texture" : "textures/helper.jpg",
-	"light": {
-	  "emission x": 0.0,
-	  "emission y": 0.0,
-	  "emission z": 0.0,
-	  "roughness": 0.0,
-	  "diffuse": 1.0,
-	  "specular": 0.0,
-	  "refraction": 0.0
-	}
-  },
   "disk" : {
 	"pos x": -5.0,
 	"pos y": 2.0,

@@ -121,7 +121,7 @@ float	intersection_cone(t_ray *ray,t_cone cone, __float3 c_rot)
 	{
 		hitpoint = res * ray->dir + x;
 		length = dot(c_rot, hitpoint);
-		if (length < cone.m2 && length > cone.m1)
+		if (length > -cone.m2 && length < cone.m1)
 			return (res);
 	}
 	res = (-q.b + q.d) / q.a;
@@ -129,7 +129,7 @@ float	intersection_cone(t_ray *ray,t_cone cone, __float3 c_rot)
 	{
 		hitpoint = res * ray->dir + x;
 		length = dot(c_rot, hitpoint);
-		if (length > cone.m1 && length < cone.m2)
+		if (length < cone.m1 && length > -cone.m2)
 			return (res);
 	}
 	return (-1.f);

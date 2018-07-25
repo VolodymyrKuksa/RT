@@ -114,7 +114,7 @@ void			filltheplane(json_value *value, t_scene *scene)
 	init_rotate(&(tmp.basis), rot);
 	minus_camera(&(tmp.primitive.plane.pos), scene->cam.pos, -1);
 	tmp.type = plane;
-	tmp.primitive.plane.tex_scale = 20;	// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	tmp.primitive.plane.tex_scale = 40;	// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	scene->obj[scene->cur_obj++] = tmp;
 	print_plane(tmp);
 }
@@ -192,6 +192,7 @@ void			help_rectangle(char *name, json_value v, t_obj *tmp)
 		tmp->primitive.rectangle.w = (cl_float)v.u.dbl;
 	if (ft_strcmp(name, "h") == 0)
 		tmp->primitive.rectangle.h = (cl_float)v.u.dbl;
+	tmp->primitive.rectangle.tex_scale = 20;	// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 }
 
 void			fillrectangle(json_value *value, t_scene *scene)
