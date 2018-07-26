@@ -75,12 +75,13 @@ void			write_cam(t_cam cam, int fd)
 	write_feature("f_length", cam.f_length, fd);
 	write_feature("dust", cam.dust, fd);
 	write_feature("fov", (cl_float)cam.fov, fd);
+	write_feature("refr_coef", cam.refr_coef, fd);
 	write_feature("brightness", (cl_float)cam.brightness, fd);
 	write_feature("filter x", (cl_float)cam.filter.x, fd);
 	write_feature("filter y", (cl_float)cam.filter.y, fd);
 	write_feature("filter z", (cl_float)cam.filter.z, fd);
 	write_feature("aperture", cam.aperture, fd);
-	ft_putstr_fd("},\n\t\n", fd);
+	ft_putstr_fd("},\n", fd);
 }
 
 void			write_light(t_obj obj, int fd)

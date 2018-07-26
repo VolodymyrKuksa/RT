@@ -114,6 +114,7 @@ typedef struct		s_disk
 {
 	cl_float3	pos;
 	cl_float	r;
+	int			related;
 }					t_disk;
 
 typedef struct		s_sphere

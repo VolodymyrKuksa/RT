@@ -64,9 +64,9 @@ void			checksumandemiss(t_obj *tmp)
 {
 	float		sum;
 
-	tmp->diffuse = fabs(tmp->diffuse);
-	tmp->specular = fabs(tmp->specular);
-	tmp->refraction = fabs(tmp->refraction);
+	tmp->diffuse = (cl_float)fabs(tmp->diffuse);
+	tmp->specular = (cl_float)fabs(tmp->specular);
+	tmp->refraction = (cl_float)fabs(tmp->refraction);
 	if (tmp->diffuse == 0 && tmp->specular == 0 && tmp->refraction == 0)
 		error_fedun("cannot be all zeros");
 	sum = tmp->diffuse + tmp->specular + tmp->refraction;
@@ -90,7 +90,7 @@ float			scalar_dobutok(cl_float3 a, cl_float3 b)
 
 	res = 0;
 	res += a.x * b.x + a.y * b.y + a.z * b.z;
-	return (fabs(res));
+	return ((cl_float)fabs(res));
 }
 
 void			check_basis(t_obj *tmp)

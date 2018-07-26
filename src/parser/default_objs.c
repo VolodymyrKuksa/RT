@@ -178,6 +178,7 @@ t_obj			default_disk(void)
 	tmp.mater_tex_id = -1;
 	tmp.tex_offs = (cl_float2){0.f, 0.f};
 	tmp.col_disrupt = NODISRUPT;
+	tmp.primitive.disk.related = -1;
 	return (tmp);
 }
 

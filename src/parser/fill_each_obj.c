@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <json.h>
-#include "parser.h"
+//#include <json.h>
+//#include "parser.h"
 #include "rt.h"
 
 void			fill_cylinder_params(char *name, json_value v, t_obj *tmp)
@@ -49,6 +49,7 @@ void			fill_cylind_hats(t_scene *scene, t_obj tmp)
 	obj1.roughness = tmp.roughness;
 	obj1.specular = tmp.specular;
 	obj1.primitive.disk.r = tmp.primitive.cylinder.r;
+	obj1.primitive.disk.related = scene->cur_obj - 1;
 	obj2 = obj1;
 	obj1.primitive.disk.pos = tmp.primitive.cylinder.pos;
 	obj2.primitive.disk.pos = tmp.primitive.cylinder.pos;
@@ -423,7 +424,8 @@ void			fillparallelogram(json_value *value, t_scene *scene, int i)
 	minus_camera(&(tmp.primitive.parallelogram.pos), scene->cam.pos);
 	tmp.type = parallelogram;
 	check_basis(&tmp);
-	if (tmp.primitive.parallelogram.h <= 0 || tmp.primitive.parallelogram.w <= 0
+	if (tmp.primitive.parallelogram.h <= 0 ||
+			tmp.primitive.parallelogram.w <= 0
 			|| tmp.primitive.parallelogram.l <= 0)
 		error_fedun("l, w and h in parallelogram must be > 0");
 	scene->obj[scene->cur_obj++] = tmp;
