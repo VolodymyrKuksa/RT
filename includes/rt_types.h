@@ -51,6 +51,7 @@ typedef struct		s_cam
 	float			pr_pl_h;
 	float			dust;
 	float			brightness;
+	float			refr_coef;
 }					t_cam;
 
 typedef struct		s_seed
@@ -197,7 +198,11 @@ enum				e_col_disrupt
 	NODISRUPT,
 	CHESS,
 	COS,
-	CIRCLE
+	CIRCLE,
+	PERLIN,
+	PERLIN_RED,
+	PERLIN_GREEN,
+	PERLIN_BLUE
 };
 
 typedef struct		s_object
@@ -253,6 +258,7 @@ typedef struct		s_cldata
 typedef struct		s_client
 {
 	int					active;
+	int					visual;
 	int					socket_fd;
 	int					portno;
 	struct hostent		*server;
@@ -274,10 +280,9 @@ enum				e_message
 	TEXTURES =   0b100,
 	TEX_DATA =   0b1000,
 	PIXELS =     0b10000,
-	WND_W =      0b100000,
-	WND_H =      0b1000000,
-	CONNECTION = 0b10000000,
-	QUIT =       0b100000000
+	WND_SIZE =   0b100000,
+	CONNECTION = 0b1000000,
+	QUIT =       0b10000000
 };
 
 typedef struct		s_client_queue

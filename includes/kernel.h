@@ -49,6 +49,7 @@ typedef struct		s_cam
 	float			pr_pl_h;
 	float			dust;
 	float			brightness;
+	float			refr_coef;
 }					t_cam;
 
 typedef struct		s_ray
@@ -175,7 +176,11 @@ enum				e_col_disrupt
 	NODISRUPT,
 	CHESS,
 	COS,
-	CIRCLE
+	CIRCLE,
+	PERLIN,
+	PERLIN_RED,
+	PERLIN_GREEN,
+	PERLIN_BLUE
 };
 
 typedef struct		s_object

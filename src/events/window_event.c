@@ -49,10 +49,11 @@ void	handle_resize(t_env *env)
 
 void	window_event(SDL_Event e, t_env *env)
 {
+	unsigned int	tmp[2];
+
 	if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED ||
 			e.window.event == SDL_WINDOWEVENT_RESIZED)
 	{
-		printf("yoyoyo\n");
 		g_win_width = (unsigned int)e.window.data1;
 		g_win_height = (unsigned int)e.window.data2;
 		handle_resize(env);
@@ -60,14 +61,10 @@ void	window_event(SDL_Event e, t_env *env)
 			SDL_SetWindowSize(env->screen.window, ++g_win_width, g_win_height);
 		if (env->server.active)
 		{
-			push_message_for_all(env->server.tpool, &g_win_width,
-				sizeof(g_win_width), WND_W);
-			push_message_for_all(env->server.tpool, &g_win_height,
-				sizeof(g_win_height), WND_H);
-			push_message_for_all(env->server.tpool, &g_win_width,
-				sizeof(g_win_width), WND_W);
-			push_message_for_all(env->server.tpool, &g_win_height,
-				sizeof(g_win_height), WND_H);
+			tmp[0] = g_win_width;
+			tmp[1] = g_win_height;
+			push_message_for_all(env->server.tpool, &tmp,
+				sizeof(tmp), WND_SIZE);
 		}
 	}
 }

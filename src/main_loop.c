@@ -77,10 +77,7 @@ void	handle_events_client(t_env *env)
 		if (e.type == SDL_QUIT)
 			env->mv_data.move_keys |= KEY_ESC;
 		else if (e.type == SDL_WINDOWEVENT)
-		{
-			printf("tutu\n");
 			window_event(e, env);
-		}
 		else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
 			env->mv_data.move_keys |= KEY_ESC;
 	}
@@ -155,16 +152,12 @@ void	main_loop_client(t_env *env)
 				env->num_samples = 0;
 				clSetKernelArg(env->cl.kernel, 3, sizeof(env->scene.cam), &env->scene.cam);
 			}
-			else if (type == WND_W)
+			else if (type == WND_SIZE)
 			{
-//				g_win_width = *(unsigned int*)msg;
-				printf("width\n");
-				SDL_SetWindowSize(env->screen.window, *(unsigned int*)msg, g_win_height);
-			}
-			else if (type == WND_H)
-			{
-				printf("height\n");
-				SDL_SetWindowSize(env->screen.window, g_win_width, *(unsigned int*)msg);
+				printf("wndsize\n");
+				SDL_SetWindowSize(env->screen.window, ((unsigned int*)msg)[0],
+					((unsigned int*)msg)[1]);
+				printf("yo\n");
 			}
 			else if (type == QUIT)
 				env->mv_data.move_keys |= KEY_ESC;

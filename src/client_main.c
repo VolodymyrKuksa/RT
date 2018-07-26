@@ -18,18 +18,24 @@ void	print_usage(char *name)
 {
 	ft_putstr("USAGE: ");
 	ft_putstr(name);
-	ft_putendl(" [server hostname] [port no]");
+	ft_putendl(" [server hostname] [port no] [-v]");
 	exit(1);
 }
 
 void	parse_client_data(t_client *client, int ac, char **av)
 {
-	if (ac != 3)
+	client->visual = 0;
+	if (ac != 3 && ac != 4)
 		print_usage(av[0]);
 	client->server = gethostbyname(av[1]);
 	if (!client->server)
 		put_error("Could not find server");
 	client->portno = ft_atoi(av[2]);
+	if (ac == 4 && ft_strequ(av[3], "-v"))
+	{
+		client->visual = 1;
+		ft_putendl("visual on");
+	}
 }
 
 void	init_client(t_client *client)
@@ -56,7 +62,7 @@ void	read_scene(t_env *env)
 	unsigned int	size;
 	int				types_got;
 
-	types_got = OBJ | CAM | TEXTURES | TEX_DATA | WND_W | WND_H;
+	types_got = OBJ | CAM | TEXTURES | TEX_DATA | WND_SIZE;
 	env->scene.num_obj = 0;//
 	env->textures.tx = NULL;//
 	while (types_got)
@@ -88,10 +94,11 @@ void	read_scene(t_env *env)
 			ft_memcpy(env->textures.txdata, msg, size);
 			env->textures.tx_count = size / (int)sizeof(t_txdata);
 		}
-		else if (type == WND_W)
-			g_win_width = *(unsigned int*)msg;
-		else if (type == WND_H)
-			g_win_height = *(unsigned int*)msg;
+		else if (type == WND_SIZE)
+		{
+			g_win_width = ((unsigned int *)msg)[0];
+			g_win_height = ((unsigned int *)msg)[1];
+		}
 		free(msg);
 	}
 	printf("message id: %d\n", env->client.message_id);
@@ -111,7 +118,9 @@ int		main(int argc, char **argv)
 	init_defaults(&env);
 	init_seeds(&env.cl.seeds);
 	get_work_group_size(&env.cl);
-	init_win(&env.screen, 0);
+	init_win(&env.screen, 0, env.client.visual);
+	if (!env.client.visual)
+		SDL_HideWindow(env.screen.window);
 	main_loop_client(&env);
 	close(env.client.socket_fd);
 	close_sdl(&env.screen);
