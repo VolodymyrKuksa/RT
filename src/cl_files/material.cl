@@ -23,7 +23,7 @@ constant int hash[] = {208,34,231,213,32,248,233,56,161,78,24,140,71,48,140,254,
 
 int noise2(int x, int y)
 {
-	int tmp = hash[y % 256];
+	int tmp = hash[(y + 4) % 256];
 	return hash[(tmp + x) % 256];
 }
 
@@ -54,13 +54,13 @@ float	noise2d(float x, float y)
 
 float	perlin_noise(float2 coord)
 {
-	float	freq = 10.f;
-	float	amp = 50.f;
+	float	freq = 50.f;
+	float	amp = 1.f;
 	float	fin = 0;
 	float	div = 0.0;
 
-	float	xa = coord.x * amp;
-	float	ya = coord.y * amp;
+	float	xa = coord.x * freq;
+	float	ya = coord.y * freq;
 
 	for (int i = 0; i < 5; ++i)
 	{

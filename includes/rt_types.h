@@ -50,6 +50,7 @@ typedef struct		s_cam
 	float			pr_pl_h;
 	float			dust;
 	float			brightness;
+	float			refr_coef;
 }					t_cam;
 
 typedef struct		s_seed

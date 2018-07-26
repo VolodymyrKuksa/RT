@@ -44,7 +44,7 @@
 	"color z" : 1.0,
 	"texture" : "textures/helper.jpg",
 	"light" : {
-	  "diffuse" : 0.4,
+	  "diffuse" : 0.0,
 	  "specular" : 0.0,
 	  "refraction" : 1.0,
 	  "roughness" : 0.0,

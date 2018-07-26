@@ -102,4 +102,5 @@ void			get_camera_params(json_value *value, t_scene *scene)
 	printf(" cam aperture  %f\n", scene->cam.aperture);
 	scene->cam.filter = (cl_float3){1.f,1.f,1.f}; // <- Just do it, Fedun!
 	scene->cam.brightness = 1.f; //and this
+	scene->cam.refr_coef = 1.5f; // here too 1.f <= refr_coef <= 2.f
 }
