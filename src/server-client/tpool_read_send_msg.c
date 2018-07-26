@@ -66,7 +66,10 @@ void		send_message(t_thread *thread)
 	n = write(thread->client_fd, (*thread->message_queue)->message,
 		(*thread->message_queue)->size);
 	if (n > 0)
-		printf("Message sent to %s\n", thread->client_hostname);
+	{
+		ft_putstr(">server: sent message to ");
+		ft_putendl(thread->client_hostname);
+	}
 	set_nonblock(thread->client_fd);
 }
 

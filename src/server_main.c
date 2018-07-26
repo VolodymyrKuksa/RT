@@ -31,7 +31,7 @@ int		main(int argc, char **argv)
 		run_server(&env);
 	init_seeds(&env.cl.seeds);
 	get_work_group_size(&env.cl);
-	init_win(&env.screen, 1);
+	init_win(&env.screen, 1, 1);
 	main_loop_server(&env);
 	quit_server(&env.server);
 	close_sdl(&env.screen);

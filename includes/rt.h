@@ -53,7 +53,7 @@
 **	returns NULL and writes 0 to size in case of an error
 */
 
-int			init_win(t_scrn *screen, int server);
+int			init_win(t_scrn *screen, int server, int shown);
 void		close_sdl(t_scrn *screen);
 void		init_scene(t_scene *scene, int argc, char **argv);
 

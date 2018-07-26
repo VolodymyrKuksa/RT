@@ -24,7 +24,7 @@ void	set_icon(t_scrn *screen)
 	SDL_FreeSurface(icon);
 }
 
-void	create_window(SDL_Window **window, int server)
+void	create_window(SDL_Window **window, int server, int shown)
 {
 	if (server)
 		*window = SDL_CreateWindow("CANCER RT",
@@ -33,10 +33,10 @@ void	create_window(SDL_Window **window, int server)
 	else
 		*window = SDL_CreateWindow("RT CLIENT",
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, g_win_width,
-		g_win_height, SDL_WINDOW_SHOWN);
+		g_win_height, shown ? SDL_WINDOW_SHOWN : SDL_WINDOW_HIDDEN);
 }
 
-int		init_win(t_scrn *screen, int server)
+int		init_win(t_scrn *screen, int server, int shown)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -46,7 +46,7 @@ int		init_win(t_scrn *screen, int server)
 	}
 	else
 	{
-		create_window(&screen->window, server);
+		create_window(&screen->window, server, shown);
 		if (screen->window == NULL)
 		{
 			ft_putstr("Window could not be created! Error: ");

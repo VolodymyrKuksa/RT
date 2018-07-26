@@ -18,6 +18,7 @@ extern unsigned int g_win_height;
 void		send_starting_data_crutch(t_thread *thread)
 {
 	unsigned int	size;
+	unsigned int	tmp[2];
 	void			*data;
 
 	size = sizeof(t_txdata) * thread->env->textures.tx_count;
@@ -25,14 +26,11 @@ void		send_starting_data_crutch(t_thread *thread)
 	++thread->env->server.message_id, TEX_DATA, &size);
 	write(thread->client_fd, data, size);
 	free(data);
-	size = sizeof(g_win_width);
-	data = compose_message(&g_win_width,
-	++thread->env->server.message_id, WND_W, &size);
-	write(thread->client_fd, data, size);
-	free(data);
-	size = sizeof(g_win_height);
-	data = compose_message(&g_win_height,
-	++thread->env->server.message_id, WND_H, &size);
+	size = sizeof(tmp);
+	tmp[0] = g_win_width;
+	tmp[1] = g_win_height;
+	data = compose_message(&tmp,
+	++thread->env->server.message_id, WND_SIZE, &size);
 	write(thread->client_fd, data, size);
 	free(data);
 }
