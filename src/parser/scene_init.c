@@ -17,7 +17,6 @@
 extern int	g_win_width;
 extern int	g_win_height;
 
-
 void			print_scene(t_scene *scene)
 {
 	int			i;
@@ -411,49 +410,65 @@ void			fill_common(char *name, t_obj *tmp,
 
 void			rotate_obj_by_camera(t_obj *tmp, cl_float3 rot)
 {
-	if (tmp->type == sphere)
-	{
-		tmp->primitive.sphere.pos = clvec_rot_x(tmp->primitive.sphere.pos, DTR(-rot.x));
-		tmp->primitive.sphere.pos = clvec_rot_y(tmp->primitive.sphere.pos, DTR(-rot.y));
-		tmp->primitive.sphere.pos = clvec_rot_z(tmp->primitive.sphere.pos, DTR(-rot.z));
-	}
-	else if (tmp->type == cone)
+	//if (tmp->type == sphere)
+	//{
+	tmp->primitive.sphere.pos = clvec_rot_x(tmp->primitive.sphere.pos, DTR(-rot.x));
+	tmp->primitive.sphere.pos = clvec_rot_y(tmp->primitive.sphere.pos, DTR(-rot.y));
+	tmp->primitive.sphere.pos = clvec_rot_z(tmp->primitive.sphere.pos, DTR(-rot.z));
+	//}
+	/*
+	if (tmp->type == cone)
 	{
 		tmp->primitive.cone.pos = clvec_rot_x(tmp->primitive.cone.pos, DTR(-rot.x));
 		tmp->primitive.cone.pos = clvec_rot_y(tmp->primitive.cone.pos, DTR(-rot.y));
 		tmp->primitive.cone.pos = clvec_rot_z(tmp->primitive.cone.pos, DTR(-rot.z));
 	}
-	else if (tmp->type == plane)
+	if (tmp->type == plane)
 	{
 		tmp->primitive.plane.pos = clvec_rot_x(tmp->primitive.plane.pos, DTR(-rot.x));
 		tmp->primitive.plane.pos = clvec_rot_y(tmp->primitive.plane.pos, DTR(-rot.y));
 		tmp->primitive.plane.pos = clvec_rot_z(tmp->primitive.plane.pos, DTR(-rot.z));
 	}
-	else if (tmp->type == cylinder)
+	if (tmp->type == cylinder)
 	{
 		tmp->primitive.cylinder.pos = clvec_rot_x(tmp->primitive.cylinder.pos, DTR(-rot.x));
 		tmp->primitive.cylinder.pos = clvec_rot_y(tmp->primitive.cylinder.pos, DTR(-rot.y));
 		tmp->primitive.cylinder.pos = clvec_rot_z(tmp->primitive.cylinder.pos, DTR(-rot.z));
 	}
-	else if (tmp->type == disk)
+	if (tmp->type == disk)
 	{
 		tmp->primitive.disk.pos = clvec_rot_x(tmp->primitive.disk.pos, DTR(-rot.x));
 		tmp->primitive.disk.pos = clvec_rot_y(tmp->primitive.disk.pos, DTR(-rot.y));
 		tmp->primitive.disk.pos = clvec_rot_z(tmp->primitive.disk.pos, DTR(-rot.z));
 	}
-	else if (tmp->type == torus)
+	if (tmp->type == torus)
 	{
 		tmp->primitive.torus.pos = clvec_rot_x(tmp->primitive.torus.pos, DTR(-rot.x));
 		tmp->primitive.torus.pos = clvec_rot_y(tmp->primitive.torus.pos, DTR(-rot.y));
 		tmp->primitive.torus.pos = clvec_rot_z(tmp->primitive.torus.pos, DTR(-rot.z));
 	}
-	else if (tmp->type == rectangle)
+	if (tmp->type == rectangle)
 	{
 		tmp->primitive.rectangle.pos = clvec_rot_x(tmp->primitive.rectangle.pos, DTR(-rot.x));
 		tmp->primitive.rectangle.pos = clvec_rot_y(tmp->primitive.rectangle.pos, DTR(-rot.y));
 		tmp->primitive.rectangle.pos = clvec_rot_z(tmp->primitive.rectangle.pos, DTR(-rot.z));
+	}*/
+	if (tmp->type == parallelogram)
+	{
+		tmp->primitive.parallelogram.pos = clvec_rot_x(tmp->primitive.parallelogram.pos, DTR(-rot.x));
+		tmp->primitive.parallelogram.pos = clvec_rot_y(tmp->primitive.parallelogram.pos, DTR(-rot.y));
+		tmp->primitive.parallelogram.pos = clvec_rot_z(tmp->primitive.parallelogram.pos, DTR(-rot.z));
 	}
-	else if (tmp->type == triangle)
+	if (tmp->type == ellipse)
+	{
+		tmp->primitive.ellipse.c1 = clvec_rot_x(tmp->primitive.ellipse.c1, DTR(-rot.x));
+		tmp->primitive.ellipse.c1 = clvec_rot_y(tmp->primitive.ellipse.c1, DTR(-rot.y));
+		tmp->primitive.ellipse.c1 = clvec_rot_z(tmp->primitive.ellipse.c1, DTR(-rot.z));
+		tmp->primitive.ellipse.c2 = clvec_rot_x(tmp->primitive.ellipse.c2, DTR(-rot.x));
+		tmp->primitive.ellipse.c2 = clvec_rot_y(tmp->primitive.ellipse.c2, DTR(-rot.y));
+		tmp->primitive.ellipse.c2 = clvec_rot_z(tmp->primitive.ellipse.c2, DTR(-rot.z));
+	}
+	if (tmp->type == triangle)
 	{
 		tmp->primitive.triangle.d1 = clvec_rot_x(tmp->primitive.triangle.d1, DTR(-rot.x));
 		tmp->primitive.triangle.d1 = clvec_rot_y(tmp->primitive.triangle.d1, DTR(-rot.y));
@@ -465,12 +480,7 @@ void			rotate_obj_by_camera(t_obj *tmp, cl_float3 rot)
 		tmp->primitive.triangle.d3 = clvec_rot_y(tmp->primitive.triangle.d3, DTR(-rot.y));
 		tmp->primitive.triangle.d3 = clvec_rot_z(tmp->primitive.triangle.d3, DTR(-rot.z));
 	}
-	cl_float3 r;
-
-	r.x = -rot.x;
-	r.y = -rot.y;
-	r.z = -rot.z;
-	init_rotate(&tmp->basis, r);
+	init_rotate(&tmp->basis, (cl_float3){-rot.x, -rot.y, -rot.z});
 }
 
 void			fill_scene_obj(json_value *value, t_scene *scene, int i)
@@ -573,8 +583,6 @@ void			init_scene(t_scene *scene, int argc, char **argv)
 	fillthescene(value, scene);
 
 	rotate_scene_by_cam(scene);
-	//print_scene(scene);
 	json_value_free(value);
 	free(contents);
-	//write_scene(scene);
 }

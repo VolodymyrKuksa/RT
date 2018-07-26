@@ -28,6 +28,7 @@ void			camera_default(t_cam *cam)
 	cam->filter = (cl_float3){1.f, 1.f, 1.f};
 	cam->rot = (cl_float3){0.0, 0.0, 0.0};
 	cam->brightness = 1.f;
+	cam->refr_coef = 1.5f;
 }
 
 void			check_camera2(t_cam *cam)
@@ -45,6 +46,8 @@ void			check_camera2(t_cam *cam)
 		ft_putstr("setting brightness to default = 1\n");
 		cam->brightness = 1.0f;
 	}
+	if (cam->refr_coef < 1 || cam->refr_coef > 2)
+		error_fedun("refr_coef of camera is bad. 1 <= x <= 2");
 }
 
 void			check_camera(t_cam *cam)
@@ -95,6 +98,8 @@ void			get_cam_params2(char *name, json_value v, t_scene *scene)
 		scene->cam.rot.y = (float)v.u.dbl;
 	if (ft_strcmp(name, "rot z") == 0)
 		scene->cam.rot.z = (float)v.u.dbl;
+	if (ft_strcmp(name, "refr_coef") == 0)
+		scene->cam.refr_coef = (float)v.u.dbl;
 }
 
 void			get_camera_params(json_value *value, t_scene *scene)
@@ -124,5 +129,6 @@ void			get_camera_params(json_value *value, t_scene *scene)
 	printf(" cam brightness  %f\n", scene->cam.brightness);
 	printf(" cam fov  %f\n", scene->cam.fov);
 	printf(" cam aperture  %f\n", scene->cam.aperture);
-	scene->cam.refr_coef = 1.5f; // here too 1.f <= refr_coef <= 2.f
+	printf(" refr_coef  %f\n", scene->cam.refr_coef);
+	//scene->cam.refr_coef = 1.5f; // here too 1.f <= refr_coef <= 2.f
 }

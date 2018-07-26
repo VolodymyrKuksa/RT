@@ -116,6 +116,7 @@ typedef struct		s_disk
 {
 	__float3	pos;
 	float	r;
+	int			related;
 }					t_disk;
 
 typedef struct		s_rectangle
