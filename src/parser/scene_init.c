@@ -405,8 +405,6 @@ void			fill_common(char *name, t_obj *tmp,
 		tmp->tex_offs.y = (cl_float)v->u.dbl;
 	fill_col_distrupt(name, *v, tmp);
 	check_tex_offs(tmp->tex_offs);
-	// <<<	cannot be applied to obj with emission
-	//tmp->tex_offs = (cl_float2){0.f, 0.f};	// 0 <= x <= 1.f // 0 <= y <= 1.f
 }
 
 void			rotate_obj_by_camera(t_obj *tmp, cl_float3 rot)

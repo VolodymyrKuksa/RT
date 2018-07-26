@@ -17,10 +17,9 @@ extern unsigned int g_win_height;
 
 void	clamp(cl_float3 *px)
 {
-//	float	brightness = 0.8f;
-//	px->x *= brightness;
-//	px->y *= brightness;
-//	px->z *= brightness;
+	px->x = px->x < 0.f ? 0.f : px->x;
+	px->y = px->y < 0.f ? 0.f : px->y;
+	px->z = px->z < 0.f ? 0.f : px->z;
 	px->x = px->x > 1.f ? 1.f : px->x;
 	px->y = px->y > 1.f ? 1.f : px->y;
 	px->z = px->z > 1.f ? 1.f : px->z;

@@ -33,6 +33,15 @@ typedef struct		s_texture
 	int					tx_count;
 }					t_texture;
 
+enum				e_effects
+{
+	NOEFFECT,
+	BLACK_N_WHITE,
+	NEGATIVE,
+	SEPIA,
+	CARTOON
+};
+
 typedef struct		s_cam
 {
 	__float3		pos;
@@ -50,6 +59,7 @@ typedef struct		s_cam
 	float			dust;
 	float			brightness;
 	float			refr_coef;
+	int				effect;
 }					t_cam;
 
 typedef struct		s_ray

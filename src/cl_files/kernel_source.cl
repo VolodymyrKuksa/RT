@@ -262,6 +262,44 @@ t_texture texture, float3 mask, float refr_coef)
 	return (res);
 }
 
+float		round_tenth(float val);
+
+float		round_tenth(float val)
+{
+	val *= 1;
+	return val;
+}
+
+float3		apply_effect(float3 px, int effect);
+
+float3		apply_effect(float3 px, int effect)
+{
+	if (!effect)
+		return px;
+	else if (effect == BLACK_N_WHITE)
+	{
+		float	avrg = (px.x + px.y + px.z) / 3;
+		return (float3)(avrg, avrg, avrg);
+	}
+	else if (effect == NEGATIVE)
+	{
+		return (float3)(1.f - px.x, 1.f - px.y, 1.f - px.z);
+	}
+	else if (effect == SEPIA)
+	{
+		float3	res;
+		res.x = 0.393f * px.x + 0.769f * px.y + 0.189 * px.z;
+		res.y = 0.349f * px.x + 0.686f * px.y + 0.168 * px.z;
+		res.z = 0.272f * px.x + 0.534f * px.y + 0.131 * px.z;
+		return res;
+	}
+	else if (effect == CARTOON)
+	{
+		return (float3)(round_tenth(px.x), round_tenth(px.y), round_tenth(px.z));
+	}
+	return px;
+}
+
  __kernel void	render_pixel(
 	__global float3 *pixels,
 	__global t_obj *obj,
@@ -286,6 +324,7 @@ t_texture texture, float3 mask, float refr_coef)
 	pixels[id] = (float3)(0,0,0);
 	pixels[id] += trace_ray(ray, obj, num_obj, &seeds, texture, cam.filter,
 		cam.refr_coef) * cam.brightness;
+	pixels[id] = apply_effect(pixels[id], cam.effect);
 	seed[id] = seeds.x;
 	seed[id + w * h] = seeds.y;
 }

@@ -35,6 +35,15 @@ typedef struct		s_scrn
 	t_rgb			*surf_arr;
 }					t_scrn;
 
+enum				e_effects
+{
+	NOEFFECT,
+	BLACK_N_WHITE,
+	NEGATIVE,
+	SEPIA,
+	CARTOON
+};
+
 typedef struct		s_cam
 {
 	cl_float3		pos;
@@ -52,6 +61,7 @@ typedef struct		s_cam
 	float			dust;
 	float			brightness;
 	float			refr_coef;
+	int				effect;
 }					t_cam;
 
 typedef struct		s_seed
