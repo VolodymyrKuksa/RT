@@ -10,13 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <OpenCL/opencl.h>
+#include <json.h>
 #include "rt.h"
 
 extern int	g_win_width;
 extern int	g_win_height;
-# define LENGTH(a) sqrt(a.x * a.x + a.y * a.y + a.z * a.z)
-# define NORMAL(a) (cl_float3){a.x/LENGTH(a), a.y/LENGTH(a), a.z/LENGTH(a)}
-# define ABS3(a) (cl_float3){fabs(a.x), fabs(a.y), fabs(a.z)}
+
 
 void			print_scene(t_scene *scene)
 {
@@ -147,6 +147,7 @@ void			print_cylinder(t_obj obj)
 	printf("specular = %f\n", obj.specular);
 	printf("refraction = %f\n", obj.refraction);
 	printf("texture id= %d\n", obj.mater_tex_id);
+	printf("tex_scale = %f\n", obj.primitive.cylinder.tex_scale);
 }
 
 void			print_torus(t_obj obj)
@@ -191,6 +192,7 @@ void			print_cone(t_obj obj)
 	printf("specular = %f\n", obj.specular);
 	printf("refraction = %f\n", obj.refraction);
 	printf("texture id= %d\n", obj.tex_id);
+	printf("tex_scale = %f\n", obj.primitive.cone.tex_scale);
 }
 
 void			print_plane(t_obj obj)
@@ -213,6 +215,7 @@ void			print_plane(t_obj obj)
 	printf("specular = %f\n", obj.specular);
 	printf("refraction = %f\n", obj.refraction);
 	printf("texture id= %d\n", obj.tex_id);
+	printf("tex_scale = %f\n", obj.primitive.plane.tex_scale);
 }
 
 void			print_rectangle(t_obj obj)
@@ -311,50 +314,209 @@ void			parselight(json_value *value, t_obj *tmp)
 	checksumandemiss(tmp);
 }
 
+void			fill_basis(char *name, t_obj *tmp, cl_float v)
+{
+	if (ft_strcmp(name, "u x") == 0)
+		tmp->basis.u.x = v;
+	if (ft_strcmp(name, "u y") == 0)
+		tmp->basis.u.y = v;
+	if (ft_strcmp(name, "u z") == 0)
+		tmp->basis.u.z = v;
+	if (ft_strcmp(name, "v x") == 0)
+		tmp->basis.v.x = v;
+	if (ft_strcmp(name, "v y") == 0)
+		tmp->basis.v.y = v;
+	if (ft_strcmp(name, "v z") == 0)
+		tmp->basis.v.z = v;
+	if (ft_strcmp(name, "w x") == 0)
+		tmp->basis.w.x = v;
+	if (ft_strcmp(name, "w y") == 0)
+		tmp->basis.w.y = v;
+	if (ft_strcmp(name, "w z") == 0)
+		tmp->basis.w.z = v;
+}
+
+void			check_tex_offs(cl_float2 tex_offs)
+{
+	if (tex_offs.x < 0 || tex_offs.x > 1)
+		error_fedun("tex_offs x is not correct. 0 <= x <= 1");
+	if (tex_offs.y < 0 || tex_offs.y > 1)
+		error_fedun("tex_offs y is not correct. 0 <= y <= 1");
+}
+
+void			fill_col_distrupt(char *name, json_value v, t_obj *tmp)
+{
+
+	if (ft_strcmp(name, "col_disrupt") == 0)
+	{
+		if (!v.u.string.ptr)
+			error_fedun("value is absent in key col_disrupt");
+		if (ft_strcmp(v.u.string.ptr, "CHESS") == 0)
+			tmp->col_disrupt = CHESS;
+		else if (ft_strcmp(v.u.string.ptr, "NODISTRUPT") == 0 ||
+				ft_strcmp(v.u.string.ptr, "") == 0)
+			tmp->col_disrupt = NODISRUPT;
+		else if (ft_strcmp(v.u.string.ptr, "COS") == 0)
+			tmp->col_disrupt = COS;
+		else if (ft_strcmp(v.u.string.ptr, "CIRCLE") == 0)
+			tmp->col_disrupt = CIRCLE;
+		else
+			error_fedun("Wrong value in col_disrupt key");
+	}
+	if (tmp->emission.x != 0.0 || tmp->emission.y != 0.0 ||
+		tmp->emission.z != 0.0)
+		tmp->col_disrupt = NODISRUPT;
+}
+
+void			fill_textures(char *name, t_obj *tmp, json_value v)
+{
+
+	if (ft_strcmp(name, "texture") == 0)
+	{
+		if (!v.u.string.ptr)
+			error_fedun("texture path is missing");
+		tmp->tex_id = load_texture(v.u.string.ptr);
+	}
+	if (ft_strcmp(name, "material texture") == 0)
+	{
+		if (!v.u.string.ptr)
+			error_fedun("material  texture path is missing");
+		tmp->mater_tex_id = load_texture(v.u.string.ptr);
+	}
+}
+
 void			fill_common(char *name, t_obj *tmp,
 							json_value *v, cl_float3 *rot)
 {
 	fill_color(name, (cl_float)(v->u.dbl), tmp);
+	fill_basis(name, tmp, (cl_float)(v->u.dbl));
 	if (ft_strcmp(name, "light") == 0)
 		parselight(v, tmp);
-	if (ft_strcmp(name, "texture") == 0)
-		tmp->tex_id = load_texture(v->u.string.ptr);
-	if (ft_strcmp(name, "material texture") == 0)
-		tmp->mater_tex_id = load_texture(v->u.string.ptr);
+	fill_textures(name, tmp, *v);
 	if (ft_strcmp(name, "rot x") == 0)
 		rot->x = (cl_float)(v->u.dbl);
 	if (ft_strcmp(name, "rot y") == 0)
 		rot->y = (cl_float)(v->u.dbl);
 	if (ft_strcmp(name, "rot z") == 0)
 		rot->z = (cl_float)(v->u.dbl);
-	tmp->col_disrupt = NODISRUPT;	// <<<	cannot be applied to obj with emission
-	tmp->tex_offs = (cl_float2){0.f, 0.f};	// 0 <= x <= 1.f // 0 <= y <= 1.f
+	if (ft_strcmp(name, "tex_offs x") == 0)
+		tmp->tex_offs.x = (cl_float)v->u.dbl;
+	if (ft_strcmp(name, "tex_offs y") == 0)
+		tmp->tex_offs.y = (cl_float)v->u.dbl;
+	fill_col_distrupt(name, *v, tmp);
+	check_tex_offs(tmp->tex_offs);
+	// <<<	cannot be applied to obj with emission
+	//tmp->tex_offs = (cl_float2){0.f, 0.f};	// 0 <= x <= 1.f // 0 <= y <= 1.f
+}
+
+void			rotate_obj_by_camera(t_obj *tmp, cl_float3 rot)
+{
+	if (tmp->type == sphere)
+	{
+		tmp->primitive.sphere.pos = clvec_rot_x(tmp->primitive.sphere.pos, DTR(-rot.x));
+		tmp->primitive.sphere.pos = clvec_rot_y(tmp->primitive.sphere.pos, DTR(-rot.y));
+		tmp->primitive.sphere.pos = clvec_rot_z(tmp->primitive.sphere.pos, DTR(-rot.z));
+	}
+	else if (tmp->type == cone)
+	{
+		tmp->primitive.cone.pos = clvec_rot_x(tmp->primitive.cone.pos, DTR(-rot.x));
+		tmp->primitive.cone.pos = clvec_rot_y(tmp->primitive.cone.pos, DTR(-rot.y));
+		tmp->primitive.cone.pos = clvec_rot_z(tmp->primitive.cone.pos, DTR(-rot.z));
+	}
+	else if (tmp->type == plane)
+	{
+		tmp->primitive.plane.pos = clvec_rot_x(tmp->primitive.plane.pos, DTR(-rot.x));
+		tmp->primitive.plane.pos = clvec_rot_y(tmp->primitive.plane.pos, DTR(-rot.y));
+		tmp->primitive.plane.pos = clvec_rot_z(tmp->primitive.plane.pos, DTR(-rot.z));
+	}
+	else if (tmp->type == cylinder)
+	{
+		tmp->primitive.cylinder.pos = clvec_rot_x(tmp->primitive.cylinder.pos, DTR(-rot.x));
+		tmp->primitive.cylinder.pos = clvec_rot_y(tmp->primitive.cylinder.pos, DTR(-rot.y));
+		tmp->primitive.cylinder.pos = clvec_rot_z(tmp->primitive.cylinder.pos, DTR(-rot.z));
+	}
+	else if (tmp->type == disk)
+	{
+		tmp->primitive.disk.pos = clvec_rot_x(tmp->primitive.disk.pos, DTR(-rot.x));
+		tmp->primitive.disk.pos = clvec_rot_y(tmp->primitive.disk.pos, DTR(-rot.y));
+		tmp->primitive.disk.pos = clvec_rot_z(tmp->primitive.disk.pos, DTR(-rot.z));
+	}
+	else if (tmp->type == torus)
+	{
+		tmp->primitive.torus.pos = clvec_rot_x(tmp->primitive.torus.pos, DTR(-rot.x));
+		tmp->primitive.torus.pos = clvec_rot_y(tmp->primitive.torus.pos, DTR(-rot.y));
+		tmp->primitive.torus.pos = clvec_rot_z(tmp->primitive.torus.pos, DTR(-rot.z));
+	}
+	else if (tmp->type == rectangle)
+	{
+		tmp->primitive.rectangle.pos = clvec_rot_x(tmp->primitive.rectangle.pos, DTR(-rot.x));
+		tmp->primitive.rectangle.pos = clvec_rot_y(tmp->primitive.rectangle.pos, DTR(-rot.y));
+		tmp->primitive.rectangle.pos = clvec_rot_z(tmp->primitive.rectangle.pos, DTR(-rot.z));
+	}
+	else if (tmp->type == triangle)
+	{
+		tmp->primitive.triangle.d1 = clvec_rot_x(tmp->primitive.triangle.d1, DTR(-rot.x));
+		tmp->primitive.triangle.d1 = clvec_rot_y(tmp->primitive.triangle.d1, DTR(-rot.y));
+		tmp->primitive.triangle.d1 = clvec_rot_z(tmp->primitive.triangle.d1, DTR(-rot.z));
+		tmp->primitive.triangle.d2 = clvec_rot_x(tmp->primitive.triangle.d2, DTR(-rot.x));
+		tmp->primitive.triangle.d2 = clvec_rot_y(tmp->primitive.triangle.d2, DTR(-rot.y));
+		tmp->primitive.triangle.d2 = clvec_rot_z(tmp->primitive.triangle.d2, DTR(-rot.z));
+		tmp->primitive.triangle.d3 = clvec_rot_x(tmp->primitive.triangle.d3, DTR(-rot.x));
+		tmp->primitive.triangle.d3 = clvec_rot_y(tmp->primitive.triangle.d3, DTR(-rot.y));
+		tmp->primitive.triangle.d3 = clvec_rot_z(tmp->primitive.triangle.d3, DTR(-rot.z));
+	}
+	cl_float3 r;
+
+	r.x = -rot.x;
+	r.y = -rot.y;
+	r.z = -rot.z;
+	init_rotate(&tmp->basis, r);
 }
 
 void			fill_scene_obj(json_value *value, t_scene *scene, int i)
 {
 	if (ft_strcmp("sphere", value->u.object.values[i].name) == 0)
-		fillthesphere(value->u.object.values[i].value, scene);
+		fillthesphere(value->u.object.values[i].value, scene, 0);
 	else if (ft_strcmp("cone", value->u.object.values[i].name) == 0)
-		fillthecone(value->u.object.values[i].value, scene);
+		fillthecone(value->u.object.values[i].value, scene, 0);
 	else if (ft_strcmp("plane", value->u.object.values[i].name) == 0)
-		filltheplane(value->u.object.values[i].value, scene);
+		filltheplane(value->u.object.values[i].value, scene, 0);
 	else if (ft_strcmp("cylinder", value->u.object.values[i].name) == 0)
-		fillthecylind(value->u.object.values[i].value, scene);
+		fillthecylind(value->u.object.values[i].value, scene, 0);
 	else if (ft_strcmp("torus", value->u.object.values[i].name) == 0)
-		filltorus(value->u.object.values[i].value, scene);
+		filltorus(value->u.object.values[i].value, scene, 0);
 	else if (ft_strcmp("rectangle", value->u.object.values[i].name) == 0)
-		fillrectangle(value->u.object.values[i].value, scene);
+		fillrectangle(value->u.object.values[i].value, scene, 0);
 	else if (ft_strcmp("disk", value->u.object.values[i].name) == 0)
-		filldisk(value->u.object.values[i].value, scene);
+		filldisk(value->u.object.values[i].value, scene, 0);
 	else if (ft_strcmp("ellipse", value->u.object.values[i].name) == 0)
-		fillellipse(value->u.object.values[i].value, scene);
+		fillellipse(value->u.object.values[i].value, scene, 0);
 	else if (ft_strcmp("triangle", value->u.object.values[i].name) == 0)
-		filltriangle(value->u.object.values[i].value, scene);
+		filltriangle(value->u.object.values[i].value, scene, 0);
 	else if (ft_strcmp("parallelogram", value->u.object.values[i].name) == 0)
-		fillparallelogram(value->u.object.values[i].value, scene);
+		fillparallelogram(value->u.object.values[i].value, scene, 0);
 	else
 		error_fedun("wrong key in root");
+}
+
+int 			count_helping_obj(json_value *value)
+{
+	int 		i;
+	int 		res;
+
+	i = 0;
+	res = 0;
+	while (i < value->u.object.length)
+	{
+		if (ft_strcmp(value->u.object.values[i].name, "cylinder") == 0)
+			res = res + 2;
+		//if (ft_strcmp(value->u.object.values[i].name, "cone"))
+		//	res += 1;
+		//if (ft_strcmp(value->u.object.values[i].name, "cube"))
+		//	res += 5;
+		i++;
+	}
+	return (res);
 }
 
 void			fillthescene(json_value *value, t_scene *scene)
@@ -365,7 +527,7 @@ void			fillthescene(json_value *value, t_scene *scene)
 	l = value->u.object.length;
 	if (l <= 1)
 		error_fedun("objects are not defined");
-	scene->num_obj = l - 1;
+	scene->num_obj = l - 1 + count_helping_obj(value);
 	scene->obj = (t_obj *)malloc(sizeof(t_obj) * scene->num_obj);
 	i = 0;
 	if (ft_strcmp(value->u.object.values[i++].name, "scene"))
@@ -376,6 +538,19 @@ void			fillthescene(json_value *value, t_scene *scene)
 		fill_scene_obj(value, scene, i);
 		if (scene->cur_obj >= scene->num_obj)
 			return ;
+		i++;
+	}
+
+}
+
+void			rotate_scene_by_cam(t_scene *scene)
+{
+	int 		i;
+
+	i = 0;
+	while (i < scene->num_obj)
+	{
+		rotate_obj_by_camera(&scene->obj[i], scene->cam.rot);
 		i++;
 	}
 }
@@ -396,6 +571,8 @@ void			init_scene(t_scene *scene, int argc, char **argv)
 		exit(1);
 	}
 	fillthescene(value, scene);
+
+	rotate_scene_by_cam(scene);
 	//print_scene(scene);
 	json_value_free(value);
 	free(contents);

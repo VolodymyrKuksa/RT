@@ -39,6 +39,7 @@ typedef struct		s_cam
 {
 	cl_float3		pos;
 	cl_float3		dir;
+	cl_float3		rot;
 	cl_float3		updir;
 	cl_float3		ldir;
 	cl_float3		filter;

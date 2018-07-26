@@ -13,12 +13,13 @@
 #include "rt.h"
 #include "parser.h"
 
-void			minus_camera(cl_float3 *pos, cl_float3 cam_pos, int znak)
+void			minus_camera(cl_float3 *pos, cl_float3 cam_pos)
 {
 	pos->x -= cam_pos.x;
 	pos->y -= cam_pos.y;
 	pos->z -= cam_pos.z;
 }
+
 
 void			fill_position(char *name, cl_float value, cl_float3 *pos)
 {
@@ -81,4 +82,26 @@ void			checksumandemiss(t_obj *tmp)
 	if (tmp->emission.x > 5.0f || tmp->emission.y > 5.0f ||
 		tmp->emission.z > 5.0f)
 		error_fedun("emission < 5");
+}
+
+float			scalar_dobutok(cl_float3 a, cl_float3 b)
+{
+	float		res;
+
+	res = 0;
+	res += a.x * b.x + a.y * b.y + a.z * b.z;
+	return (fabs(res));
+}
+
+void			check_basis(t_obj *tmp)
+{
+	if (scalar_dobutok(tmp->basis.u, tmp->basis.v) >= 0.001)
+		error_fedun("basis u v is not ortogonal");
+	if (scalar_dobutok(tmp->basis.w, tmp->basis.v) >= 0.001)
+		error_fedun("basis v w is not ortogonal");
+	if (scalar_dobutok(tmp->basis.u, tmp->basis.w) >= 0.001)
+		error_fedun("basis u w is not ortogonal");
+	tmp->basis.u = NORMAL(tmp->basis.u);
+	tmp->basis.v = NORMAL(tmp->basis.v);
+	tmp->basis.w = NORMAL(tmp->basis.w);
 }
