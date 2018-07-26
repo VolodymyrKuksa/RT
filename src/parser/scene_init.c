@@ -327,7 +327,7 @@ void			fill_common(char *name, t_obj *tmp,
 		rot->y = (cl_float)(v->u.dbl);
 	if (ft_strcmp(name, "rot z") == 0)
 		rot->z = (cl_float)(v->u.dbl);
-	tmp->col_disrupt = NODISRUPT;	// <<<	cannot be applied to obj with emission
+	tmp->col_disrupt = PERLIN_BLUE;	// <<<	cannot be applied to obj with emission
 	tmp->tex_offs = (cl_float2){0.f, 0.f};	// 0 <= x <= 1.f // 0 <= y <= 1.f
 }
 

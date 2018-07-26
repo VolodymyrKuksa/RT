@@ -23,11 +23,30 @@
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
-	"texture" : "textures/helper2.png",
 	"light" : {
 	  "diffuse" : 1.0,
 	  "specular" : 0.0,
 	  "refraction" : 0.0,
+	  "roughness" : 0.0,
+	  "emission z" : 0.0
+	}
+  },
+  "plane" :
+  {
+	"pos x" : 0.0,
+	"pos y" : 0.0,
+	"pos z" : -60.0,
+	"rot x" : 90.0,
+	"rot y" : 0.0,
+	"rot z" : 0.0,
+	"color x" : 1.0,
+	"color y" : 1.0,
+	"color z" : 1.0,
+	"texture" : "textures/helper.jpg",
+	"light" : {
+	  "diffuse" : 0.4,
+	  "specular" : 0.0,
+	  "refraction" : 1.0,
 	  "roughness" : 0.0,
 	  "emission z" : 0.0
 	}
@@ -83,6 +102,7 @@
 	"rot z" : 0.0,
 	"texture" : "textures/helper.jpg",
 	"light" : {
+	  "roughness": 0.0,
 	  "emission x" : 0.0,
 	  "emission y" : 0.0,
 	  "emission z" : 0.0,
@@ -187,8 +207,8 @@
   "sphere" :
   {
 	"pos x" : 0.0,
-	"pos y" : 45.0,
-	"pos z" : 50.0,
+	"pos y" : 145.0,
+	"pos z" : 150.0,
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
@@ -197,9 +217,9 @@
 	"rot z" : 0.0,
 	"texture" : "textures/helper.jpg",
 	"light" : {
-	  "emission x" : 10.0,
-	  "emission y" : 10.0,
-	  "emission z" : 10.0,
+	  "emission x" : 80.0,
+	  "emission y" : 80.0,
+	  "emission z" : 80.0,
 	  "diffuse" : 1.0,
 	  "specular" : 0.0,
 	  "refraction" : 0.0

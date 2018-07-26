@@ -238,11 +238,11 @@ t_texture texture, float3 mask)
 		if(get_hitpoint_material(&hitobj, hitpoint, &material, texture, ray))
 		{
 			res += mask *material.emission;
+			mask *= material.color;
 			float rand = get_random(seeds);
 			rand -= material.diffuse;
 			if (rand <= 0.f)
 			{
-				mask *= material.color;
 				ray = diffuse(ray, material.normal, hitpoint, seeds);
 				float cosine = dot(material.normal, ray.dir);
 				cosine = cosine < 0 ? -cosine : cosine;

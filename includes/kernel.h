@@ -174,7 +174,11 @@ enum				e_col_disrupt
 	NODISRUPT,
 	CHESS,
 	COS,
-	CIRCLE
+	CIRCLE,
+	PERLIN,
+	PERLIN_RED,
+	PERLIN_GREEN,
+	PERLIN_BLUE
 };
 
 typedef struct		s_object
