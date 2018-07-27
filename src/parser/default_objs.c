@@ -182,23 +182,23 @@ t_obj			default_disk(void)
 	return (tmp);
 }
 
-t_obj			default_ellipse(void)
+t_obj			default_elipsoid(void)
 {
 	t_obj		tmp;
 
 	tmp.basis.u = (cl_float3){0.0, 1.0, 0.0};
 	tmp.basis.v = (cl_float3){1.0, 0.0, 0.0};
 	tmp.basis.w = (cl_float3){0.0, 0.0, 1.0};
-	tmp.primitive.ellipse.c1 = (cl_float3){-5.0f, -5.0f, -5.0f};
-	tmp.primitive.ellipse.c2 = (cl_float3){5.0f, 5.0f, 5.0f};
-	tmp.primitive.ellipse.r = 9.0f;
+	tmp.primitive.elipsoid.c1 = (cl_float3){-5.0f, -5.0f, -5.0f};
+	tmp.primitive.elipsoid.c2 = (cl_float3){5.0f, 5.0f, 5.0f};
+	tmp.primitive.elipsoid.r = 9.0f;
 	tmp.color = (cl_float3){1.0, 1.0, 1.0};
 	tmp.emission = (cl_float3){0.0, 0.0, 0.0};
 	tmp.roughness = 0.0f;
 	tmp.diffuse = 1.f;
 	tmp.specular = 0;
 	tmp.refraction = 0;
-	tmp.type = ellipse;
+	tmp.type = elipsoid;
 	tmp.tex_id = -1;
 	tmp.mater_tex_id = -1;
 	tmp.tex_offs = (cl_float2){0.f, 0.f};

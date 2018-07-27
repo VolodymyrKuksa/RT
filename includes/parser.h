@@ -49,7 +49,7 @@ t_obj			default_plane(void);
 t_obj			default_torus(void);
 t_obj           default_rectangle(void);
 t_obj			default_disk(void);
-t_obj			default_ellipse(void);
+t_obj			default_elipsoid(void);
 t_obj			default_triangle(void);
 
 void			camera_default(t_cam *cam);
@@ -75,6 +75,7 @@ void			parselight(json_value *value, t_obj *tmp);
 
 void			fill_ellipse_centers(char *name, json_value v, t_obj *tmp);
 void			fill_triangle_points(char *name, json_value v, t_obj *tmp);
+void			get_common_hat_cone(t_obj *obj1, t_obj tmp, t_scene *scene);
 void			fill_cone_params(char *name, json_value v, t_obj *tmp);
 void			fill_cylinder_params(char *name, json_value v, t_obj *tmp);
 void			fill_plane_params(char *name, json_value v, t_obj *tmp);

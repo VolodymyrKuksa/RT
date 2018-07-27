@@ -81,9 +81,16 @@ typedef struct		s_quad
 
 typedef enum		e_obj_type
 {
-	sphere, plane, cylinder, cone, torus, disk,rectangle, ellipse,
+	sphere,
+	plane,
+	cylinder,
+	cone,
+	torus,
+	disk,
+	rectangle,
 	parallelogram,
-	triangle
+	triangle,
+	elipsoid
 }					t_obj_type;
 
 typedef struct		s_sphere
@@ -137,20 +144,6 @@ typedef struct		s_rectangle
 	float		tex_scale;
 }					t_rectangle;
 
-typedef struct		s_ellipse
-{
-	__float3	c1;
-	__float3	c2;
-	float	r;
-}					t_ellipse;
-
-typedef struct		s_triangle
-{
-	__float3	d1;
-	__float3	d2;
-	__float3	d3;
-}					t_triangle;
-
 typedef struct		s_parallelogram
 {
 	__float3	pos;
@@ -159,18 +152,34 @@ typedef struct		s_parallelogram
 	float		l;
 }					t_parallelogram;
 
+typedef struct		s_triangle
+{
+	__float3	d1;
+	__float3	d2;
+	__float3	d3;
+
+}					t_triangle;
+
+typedef struct		s_elipsoid
+{
+	__float3	pos;
+	__float3	c1;
+	__float3	c2;
+	float 		r;
+}					t_elipsoid;
+
 typedef	union		u_primitive
 {
-	t_plane		plane;
-	t_sphere	sphere;
-	t_cylinder	cylinder;
-	t_cone		cone;
-	t_torus		torus;
-	t_disk		disk;
-    t_rectangle	rectangle;
-	t_ellipse	ellipse;
-	t_triangle	triangle;
+	t_plane			plane;
+	t_sphere		sphere;
+	t_cylinder		cylinder;
+	t_cone			cone;
+	t_torus			torus;
+	t_disk			disk;
+    t_rectangle 	rectangle;
 	t_parallelogram	parallelogram;
+	t_triangle		triangle;
+	t_elipsoid		elipsoid;
 }					t_primitive;
 
 
