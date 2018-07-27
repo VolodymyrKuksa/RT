@@ -13,7 +13,20 @@
 #ifndef RT_TYPES_H
 # define RT_TYPES_H
 
+#include <stdatomic.h>
 # include "rt_textures.h"
+
+# include <stdlib.h>
+# include <pthread.h>
+# include <sys/types.h>
+# include <sys/uio.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <sys/socket.h>
+# include <netdb.h>
+# include "libft.h"
+
+typedef struct		s_env t_env;
 
 typedef struct		s_scrn
 {
@@ -22,12 +35,23 @@ typedef struct		s_scrn
 	t_rgb			*surf_arr;
 }					t_scrn;
 
+enum				e_effects
+{
+	NOEFFECT,
+	BLACK_N_WHITE,
+	NEGATIVE,
+	SEPIA,
+	CARTOON
+};
+
 typedef struct		s_cam
 {
 	cl_float3		pos;
 	cl_float3		dir;
+	cl_float3		rot;
 	cl_float3		updir;
 	cl_float3		ldir;
+	cl_float3		filter;
 	double			fov;
 	float			f_length;
 	float			aperture;
@@ -35,6 +59,9 @@ typedef struct		s_cam
 	float			pr_pl_w;
 	float			pr_pl_h;
 	float			dust;
+	float			brightness;
+	float			refr_coef;
+	int				effect;
 }					t_cam;
 
 typedef struct		s_seed
@@ -76,9 +103,9 @@ typedef enum		e_obj_type
 	cylinder,
 	cone,
 	torus,
-	disc,
+	disk,
 	rectangle,
-	paralellogram,
+	parallelogram,
 	triangle,
 	elipsoid
 }					t_obj_type;
@@ -87,6 +114,7 @@ typedef struct		s_disk
 {
 	cl_float3	pos;
 	cl_float	r;
+	int			related;
 }					t_disk;
 
 typedef struct		s_sphere
@@ -100,19 +128,22 @@ typedef struct		s_cylinder
 	cl_float3	pos;
 	float		r;
 	float		h;
+	float		tex_scale;
 }					t_cylinder;
 
 typedef struct		s_plane
 {
 	cl_float3	pos;
+	float		tex_scale;
 }					t_plane;
 
 typedef struct		s_cone
 {
 	cl_float3	pos;
 	float		tng;
-	float 		m1;
-	float 		m2;
+	float		m1;
+	float		m2;
+	float		tex_scale;
 }					t_cone;
 
 typedef struct		s_torus
@@ -127,15 +158,16 @@ typedef struct		s_rectangle
 	cl_float3	pos;
 	float		h;
 	float		w;
+	float		tex_scale;
 }					t_rectangle;
 
-typedef struct		s_paralellogram
+typedef struct		s_parallelogram
 {
 	cl_float3	pos;
 	float		h;
 	float		w;
 	float		l;
-}					t_paralellogram;
+}					t_parallelogram;
 
 typedef struct		s_triangle
 {
@@ -147,8 +179,8 @@ typedef struct		s_triangle
 typedef struct		s_elipsoid
 {
 	cl_float3	pos;
-	cl_float3	C1;
-	cl_float3	C2;
+	cl_float3	c1;
+	cl_float3	c2;
 	float 		r;
 }					t_elipsoid;
 
@@ -161,7 +193,7 @@ typedef	union		u_primitive
 	t_torus			torus;
 	t_disk			disk;
 	t_rectangle		rectangle;
-	t_paralellogram	paralellogram;
+	t_parallelogram	parallelogram;
 	t_triangle		triangle;
 	t_elipsoid		elipsoid;
 }					t_primitive;
@@ -172,6 +204,18 @@ typedef struct		s_basis
 	cl_float3		v;
 	cl_float3		w;
 }					t_basis;
+
+enum				e_col_disrupt
+{
+	NODISRUPT,
+	CHESS,
+	COS,
+	CIRCLE,
+	PERLIN,
+	PERLIN_RED,
+	PERLIN_GREEN,
+	PERLIN_BLUE
+};
 
 typedef struct		s_object
 {
@@ -185,7 +229,10 @@ typedef struct		s_object
 	cl_float3	color;
 	cl_float3	emission;
 	int			tex_id;
+	cl_float2	tex_offs;
+	int			col_disrupt;
 	int			mater_tex_id;
+	cl_float3   rot;
 }					t_obj;
 
 typedef struct		s_scene
@@ -209,6 +256,7 @@ typedef struct		s_cldata
 
 	cl_float3			*px_host;
 	cl_float3			*pixels;
+	pthread_mutex_t		pixel_lock;
 
 	cl_mem				px_gpu;
 	cl_mem				obj_gpu;
@@ -219,14 +267,99 @@ typedef struct		s_cldata
 	t_seeds				seeds;
 }					t_cldata;
 
+typedef struct		s_client
+{
+	int					active;
+	int					visual;
+	int					socket_fd;
+	int					portno;
+	struct hostent		*server;
+	struct sockaddr_in	server_addr;
+	atomic_int			message_id;
+}					t_client;
+
+enum				e_status
+{
+	BUSY,
+	FREE
+};
+
+enum				e_message
+{
+	STRING =     0b0,
+	OBJ =        0b1,
+	CAM =        0b10,
+	TEXTURES =   0b100,
+	TEX_DATA =   0b1000,
+	PIXELS =     0b10000,
+	WND_SIZE =   0b100000,
+	CONNECTION = 0b1000000,
+	QUIT =       0b10000000
+};
+
+typedef struct		s_client_queue
+{
+	int						client_fd;
+	struct s_client_queue	*next;
+}					t_client_queue;
+
+typedef struct		s_message_queue
+{
+	enum e_message			type;
+	unsigned int			size;
+	void					*message;
+	int						*destinations;
+	size_t					dest_size;
+	struct s_message_queue	*next;
+}					t_message_queue;
+
+typedef struct		s_thread
+{
+	int				thread_id;
+	pthread_t		pid;
+	unsigned int	status;
+	unsigned int	alive;
+	int				client_fd;
+	char			*client_hostname;
+	t_client_queue	**client_queue;
+	pthread_mutex_t	*client_queue_lock;
+	t_message_queue	**message_queue;
+	pthread_mutex_t	*message_queue_lock;
+	t_env			*env;
+}					t_thread;
+
+typedef struct		s_tpool
+{
+	unsigned int	total_threads;
+	t_thread		*threads;
+	t_client_queue	*client_queue;
+	pthread_mutex_t	client_queue_lock;
+	t_message_queue	*message_queue;
+	pthread_mutex_t	message_queue_lock;
+	t_env			*env;
+}					t_tpool;
+
+typedef struct		s_server
+{
+	atomic_int			active;
+	pthread_t			pid;
+	int					serv_socket_fd;
+	int					port_no;
+	struct sockaddr_in	serv_addr;
+	unsigned int		num_threads;
+	t_tpool				*tpool;
+	atomic_int			message_id;
+}					t_server;
+
 typedef struct		s_env
 {
 	t_cldata			cl;
 	t_scrn				screen;
-	t_scene				sc;
+	t_scene				scene;
 	t_mvdata			mv_data;
 	t_txgpu				textures;
-
+	t_server			server;
+	t_client			client;
 	unsigned int		num_samples;
 }					t_env;
 

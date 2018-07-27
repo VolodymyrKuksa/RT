@@ -1,22 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vec_print.c                                        :+:      :+:    :+:   */
+/*   socket_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vkuksa <vkuksa@student.unit.ua>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/22 18:14:00 by vkuksa            #+#    #+#             */
-/*   Updated: 2018/05/22 18:14:00 by vkuksa           ###   ########.fr       */
+/*   Created: 2018/07/24 20:40:00 by vkuksa            #+#    #+#             */
+/*   Updated: 2018/07/24 20:40:00 by vkuksa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libvec.h"
-#include <stdio.h> //forbidden
+#include "rt.h"
 
-void	vec_print(t_vec v, char *str)
+void	put_error(char *str)
 {
-	if (str)
-		printf("%s x: %lf; y: %lf; z: %lf;\n", str, v.x, v.y, v.z);
-	else
-		printf("x: %lf; y: %lf; z: %lf;\n", v.x, v.y, v.z);
+	perror(str);
+	exit(1);
+}
+
+void	set_nonblock(int fd)
+{
+	int flags;
+
+	flags = fcntl(fd, F_GETFL, 0);
+	flags |= O_NONBLOCK;
+	fcntl(fd, F_SETFL, flags);
+}
+
+void	set_block(int fd)
+{
+	int flags;
+
+	flags = fcntl(fd, F_GETFL, 0);
+	flags ^= O_NONBLOCK;
+	fcntl(fd, F_SETFL, flags);
 }

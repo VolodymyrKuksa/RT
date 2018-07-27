@@ -11,6 +11,7 @@
 # **************************************************************************** #
 
 NAME = RT
+CLIENT = client
 N_LFT = libft.a
 N_LVEC = libvec.a
 N_JSON = libJSON.a
@@ -41,33 +42,52 @@ LJSON = $(D_JSON)$(N_JSON)
 
 #--------------FILES------------------------------------------------------------
 
-HEAD_FILES = rt.h rt_types.h parser.h keys.h rt_textures.h
-
+HEAD_FILES = rt.h rt_types.h parser.h keys.h rt_textures.h server_client.h
 
 C_FILES = cl_exec.c\
 cl_initialization.c\
 events/keyboard_events.c\
 events/movement_events.c\
+events/mouse_event.c\
 events/mv_obj.c\
 events/rot_obj.c\
 events/rotate.c\
 events/window_event.c\
 events/write_png.c\
 events/write_ppm.c\
-main.c\
 parser/check_params1.c\
 parser/default_objs.c\
 parser/fill_each_obj.c\
 parser/init_cam.c\
 parser/parse.c\
+parser/ftoa.c\
+parser/write_to_file.c\
 parser/scene_init.c\
 scene_utils.c\
 sdl_utils.c\
 textures/compress_texture.c\
-textures/load_texture.c
+textures/load_texture.c\
+server-client/run_server.c\
+server-client/thread_pool.c\
+server-client/socket_utils.c\
+server-client/tpool_new_msg.c\
+server-client/tpool_read_send_msg.c\
+server-client/tpool_cleanup.c\
+server-client/tpool_client.c\
+server-client/tpool_threads.c\
+server-client/tpool_client_logic.c\
+main_loop.c
 
-SRC = $(addprefix $(D_SRC), $(C_FILES))
-OBJ = $(addprefix $(D_OBJ), $(C_FILES:.c=.o))
+C_FILES_RT = server_main.c $(C_FILES)
+
+C_FILES_CLIENT = client_main.c $(C_FILES)
+
+SRC_RT = $(addprefix $(D_SRC), $(C_FILES_RT))
+OBJ_RT = $(addprefix $(D_OBJ), $(C_FILES_RT:.c=.o))
+
+SRC_CLIENT = $(addprefix $(D_SRC), $(C_FILES_CLIENT))
+OBJ_CLIENT = $(addprefix $(D_OBJ), $(C_FILES_CLIENT:.c=.o))
+
 HEADERS = $(addprefix $(D_INC), $(HEAD_FILES))
 
 #--------------COMPILATION------------------------------------------------------
@@ -87,23 +107,30 @@ C_NONE = \033[0m
 
 #--------------RULES------------------------------------------------------------
 
-all: $(NAME)
+all: $(NAME) $(CLIENT)
 
-$(NAME): $(D_OBJ) $(OBJ)
+$(NAME): $(D_OBJ) $(OBJ_RT)
 	@make -C $(D_LFT)
 	@printf "$(C_CYAN)%-10s$(C_NONE)%-25s$(C_GREEN)[done]$(C_NONE)\n" $(NAME): $(N_LFT)
 	@make -C $(D_LVEC)
 	@printf "$(C_CYAN)%-10s$(C_NONE)%-25s$(C_GREEN)[done]$(C_NONE)\n" $(NAME): $(N_LVEC)
 	@make -C $(D_JSON)
 	@printf "$(C_CYAN)%-10s$(C_NONE)%-25s$(C_GREEN)[done]$(C_NONE)\n" $(NAME): $(N_JSON)
-	@$(CC) $(OBJ) $(LFT) $(LVEC) $(LJSON) $(FRW) -o $(NAME)
+	@$(CC) $(OBJ_RT) $(LFT) $(LVEC) $(LJSON) $(FRW) -o $(NAME)
 	@printf "$(C_CYAN)%-10s$(C_NONE)%-25s$(C_GREEN)[done]$(C_NONE)\n" $(NAME): $@
+
+$(CLIENT): $(D_OBJ) $(OBJ_CLIENT)
+	@make -C $(D_LFT)
+	@printf "$(C_CYAN)%-10s$(C_NONE)%-25s$(C_GREEN)[done]$(C_NONE)\n" $(CLIENT): $(N_LFT)
+	@$(CC) $(OBJ_CLIENT) $(LFT) $(LVEC) $(LJSON) $(FRW) -o $(CLIENT)
+	@printf "$(C_CYAN)%-10s$(C_NONE)%-25s$(C_GREEN)[done]$(C_NONE)\n" $(CLIENT): $@
 
 $(D_OBJ):
 	@mkdir $(D_OBJ)
 	@mkdir $(D_OBJ)textures
 	@mkdir $(D_OBJ)parser
 	@mkdir $(D_OBJ)events
+	@mkdir $(D_OBJ)server-client
 	@printf "$(C_CYAN)%-10s$(C_NONE)%-25s$(C_GREEN)[done]$(C_NONE)\n" $(NAME): $@
 
 $(D_OBJ)%.o: $(D_SRC)%.c $(HEADERS)
@@ -119,6 +146,7 @@ clean:
 
 fclean: clean
 	@rm -rf $(NAME)
+	@rm -rf $(CLIENT)
 	@rm -rf $(D_SDL)
 	@make -C $(D_LFT) fclean
 	@make -C $(D_LVEC) fclean

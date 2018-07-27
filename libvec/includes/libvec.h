@@ -59,7 +59,4 @@ cl_float3		clvec_rot_y(cl_float3 v, double a);
 cl_float3		clvec_rot_z(cl_float3 v, double a);
 cl_float3		clvec_add(cl_float3 a, cl_float3 b);
 
-// Forbidden printf !!!
-void			vec_print(t_vec v, char *str);
-
 #endif

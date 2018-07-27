@@ -1,0 +1,68 @@
+{
+"scene" :
+{
+"pos x" : 3.0,
+"pos y" : 0.0,
+"pos z" : 0.0,
+"dir y" : 0.0,
+"dir x" : -1.0,
+"dir z" : -1.0,
+"f_length" : 60.0,
+"dust" : 0.0,
+"fov" : 90.0,
+"aperture" : 0.0
+},
+	"cylinder" :
+{
+	"pos x" : 10.0000,
+	"pos y" : -10.2996,
+	"pos z" : -8.2267,
+	"color x" : 1.0000,
+	"color y" : 1.0000,
+	"color z" : 1.0000,
+	"radius" : 5.0000,
+	"h" : 20.0000,
+	"u x" : 0.0000,
+	"u y" : 0.9396,
+	"u z" : 0.3420,
+	"v x" : 1.0000,
+	"v y" : 0.0000,
+	"v z" : 0.0000,
+	"w x" : 0.0000,
+	"w y" : -0.3420,
+	"w z" : 0.9396,
+	"material texture": "",
+	"texture": "textures/helper.jpg",
+	"light" : {
+		"emission x" : 0.0000,
+		"emission y" : 0.0000,
+		"emission z" : 0.0000,
+		"diffuse" : 1.0000,
+		"specular" : 0.0000,
+		"refraction" : 0.0000,
+		"roughness" : 1.0000
+	}
+},
+	"sphere" :
+	{
+		"pos x" : 0.0,
+		"pos y" : 45.0,
+		"pos z" : 50.0,
+		"color x" : 1.0,
+		"color y" : 1.0,
+		"color z" : 1.0,
+		"rot x" : 0.0,
+		"rot y" : 0.0,
+		"rot z" : 0.0,
+		"texture" : "textures/helper.jpg",
+		"light" : {
+			"emission x" : 10.0,
+			"emission y" : 10.0,
+			"emission z" : 10.0,
+			"diffuse" : 1.0,
+			"specular" : 0.0,
+			"refraction" : 0.0
+		},
+		"radius" : 40.0
+	}
+}

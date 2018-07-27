@@ -24,6 +24,8 @@
 # include "libvec.h"
 # include "get_next_line.h"
 # include "rt_textures.h"
+# include <netinet/in.h>
+# include "server_client.h"
 # include "rt_types.h"
 # include "keys.h"
 # include "parser.h"
@@ -44,21 +46,30 @@
 # endif
 
 # define DEVICE_TYPE CL_DEVICE_TYPE_GPU
+# define CLIENT_WORK_SIZE 100
 
 /*
 **	returns a string with file content and writes it`s in the size variable
 **	returns NULL and writes 0 to size in case of an error
 */
 
-int			init_win(t_scrn *screen);
+int			init_win(t_scrn *screen, int server, int shown);
 void		close_sdl(t_scrn *screen);
 void		init_scene(t_scene *scene, int argc, char **argv);
 
 /*
-**	main.c
+**	server_main.c
 */
 
 void		init_seeds(t_seeds *s);
+
+/*
+**	main_loop.c
+*/
+
+void		main_loop_server(t_env *env);
+void		main_loop_client(t_env *env);
+void		clamp(cl_float3 *px);
 
 /*
 **	cl_initialization.c
@@ -87,13 +98,21 @@ int			key_down_event(SDL_Event e, t_env *env);
 **	movement_events.c
 */
 
+void		clear_pixels(t_cldata *cl);
 void		movement_events(t_env *env);
+void		write_scene_to_kernel(t_env *env);
 
 /*
 **	window_event.c
 */
 
 void		window_event(SDL_Event e, t_env *env);
+
+/*
+**	mouse_event.c
+*/
+
+void		mouse_wheel_event(SDL_Event e, t_env *env);
 
 /*
 **	scene_init.c
@@ -127,7 +146,7 @@ void		rot_disk(float d, t_obj *c, t_mvdata mvdata,
 	cl_float3 (*f)(float, cl_float3, t_mvdata));
 void		rot_rectangle(float d, t_obj *c, t_mvdata mvdata,
 	cl_float3 (*f)(float, cl_float3, t_mvdata));
-void		rot_paralellogram(float d, t_obj *c, t_mvdata mvdata,
+void		rot_parallelogram(float d, t_obj *c, t_mvdata mvdata,
 	cl_float3 (*f)(float, cl_float3, t_mvdata));
 void		rot_triangle(float d, t_obj *c, t_mvdata mvdata,
 							  cl_float3 (*f)(float, cl_float3, t_mvdata));
@@ -142,8 +161,23 @@ void		mv_cone(cl_float3 d, t_obj *c, t_mvdata mvdata);
 void		mv_torus(cl_float3 d, t_obj *c, t_mvdata mvdata);
 void		mv_disk(cl_float3 d, t_obj *c, t_mvdata mvdata);
 void		mv_rectangle(cl_float3 d, t_obj *c, t_mvdata mvdata);
-void		mv_paralellogram(cl_float3 d, t_obj *c, t_mvdata mvdata);
+void		mv_parallelogram(cl_float3 d, t_obj *c, t_mvdata mvdata);
 void		mv_triangle(cl_float3 d, t_obj *c, t_mvdata mvdata);
+
+/*
+**	run_server.c
+*/
+
+void		run_server(t_env *env);
+void		quit_server(t_server *server);
+
+/*
+**	socket_utils.c
+*/
+
+void		put_error(char *str);
+void		set_nonblock(int fd);
+void		set_block(int fd);
 
 /*
 **	write_ppm.c

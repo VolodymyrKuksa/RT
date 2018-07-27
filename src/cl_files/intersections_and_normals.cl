@@ -7,19 +7,19 @@
 
 
 
-float	intersection_elipsoid(t_ray *ray,t_elipsoid elipsoid)
-{
-	float	a1, a2, k;
-	__float3 v, x;
-
-	x = ray->pos - elipsoid.C2;
-	v = elipsoid.C1 - elipsoid.C2;
-	k = length(v);
-	v = normalize(v);
-	a1 = 2.f * k * dot(ray->dir, v);
-	a2 = r * r  + 2.f * k * dot(x,v) - k;
-
-}
+//float	intersection_elipsoid(t_ray *ray,t_elipsoid elipsoid)
+//{
+//	float	a1, a2, k;
+//	__float3 v, x;
+//
+//	x = ray->pos - elipsoid.c2;
+//	v = elipsoid.c1 - elipsoid.c2;
+//	k = length(v);
+//	v = normalize(v);
+//	a1 = 2.f * k * dot(ray->dir, v);
+//	a2 = r * r  + 2.f * k * dot(x,v) - k;
+//
+//}
 
 
 float	intersection_rectangle(t_ray *ray,t_rectangle rectangle, __global t_basis *basis)
@@ -50,7 +50,7 @@ float	intersection_rect(t_ray *ray,t_rectangle rectangle, t_basis *basis)
 	return (-1.f);
 }
 
-float	intersection_paralellogram(t_ray *ray,t_paralellogram paral, __global t_basis *basis)
+float	intersection_parallelogram(t_ray *ray,t_parallelogram paral, __global t_basis *basis)
 {
 	t_rectangle rect;
 	float3 tmp1;
@@ -202,7 +202,7 @@ float	intersection_cone(t_ray *ray,t_cone cone, __float3 c_rot)
 	{
 		hitpoint = res * ray->dir + x;
 		length = dot(c_rot, hitpoint);
-		if (length < cone.m2 && length > cone.m1)
+		if (length > -cone.m2 && length < cone.m1)
 			return (res);
 	}
 	res = (-q.b + q.d) / q.a;
@@ -210,7 +210,7 @@ float	intersection_cone(t_ray *ray,t_cone cone, __float3 c_rot)
 	{
 		hitpoint = res * ray->dir + x;
 		length = dot(c_rot, hitpoint);
-		if (length > cone.m1 && length < cone.m2)
+		if (length < cone.m1 && length > -cone.m2)
 			return (res);
 	}
 	return (-1.f);
@@ -452,7 +452,7 @@ __float3	normal_torus(__float3  hitpoint, t_torus *torus, __float3 t_rot)
 	return (normalize(normal));
 }
 
-__float3	normal_paralellogram(__float3  hitpoint, t_paralellogram *paral, t_basis *basis)
+__float3	normal_parallelogram(__float3  hitpoint, t_parallelogram *paral, t_basis *basis)
 {
 	__float3  normal;
 	float length;
@@ -501,8 +501,9 @@ float3		get_normal_obj(float3 hitpoint, t_ray ray, t_obj *hitobj)
 			break;
         case rectangle:
             n = hitobj->basis.u;//normal_rectangle(hitpoint, &(hitobj->primitive.rectangle), hitobj->basis.u);
-		case paralellogram:
-			n = normal_paralellogram(hitpoint, &(hitobj->primitive.paralellogram), &(hitobj->basis));
+			break;
+		case parallelogram:
+			n = normal_parallelogram(hitpoint, &(hitobj->primitive.parallelogram), &(hitobj->basis));
 			break;
 		case triangle:
 			n = normal_triangle(hitpoint, &(hitobj->primitive.triangle));

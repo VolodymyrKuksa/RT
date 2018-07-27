@@ -11,10 +11,10 @@ t_ray get_camera_ray(int x, int y, t_cam *cam, uint2 *seeds);
 static float get_random(uint2 *seeds);
 float	solve_quad(t_quad q);
 float	get_intersection(t_ray *r, __global t_obj *obj, int n_obj, int *id);
-float3	trace_ray(t_ray, __global t_obj *, int, uint2 *, t_texture);
+float3	trace_ray(t_ray, __global t_obj *, int, uint2 *, t_texture, float3, float);
 t_ray	diffuse(t_ray ray, float3 n, float3 hitpoint, uint2 *seeds);
 t_ray	reflect(t_ray ray, float3 hitpt, t_material material, uint2 *seeds);
-t_ray	refract(t_ray ray, float3 hitpoint, t_material material, uint2 *seeds);
+t_ray	refract(t_ray, float3, t_material, uint2 *, float);
 float3	sample_hemisphere(float3 w, float max_r, uint2 *seeds);
 bool	participating_media(t_ray *ray, float t, uint2 *seeds);
 
@@ -25,7 +25,7 @@ float	intersection_cylinder(t_ray*,t_cylinder,__float3);
 float	intersection_torus(t_ray*,t_torus,__float3);
 float	intersection_disk(t_ray*,t_disk,__float3);
 float	intersection_rectangle(t_ray*,t_rectangle,__global t_basis*);
-float	intersection_paralellogram(t_ray*,t_paralellogram,__global t_basis*);
+float	intersection_parallelogram(t_ray*,t_parallelogram,__global t_basis*);
 float 	intersection_triangle(t_ray *ray,t_triangle triangle);
 
 __float3	normal_sphere(__float3 , t_sphere *);
@@ -37,7 +37,7 @@ float3		get_normal_obj(float3 hitpoint, t_ray ray, t_obj *hitobj);
 
 float3	get_point_color(t_obj *hitobj, float3 hitpoint, t_texture texture);
 int	get_hitpoint_material(t_obj *, float3, t_material *, t_texture, t_ray);
-void	get_texture_coord(t_obj *, float3, t_texture, float2 *);
+void	get_texture_coord(t_obj *, float3, float2 *);
 
 t_ray get_camera_ray(int x, int y, t_cam *cam, uint2 *seeds)
 {
@@ -107,8 +107,8 @@ float	get_intersection(t_ray *r, __global t_obj *object, int num_obj, int *id)
             case rectangle:
                 tmp = intersection_rectangle(r, object[i].primitive.rectangle, &(object[i].basis));
                 break;
-			case paralellogram:
-				tmp = intersection_paralellogram(r, object[i].primitive.paralellogram, &(object[i].basis));
+			case parallelogram:
+				tmp = intersection_parallelogram(r, object[i].primitive.parallelogram, &(object[i].basis));
 				break;
 			case triangle:
 				tmp = intersection_triangle(r, object[i].primitive.triangle);
@@ -162,7 +162,7 @@ t_ray	reflect(t_ray ray, float3 hitpoint, t_material material, uint2 *seeds)
 	return (ray);
 }
 
-t_ray	refract(t_ray ray, __float3 hitpoint, t_material material, uint2 *seeds)
+t_ray	refract(t_ray ray, __float3 hitpoint, t_material material, uint2 *seeds, float refr_coef)
 {
 	float	cosine_theta = dot(ray.dir, material.normal);
 	float	cosine_theta_r;
@@ -181,17 +181,19 @@ t_ray	refract(t_ray ray, __float3 hitpoint, t_material material, uint2 *seeds)
 	if (material.enter)
 	{
 		cosine_theta_r = 1.f - (1.f - cosine_theta * cosine_theta)
-			/ 2.25f;
+			/ (refr_coef * refr_coef);
 		ray.refractions++;
 		cosine_theta_r = sqrt(cosine_theta_r);
-		t = ((ray.dir - material.normal * cosine_theta) / 1.5f) - material.normal * cosine_theta_r;
+		t = ((ray.dir - material.normal * cosine_theta) / refr_coef) -
+			material.normal * cosine_theta_r;
 	}
 	else
 	{
-		cosine_theta_r = 1.f - (2.25f * (1 - cosine_theta * cosine_theta));
+		cosine_theta_r = 1.f - (refr_coef * refr_coef * (1.f - cosine_theta * cosine_theta));
 		ray.refractions--;
 		cosine_theta_r = sqrt(cosine_theta_r);
-		t = (1.5f * (ray.dir - material.normal * cosine_theta)) - material.normal * cosine_theta_r;
+		t = (refr_coef * (ray.dir - material.normal * cosine_theta)) -
+			material.normal * cosine_theta_r;
 	}
 
 	ray.dir = sample_hemisphere(t, material.roughness, seeds);
@@ -221,9 +223,9 @@ bool	participating_media(t_ray *ray, float t, uint2 *seeds)
 	return false;
 }
 
-float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds, t_texture texture)
+float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds,
+t_texture texture, float3 mask, float refr_coef)
 {
-	float3	mask = (float3)(1.f, 1.f, 1.f);
 	float3	res = (float3)(0, 0, 0);
 	t_material	material;
 	for (int bounce = 0; bounce < max_bounces; ++bounce)
@@ -244,11 +246,11 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds, t_te
 		if(get_hitpoint_material(&hitobj, hitpoint, &material, texture, ray))
 		{
 			res += mask *material.emission;
+			mask *= material.color;
 			float rand = get_random(seeds);
 			rand -= material.diffuse;
 			if (rand <= 0.f)
 			{
-				mask *= material.color;
 				ray = diffuse(ray, material.normal, hitpoint, seeds);
 				float cosine = dot(material.normal, ray.dir);
 				cosine = cosine < 0 ? -cosine : cosine;
@@ -261,12 +263,50 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds, t_te
 					break;
 			}
 			else
-				ray = refract(ray, hitpoint, material, seeds);
+				ray = refract(ray, hitpoint, material, seeds, refr_coef);
 		}
 		else
 			ray.pos = hitpoint + EPSILON * ray.dir;
 	}
 	return (res);
+}
+
+float		round_tenth(float val);
+
+float		round_tenth(float val)
+{
+	val *= 1;
+	return val;
+}
+
+float3		apply_effect(float3 px, int effect);
+
+float3		apply_effect(float3 px, int effect)
+{
+	if (!effect)
+		return px;
+	else if (effect == BLACK_N_WHITE)
+	{
+		float	avrg = (px.x + px.y + px.z) / 3;
+		return (float3)(avrg, avrg, avrg);
+	}
+	else if (effect == NEGATIVE)
+	{
+		return (float3)(1.f - px.x, 1.f - px.y, 1.f - px.z);
+	}
+	else if (effect == SEPIA)
+	{
+		float3	res;
+		res.x = 0.393f * px.x + 0.769f * px.y + 0.189 * px.z;
+		res.y = 0.349f * px.x + 0.686f * px.y + 0.168 * px.z;
+		res.z = 0.272f * px.x + 0.534f * px.y + 0.131 * px.z;
+		return res;
+	}
+	else if (effect == CARTOON)
+	{
+		return (float3)(round_tenth(px.x), round_tenth(px.y), round_tenth(px.z));
+	}
+	return px;
 }
 
  __kernel void	render_pixel(
@@ -291,7 +331,9 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds, t_te
 	t_texture	texture = {tx, txdata, tx_count};
 	t_ray ray = get_camera_ray(x, y, &cam, &seeds);
 	pixels[id] = (float3)(0,0,0);
-	pixels[id] += trace_ray(ray, obj, num_obj, &seeds, texture);
+	pixels[id] += trace_ray(ray, obj, num_obj, &seeds, texture, cam.filter,
+		cam.refr_coef) * cam.brightness;
+	pixels[id] = apply_effect(pixels[id], cam.effect);
 	seed[id] = seeds.x;
 	seed[id + w * h] = seeds.y;
 }

@@ -84,16 +84,16 @@ SDL_Surface		*get_texture(int id)
 	return (NULL);
 }
 
-void			print_txtlst(void)		//USES PRINTF (FOR DEBUG)
+char			*get_texture_name(int id)
 {
 	t_txlst		*tmp;
 
+	if (id < 0 || id >= g_tx_count)
+		return (NULL);
 	tmp = g_txlst;
-	printf("g_txlst:\n>>>>>-----<<<<<\n");
-	while (tmp)
-	{
-		printf("filename: %s\nid: %d\nwidth: %d\nheight: %d\n>>>>>-----<<<<<\n",
-			tmp->filename, tmp->id, tmp->surf->w, tmp->surf->h);
+	while (tmp && tmp->id != id)
 		tmp = tmp->next;
-	}
+	if (tmp)
+		return (tmp->filename);
+	return (NULL);
 }

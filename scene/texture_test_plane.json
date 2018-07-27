@@ -22,7 +22,7 @@
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
-	"texture" : "textures/Wood3.jpg",
+	"texture" : "textures/ebalo.jpg",
 	"light" : {
 	  "diffuse" : 1.0,
 	  "specular" : 0.0,
