@@ -50,6 +50,8 @@ void			fill_cam_effect(char *name, json_value v, t_cam *cam)
 		if (ft_strcmp(v.u.string.ptr, "CARTOON") == 0)
 			cam->effect = CARTOON;
 	}
+	if (cam->refr_coef < 1 || cam->refr_coef > 2)
+		error_fedun("refr_coef of camera is bad. 1 <= x <= 2");
 }
 
 void			get_cam_params2(char *name, json_value v, t_scene *scene)
@@ -93,7 +95,7 @@ void			get_camera_params(json_value *value, t_scene *scene)
 		fill_position(value->u.object.values[i].name,
 					(cl_float)v.u.dbl, &(scene->cam.pos));
 		get_cam_params2(value->u.object.values[i].name, v, scene);
-		fill_cam_effect(value->u.object.values[i].name, v, &scene->cam);
+		fill_cam_effect(value->u.object.values[i].name, v, &(scene->cam));
 		i++;
 	}
 	check_camera(&(scene->cam));

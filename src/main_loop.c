@@ -64,6 +64,19 @@ void	handle_events(t_env *env)
 			window_event(e, env);
 		else if (e.type == SDL_MOUSEWHEEL)
 			mouse_wheel_event(e, env);
+		else if (e.type == SDL_MOUSEBUTTONDOWN)
+		{
+			size_t		global_size = 1;
+			clSetKernelArg(env->cl.kr_intersect, 0, sizeof(int), &e.button.x);
+			clSetKernelArg(env->cl.kr_intersect, 1, sizeof(int), &e.button.y);
+			clEnqueueNDRangeKernel(env->cl.command_queue, env->cl.kr_intersect,
+				1, 0, &global_size, 0, 0, 0, 0);
+			clEnqueueReadBuffer(env->cl.command_queue, env->cl.id_gpu, CL_FALSE,
+				0, sizeof(int), env->cl.id_host, 0, 0, 0);
+			clFinish(env->cl.command_queue);
+			printf("id: %d, type: %d\n", *env->cl.id_host,
+				env->scene.obj[*env->cl.id_host].type);
+		}
 	}
 }
 

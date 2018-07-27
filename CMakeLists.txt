@@ -5,7 +5,7 @@ FILE(GLOB_RECURSE LIBFT_DIR "libft/src/*.c")
 add_library(libft STATIC ${LIBFT_DIR})
 
 FILE(GLOB_RECURSE LIBVEC_DIR "libvec/src/*.c")
-add_library(libvec STATIC ${LIBVEC_DIR})
+add_library(libvec STATIC ${LIBVEC_DIR} libvec/src/clvec_sub.c)
 
 FILE(GLOB_RECURSE JSON_DIR "libJSON/*.c")
 add_library(lib_json STATIC ${JSON_DIR})

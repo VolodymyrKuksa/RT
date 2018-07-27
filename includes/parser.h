@@ -54,6 +54,7 @@ t_obj			default_triangle(void);
 
 void			camera_default(t_cam *cam);
 void			check_camera(t_cam *cam);
+void			check_camera2(t_cam *cam);
 void			get_cam_params2(char *name, json_value v, t_scene *scene);
 void			get_camera_params(json_value *value, t_scene *scene);
 void			fillthescene(json_value *value, t_scene *scene);

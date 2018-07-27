@@ -15,6 +15,7 @@
 
 #include <stdatomic.h>
 # include "rt_textures.h"
+# include "libvec.h"
 
 # include <stdlib.h>
 # include <pthread.h>
@@ -51,17 +52,17 @@ typedef struct		s_cam
 	cl_float3		rot;
 	cl_float3		updir;
 	cl_float3		ldir;
-	cl_float3		filter;
-	double			fov;
+	cl_float3		filter;	//
+	double			fov;	//
 	float			f_length;
 	float			aperture;
 	float			ratio;
 	float			pr_pl_w;
 	float			pr_pl_h;
-	float			dust;
-	float			brightness;
-	float			refr_coef;
-	int				effect;
+	float			dust;	//
+	float			brightness;	//
+	float			refr_coef;	//
+	int				effect;		//
 }					t_cam;
 
 typedef struct		s_seed
@@ -81,10 +82,8 @@ typedef struct		s_mvdata
 
 typedef struct		s_ray
 {
-	cl_float3		pos;
-	cl_float3		dir;
-	int				refractions;
-	float			dust;
+	t_vec		pos;
+	t_vec		dir;
 }					t_ray;
 
 typedef struct		s_quad
@@ -250,10 +249,13 @@ typedef struct		s_cldata
 	cl_command_queue	command_queue;
 	char				*source[4];
 	cl_program			program;
+	cl_program			pr_intersect;
 	cl_kernel			kernel;
+	cl_kernel			kr_intersect;
 	size_t				global_size;
 	size_t				local_size;
 
+	int					*id_host;
 	cl_float3			*px_host;
 	cl_float3			*pixels;
 	pthread_mutex_t		pixel_lock;
@@ -263,6 +265,7 @@ typedef struct		s_cldata
 	cl_mem				seed_gpu;
 	cl_mem				tx_gpu;
 	cl_mem				txdata_gpu;
+	cl_mem				id_gpu;
 
 	t_seeds				seeds;
 }					t_cldata;
