@@ -23,7 +23,7 @@
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
-	"texture" : "textures/Concrete2.jpg",
+	"texture" : "textures/roflan.jpg",
 	"light" : {
 	  "diffuse" : 1.0,
 	  "emission z" : 0.0
@@ -40,7 +40,7 @@
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
-	"texture" : "textures/Pattern1.jpg",
+	"texture" : "textures/roflan.jpg",
 	"light" : {
 	  "diffuse" : 1.0,
 	  "emission z" : 0.0
@@ -57,7 +57,7 @@
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
-	"texture" : "textures/Bricks2.jpg",
+	"texture" : "textures/roflan.jpg",
 	"light" : {
 	  "diffuse" : 1.0,
 	  "specular" : 0.0,
@@ -96,7 +96,7 @@
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
-	"texture" : "textures/Pattern2.jpg",
+	"texture" : "textures/roflan.jpg",
 	"light" : {
 	  "diffuse" : 1.0,
 	  "emission z" : 0.0
@@ -113,7 +113,7 @@
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
-	"texture" : "textures/Pattern3.jpg",
+	"texture" : "textures/roflan.jpg",
 	"light" : {
 	  "diffuse" : 1.0,
 	  "emission z" : 0.0
@@ -131,9 +131,9 @@
 	"rot y" : 180.0,
 	"rot z" : 0.0,
 	"light" : {
-	  "emission x" : 3.0,
-	  "emission y" : 3.0,
-	  "emission z" : 3.0
+	  "emission x" : 13.0,
+	  "emission y" : 13.0,
+	  "emission z" : 13.0
 	},
 	"radius" : 5.0
   },
@@ -145,7 +145,8 @@
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
-	"texture" : "textures/Globe2.jpg",
+	  "material texture" : "textures/roflan.jpg",
+	"texture" : "textures/roflan.jpg",
 	"rot x" : 0.0,
 	"rot y" : 0.0,
 	"rot z" : 0.0,
@@ -167,7 +168,7 @@
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
-	"texture" : "textures/Ball8.jpg",
+	"texture" : "textures/roflan.jpg",
 	"rot x" : 0.0,
 	"rot y" : 0.0,
 	"rot z" : 0.0,
@@ -177,7 +178,7 @@
 	  "emission z" : 0.0,
 	  "diffuse" : 1.0,
 	  "specular" : 0.0,
-	  "refraction" : 5.0
+	  "refraction" : 0.0
 	},
 	"radius" : 4.0
   }

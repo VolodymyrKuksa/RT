@@ -130,9 +130,9 @@
 	"rot y" : 0.0,
 	"rot z" : 0.0,
 	"light" : {
-	  "emission x" : 3.0,
-	  "emission y" : 3.0,
-	  "emission z" : 3.0
+	  "emission x" : 5.0,
+	  "emission y" : 5.0,
+	  "emission z" : 5.0
 	},
 	"radius" : 5.0
   },

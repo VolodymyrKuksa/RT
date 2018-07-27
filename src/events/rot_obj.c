@@ -53,3 +53,17 @@ void	rot_rectangle(float d, t_obj *c, t_mvdata mvdata,
 {
 	c->primitive.rectangle.pos = f(d, c->primitive.rectangle.pos, mvdata);
 }
+
+void	rot_paralellogram(float d, t_obj *c, t_mvdata mvdata,
+					  cl_float3 (*f)(float, cl_float3, t_mvdata))
+{
+	c->primitive.paralellogram.pos = f(d, c->primitive.paralellogram.pos, mvdata);
+}
+
+void	rot_triangle(float d, t_obj *c, t_mvdata mvdata,
+						  cl_float3 (*f)(float, cl_float3, t_mvdata))
+{
+	c->primitive.triangle.d1 = f(d, c->primitive.triangle.d1, mvdata);
+	c->primitive.triangle.d2 = f(d, c->primitive.triangle.d2, mvdata);
+	c->primitive.triangle.d3 = f(d, c->primitive.triangle.d3, mvdata);
+}

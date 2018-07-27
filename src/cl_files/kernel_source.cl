@@ -25,6 +25,8 @@ float	intersection_cylinder(t_ray*,t_cylinder,__float3);
 float	intersection_torus(t_ray*,t_torus,__float3);
 float	intersection_disk(t_ray*,t_disk,__float3);
 float	intersection_rectangle(t_ray*,t_rectangle,__global t_basis*);
+float	intersection_paralellogram(t_ray*,t_paralellogram,__global t_basis*);
+float 	intersection_triangle(t_ray *ray,t_triangle triangle);
 
 __float3	normal_sphere(__float3 , t_sphere *);
 __float3	normal_cone(__float3  , t_cone * , __float3);
@@ -105,6 +107,12 @@ float	get_intersection(t_ray *r, __global t_obj *object, int num_obj, int *id)
             case rectangle:
                 tmp = intersection_rectangle(r, object[i].primitive.rectangle, &(object[i].basis));
                 break;
+			case paralellogram:
+				tmp = intersection_paralellogram(r, object[i].primitive.paralellogram, &(object[i].basis));
+				break;
+			case triangle:
+				tmp = intersection_triangle(r, object[i].primitive.triangle);
+				break;
 			default:
 				break;
 		}
@@ -220,37 +228,15 @@ float3	trace_ray(t_ray ray, __global t_obj *obj, int num_obj, uint2 *seeds, t_te
 	t_material	material;
 	for (int bounce = 0; bounce < max_bounces; ++bounce)
 	{
-
-
-
 		float r = get_random(seeds);
-//		float light = mask.x > mask.y && mask.x > mask.z ? mask.x :
-//			  (mask.y > mask.z ? mask.y : mask.z);
 		float light = mask.x + mask.y + mask.z;
 		if (r > light)
 			break;
-
-
-
-
-
-
-
-
 		int hitobj_id = -1;
 		float t = get_intersection(&ray, obj, num_obj, &hitobj_id);
-
-
-
-
-
-
-
-
-
-
 		if (t < 0)
 			break;
+//return ((__float3)(1,1,1));
 		t_obj hitobj = obj[hitobj_id];
 		if (ray.dust > 0.f && participating_media(&ray, t, seeds))
 			continue;
