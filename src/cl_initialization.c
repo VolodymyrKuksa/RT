@@ -65,6 +65,8 @@ void	init_opencl(t_cldata *cl)
 	cl->source[3] = read_file(open(KERNEL_PATH3, O_RDONLY), 0);
 	cl->program = clCreateProgramWithSource(cl->context, 4,
 		(const char**)(&cl->source), 0, 0);
+	cl->pr_intersect = clCreateProgramWithSource(cl->context, 4,
+		(const char**)(&cl->source), 0, 0);
 	free(cl->source[0]);
 	free(cl->source[1]);
 	free(cl->source[2]);
@@ -75,15 +77,26 @@ void	init_opencl(t_cldata *cl)
 		printf("%d\n", err);
 		print_log(cl);
 	}
+	err = clBuildProgram(cl->pr_intersect, 0, 0, KERNEL_INC_DIR, 0, 0);
+	if (err != CL_SUCCESS)
+	{
+		printf("tutu\n");
+		printf("%d\n", err);
+		print_log(cl);
+	}
 	cl->kernel = clCreateKernel(cl->program, "render_pixel", 0);
+	cl->kr_intersect = clCreateKernel(cl->program, "get_mouse_intersect", 0);
 	cl->global_size = g_win_height * g_win_width;
 	pthread_mutex_init(&cl->pixel_lock, NULL);
 }
 
 void	cl_setup(t_env *e)
 {
+	e->cl.id_host = (int*)malloc(sizeof(int));
 	e->cl.px_host = (cl_float3*)malloc(sizeof(cl_float3) * e->cl.global_size);
 	e->cl.pixels = (cl_float3*)malloc(sizeof(cl_float3) * e->cl.global_size);
+	e->cl.id_gpu = clCreateBuffer(e->cl.context,
+		CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, sizeof(int), 0, 0);
 	e->cl.px_gpu = clCreateBuffer(e->cl.context,
 		CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY,
 		sizeof(cl_float3) * g_win_width * g_win_height, 0, 0);
@@ -116,6 +129,10 @@ void	cl_setup(t_env *e)
 	clSetKernelArg(e->cl.kernel, 7, sizeof(e->cl.tx_gpu), &e->cl.tx_gpu);
 	clSetKernelArg(e->cl.kernel, 8, sizeof(e->cl.txdata_gpu), &e->cl.txdata_gpu);
 	clSetKernelArg(e->cl.kernel, 9, sizeof(e->textures.tx_count), &e->textures.tx_count);
+	clSetKernelArg(e->cl.kr_intersect, 2, sizeof(e->cl.obj_gpu), &e->cl.obj_gpu);
+	clSetKernelArg(e->cl.kr_intersect, 3, sizeof(e->scene.num_obj), &e->scene.num_obj);
+	clSetKernelArg(e->cl.kr_intersect, 4, sizeof(e->scene.cam), &e->scene.cam);
+	clSetKernelArg(e->cl.kr_intersect, 5, sizeof(e->cl.id_gpu), &e->cl.id_gpu);
 }
 
 void	get_work_group_size(t_cldata *cl)

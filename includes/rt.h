@@ -185,4 +185,8 @@ int			write_ppm(char *filename, cl_float3 *pixels);
 
 void		write_png(t_env *env);
 
+
+
+t_obj	*find_mouse_intersect(int x, int y, t_env *env);
+
 #endif

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "rt.h"
-#include "parser.h"
 
 extern int	g_win_width;
 extern int	g_win_height;
@@ -41,7 +40,7 @@ void			check_camera2(t_cam *cam)
 		error_fedun("filter.y must be 0 <= y <= 1\n");
 	if (cam->filter.z < 0 || cam->filter.z > 1)
 		error_fedun("filter.z must be 0 <= z <= 1\n");
-	if (cam->brightness <= 0 || cam->brightness >= 10)
+	if (cam->brightness <= 0 || cam->brightness > 10)
 	{
 		ft_putstr("setting brightness to default = 1\n");
 		cam->brightness = 1.0f;
