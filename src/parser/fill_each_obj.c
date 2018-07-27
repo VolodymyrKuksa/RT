@@ -341,17 +341,17 @@ void			filldisk(json_value *value, t_scene *scene, int i)
 void			fill_ellipse_centers(char *name, json_value v, t_obj *tmp)
 {
 	if (ft_strcmp(name, "c1 x") == 0)
-		tmp->primitive.ellipse.c1.x = (float)v.u.dbl;
+		tmp->primitive.elipsoid.c1.x = (float)v.u.dbl;
 	if (ft_strcmp(name, "c1 y") == 0)
-		tmp->primitive.ellipse.c1.y = (float)v.u.dbl;
+		tmp->primitive.elipsoid.c1.y = (float)v.u.dbl;
 	if (ft_strcmp(name, "c1 z") == 0)
-		tmp->primitive.ellipse.c1.z = (float)v.u.dbl;
+		tmp->primitive.elipsoid.c1.z = (float)v.u.dbl;
 	if (ft_strcmp(name, "c2 x") == 0)
-		tmp->primitive.ellipse.c2.x = (float)v.u.dbl;
+		tmp->primitive.elipsoid.c2.x = (float)v.u.dbl;
 	if (ft_strcmp(name, "c2 y") == 0)
-		tmp->primitive.ellipse.c2.y = (float)v.u.dbl;
+		tmp->primitive.elipsoid.c2.y = (float)v.u.dbl;
 	if (ft_strcmp(name, "c2 z") == 0)
-		tmp->primitive.ellipse.c2.z = (float)v.u.dbl;
+		tmp->primitive.elipsoid.c2.z = (float)v.u.dbl;
 }
 
 void			fillellipse(json_value *value, t_scene *scene, int i)
@@ -360,24 +360,24 @@ void			fillellipse(json_value *value, t_scene *scene, int i)
 	json_value	v;
 	cl_float3	rot;
 
-	tmp = default_ellipse();
+	tmp = default_elipsoid();
 	rot = (cl_float3){0.0, 0.0, 0.0};
 	while (i < value->u.object.length)
 	{
 		v = *(value->u.object.values[i].value);
 		fill_ellipse_centers(value->u.object.values[i].name, v, &tmp);
 		if (ft_strcmp(value->u.object.values[i].name, "radius") == 0)
-			tmp.primitive.ellipse.r = (cl_float)v.u.dbl;
+			tmp.primitive.elipsoid.r = (cl_float)v.u.dbl;
 		fill_common(value->u.object.values[i].name, &tmp, &v, &rot);
 		i++;
 	}
 	tmp.rot = rot;
-	tmp.type = ellipse;
+	tmp.type = elipsoid;
 	init_rotate(&(tmp.basis), rot);
-	minus_camera(&(tmp.primitive.ellipse.c1), scene->cam.pos);
-	minus_camera(&(tmp.primitive.ellipse.c2), scene->cam.pos);
+	minus_camera(&(tmp.primitive.elipsoid.c1), scene->cam.pos);
+	minus_camera(&(tmp.primitive.elipsoid.c2), scene->cam.pos);
 	check_basis(&tmp);
-	if (SUKA(tmp.primitive.ellipse.r, 0) == 0)
+	if (SUKA(tmp.primitive.elipsoid.r, 0) == 0)
 		error_fedun("radius of ellipse is bad");
 	scene->obj[scene->cur_obj++] = tmp;
 	print_ellipse(tmp);

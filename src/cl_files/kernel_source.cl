@@ -25,6 +25,8 @@ float	intersection_cylinder(t_ray*,t_cylinder,__float3);
 float	intersection_torus(t_ray*,t_torus,__float3);
 float	intersection_disk(t_ray*,t_disk,__float3);
 float	intersection_rectangle(t_ray*,t_rectangle,__global t_basis*);
+float	intersection_parallelogram(t_ray*,t_parallelogram,__global t_basis*);
+float 	intersection_triangle(t_ray *ray,t_triangle triangle);
 
 __float3	normal_sphere(__float3 , t_sphere *);
 __float3	normal_cone(__float3  , t_cone * , __float3);
@@ -105,6 +107,12 @@ float	get_intersection(t_ray *r, __global t_obj *object, int num_obj, int *id)
             case rectangle:
                 tmp = intersection_rectangle(r, object[i].primitive.rectangle, &(object[i].basis));
                 break;
+			case parallelogram:
+				tmp = intersection_parallelogram(r, object[i].primitive.parallelogram, &(object[i].basis));
+				break;
+			case triangle:
+				tmp = intersection_triangle(r, object[i].primitive.triangle);
+				break;
 			default:
 				break;
 		}
@@ -230,6 +238,7 @@ t_texture texture, float3 mask, float refr_coef)
 		float t = get_intersection(&ray, obj, num_obj, &hitobj_id);
 		if (t < 0)
 			break;
+//return ((__float3)(1,1,1));
 		t_obj hitobj = obj[hitobj_id];
 		if (ray.dust > 0.f && participating_media(&ray, t, seeds))
 			continue;
@@ -262,6 +271,44 @@ t_texture texture, float3 mask, float refr_coef)
 	return (res);
 }
 
+float		round_tenth(float val);
+
+float		round_tenth(float val)
+{
+	val *= 1;
+	return val;
+}
+
+float3		apply_effect(float3 px, int effect);
+
+float3		apply_effect(float3 px, int effect)
+{
+	if (!effect)
+		return px;
+	else if (effect == BLACK_N_WHITE)
+	{
+		float	avrg = (px.x + px.y + px.z) / 3;
+		return (float3)(avrg, avrg, avrg);
+	}
+	else if (effect == NEGATIVE)
+	{
+		return (float3)(1.f - px.x, 1.f - px.y, 1.f - px.z);
+	}
+	else if (effect == SEPIA)
+	{
+		float3	res;
+		res.x = 0.393f * px.x + 0.769f * px.y + 0.189 * px.z;
+		res.y = 0.349f * px.x + 0.686f * px.y + 0.168 * px.z;
+		res.z = 0.272f * px.x + 0.534f * px.y + 0.131 * px.z;
+		return res;
+	}
+	else if (effect == CARTOON)
+	{
+		return (float3)(round_tenth(px.x), round_tenth(px.y), round_tenth(px.z));
+	}
+	return px;
+}
+
  __kernel void	render_pixel(
 	__global float3 *pixels,
 	__global t_obj *obj,
@@ -286,6 +333,7 @@ t_texture texture, float3 mask, float refr_coef)
 	pixels[id] = (float3)(0,0,0);
 	pixels[id] += trace_ray(ray, obj, num_obj, &seeds, texture, cam.filter,
 		cam.refr_coef) * cam.brightness;
+	pixels[id] = apply_effect(pixels[id], cam.effect);
 	seed[id] = seeds.x;
 	seed[id + w * h] = seeds.y;
 }

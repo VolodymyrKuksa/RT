@@ -198,13 +198,13 @@ void			write_torus(t_obj obj, int fd)
 void			write_ellipse(t_obj obj, int fd)
 {
 	ft_putstr_fd("\t\"ellipse\" :\n\t{\n\t\t", fd);
-	write_feature("c1 x", obj.primitive.ellipse.c1.x, fd);
-	write_feature("c1 y", obj.primitive.ellipse.c1.y, fd);
-	write_feature("c1 z", obj.primitive.ellipse.c1.z, fd);
-	write_feature("c2 x", obj.primitive.ellipse.c2.x, fd);
-	write_feature("c2 y", obj.primitive.ellipse.c2.y, fd);
-	write_feature("c2 z", obj.primitive.ellipse.c2.z, fd);
-	write_feature("radius", obj.primitive.ellipse.r, fd);
+	write_feature("c1 x", obj.primitive.elipsoid.c1.x, fd);
+	write_feature("c1 y", obj.primitive.elipsoid.c1.y, fd);
+	write_feature("c1 z", obj.primitive.elipsoid.c1.z, fd);
+	write_feature("c2 x", obj.primitive.elipsoid.c2.x, fd);
+	write_feature("c2 y", obj.primitive.elipsoid.c2.y, fd);
+	write_feature("c2 z", obj.primitive.elipsoid.c2.z, fd);
+	write_feature("radius", obj.primitive.elipsoid.r, fd);
 	write_basis(obj, fd);
 	write_disrupt_tex_offs(obj, fd);
 	write_pos_color((cl_float3){0, 0, 0}, obj.color, fd);
@@ -260,7 +260,7 @@ void			write_which_obj(t_scene *scene, int i, int fd)
 		write_disk(scene->obj[i], fd);
 	else if (scene->obj[i].type == rectangle)
 		write_rectangle(scene->obj[i], fd);
-	else if (scene->obj[i].type == ellipse)
+	else if (scene->obj[i].type == elipsoid)
 		write_ellipse(scene->obj[i], fd);
 	else if (scene->obj[i].type == triangle)
 		write_triangle(scene->obj[i], fd);

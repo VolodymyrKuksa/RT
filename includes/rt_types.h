@@ -35,6 +35,15 @@ typedef struct		s_scrn
 	t_rgb			*surf_arr;
 }					t_scrn;
 
+enum				e_effects
+{
+	NOEFFECT,
+	BLACK_N_WHITE,
+	NEGATIVE,
+	SEPIA,
+	CARTOON
+};
+
 typedef struct		s_cam
 {
 	cl_float3		pos;
@@ -52,6 +61,7 @@ typedef struct		s_cam
 	float			dust;
 	float			brightness;
 	float			refr_coef;
+	int				effect;
 }					t_cam;
 
 typedef struct		s_seed
@@ -95,9 +105,9 @@ typedef enum		e_obj_type
 	torus,
 	disk,
 	rectangle,
-	ellipse,
 	parallelogram,
-	triangle
+	triangle,
+	elipsoid
 }					t_obj_type;
 
 typedef struct		s_disk
@@ -143,13 +153,6 @@ typedef struct		s_torus
 	float		r;
 }					t_torus;
 
-typedef struct		s_ellipse
-{
-	cl_float3	c1;
-	cl_float3	c2;
-	float	r;
-}					t_ellipse;
-
 typedef struct		s_rectangle
 {
 	cl_float3	pos;
@@ -157,13 +160,6 @@ typedef struct		s_rectangle
 	float		w;
 	float		tex_scale;
 }					t_rectangle;
-
-typedef struct		s_triangle
-{
-	cl_float3	d1;
-	cl_float3	d2;
-	cl_float3	d3;
-}					t_triangle;
 
 typedef struct		s_parallelogram
 {
@@ -173,18 +169,33 @@ typedef struct		s_parallelogram
 	float		l;
 }					t_parallelogram;
 
+typedef struct		s_triangle
+{
+	cl_float3	d1;
+	cl_float3	d2;
+	cl_float3	d3;
+}					t_triangle;
+
+typedef struct		s_elipsoid
+{
+	cl_float3	pos;
+	cl_float3	c1;
+	cl_float3	c2;
+	float 		r;
+}					t_elipsoid;
+
 typedef	union		u_primitive
 {
-	t_plane		plane;
-	t_sphere	sphere;
-	t_cylinder	cylinder;
-	t_cone		cone;
-	t_torus		torus;
-	t_disk		disk;
-	t_rectangle	rectangle;
-	t_ellipse	ellipse;
-	t_triangle	triangle;
+	t_plane			plane;
+	t_sphere		sphere;
+	t_cylinder		cylinder;
+	t_cone			cone;
+	t_torus			torus;
+	t_disk			disk;
+	t_rectangle		rectangle;
 	t_parallelogram	parallelogram;
+	t_triangle		triangle;
+	t_elipsoid		elipsoid;
 }					t_primitive;
 
 typedef struct		s_basis
@@ -349,7 +360,6 @@ typedef struct		s_env
 	t_txgpu				textures;
 	t_server			server;
 	t_client			client;
-
 	unsigned int		num_samples;
 }					t_env;
 

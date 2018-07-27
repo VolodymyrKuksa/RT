@@ -49,7 +49,7 @@ t_obj			default_plane(void);
 t_obj			default_torus(void);
 t_obj           default_rectangle(void);
 t_obj			default_disk(void);
-t_obj			default_ellipse(void);
+t_obj			default_elipsoid(void);
 t_obj			default_triangle(void);
 
 void			camera_default(t_cam *cam);

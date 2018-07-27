@@ -130,5 +130,5 @@ void			get_camera_params(json_value *value, t_scene *scene)
 	printf(" cam fov  %f\n", scene->cam.fov);
 	printf(" cam aperture  %f\n", scene->cam.aperture);
 	printf(" refr_coef  %f\n", scene->cam.refr_coef);
-	//scene->cam.refr_coef = 1.5f; // here too 1.f <= refr_coef <= 2.f
+	scene->cam.effect = NOEFFECT;
 }

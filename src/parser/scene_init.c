@@ -49,7 +49,7 @@ void			print_scene(t_scene *scene)
 			print_rectangle(scene->obj[i]);
 		else if (scene->obj[i].type == disk)
 			print_disk(scene->obj[i]);
-		else if (scene->obj[i].type == ellipse)
+		else if (scene->obj[i].type == elipsoid)
 			print_ellipse(scene->obj[i]);
 		else if (scene->obj[i].type == parallelogram)
 			print_parallelogram(scene->obj[i]);
@@ -85,13 +85,13 @@ void			print_sphere(t_obj obj)
 void			print_ellipse(t_obj obj)
 {
 	printf("----------------------ellipse---------------------------\n");
-	printf("c1 x = %f\n", obj.primitive.ellipse.c1.x);
-	printf("c1 y = %f\n", obj.primitive.ellipse.c1.y);
-	printf("c1 z = %f\n", obj.primitive.ellipse.c1.z);
-	printf("c2 x = %f\n", obj.primitive.ellipse.c2.x);
-	printf("c2 y = %f\n", obj.primitive.ellipse.c2.y);
-	printf("c2 z = %f\n", obj.primitive.ellipse.c2.z);
-	printf("radius = %f\n", obj.primitive.ellipse.r);
+	printf("c1 x = %f\n", obj.primitive.elipsoid.c1.x);
+	printf("c1 y = %f\n", obj.primitive.elipsoid.c1.y);
+	printf("c1 z = %f\n", obj.primitive.elipsoid.c1.z);
+	printf("c2 x = %f\n", obj.primitive.elipsoid.c2.x);
+	printf("c2 y = %f\n", obj.primitive.elipsoid.c2.y);
+	printf("c2 z = %f\n", obj.primitive.elipsoid.c2.z);
+	printf("radius = %f\n", obj.primitive.elipsoid.r);
 	printf("color x = %f\n", obj.color.x);
 	printf("color y = %f\n", obj.color.y);
 	printf("color z = %f\n", obj.color.z);
@@ -404,8 +404,6 @@ void			fill_common(char *name, t_obj *tmp,
 		tmp->tex_offs.y = (cl_float)v->u.dbl;
 	fill_col_distrupt(name, *v, tmp);
 	check_tex_offs(tmp->tex_offs);
-	// <<<	cannot be applied to obj with emission
-	//tmp->tex_offs = (cl_float2){0.f, 0.f};	// 0 <= x <= 1.f // 0 <= y <= 1.f
 }
 
 void			rotate_obj_by_camera(t_obj *tmp, cl_float3 rot)
@@ -459,14 +457,14 @@ void			rotate_obj_by_camera(t_obj *tmp, cl_float3 rot)
 		tmp->primitive.parallelogram.pos = clvec_rot_y(tmp->primitive.parallelogram.pos, DTR(-rot.y));
 		tmp->primitive.parallelogram.pos = clvec_rot_z(tmp->primitive.parallelogram.pos, DTR(-rot.z));
 	}
-	if (tmp->type == ellipse)
+	if (tmp->type == elipsoid)
 	{
-		tmp->primitive.ellipse.c1 = clvec_rot_x(tmp->primitive.ellipse.c1, DTR(-rot.x));
-		tmp->primitive.ellipse.c1 = clvec_rot_y(tmp->primitive.ellipse.c1, DTR(-rot.y));
-		tmp->primitive.ellipse.c1 = clvec_rot_z(tmp->primitive.ellipse.c1, DTR(-rot.z));
-		tmp->primitive.ellipse.c2 = clvec_rot_x(tmp->primitive.ellipse.c2, DTR(-rot.x));
-		tmp->primitive.ellipse.c2 = clvec_rot_y(tmp->primitive.ellipse.c2, DTR(-rot.y));
-		tmp->primitive.ellipse.c2 = clvec_rot_z(tmp->primitive.ellipse.c2, DTR(-rot.z));
+		tmp->primitive.elipsoid.c1 = clvec_rot_x(tmp->primitive.elipsoid.c1, DTR(-rot.x));
+		tmp->primitive.elipsoid.c1 = clvec_rot_y(tmp->primitive.elipsoid.c1, DTR(-rot.y));
+		tmp->primitive.elipsoid.c1 = clvec_rot_z(tmp->primitive.elipsoid.c1, DTR(-rot.z));
+		tmp->primitive.elipsoid.c2 = clvec_rot_x(tmp->primitive.elipsoid.c2, DTR(-rot.x));
+		tmp->primitive.elipsoid.c2 = clvec_rot_y(tmp->primitive.elipsoid.c2, DTR(-rot.y));
+		tmp->primitive.elipsoid.c2 = clvec_rot_z(tmp->primitive.elipsoid.c2, DTR(-rot.z));
 	}
 	if (tmp->type == triangle)
 	{
