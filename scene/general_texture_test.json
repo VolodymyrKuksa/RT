@@ -244,5 +244,9 @@
 	  "refraction" : 0.0
 	},
 	"radius" : 40.0
-  }
+  },
+	"paralelepiped":
+	{
+
+	}
 }

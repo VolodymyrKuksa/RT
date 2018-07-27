@@ -92,7 +92,6 @@ void			filldisk(json_value *value, t_scene *scene, int i);
 void			fillellipse(json_value *value, t_scene *scene, int i);
 void			filltriangle(json_value *value, t_scene *scene, int i);
 void			fillparallelogram(json_value *value, t_scene *scene, int i);
-void			fillcube(json_value *value, t_scene *scene, int i);
 
 
 void			parse_scene(int argc, char **argv, char **contents, size_t *len);
@@ -106,7 +105,9 @@ void			write_feature(char *s, cl_float num, int fd);
 void			write_disrupt_tex_offs(t_obj obj, int fd);
 void			fill_textures(char *name, t_obj *tmp, json_value v);
 void			write_pos_color(cl_float3 pos, cl_float3 color, int fd);
+void			write_cam_effect(t_cam cam, int fd);
 void			write_cam(t_cam cam, int fd);
+void			write_basis(t_obj obj, int fd);
 void			write_light(t_obj obj, int fd);
 void			write_texture(int id_mat, int id, int fd);
 void			write_sphere(t_obj obj, int fd);
