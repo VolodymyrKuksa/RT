@@ -520,10 +520,8 @@ int 			count_helping_obj(json_value *value)
 	{
 		if (ft_strcmp(value->u.object.values[i].name, "cylinder") == 0)
 			res = res + 2;
-		//if (ft_strcmp(value->u.object.values[i].name, "cone"))
-		//	res += 1;
-		//if (ft_strcmp(value->u.object.values[i].name, "cube"))
-		//	res += 5;
+		if (ft_strcmp(value->u.object.values[i].name, "cone") == 0)
+			res += 2;
 		i++;
 	}
 	return (res);
@@ -550,7 +548,6 @@ void			fillthescene(json_value *value, t_scene *scene)
 			return ;
 		i++;
 	}
-
 }
 
 void			rotate_scene_by_cam(t_scene *scene)

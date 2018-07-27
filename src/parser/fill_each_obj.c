@@ -87,6 +87,43 @@ void			fillthecylind(json_value *value, t_scene *scene, int i)
 	print_cylinder(tmp);
 }
 
+void			get_common_hat_cone(t_obj *obj1, t_obj tmp, t_scene *scene)
+{
+	obj1->basis = tmp.basis;
+	obj1->type = disk;
+	obj1->tex_id = tmp.tex_id;
+	obj1->mater_tex_id = tmp.mater_tex_id;
+	obj1->color = tmp.color;
+	obj1->emission = tmp.emission;
+	obj1->diffuse = tmp.diffuse;
+	obj1->refraction = tmp.refraction;
+	obj1->roughness = tmp.roughness;
+	obj1->specular = tmp.specular;
+	obj1->primitive.disk.pos = tmp.primitive.cylinder.pos;
+	obj1->primitive.disk.related = scene->cur_obj - 1;
+}
+
+void			fill_cone_hat1(t_scene *scene, t_obj tmp)
+{
+	t_obj		obj1;
+	t_obj		obj2;
+
+	get_common_hat_cone(&obj1, tmp, scene);
+	obj2 = obj1;
+	obj1.primitive.disk.r =
+			(cl_float)fabs(tmp.primitive.cone.m2 * tmp.primitive.cone.tng); //need to calculate radius
+	obj2.primitive.disk.r =
+			(cl_float)fabs(tmp.primitive.cone.m1 * tmp.primitive.cone.tng); //need to calculate radius
+	obj2.primitive.disk.pos.x -= tmp.basis.u.x * fabs(tmp.primitive.cone.m1);
+	obj2.primitive.disk.pos.y -= tmp.basis.u.y * fabs(tmp.primitive.cone.m1);
+	obj2.primitive.disk.pos.z -= tmp.basis.u.z * fabs(tmp.primitive.cone.m1);
+	obj1.primitive.disk.pos.x -= tmp.basis.u.x * tmp.primitive.cone.m2;
+	obj1.primitive.disk.pos.y -= tmp.basis.u.y * tmp.primitive.cone.m2;
+	obj1.primitive.disk.pos.z -= tmp.basis.u.z * tmp.primitive.cone.m2;
+	scene->obj[scene->cur_obj++] = obj1;
+	scene->obj[scene->cur_obj++] = obj2;
+}
+
 void			fill_cone_params(char *name, json_value v, t_obj *tmp)
 {
 	if (ft_strcmp(name, "tng") == 0)
@@ -124,10 +161,12 @@ void			fillthecone(json_value *value, t_scene *scene, int i)
 	minus_camera(&(tmp.primitive.cone.pos), scene->cam.pos);
 	tmp.type = cone;
 	check_basis(&tmp);
-	if (tmp.primitive.cone.m2 <= tmp.primitive.cone.m1 ||
-			tmp.primitive.cone.m1 < 0 || tmp.primitive.cone.m2 < 0)
-		error_fedun("m1 and m2 must be greater 0; m2 > m1");
+	if (tmp.primitive.cone.m2 <= tmp.primitive.cone.m1
+		|| tmp.primitive.cone.m1 > 0.1
+		|| tmp.primitive.cone.m2 < 0)
+		error_fedun("m1 > 0.1. m2 > 0; m2 > m1");
 	scene->obj[scene->cur_obj++] = tmp;
+	fill_cone_hat1(scene, tmp);
 	print_cone(tmp);
 }
 

@@ -281,7 +281,7 @@ void				write_scene(t_scene *scene)
 	while (i < scene->num_obj)
 	{
 		write_which_obj(scene, i, fd);
-		if (scene->obj[i].type == cylinder)
+		if (scene->obj[i].type == cylinder || scene->obj[i].type == cone)
 			i += 2;
 		if (i == scene->num_obj - 1)
 			ft_putstr_fd("}\n", fd);
