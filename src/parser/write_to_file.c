@@ -54,7 +54,7 @@ void				write_scene(t_scene *scene)
 	int				i;
 
 	i = 0;
-	if ((fd = open("writing.json", O_RDWR | O_CREAT | O_TRUNC, 0777)) == -1)
+	if ((fd = open("scene/writing.json", O_RDWR | O_CREAT | O_TRUNC, 0777)) == -1)
 		error_fedun("cannot save scene");
 	ft_putstr_fd("{\n\t", fd);
 	write_cam(scene->cam, fd);

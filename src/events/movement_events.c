@@ -41,7 +41,8 @@ void	turn(float d, t_env *env, cl_float3 (*f)(float, cl_float3, t_mvdata))
 {
 	static void	(*rt[9])(float, t_obj *,
 		t_mvdata, cl_float3 (*fun)(float, cl_float3, t_mvdata)) = {rot_sphere,
-		rot_plane, rot_cylinder, rot_cone, rot_torus, rot_disk, rot_rectangle, rot_parallelogram, rot_triangle};
+		rot_plane, rot_cylinder, rot_cone, rot_torus, rot_disk, rot_rectangle,
+		rot_parallelogram, rot_triangle};
 	int			i;
 
 	i = -1;
@@ -63,7 +64,8 @@ void	turn(float d, t_env *env, cl_float3 (*f)(float, cl_float3, t_mvdata))
 void	move(t_env *env, float x, float y, float z)
 {
 	static void	(*mv[9])(cl_float3, t_obj *, t_mvdata) = {mv_sphere, mv_plane,
-		mv_cylinder, mv_cone, mv_torus, mv_disk, mv_rectangle, mv_parallelogram,mv_triangle};
+		mv_cylinder, mv_cone, mv_torus, mv_disk, mv_rectangle,
+		mv_parallelogram, mv_triangle};
 	int			i;
 	cl_float3	d;
 

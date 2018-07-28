@@ -11,12 +11,10 @@
 /* ************************************************************************** */
 
 #include "rt.h"
-#include "parser.h"
 
 void		error_fedun(char *er)
 {
 	ft_putendl(er);
-	system("leaks -q RT");
 	exit(-1);
 }
 
@@ -47,7 +45,6 @@ void		parse_scene(int argc, char **argv, char **contents, size_t *len)
 	*contents = read_file(fd, len);
 	if (*contents == NULL)
 		error_fedun("Cant read file");
-	printf("--------------------------------\n\n");
 }
 
 char		*read_file(int fd, size_t *size)

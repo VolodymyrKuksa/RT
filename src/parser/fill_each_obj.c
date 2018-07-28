@@ -233,6 +233,8 @@ void			fill_torus_params(char *name, json_value v, t_obj *tmp)
 		tmp->primitive.torus.r = (cl_float)v.u.dbl;
 	if (ft_strcmp(name, "radius big") == 0)
 		tmp->primitive.torus.R = (cl_float)v.u.dbl;
+	if (tmp->primitive.torus.R < 0.5f)
+		error_fedun("torus big radius must be bigger 0.5");
 }
 
 void			filltorus(json_value *value, t_scene *scene, int i)
@@ -392,9 +394,48 @@ void			fill_triangle_points(char *name, json_value v, t_obj *tmp)
 		tmp->primitive.triangle.d3.z = (float)v.u.dbl;
 }
 
+cl_float3		normalize(cl_float3 vec)
+{
+	float length;
+
+	length = (float)sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+	return ((cl_float3){vec.x / length, vec.y / length, vec.z / length});
+}
+
+cl_float3		cross(cl_float3 u, cl_float3 v)
+{
+	return ((cl_float3){u.y * v.z - u.z * v.y,
+						u.z * v.x - u.x * v.z, u.x * v.y - u.y * v.x});
+}
+
 void			get_basis(t_obj *obj)
 {
+	cl_float3	v1;
+	cl_float3	v2;
+	cl_float3	normal;
 
+	v1.x = obj->primitive.triangle.d2.x - obj->primitive.triangle.d1.x;
+	v1.y = obj->primitive.triangle.d2.y - obj->primitive.triangle.d1.y;
+	v1.z = obj->primitive.triangle.d2.z - obj->primitive.triangle.d1.z;
+
+	v2.x = obj->primitive.triangle.d3.x - obj->primitive.triangle.d2.x;
+	v2.y = obj->primitive.triangle.d3.y - obj->primitive.triangle.d2.y;
+	v2.z = obj->primitive.triangle.d3.z - obj->primitive.triangle.d2.z;
+
+	normal = normalize(cross(v1, v2));
+	obj->basis.u = normal;
+	obj->basis.w = v1;
+	obj->basis.v = cross(obj->basis.u, obj->basis.w);
+}
+
+void			help_triangle(t_obj *tmp, t_scene *scene, cl_float3 rot)
+{
+	minus_camera(&(tmp->primitive.triangle.d1), scene->cam.pos);
+	minus_camera(&(tmp->primitive.triangle.d2), scene->cam.pos);
+	minus_camera(&(tmp->primitive.triangle.d3), scene->cam.pos);
+	rot_pos_cam(&(tmp->primitive.triangle.d1), rot);
+	rot_pos_cam(&(tmp->primitive.triangle.d2), rot);
+	rot_pos_cam(&(tmp->primitive.triangle.d3), rot);
 }
 
 void			filltriangle(json_value *value, t_scene *scene, int i)
@@ -413,12 +454,10 @@ void			filltriangle(json_value *value, t_scene *scene, int i)
 		i++;
 	}
 	tmp.type = triangle;
-	init_rotate(&(tmp.basis), rot);
-	minus_camera(&(tmp.primitive.triangle.d1), scene->cam.pos);
-	minus_camera(&(tmp.primitive.triangle.d2), scene->cam.pos);
-	minus_camera(&(tmp.primitive.triangle.d3), scene->cam.pos);
-	check_basis(&tmp);
+	help_triangle(&tmp, scene, rot);
 	get_basis(&tmp);
+	init_rotate(&(tmp.basis), rot);
+	check_basis(&tmp);
 	scene->obj[scene->cur_obj++] = tmp;
 	print_triangle(tmp);
 }

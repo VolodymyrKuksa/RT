@@ -62,6 +62,7 @@ void			fillthescene(json_value *value, t_scene *scene);
 
 void			ftoa(float flt, int after_point, int xy, int fd);
 void			error_fedun(char *er);
+void			rot_pos_cam(cl_float3 *pos, cl_float3 rot);
 void			minus_camera(cl_float3 *pos, cl_float3 cam_pos);
 void			fill_position(char *name, cl_float value, cl_float3 *pos);
 void			fill_color(char *name, cl_float value, t_obj *tmp);
@@ -92,6 +93,10 @@ void			fillrectangle(json_value *value, t_scene *scene, int i);
 void			filldisk(json_value *value, t_scene *scene, int i);
 void			fillellipse(json_value *value, t_scene *scene, int i);
 void			filltriangle(json_value *value, t_scene *scene, int i);
+void			help_triangle(t_obj *tmp, t_scene *scene, cl_float3 rot);
+cl_float3		normalize(cl_float3 vec);
+cl_float3		cross(cl_float3 u, cl_float3 v);
+void			get_basis(t_obj *obj);
 void			fillparallelogram(json_value *value, t_scene *scene, int i);
 
 

@@ -73,11 +73,9 @@ void	mv_triangle(cl_float3 d, t_obj *c, t_mvdata mvdata)
 	c->primitive.triangle.d1.x += d.x * mvdata.move_spd;
 	c->primitive.triangle.d1.y += d.y * mvdata.move_spd;
 	c->primitive.triangle.d1.z += d.z * mvdata.move_spd;
-
 	c->primitive.triangle.d2.x += d.x * mvdata.move_spd;
 	c->primitive.triangle.d2.y += d.y * mvdata.move_spd;
 	c->primitive.triangle.d2.z += d.z * mvdata.move_spd;
-
 	c->primitive.triangle.d3.x += d.x * mvdata.move_spd;
 	c->primitive.triangle.d3.y += d.y * mvdata.move_spd;
 	c->primitive.triangle.d3.z += d.z * mvdata.move_spd;

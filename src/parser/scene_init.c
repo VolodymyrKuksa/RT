@@ -419,17 +419,20 @@ void			rot_pos_cam(cl_float3 *pos, cl_float3 rot)
 
 void			rotate_obj_by_camera(t_obj *tmp, cl_float3 rot)
 {
-	rot_pos_cam(&(tmp->primitive.sphere.pos), rot);
 	if (tmp->type == elipsoid)
 	{
 		rot_pos_cam(&(tmp->primitive.elipsoid.c1), rot);
 		rot_pos_cam(&(tmp->primitive.elipsoid.c2), rot);
 	}
-	if (tmp->type == triangle)
+	else if (tmp->type == triangle)
 	{
 		rot_pos_cam(&(tmp->primitive.triangle.d1), rot);
 		rot_pos_cam(&(tmp->primitive.triangle.d2), rot);
 		rot_pos_cam(&(tmp->primitive.triangle.d3), rot);
+	}
+	else
+	{
+		rot_pos_cam(&(tmp->primitive.sphere.pos), rot);
 	}
 	init_rotate(&tmp->basis, (cl_float3){-rot.x, -rot.y, -rot.z});
 }

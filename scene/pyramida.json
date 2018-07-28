@@ -1,0 +1,163 @@
+{
+	"scene" :
+	{
+		"pos x" : 0.0,
+		"pos y" : 0.0,
+		"pos z" : -10.0,
+		"rot y" : -170.0,
+		"f_length" : 60.0,
+		"dust" : 0.0,
+		"fov" : 100.0,
+		"aperture" : 0.01
+	},
+	"triangle" :
+	{
+		"d1 x" : 0.0,
+		"d1 y" : 0.0,
+		"d1 z" : 10.0,
+		"d2 x" : 0.0,
+		"d2 y" : 0.0,
+		"d2 z" : 0.0,
+		"d3 x" : 10.0,
+		"d3 y" : 0.0,
+		"d3 z" : 0.0,
+		"color x": 1.0,
+		"color y": 1.0,
+		"color z": 1.0,
+		"texture" : "",
+		"light": {
+			"emission x": 0.0,
+			"emission y": 1.0,
+			"emission z": 1.0,
+			"roughness": 0.0,
+			"diffuse": 1.0,
+			"specular": 0.0,
+			"refraction": 0.0
+		}
+	},
+	"triangle" :
+	{
+		"d1 x" : 0.0,
+		"d1 y" : 0.0,
+		"d1 z" : 10.0,
+		"d2 x" : 10.0,
+		"d2 y" : 0.0,
+		"d2 z" : 10.0,
+		"d3 x" : 10.0,
+		"d3 y" : 0.0,
+		"d3 z" : 0.0,
+		"color x": 1.0,
+		"color y": 1.0,
+		"color z": 1.0,
+		"texture" : "",
+		"light": {
+			"emission x": 0.0,
+			"emission y": 1.0,
+			"emission z": 1.0,
+			"roughness": 0.0,
+			"diffuse": 1.0,
+			"specular": 0.0,
+			"refraction": 0.0
+		}
+	},
+	"triangle" :
+	{
+		"d1 x" : 0.0,
+		"d1 y" : 0.0,
+		"d1 z" : 10.0,
+		"d2 x" : 0.0,
+		"d2 y" : 0.0,
+		"d2 z" : 0.0,
+		"d3 x" : 5.0,
+		"d3 y" : 7.0,
+		"d3 z" : 5.0,
+		"color x": 1.0,
+		"color y": 1.0,
+		"color z": 1.0,
+		"texture" : "",
+		"light": {
+			"emission x": 0.0,
+			"emission y": 1.0,
+			"emission z": 1.0,
+			"roughness": 0.0,
+			"diffuse": 1.0,
+			"specular": 0.0,
+			"refraction": 0.0
+		}
+	},
+	"triangle" :
+	{
+		"d1 x" : 10.0,
+		"d1 y" : 0.0,
+		"d1 z" : 0.0,
+		"d2 x" : 0.0,
+		"d2 y" : 0.0,
+		"d2 z" : 0.0,
+		"d3 x" : 5.0,
+		"d3 y" : 7.0,
+		"d3 z" : 5.0,
+		"color x": 1.0,
+		"color y": 1.0,
+		"color z": 1.0,
+		"texture" : "",
+		"light": {
+			"emission x": 0.0,
+			"emission y": 1.0,
+			"emission z": 1.0,
+			"roughness": 0.0,
+			"diffuse": 1.0,
+			"specular": 0.0,
+			"refraction": 0.0
+		}
+	},
+	"triangle" :
+	{
+		"d1 x" : 10.0,
+		"d1 y" : 0.0,
+		"d1 z" : 0.0,
+		"d2 x" : 10.0,
+		"d2 y" : 0.0,
+		"d2 z" : 10.0,
+		"d3 x" : 5.0,
+		"d3 y" : 7.0,
+		"d3 z" : 5.0,
+		"color x": 1.0,
+		"color y": 1.0,
+		"color z": 1.0,
+		"texture" : "",
+		"light": {
+			"emission x": 0.0,
+			"emission y": 1.0,
+			"emission z": 1.0,
+			"roughness": 0.0,
+			"diffuse": 1.0,
+			"specular": 0.0,
+			"refraction": 0.0
+		}
+	},
+	"triangle" :
+	{
+		"d1 x" : 0.0,
+		"d1 y" : 0.0,
+		"d1 z" : 10.0,
+		"d2 x" : 10.0,
+		"d2 y" : 0.0,
+		"d2 z" : 10.0,
+		"d3 x" : 5.0,
+		"d3 y" : 7.0,
+		"d3 z" : 5.0,
+		"color x": 1.0,
+		"color y": 1.0,
+		"color z": 1.0,
+		"texture" : "",
+		"light": {
+			"emission x": 0.0,
+			"emission y": 1.0,
+			"emission z": 1.0,
+			"roughness": 0.0,
+			"diffuse": 1.0,
+			"specular": 0.0,
+			"refraction": 0.0
+		}
+	}
+}

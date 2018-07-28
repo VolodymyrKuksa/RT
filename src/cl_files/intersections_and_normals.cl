@@ -121,7 +121,7 @@ float	intersection_sphere(t_ray *ray,t_sphere sphere)
 	float dist;
 
 	x = ray->pos - sphere.pos;
-	dist = length(x) - sphere.r;
+	dist = length(x) - sphere.r - 1.f;
 	if (dist > 0)
 		x += dist*ray->dir;
 	else
@@ -456,19 +456,33 @@ __float3	normal_parallelogram(__float3  hitpoint, t_parallelogram *paral, t_basi
 {
 	__float3  normal;
 	float length;
+	bool flag;
 	normal = hitpoint - paral->pos;
 
-	if ((length = dot(normal, basis->u)) == paral->l)
-		return (basis->u);
-	if (length == -paral->l)
-		return (-basis->u);
-	if ((length = dot(normal, basis->w)) == paral->w)
-		return (basis->w);
-	if (length == -paral->w)
-		return (-basis->w);
-	if ((length = dot(normal, basis->v)) == paral->h)
-		return (basis->v);
-	return (-basis->v);
+	length = dot(normal, basis->u);
+	flag = length > 0.f ? true : false;
+	if(!flag)
+		length = -length;
+	length = length - paral->l;
+	length *= length;
+
+	if (length < 0.00001f)
+		return (flag == true ? basis->u : -(basis->u));
+
+	length = dot(normal, basis->w);
+	flag = length > 0.f ? true : false;
+	if(!flag)
+		length = -length;
+	length = length - paral->l;
+	length *= length;
+
+	if (length < 0.00001f)
+		return (flag  == true ? basis->w : -(basis->w));
+
+	length = dot(normal, basis->v);
+	flag = length > 0.f ? true : false;
+
+	return (flag  == true ? basis->v : -(basis->v));
 }
 
 __float3	normal_triangle(__float3  hitpoint, t_triangle *triangle)
