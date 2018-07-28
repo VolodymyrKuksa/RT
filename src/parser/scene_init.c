@@ -84,7 +84,7 @@ void			print_sphere(t_obj obj)
 
 void			print_ellipse(t_obj obj)
 {
-	printf("----------------------ellipse---------------------------\n");
+	printf("----------------------paraboloid---------------------------\n");
 	printf("pos x = %f\n", obj.primitive.paraboloid.pos.x);
 	printf("pos y = %f\n", obj.primitive.paraboloid.pos.y);
 	printf("pos z = %f\n", obj.primitive.paraboloid.pos.z);
@@ -343,22 +343,27 @@ void			check_tex_offs(cl_float2 tex_offs)
 
 void			fill_col_distrupt(char *name, json_value v, t_obj *tmp)
 {
-
 	if (ft_strcmp(name, "col_disrupt") == 0)
 	{
 		if (!v.u.string.ptr)
 			error_fedun("value is absent in key col_disrupt");
 		if (ft_strcmp(v.u.string.ptr, "CHESS") == 0)
 			tmp->col_disrupt = CHESS;
-		else if (ft_strcmp(v.u.string.ptr, "NODISTRUPT") == 0 ||
+		if (ft_strcmp(v.u.string.ptr, "NODISTRUPT") == 0 ||
 				ft_strcmp(v.u.string.ptr, "") == 0)
 			tmp->col_disrupt = NODISRUPT;
-		else if (ft_strcmp(v.u.string.ptr, "COS") == 0)
+		if (ft_strcmp(v.u.string.ptr, "COS") == 0)
 			tmp->col_disrupt = COS;
-		else if (ft_strcmp(v.u.string.ptr, "CIRCLE") == 0)
+		if (ft_strcmp(v.u.string.ptr, "CIRCLE") == 0)
 			tmp->col_disrupt = CIRCLE;
-		else
-			error_fedun("Wrong value in col_disrupt key");
+		if (ft_strcmp(v.u.string.ptr, "PERLIN") == 0)
+			tmp->col_disrupt = PERLIN;
+		if (ft_strcmp(v.u.string.ptr, "PERLIN_BLUE") == 0)
+			tmp->col_disrupt = PERLIN_BLUE;
+		if (ft_strcmp(v.u.string.ptr, "PERLIN_RED") == 0)
+			tmp->col_disrupt = PERLIN_RED;
+		if (ft_strcmp(v.u.string.ptr, "PERLIN_GREEN") == 0)
+			tmp->col_disrupt = PERLIN_GREEN;
 	}
 	if (tmp->emission.x != 0.0 || tmp->emission.y != 0.0 ||
 		tmp->emission.z != 0.0)
@@ -367,7 +372,6 @@ void			fill_col_distrupt(char *name, json_value v, t_obj *tmp)
 
 void			fill_textures(char *name, t_obj *tmp, json_value v)
 {
-
 	if (ft_strcmp(name, "texture") == 0)
 	{
 		if (!v.u.string.ptr)
@@ -404,74 +408,28 @@ void			fill_common(char *name, t_obj *tmp,
 	check_tex_offs(tmp->tex_offs);
 }
 
+void			rot_pos_cam(cl_float3 *pos, cl_float3 rot)
+{
+	*pos = clvec_rot_x(*pos, DTR(-rot.x));
+	*pos = clvec_rot_y(*pos, DTR(-rot.y));
+	*pos = clvec_rot_z(*pos, DTR(-rot.z));
+}
+
 void			rotate_obj_by_camera(t_obj *tmp, cl_float3 rot)
 {
-	//if (tmp->type == sphere)
-	//{
-	tmp->primitive.sphere.pos = clvec_rot_x(tmp->primitive.sphere.pos, DTR(-rot.x));
-	tmp->primitive.sphere.pos = clvec_rot_y(tmp->primitive.sphere.pos, DTR(-rot.y));
-	tmp->primitive.sphere.pos = clvec_rot_z(tmp->primitive.sphere.pos, DTR(-rot.z));
-	//}
-	/*
-	if (tmp->type == cone)
-	{
-		tmp->primitive.cone.pos = clvec_rot_x(tmp->primitive.cone.pos, DTR(-rot.x));
-		tmp->primitive.cone.pos = clvec_rot_y(tmp->primitive.cone.pos, DTR(-rot.y));
-		tmp->primitive.cone.pos = clvec_rot_z(tmp->primitive.cone.pos, DTR(-rot.z));
-	}
-	if (tmp->type == plane)
-	{
-		tmp->primitive.plane.pos = clvec_rot_x(tmp->primitive.plane.pos, DTR(-rot.x));
-		tmp->primitive.plane.pos = clvec_rot_y(tmp->primitive.plane.pos, DTR(-rot.y));
-		tmp->primitive.plane.pos = clvec_rot_z(tmp->primitive.plane.pos, DTR(-rot.z));
-	}
-	if (tmp->type == cylinder)
-	{
-		tmp->primitive.cylinder.pos = clvec_rot_x(tmp->primitive.cylinder.pos, DTR(-rot.x));
-		tmp->primitive.cylinder.pos = clvec_rot_y(tmp->primitive.cylinder.pos, DTR(-rot.y));
-		tmp->primitive.cylinder.pos = clvec_rot_z(tmp->primitive.cylinder.pos, DTR(-rot.z));
-	}
-	if (tmp->type == disk)
-	{
-		tmp->primitive.disk.pos = clvec_rot_x(tmp->primitive.disk.pos, DTR(-rot.x));
-		tmp->primitive.disk.pos = clvec_rot_y(tmp->primitive.disk.pos, DTR(-rot.y));
-		tmp->primitive.disk.pos = clvec_rot_z(tmp->primitive.disk.pos, DTR(-rot.z));
-	}
-	if (tmp->type == torus)
-	{
-		tmp->primitive.torus.pos = clvec_rot_x(tmp->primitive.torus.pos, DTR(-rot.x));
-		tmp->primitive.torus.pos = clvec_rot_y(tmp->primitive.torus.pos, DTR(-rot.y));
-		tmp->primitive.torus.pos = clvec_rot_z(tmp->primitive.torus.pos, DTR(-rot.z));
-	}
-	if (tmp->type == rectangle)
-	{
-		tmp->primitive.rectangle.pos = clvec_rot_x(tmp->primitive.rectangle.pos, DTR(-rot.x));
-		tmp->primitive.rectangle.pos = clvec_rot_y(tmp->primitive.rectangle.pos, DTR(-rot.y));
-		tmp->primitive.rectangle.pos = clvec_rot_z(tmp->primitive.rectangle.pos, DTR(-rot.z));
-	}*/
-	if (tmp->type == parallelogram)
-	{
-		tmp->primitive.parallelogram.pos = clvec_rot_x(tmp->primitive.parallelogram.pos, DTR(-rot.x));
-		tmp->primitive.parallelogram.pos = clvec_rot_y(tmp->primitive.parallelogram.pos, DTR(-rot.y));
-		tmp->primitive.parallelogram.pos = clvec_rot_z(tmp->primitive.parallelogram.pos, DTR(-rot.z));
-	}
 	if (tmp->type == paraboloid)
 	{
-		tmp->primitive.paraboloid.pos = clvec_rot_x(tmp->primitive.paraboloid.pos, DTR(-rot.x));
-		tmp->primitive.paraboloid.pos = clvec_rot_y(tmp->primitive.paraboloid.pos, DTR(-rot.y));
-		tmp->primitive.paraboloid.pos = clvec_rot_z(tmp->primitive.paraboloid.pos, DTR(-rot.z));
+		rot_pos_cam(&(tmp->primitive.paraboloid.pos), rot);
 	}
-	if (tmp->type == triangle)
+	else if (tmp->type == triangle)
 	{
-		tmp->primitive.triangle.d1 = clvec_rot_x(tmp->primitive.triangle.d1, DTR(-rot.x));
-		tmp->primitive.triangle.d1 = clvec_rot_y(tmp->primitive.triangle.d1, DTR(-rot.y));
-		tmp->primitive.triangle.d1 = clvec_rot_z(tmp->primitive.triangle.d1, DTR(-rot.z));
-		tmp->primitive.triangle.d2 = clvec_rot_x(tmp->primitive.triangle.d2, DTR(-rot.x));
-		tmp->primitive.triangle.d2 = clvec_rot_y(tmp->primitive.triangle.d2, DTR(-rot.y));
-		tmp->primitive.triangle.d2 = clvec_rot_z(tmp->primitive.triangle.d2, DTR(-rot.z));
-		tmp->primitive.triangle.d3 = clvec_rot_x(tmp->primitive.triangle.d3, DTR(-rot.x));
-		tmp->primitive.triangle.d3 = clvec_rot_y(tmp->primitive.triangle.d3, DTR(-rot.y));
-		tmp->primitive.triangle.d3 = clvec_rot_z(tmp->primitive.triangle.d3, DTR(-rot.z));
+		rot_pos_cam(&(tmp->primitive.triangle.d1), rot);
+		rot_pos_cam(&(tmp->primitive.triangle.d2), rot);
+		rot_pos_cam(&(tmp->primitive.triangle.d3), rot);
+	}
+	else
+	{
+		rot_pos_cam(&(tmp->primitive.sphere.pos), rot);
 	}
 	init_rotate(&tmp->basis, (cl_float3){-rot.x, -rot.y, -rot.z});
 }
@@ -496,16 +454,16 @@ void			fill_scene_obj(json_value *value, t_scene *scene, int i)
 		fillparaboloid(value->u.object.values[i].value, scene, 0);
 	else if (ft_strcmp("triangle", value->u.object.values[i].name) == 0)
 		filltriangle(value->u.object.values[i].value, scene, 0);
-	else if (ft_strcmp("parallelogram", value->u.object.values[i].name) == 0)
+	else if (ft_strcmp("paralelepiped", value->u.object.values[i].name) == 0)
 		fillparallelogram(value->u.object.values[i].value, scene, 0);
 	else
 		error_fedun("wrong key in root");
 }
 
-int 			count_helping_obj(json_value *value)
+int				count_helping_obj(json_value *value)
 {
-	int 		i;
-	int 		res;
+	int			i;
+	int			res;
 
 	i = 0;
 	res = 0;
@@ -513,10 +471,8 @@ int 			count_helping_obj(json_value *value)
 	{
 		if (ft_strcmp(value->u.object.values[i].name, "cylinder") == 0)
 			res = res + 2;
-		//if (ft_strcmp(value->u.object.values[i].name, "cone"))
-		//	res += 1;
-		//if (ft_strcmp(value->u.object.values[i].name, "cube"))
-		//	res += 5;
+		if (ft_strcmp(value->u.object.values[i].name, "cone") == 0)
+			res += 2;
 		i++;
 	}
 	return (res);
@@ -543,12 +499,11 @@ void			fillthescene(json_value *value, t_scene *scene)
 			return ;
 		i++;
 	}
-
 }
 
 void			rotate_scene_by_cam(t_scene *scene)
 {
-	int 		i;
+	int			i;
 
 	i = 0;
 	while (i < scene->num_obj)
@@ -574,7 +529,6 @@ void			init_scene(t_scene *scene, int argc, char **argv)
 		exit(1);
 	}
 	fillthescene(value, scene);
-
 	rotate_scene_by_cam(scene);
 	json_value_free(value);
 	free(contents);

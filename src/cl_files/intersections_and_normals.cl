@@ -138,7 +138,7 @@ float	intersection_sphere(t_ray *ray,t_sphere sphere)
 	float dist;
 
 	x = ray->pos - sphere.pos;
-	dist = length(x) - sphere.r;
+	dist = length(x) - sphere.r - 1.f;
 	if (dist > 0)
 		x += dist*ray->dir;
 	else

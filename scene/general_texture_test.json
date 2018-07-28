@@ -23,7 +23,7 @@
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
-	"texture" : "textures/helper2.png",
+	"texture" : "textures/roflan.jpg",
 	"light" : {
 	  "diffuse" : 1.0,
 	  "specular" : 0.0,
@@ -96,7 +96,7 @@
   "cone" :
   {
 	"pos x" : 0.0,
-	"pos y" : 5.0,
+	"pos y" : 35.0,
 	"pos z" : -70.0,
 	"color x" : 1.0,
 	"color y" : 1.0,
@@ -105,7 +105,7 @@
 	"rot x" : 0.0,
 	"rot y" : 0.0,
 	"rot z" : 0.0,
-	"m1" : 0.0000001,
+	"m1" : -10.0,
 	"m2" : 20.0,
 	"light" : {
 	  "emission x" : 0.0,
@@ -127,8 +127,8 @@
 	"rot x": 90.0,
 	"rot y": 0.0,
 	"rot z": 0.0,
-	"radius big": 0.01,
-	"radius small": 5.0,
+	"radius big": 5.0,
+	"radius small": 3.0,
 	"texture" : "textures/helper.jpg",
 	"light": {
 	  "emission x": 0.0,
@@ -244,5 +244,9 @@
 	  "refraction" : 0.0
 	},
 	"radius" : 40.0
-  }
+  },
+	"paralelepiped":
+	{
+
+	}
 }

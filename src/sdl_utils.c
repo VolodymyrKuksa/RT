@@ -46,6 +46,7 @@ int		init_win(t_scrn *screen, int server, int shown)
 	}
 	else
 	{
+		TTF_Init();
 		create_window(&screen->window, server, shown);
 		if (screen->window == NULL)
 		{
@@ -56,13 +57,16 @@ int		init_win(t_scrn *screen, int server, int shown)
 	}
 	screen->surface = SDL_GetWindowSurface(screen->window);
 	screen->surf_arr = (t_rgb *)screen->surface->pixels;
+	screen->renderer = SDL_CreateSoftwareRenderer(screen->surface);
 	set_icon(screen);
 	return (1);
 }
 
 void	close_sdl(t_scrn *screen)
 {
+	SDL_DestroyRenderer(screen->renderer);
 	SDL_FreeSurface(screen->surface);
 	SDL_DestroyWindow(screen->window);
+	TTF_Quit();
 	SDL_Quit();
 }

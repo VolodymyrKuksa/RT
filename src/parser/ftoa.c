@@ -11,9 +11,8 @@
 /* ************************************************************************** */
 
 #include "rt.h"
-#include "libft.h"
 
-static int				powk(int x, unsigned int y)
+static int		powk(int x, unsigned int y)
 {
 	if (y == 0)
 		return (1);
@@ -37,9 +36,9 @@ void			ftoa(float flt, int after_point, int xy, int fd)
 	}
 	ft_putnbr_fd((int)flt, fd);
 	ft_putchar_fd('.', fd);
-	mut_ab = powk(10,after_point);
+	mut_ab = powk(10, (unsigned int)after_point);
 	after_point_flt = (int)(flt * mut_ab);
-	multiplier = powk(10, (after_point-1));
+	multiplier = powk(10, (unsigned int)(after_point - 1));
 	while (xy++ < after_point)
 	{
 		muted = (after_point_flt/multiplier);

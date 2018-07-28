@@ -25,6 +25,11 @@ void	clamp(cl_float3 *px)
 	px->z = px->z > 1.f ? 1.f : px->z;
 }
 
+void	beta(void *some_shit, SDL_Renderer *renderer)
+{
+	printf("Ass\n");
+}
+
 void	update_window(t_env *env)
 {
 	float		sample_influence;
@@ -46,13 +51,16 @@ void	update_window(t_env *env)
 		env->screen.surf_arr[i].bgra[1] = (u_char)(env->cl.pixels[i].y * 0xff);
 		env->screen.surf_arr[i].bgra[2] = (u_char)(env->cl.pixels[i].x * 0xff);
 	}
+	env->button.draw(env->screen.renderer, &env->button);
+	SDL_RenderPresent(env->screen.renderer);
 //	printf("samples: %u, influence: %f\n", env->num_samples, sample_influence);
 	SDL_UpdateWindowSurface(env->screen.window);
 }
 
 void	handle_events(t_env *env)
 {
-	SDL_Event	e;
+	SDL_Event			e;
+	static t_gui_obj	*temp;
 
 	while (SDL_PollEvent(&e) != 0)
 	{
@@ -64,6 +72,37 @@ void	handle_events(t_env *env)
 			window_event(e, env);
 		else if (e.type == SDL_MOUSEWHEEL)
 			mouse_wheel_event(e, env);
+		else if (e.type == SDL_MOUSEBUTTONDOWN)
+		{
+			/*					*/
+			temp = env->button.collision(e.button.x, e.button.y, (t_gui_obj *)&env->button);
+			/*					*/
+			if (!temp)
+			{
+				size_t		global_size = 1;
+				clSetKernelArg(env->cl.kr_intersect, 0, sizeof(int), &e.button.x);
+				clSetKernelArg(env->cl.kr_intersect, 1, sizeof(int), &e.button.y);
+				clEnqueueNDRangeKernel(env->cl.command_queue, env->cl.kr_intersect,
+					1, 0, &global_size, 0, 0, 0, 0);
+				clEnqueueReadBuffer(env->cl.command_queue, env->cl.id_gpu, CL_FALSE,
+					0, sizeof(int), env->cl.id_host, 0, 0, 0);
+				clFinish(env->cl.command_queue);
+				printf("id: %d, type: %d\n", *env->cl.id_host,
+				env->scene.obj[*env->cl.id_host].type);
+			}
+		}
+		else if (e.type == SDL_MOUSEMOTION)
+		{
+			//printf("moving\n");
+		}
+		else if (e.type == SDL_MOUSEBUTTONUP)
+		{
+			/*					*/
+			if (temp == env->button.collision(e.button.x, e.button.y, (t_gui_obj *)&env->button) && temp && temp->type == 0)
+					env->button.action(NULL, NULL);
+			/*					*/
+			temp = NULL;
+		}
 	}
 }
 
@@ -85,6 +124,12 @@ void	handle_events_client(t_env *env)
 void	main_loop_server(t_env *env)
 {
 	cl_setup(env);
+	/* shit */
+	env->button = create_button(init_rect(100, 100, 200, 200), NULL, "gui_textures/images.png");
+	button_settings(env->screen.renderer, &env->button);
+	button_set_label("Lol", 81, env->screen.renderer, &env->button);
+	env->button.action = &beta;
+	/*shit*/
 	while (!(env->mv_data.move_keys & KEY_ESC))
 	{
 		handle_events(env);

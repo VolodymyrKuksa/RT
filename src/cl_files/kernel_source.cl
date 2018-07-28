@@ -313,6 +313,41 @@ float3		apply_effect(float3 px, int effect)
 	return px;
 }
 
+t_ray get_precise_ray(int x, int y, t_cam *cam);
+
+t_ray get_precise_ray(int x, int y, t_cam *cam)
+{
+	t_ray ray;
+
+	ray.pos = (float3)(0,0,0);
+
+	ray.dir = (float3)(x - cam->pr_pl_w / 2, -y + cam->pr_pl_h / 2,
+		-cam->f_length);
+	ray.dir.x *= cam->ratio;
+	ray.dir.y *= cam->ratio;
+	ray.dir = normalize(ray.dir);
+	return(ray);
+}
+
+__kernel void	get_mouse_intersect(
+	int x,
+	int y,
+	__global t_obj *obj,
+	int num_obj,
+	t_cam cam,
+	__global int *id)
+{
+	t_ray ray = get_precise_ray(x, y, &cam);
+	int		tmp;
+	float t = get_intersection(&ray, obj, num_obj, &tmp);
+	if (t > 0.f)
+		*id = tmp;
+	else
+		*id = -1;
+}
+
+
+
  __kernel void	render_pixel(
 	__global float3 *pixels,
 	__global t_obj *obj,

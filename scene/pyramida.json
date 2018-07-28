@@ -3,7 +3,8 @@
 	{
 		"pos x" : 0.0,
 		"pos y" : 0.0,
-		"pos z" : 10.0,
+		"pos z" : -10.0,
+		"rot y" : -170.0,
 		"f_length" : 60.0,
 		"dust" : 0.0,
 		"fov" : 100.0,
@@ -27,7 +28,7 @@
 		"light": {
 			"emission x": 0.0,
 			"emission y": 1.0,
-			"emission z": 0.0,
+			"emission z": 1.0,
 			"roughness": 0.0,
 			"diffuse": 1.0,
 			"specular": 0.0,
@@ -50,9 +51,9 @@
 		"color z": 1.0,
 		"texture" : "",
 		"light": {
-			"emission x": 1.0,
+			"emission x": 0.0,
 			"emission y": 1.0,
-			"emission z": 0.0,
+			"emission z": 1.0,
 			"roughness": 0.0,
 			"diffuse": 1.0,
 			"specular": 0.0,
@@ -75,9 +76,9 @@
 		"color z": 1.0,
 		"texture" : "",
 		"light": {
-			"emission x": 1.0,
-			"emission y": 0.0,
-			"emission z": 0.0,
+			"emission x": 0.0,
+			"emission y": 1.0,
+			"emission z": 1.0,
 			"roughness": 0.0,
 			"diffuse": 1.0,
 			"specular": 0.0,
@@ -101,7 +102,7 @@
 		"texture" : "",
 		"light": {
 			"emission x": 0.0,
-			"emission y": 0.0,
+			"emission y": 1.0,
 			"emission z": 1.0,
 			"roughness": 0.0,
 			"diffuse": 1.0,
@@ -150,72 +151,9 @@
 		"color z": 1.0,
 		"texture" : "",
 		"light": {
-			"emission x": 1.0,
+			"emission x": 0.0,
 			"emission y": 1.0,
 			"emission z": 1.0,
-			"roughness": 0.0,
-			"diffuse": 1.0,
-			"specular": 0.0,
-			"refraction": 0.0
-		}
-	},
-	"parallelogram" :
-	{
-		"pos x": 20.0,
-		"pos y": 20.0,
-		"pos z": 20.0,
-		"color x": 1.0,
-		"color y": 1.0,
-		"color z": 1.0,
-		"w" : 8.0,
-		"h" : 8.0,
-		"l" : 8.0,
-		"rot x" : 67.0,
-		"texture" : "",
-		"light": {
-			"emission x": 0.0,
-			"emission y": 0.0,
-			"emission z": 0.0,
-			"roughness": 0.0,
-			"diffuse": 1.0,
-			"specular": 0.0,
-			"refraction": 0.0
-		}
-	},
-	"sphere" :
-	{
-		"pos x": 20.0,
-		"pos y": 20.0,
-		"pos z": 20.0,
-		"color x": 1.0,
-		"color y": 1.0,
-		"color z": 1.0,
-		"radius" : 2.0,
-		"texture" : "",
-		"light": {
-			"emission x": 1.0,
-			"emission y": 1.0,
-			"emission z": 1.0,
-			"roughness": 0.0,
-			"diffuse": 1.0,
-			"specular": 0.0,
-			"refraction": 0.0
-		}
-	},
-	"sphere" :
-	{
-		"pos x": 18.0,
-		"pos y": 18.0,
-		"pos z": 18.0,
-		"color x": 1.0,
-		"color y": 1.0,
-		"color z": 0.0,
-		"radius" : 2.0,
-		"texture" : "",
-		"light": {
-			"emission x": 0.0,
-			"emission y": 0.0,
-			"emission z": 0.0,
 			"roughness": 0.0,
 			"diffuse": 1.0,
 			"specular": 0.0,
