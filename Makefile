@@ -33,6 +33,7 @@ D_JSONINC = $(D_JSON)include/
 D_FRW = frameworks/
 D_SDL2 = $(D_FRW)SDL2.framework/
 D_IMG = $(D_FRW)SDL2_image.framework/
+D_TTF = $(D_FRW)SDL2_ttf.framework/
 
 #--------------LIBRARIES--------------------------------------------------------
 
@@ -90,6 +91,12 @@ server-client/tpool_cleanup.c\
 server-client/tpool_client.c\
 server-client/tpool_threads.c\
 server-client/tpool_client_logic.c\
+gui/label.c\
+gui/button.c\
+gui/menu.c\
+gui/common_staff.c\
+gui/controller.c\
+gui/radio.c\
 main_loop.c
 
 C_FILES_RT = server_main.c $(C_FILES)
@@ -109,8 +116,8 @@ HEADERS = $(addprefix $(D_INC), $(HEAD_FILES))
 CC = clang
 #CFLAGS = -Wall -Werror -Wextra -O1
 
-INC = -I $(D_INC) -I $(D_LFTINC) -I $(D_LVECINC) -I $(D_JSONINC) -I $(D_SDL2)Headers -I $(D_IMG)Headers
-FRW = -framework OpenCL -F $(D_FRW) -rpath $(D_FRW) -framework SDL2 -framework SDL2_image
+INC = -I $(D_INC) -I $(D_LFTINC) -I $(D_LVECINC) -I $(D_JSONINC) -I $(D_SDL2)Headers -I $(D_IMG)Headers -I $(D_TTF)Headers
+FRW = -framework OpenCL -F $(D_FRW) -rpath $(D_FRW) -framework SDL2 -framework SDL2_image -framework SDL2_ttf
 
 #--------------COLORS-----------------------------------------------------------
 
@@ -144,6 +151,7 @@ $(D_OBJ):
 	@mkdir $(D_OBJ)textures
 	@mkdir $(D_OBJ)parser
 	@mkdir $(D_OBJ)events
+	@mkdir $(D_OBJ)gui
 	@mkdir $(D_OBJ)server-client
 	@printf "$(C_CYAN)%-10s$(C_NONE)%-25s$(C_GREEN)[done]$(C_NONE)\n" $(NAME): $@
 
