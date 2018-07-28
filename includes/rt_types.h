@@ -26,6 +26,7 @@
 # include <sys/socket.h>
 # include <netdb.h>
 # include "libft.h"
+# include "gui.h"
 
 typedef struct		s_env t_env;
 
@@ -33,6 +34,7 @@ typedef struct		s_scrn
 {
 	SDL_Window		*window;
 	SDL_Surface		*surface;
+	SDL_Renderer	*renderer;
 	t_rgb			*surf_arr;
 }					t_scrn;
 
@@ -357,6 +359,11 @@ typedef struct		s_server
 typedef struct		s_env
 {
 	t_cldata			cl;
+	/***********test*******/
+	t_button			button;
+	t_gui_menu			menu;
+	t_mouse				mouse;
+	/**********************/
 	t_scrn				screen;
 	t_scene				scene;
 	t_mvdata			mv_data;
