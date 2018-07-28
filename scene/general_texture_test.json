@@ -127,8 +127,8 @@
 	"rot x": 90.0,
 	"rot y": 0.0,
 	"rot z": 0.0,
-	"radius big": 5.0,
-	"radius small": 2.0,
+	"radius big": 0.01,
+	"radius small": 5.0,
 	"texture" : "textures/helper.jpg",
 	"light": {
 	  "emission x": 0.0,

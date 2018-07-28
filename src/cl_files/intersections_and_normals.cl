@@ -3,24 +3,41 @@
 //#include "kernel.h"
 //---------------------------------intersection-------------------------------\/
 
+float	intersection_paraboloid(t_ray *ray,t_paraboloid paraboloid, __float3 p_rot)
+{
+	t_quad		q;
+	__float3 	x, hitpoint;
+	float dist ,u , z, len;
 
+	x = ray->pos - paraboloid.pos;
 
+	u = dot(ray->dir, p_rot);
+	z = dot(x, p_rot);
 
+	q.a = 2.f * (dot(ray->dir, ray->dir) - u * u);
+	q.b = 2.f * (dot(ray->dir, x) - u * (z + 2.f *  paraboloid.k));
+	q.c = dot(x, x) - z * (z + 4 *  paraboloid.k);
+	if ((q.d = q.b * q.b - 2.0 * q.a * q.c) >= 0)
+	{
+		q.d = sqrt(q.d);
+		q.res = (-q.b - q.d) / q.a;
+		if (q.res > 0) {
+			hitpoint = q.res * ray->dir + x;
+			len = dot(hitpoint, p_rot);
+			if (len < paraboloid.m && len > 0)
+				return (q.res);
+		}
+		q.res = (-q.b + q.d) / q.a;
+		if (q.res > 0) {
+			hitpoint = q.res * ray->dir + x;
+			len = dot(hitpoint, p_rot);
+			if (len < paraboloid.m && len > 0)
+				return (q.res);
+		}
+	}
+	return (-1);
 
-//float	intersection_elipsoid(t_ray *ray,t_elipsoid elipsoid)
-//{
-//	float	a1, a2, k;
-//	__float3 v, x;
-//
-//	x = ray->pos - elipsoid.c2;
-//	v = elipsoid.c1 - elipsoid.c2;
-//	k = length(v);
-//	v = normalize(v);
-//	a1 = 2.f * k * dot(ray->dir, v);
-//	a2 = r * r  + 2.f * k * dot(x,v) - k;
-//
-//}
-
+}
 
 float	intersection_rectangle(t_ray *ray,t_rectangle rectangle, __global t_basis *basis)
 {
@@ -81,8 +98,8 @@ float	intersection_parallelogram(t_ray *ray,t_parallelogram paral, __global t_ba
 	bas.u = tmp1;
 
 	rect.pos = paral.pos + bas.u * paral.h;
-	rect.w = paral.l;
-	rect.h = paral.w;
+	rect.w = paral.l + 0.01;
+	rect.h = paral.w + 0.01;
 	tmp[4] = intersection_rect(ray, rect, &bas);
 	rect.pos = paral.pos - bas.u * paral.h;
 	tmp[5] = intersection_rect(ray, rect, &bas);
@@ -452,23 +469,48 @@ __float3	normal_torus(__float3  hitpoint, t_torus *torus, __float3 t_rot)
 	return (normalize(normal));
 }
 
+__float3	normal_paraboloid(__float3  hitpoint, t_paraboloid *paraboloid, __float3 p_rot)
+{
+	__float3  normal;
+	float		m;
+
+	hitpoint = hitpoint - paraboloid->pos;
+	m = dot(hitpoint, p_rot);
+	normal = hitpoint - p_rot * (m + paraboloid->k);
+	return (normalize(normal));
+}
+
 __float3	normal_parallelogram(__float3  hitpoint, t_parallelogram *paral, t_basis *basis)
 {
 	__float3  normal;
 	float length;
+	bool flag;
 	normal = hitpoint - paral->pos;
 
-	if ((length = dot(normal, basis->u)) == paral->l)
-		return (basis->u);
-	if (length == -paral->l)
-		return (-basis->u);
-	if ((length = dot(normal, basis->w)) == paral->w)
-		return (basis->w);
-	if (length == -paral->w)
-		return (-basis->w);
-	if ((length = dot(normal, basis->v)) == paral->h)
-		return (basis->v);
-	return (-basis->v);
+	length = dot(normal, basis->u);
+	flag = length > 0.f ? true : false;
+	if(!flag)
+		length = -length;
+	length = length - paral->l;
+	length *= length;
+
+	if (length < 0.00001f)
+		return (flag == true ? basis->u : -(basis->u));
+
+	length = dot(normal, basis->w);
+	flag = length > 0.f ? true : false;
+	if(!flag)
+		length = -length;
+	length = length - paral->l;
+	length *= length;
+
+	if (length < 0.00001f)
+		return (flag  == true ? basis->w : -(basis->w));
+
+	length = dot(normal, basis->v);
+	flag = length > 0.f ? true : false;
+
+	return (flag  == true ? basis->v : -(basis->v));
 }
 
 __float3	normal_triangle(__float3  hitpoint, t_triangle *triangle)
@@ -507,6 +549,9 @@ float3		get_normal_obj(float3 hitpoint, t_ray ray, t_obj *hitobj)
 			break;
 		case triangle:
 			n = normal_triangle(hitpoint, &(hitobj->primitive.triangle));
+			break;
+		case paraboloid:
+			n = normal_paraboloid(hitpoint, &(hitobj->primitive.paraboloid), hitobj->basis.u);
 			break;
 		default:
 			break;

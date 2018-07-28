@@ -27,6 +27,7 @@ float	intersection_disk(t_ray*,t_disk,__float3);
 float	intersection_rectangle(t_ray*,t_rectangle,__global t_basis*);
 float	intersection_parallelogram(t_ray*,t_parallelogram,__global t_basis*);
 float 	intersection_triangle(t_ray *ray,t_triangle triangle);
+float	intersection_paraboloid(t_ray *ray,t_paraboloid paraboloid, __float3);
 
 __float3	normal_sphere(__float3 , t_sphere *);
 __float3	normal_cone(__float3  , t_cone * , __float3);
@@ -112,6 +113,9 @@ float	get_intersection(t_ray *r, __global t_obj *object, int num_obj, int *id)
 				break;
 			case triangle:
 				tmp = intersection_triangle(r, object[i].primitive.triangle);
+				break;
+			case paraboloid:
+				tmp = intersection_paraboloid(r, object[i].primitive.paraboloid, object[i].basis.u);
 				break;
 			default:
 				break;
@@ -238,7 +242,7 @@ t_texture texture, float3 mask, float refr_coef)
 		float t = get_intersection(&ray, obj, num_obj, &hitobj_id);
 		if (t < 0)
 			break;
-//return ((__float3)(1,1,1));
+ //return ((__float3)(1,1,1));
 		t_obj hitobj = obj[hitobj_id];
 		if (ray.dust > 0.f && participating_media(&ray, t, seeds))
 			continue;

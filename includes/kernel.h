@@ -90,7 +90,7 @@ typedef enum		e_obj_type
 	rectangle,
 	parallelogram,
 	triangle,
-	elipsoid
+	paraboloid
 }					t_obj_type;
 
 typedef struct		s_sphere
@@ -160,13 +160,12 @@ typedef struct		s_triangle
 
 }					t_triangle;
 
-typedef struct		s_elipsoid
+typedef struct		s_paraboloid
 {
 	__float3	pos;
-	__float3	c1;
-	__float3	c2;
-	float 		r;
-}					t_elipsoid;
+	float 		k;
+	float		m;
+}					t_paraboloid;
 
 typedef	union		u_primitive
 {
@@ -179,7 +178,7 @@ typedef	union		u_primitive
     t_rectangle 	rectangle;
 	t_parallelogram	parallelogram;
 	t_triangle		triangle;
-	t_elipsoid		elipsoid;
+	t_paraboloid		paraboloid;
 }					t_primitive;
 
 

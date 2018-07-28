@@ -82,3 +82,11 @@ void	mv_triangle(cl_float3 d, t_obj *c, t_mvdata mvdata)
 	c->primitive.triangle.d3.y += d.y * mvdata.move_spd;
 	c->primitive.triangle.d3.z += d.z * mvdata.move_spd;
 }
+
+void	mv_paraboloid(cl_float3 d, t_obj *c, t_mvdata mvdata)
+{
+	c->primitive.paraboloid.pos.x += d.x * mvdata.move_spd;
+	c->primitive.paraboloid.pos.y += d.y * mvdata.move_spd;
+	c->primitive.paraboloid.pos.z += d.z * mvdata.move_spd;
+
+}

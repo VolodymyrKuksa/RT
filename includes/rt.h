@@ -149,7 +149,9 @@ void		rot_rectangle(float d, t_obj *c, t_mvdata mvdata,
 void		rot_parallelogram(float d, t_obj *c, t_mvdata mvdata,
 	cl_float3 (*f)(float, cl_float3, t_mvdata));
 void		rot_triangle(float d, t_obj *c, t_mvdata mvdata,
-							  cl_float3 (*f)(float, cl_float3, t_mvdata));
+	cl_float3 (*f)(float, cl_float3, t_mvdata));
+void		rot_paraboloid(float d, t_obj *c, t_mvdata mvdata,
+	cl_float3 (*f)(float, cl_float3, t_mvdata));
 /*
 **	mv_obj.c
 */
@@ -163,6 +165,7 @@ void		mv_disk(cl_float3 d, t_obj *c, t_mvdata mvdata);
 void		mv_rectangle(cl_float3 d, t_obj *c, t_mvdata mvdata);
 void		mv_parallelogram(cl_float3 d, t_obj *c, t_mvdata mvdata);
 void		mv_triangle(cl_float3 d, t_obj *c, t_mvdata mvdata);
+void		mv_paraboloid(cl_float3 d, t_obj *c, t_mvdata mvdata);
 
 /*
 **	run_server.c

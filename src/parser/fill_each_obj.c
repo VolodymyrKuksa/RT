@@ -299,47 +299,44 @@ void			filldisk(json_value *value, t_scene *scene, int i)
 	print_disk(tmp);
 }
 
-void			fill_ellipse_centers(char *name, json_value v, t_obj *tmp)
+void			fill_paraboloid_centers(char *name, json_value v, t_obj *tmp)
 {
-	if (ft_strcmp(name, "c1 x") == 0)
-		tmp->primitive.elipsoid.c1.x = (float)v.u.dbl;
-	if (ft_strcmp(name, "c1 y") == 0)
-		tmp->primitive.elipsoid.c1.y = (float)v.u.dbl;
-	if (ft_strcmp(name, "c1 z") == 0)
-		tmp->primitive.elipsoid.c1.z = (float)v.u.dbl;
-	if (ft_strcmp(name, "c2 x") == 0)
-		tmp->primitive.elipsoid.c2.x = (float)v.u.dbl;
-	if (ft_strcmp(name, "c2 y") == 0)
-		tmp->primitive.elipsoid.c2.y = (float)v.u.dbl;
-	if (ft_strcmp(name, "c2 z") == 0)
-		tmp->primitive.elipsoid.c2.z = (float)v.u.dbl;
+	if (ft_strcmp(name, "c x") == 0)
+		tmp->primitive.paraboloid.pos.x = (float)v.u.dbl;
+	if (ft_strcmp(name, "c y") == 0)
+		tmp->primitive.paraboloid.pos.y = (float)v.u.dbl;
+	if (ft_strcmp(name, "c z") == 0)
+		tmp->primitive.paraboloid.pos.z = (float)v.u.dbl;
 }
 
-void			fillellipse(json_value *value, t_scene *scene, int i)
+void			fillparaboloid(json_value *value, t_scene *scene, int i)
 {
 	t_obj		tmp;
 	json_value	v;
 	cl_float3	rot;
 
-	tmp = default_elipsoid();
+	tmp = default_paraboloid();
 	rot = (cl_float3){0.0, 0.0, 0.0};
 	while (i < value->u.object.length)
 	{
 		v = *(value->u.object.values[i].value);
-		fill_ellipse_centers(value->u.object.values[i].name, v, &tmp);
-		if (ft_strcmp(value->u.object.values[i].name, "radius") == 0)
-			tmp.primitive.elipsoid.r = (cl_float)v.u.dbl;
+		//fill_paraboloid_centers(value->u.object.values[i].name, v, &tmp);
+		if (ft_strcmp(value->u.object.values[i].name, "k") == 0)
+			tmp.primitive.paraboloid.k = (cl_float)v.u.dbl;
+		if (ft_strcmp(value->u.object.values[i].name, "m") == 0)
+			tmp.primitive.paraboloid.m = (cl_float)fabs(v.u.dbl);
+		fill_position(value->u.object.values[i].name,
+					  (cl_float)v.u.dbl, &(tmp.primitive.paraboloid.pos));
 		fill_common(value->u.object.values[i].name, &tmp, &v, &rot);
 		i++;
 	}
 	tmp.rot = rot;
-	tmp.type = elipsoid;
+	tmp.type = paraboloid;
 	init_rotate(&(tmp.basis), rot);
-	minus_camera(&(tmp.primitive.elipsoid.c1), scene->cam.pos);
-	minus_camera(&(tmp.primitive.elipsoid.c2), scene->cam.pos);
+	minus_camera(&(tmp.primitive.paraboloid.pos), scene->cam.pos);
 	check_basis(&tmp);
-	if (SUKA(tmp.primitive.elipsoid.r, 0) == 0)
-		error_fedun("radius of ellipse is bad");
+	//if (SUKA(tmp.primitive.paraboloid.k, 0) == 0)
+	//	error_fedun("radius of ellipse is bad");
 	scene->obj[scene->cur_obj++] = tmp;
 	print_ellipse(tmp);
 }

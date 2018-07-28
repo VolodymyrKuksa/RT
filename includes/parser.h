@@ -49,7 +49,7 @@ t_obj			default_plane(void);
 t_obj			default_torus(void);
 t_obj           default_rectangle(void);
 t_obj			default_disk(void);
-t_obj			default_elipsoid(void);
+t_obj			default_paraboloid(void);
 t_obj			default_triangle(void);
 
 void			camera_default(t_cam *cam);
@@ -88,7 +88,7 @@ void			fillthesphere(json_value *value, t_scene *scene, int i);
 void			filltorus(json_value *value, t_scene *scene, int i);
 void			fillrectangle(json_value *value, t_scene *scene, int i);
 void			filldisk(json_value *value, t_scene *scene, int i);
-void			fillellipse(json_value *value, t_scene *scene, int i);
+void			fillparaboloid(json_value *value, t_scene *scene, int i);
 void			filltriangle(json_value *value, t_scene *scene, int i);
 void			fillparallelogram(json_value *value, t_scene *scene, int i);
 void			fillcube(json_value *value, t_scene *scene, int i);

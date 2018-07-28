@@ -67,3 +67,9 @@ void	rot_triangle(float d, t_obj *c, t_mvdata mvdata,
 	c->primitive.triangle.d2 = f(d, c->primitive.triangle.d2, mvdata);
 	c->primitive.triangle.d3 = f(d, c->primitive.triangle.d3, mvdata);
 }
+
+void	rot_paraboloid(float d, t_obj *c, t_mvdata mvdata,
+					 cl_float3 (*f)(float, cl_float3, t_mvdata))
+{
+	c->primitive.paraboloid.pos = f(d, c->primitive.paraboloid.pos, mvdata);
+}

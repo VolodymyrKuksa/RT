@@ -49,7 +49,7 @@ void			print_scene(t_scene *scene)
 			print_rectangle(scene->obj[i]);
 		else if (scene->obj[i].type == disk)
 			print_disk(scene->obj[i]);
-		else if (scene->obj[i].type == elipsoid)
+		else if (scene->obj[i].type == paraboloid)
 			print_ellipse(scene->obj[i]);
 		else if (scene->obj[i].type == parallelogram)
 			print_parallelogram(scene->obj[i]);
@@ -85,13 +85,11 @@ void			print_sphere(t_obj obj)
 void			print_ellipse(t_obj obj)
 {
 	printf("----------------------ellipse---------------------------\n");
-	printf("c1 x = %f\n", obj.primitive.elipsoid.c1.x);
-	printf("c1 y = %f\n", obj.primitive.elipsoid.c1.y);
-	printf("c1 z = %f\n", obj.primitive.elipsoid.c1.z);
-	printf("c2 x = %f\n", obj.primitive.elipsoid.c2.x);
-	printf("c2 y = %f\n", obj.primitive.elipsoid.c2.y);
-	printf("c2 z = %f\n", obj.primitive.elipsoid.c2.z);
-	printf("radius = %f\n", obj.primitive.elipsoid.r);
+	printf("pos x = %f\n", obj.primitive.paraboloid.pos.x);
+	printf("pos y = %f\n", obj.primitive.paraboloid.pos.y);
+	printf("pos z = %f\n", obj.primitive.paraboloid.pos.z);
+	printf("k = %f\n", obj.primitive.paraboloid.k);
+	printf("m = %f\n", obj.primitive.paraboloid.m);
 	printf("color x = %f\n", obj.color.x);
 	printf("color y = %f\n", obj.color.y);
 	printf("color z = %f\n", obj.color.z);
@@ -457,14 +455,11 @@ void			rotate_obj_by_camera(t_obj *tmp, cl_float3 rot)
 		tmp->primitive.parallelogram.pos = clvec_rot_y(tmp->primitive.parallelogram.pos, DTR(-rot.y));
 		tmp->primitive.parallelogram.pos = clvec_rot_z(tmp->primitive.parallelogram.pos, DTR(-rot.z));
 	}
-	if (tmp->type == elipsoid)
+	if (tmp->type == paraboloid)
 	{
-		tmp->primitive.elipsoid.c1 = clvec_rot_x(tmp->primitive.elipsoid.c1, DTR(-rot.x));
-		tmp->primitive.elipsoid.c1 = clvec_rot_y(tmp->primitive.elipsoid.c1, DTR(-rot.y));
-		tmp->primitive.elipsoid.c1 = clvec_rot_z(tmp->primitive.elipsoid.c1, DTR(-rot.z));
-		tmp->primitive.elipsoid.c2 = clvec_rot_x(tmp->primitive.elipsoid.c2, DTR(-rot.x));
-		tmp->primitive.elipsoid.c2 = clvec_rot_y(tmp->primitive.elipsoid.c2, DTR(-rot.y));
-		tmp->primitive.elipsoid.c2 = clvec_rot_z(tmp->primitive.elipsoid.c2, DTR(-rot.z));
+		tmp->primitive.paraboloid.pos = clvec_rot_x(tmp->primitive.paraboloid.pos, DTR(-rot.x));
+		tmp->primitive.paraboloid.pos = clvec_rot_y(tmp->primitive.paraboloid.pos, DTR(-rot.y));
+		tmp->primitive.paraboloid.pos = clvec_rot_z(tmp->primitive.paraboloid.pos, DTR(-rot.z));
 	}
 	if (tmp->type == triangle)
 	{
@@ -497,8 +492,8 @@ void			fill_scene_obj(json_value *value, t_scene *scene, int i)
 		fillrectangle(value->u.object.values[i].value, scene, 0);
 	else if (ft_strcmp("disk", value->u.object.values[i].name) == 0)
 		filldisk(value->u.object.values[i].value, scene, 0);
-	else if (ft_strcmp("ellipse", value->u.object.values[i].name) == 0)
-		fillellipse(value->u.object.values[i].value, scene, 0);
+	else if (ft_strcmp("paraboloid", value->u.object.values[i].name) == 0)
+		fillparaboloid(value->u.object.values[i].value, scene, 0);
 	else if (ft_strcmp("triangle", value->u.object.values[i].name) == 0)
 		filltriangle(value->u.object.values[i].value, scene, 0);
 	else if (ft_strcmp("parallelogram", value->u.object.values[i].name) == 0)
