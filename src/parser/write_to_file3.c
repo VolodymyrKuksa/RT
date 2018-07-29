@@ -40,14 +40,11 @@ void			write_torus(t_obj obj, int fd)
 void			write_paraboloid(t_obj obj, int fd)
 {
 	ft_putstr_fd("\t\"paraboloid\" :\n\t{\n\t\t", fd);
-	write_feature("pos x", obj.primitive.paraboloid.pos.x, fd);
-	write_feature("pos y", obj.primitive.paraboloid.pos.y, fd);
-	write_feature("pos z", obj.primitive.paraboloid.pos.z, fd);
 	write_feature("m", obj.primitive.paraboloid.m, fd);
 	write_feature("k", obj.primitive.paraboloid.k, fd);
 	write_basis(obj, fd);
 	write_disrupt_tex_offs(obj, fd);
-	write_pos_color((cl_float3){0, 0, 0}, obj.color, fd);
+	write_pos_color(obj.primitive.paraboloid.pos, obj.color, fd);
 	write_texture(obj.mater_tex_id, obj.tex_id, fd);
 	write_light(obj, fd);
 }
