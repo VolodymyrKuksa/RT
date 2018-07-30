@@ -10,7 +10,8 @@
 	"f_length" : 60.0,
 	"dust" : 0.0,
 	"fov" : 90.0,
-	"aperture" : 0.00001
+	"aperture" : 0.00001,
+	"effect": "BLACK_N_WHITE"
   },
   "plane" :
   {

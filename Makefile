@@ -99,6 +99,7 @@ gui/menu.c\
 gui/common_staff.c\
 gui/controller.c\
 gui/radio.c\
+gui/gui.c\
 client_read_data.c\
 main_loop.c
 

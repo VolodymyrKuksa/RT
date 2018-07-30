@@ -71,7 +71,11 @@ void	window_event(SDL_Event e, t_env *env)
 				sizeof(tmp), WND_SIZE);
 		}
 		if (!env->client.active)
-			env->button.update(&env->button, 1, env->screen.renderer, 0);
+		{
+			/* update */
+			env->gui.update(&env->gui, env->screen.renderer);
+			/* update */
+		}
 	}
 }
 

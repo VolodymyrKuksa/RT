@@ -1,3 +1,5 @@
+
+
 #include "kernel.h"
 
 __constant float EPSILON = 0.001;
@@ -259,6 +261,7 @@ t_texture texture, float3 mask, float refr_coef)
 			mask *= material.color;
 			float rand = get_random(seeds);
 			rand -= material.diffuse;
+
 			if (rand <= 0.f)
 			{
 				ray = diffuse(ray, material.normal, hitpoint, seeds);
@@ -274,6 +277,7 @@ t_texture texture, float3 mask, float refr_coef)
 			}
 			else
 				ray = refract(ray, hitpoint, material, seeds, refr_coef);
+
 		}
 		else
 			ray.pos = hitpoint + EPSILON * ray.dir;
