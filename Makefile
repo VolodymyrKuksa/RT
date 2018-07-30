@@ -51,7 +51,9 @@ events/keyboard_events.c\
 events/movement_events.c\
 events/mouse_event.c\
 events/mv_obj.c\
+events/mv_obj2.c\
 events/rot_obj.c\
+events/rot_obj2.c\
 events/rotate.c\
 events/window_event.c\
 events/write_png.c\
@@ -97,6 +99,7 @@ gui/menu.c\
 gui/common_staff.c\
 gui/controller.c\
 gui/radio.c\
+client_read_data.c\
 main_loop.c
 
 C_FILES_RT = server_main.c $(C_FILES)
