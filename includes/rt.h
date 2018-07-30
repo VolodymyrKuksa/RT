@@ -183,6 +183,12 @@ void		set_nonblock(int fd);
 void		set_block(int fd);
 
 /*
+**	client_read_data.c
+*/
+
+void	read_scene(t_env *env);
+
+/*
 **	write_ppm.c
 */
 
@@ -193,8 +199,6 @@ int			write_ppm(char *filename, cl_float3 *pixels);
 */
 
 void		write_png(t_env *env);
-
-
 
 t_obj	*find_mouse_intersect(int x, int y, t_env *env);
 

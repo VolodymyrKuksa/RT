@@ -357,12 +357,78 @@ typedef struct		s_server
 	atomic_int			message_id;
 }					t_server;
 
+/*--------------------------Menu------------------------------*/
+typedef struct          s_gui_menu
+{
+    float               x;
+    float               y;
+    SDL_Rect            my_rect;
+    t_gui_obj           *father;
+    char                type;
+    void                (*action)(void *some_shit, SDL_Renderer *renderer);
+    /*                  */
+    t_scene             *scene;
+    menu_type           m_type;
+    t_mouse             *mouse;
+    char                *source;
+    SDL_Texture         *texture;
+    t_button            main_button;
+    unsigned char       numb_of_labels;
+    unsigned char       numb_of_control;
+    unsigned char       numb_of_radio;
+
+    t_radio_button      *radio;
+    t_val_control       *controls;
+    t_label             *labels;
+
+    void                (*draw)(SDL_Renderer *renderer, struct s_gui_menu *my_radio);
+    void                (*update)(struct s_gui_menu *my_menu, char with_text, SDL_Renderer *renderer, char hide);
+    t_gui_obj           *(*collision)(int x, int y, t_gui_obj *gui_obj);
+}                       t_gui_menu;
+
+t_gui_menu              create_menu(int x, int y, char *text, t_mouse *mouse);
+void                    menu_own_set(SDL_Renderer *renderer, t_gui_menu *my_menu);
+void                    menu_settings(t_gui_menu *my_menu, SDL_Renderer *renderer, menu_type type, t_scene *scene);
+void                    unhide_objects_menu(void *some_shit, SDL_Renderer *renderer);
+void                    unhide_global_menu(void  *some_shit, SDL_Renderer *renderer);
+void                    fill_global_menu(t_gui_menu *my_menu, SDL_Renderer *renderer);
+void                    fill_objects_menu(t_gui_menu *my_menu, SDL_Renderer *renderer);
+void                    update_menu(t_gui_menu *my_menu, char with_text, SDL_Renderer *renderer, char hide);
+void                    draw_menu(SDL_Renderer *renderer, t_gui_menu *my_menu);
+t_gui_obj               *check_menu_collision(int x, int y, t_gui_obj *gui_obj);
+void                    hide_menu(void *some_shit, SDL_Renderer *renderer);
+void                    menu_action(void *some_shit, SDL_Renderer *renderer);
+void                    destroy_menu(t_gui_menu *my_menu, SDL_Renderer *renderer);
+/*------------------------------------------------------------*/
+
+/*---------------------------MainGuiType----------------------*/
+typedef struct          s_gui
+{
+    t_gui_menu          *menu;
+    t_button            *button;
+    t_label             *label;
+    t_mouse             *mouse;
+
+    unsigned char       numb_of_menus;
+    unsigned char       numb_of_buttons;
+    unsigned char       numb_of_labels;
+
+	void				(*draw)(SDL_Renderer *renderer, struct s_gui *my_gui);
+	void				(*update)(struct s_gui *my_gui, SDL_Renderer *renderer);
+	t_gui_obj			*(*collision)(int x, int y, t_gui_obj *gui_obj);
+}                       t_gui;
+
+t_gui             		init_gui(SDL_Renderer *renderer, t_scene *scene);
+void                	draw_gui(SDL_Renderer *renderer, t_gui *my_gui);
+t_gui_obj           	*check_gui_collision(int x, int y, t_gui_obj *gui_obj);
+void                	update_gui(t_gui *my_gui, SDL_Renderer *renderer);
+void                	destroy_gui(t_gui *my_gui, SDL_Renderer *renderer);
+/*------------------------------------------------------------*/
+
 typedef struct		s_env
 {
 	t_cldata			cl;
-	t_button			button;
-	t_gui_menu			menu;
-	t_mouse				mouse;
+	t_gui				gui;
 	t_scrn				screen;
 	t_scene				scene;
 	t_mvdata			mv_data;

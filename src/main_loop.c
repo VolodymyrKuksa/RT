@@ -25,11 +25,6 @@ void	clamp(cl_float3 *px)
 	px->z = px->z > 1.f ? 1.f : px->z;
 }
 
-void	beta(void *some_shit, SDL_Renderer *renderer)
-{
-	printf("Ass\n");
-}
-
 void	update_window(t_env *env)
 {
 	float		sample_influence;
@@ -51,9 +46,13 @@ void	update_window(t_env *env)
 		env->screen.surf_arr[i].bgra[1] = (u_char)(env->cl.pixels[i].y * 0xff);
 		env->screen.surf_arr[i].bgra[2] = (u_char)(env->cl.pixels[i].x * 0xff);
 	}
-	env->button.draw(env->screen.renderer, &env->button);
+	if (!env->client.active)
+	{
+		/* draw */
+		env->gui.draw(env->screen.renderer, &env->gui);
+		/* draw */
+	}
 	SDL_RenderPresent(env->screen.renderer);
-//	printf("samples: %u, influence: %f\n", env->num_samples, sample_influence);
 	SDL_UpdateWindowSurface(env->screen.window);
 }
 
@@ -61,6 +60,8 @@ void	handle_events(t_env *env)
 {
 	SDL_Event			e;
 	static t_gui_obj	*temp;
+	static int			x;
+	static int			y;
 
 	while (SDL_PollEvent(&e) != 0)
 	{
@@ -74,9 +75,11 @@ void	handle_events(t_env *env)
 			mouse_wheel_event(e, env);
 		else if (e.type == SDL_MOUSEBUTTONDOWN)
 		{
-			/*					*/
-			temp = env->button.collision(e.button.x, e.button.y, (t_gui_obj *)&env->button);
-			/*					*/
+			/* collision */
+			x = e.button.x;
+			y = e.button.y;
+			temp = env->gui.collision(e.button.x, e.button.y, (t_gui_obj *)&env->gui);
+			/* collision */
 			if (!temp)
 			{
 				size_t		global_size = 1;
@@ -93,14 +96,29 @@ void	handle_events(t_env *env)
 		}
 		else if (e.type == SDL_MOUSEMOTION)
 		{
-			//printf("moving\n");
+			/* collision */
+			if (temp && temp->type == 1)
+			{
+				env->gui.mouse->dx = e.motion.x - x;
+				env->gui.mouse->dy = e.motion.y - y;
+				x = e.motion.x;
+				y = e.motion.y;
+				if (temp == env->gui.collision(e.button.x, e.button.y, (t_gui_obj *)&env->gui))
+					temp->action((void *)temp, env->screen.renderer);
+			}
+			/* collision */
 		}
 		else if (e.type == SDL_MOUSEBUTTONUP)
 		{
-			/*					*/
-			if (temp == env->button.collision(e.button.x, e.button.y, (t_gui_obj *)&env->button) && temp && temp->type == 0)
-					env->button.action(NULL, NULL);
-			/*					*/
+			/* collision */
+			if (temp == env->gui.collision(e.button.x, e.button.y, (t_gui_obj *)&env->gui) && temp && temp->type == 0)
+			{
+				if (temp->father)
+					temp->action((void *)temp->father, env->screen.renderer);
+				else
+					temp->action((void *)temp, env->screen.renderer);
+			}
+			/* collisison */
 			temp = NULL;
 		}
 	}
@@ -124,12 +142,9 @@ void	handle_events_client(t_env *env)
 void	main_loop_server(t_env *env)
 {
 	cl_setup(env);
-	/* shit */
-	env->button = create_button(init_rect(100, 100, 200, 200), NULL, "gui_textures/images.png");
-	button_settings(env->screen.renderer, &env->button);
-	button_set_label("Lol", 81, env->screen.renderer, &env->button);
-	env->button.action = &beta;
-	/*shit*/
+	/* creation */
+	env->gui = init_gui(env->screen.renderer, &env->scene);
+	/* creation */
 	while (!(env->mv_data.move_keys & KEY_ESC))
 	{
 		handle_events(env);
