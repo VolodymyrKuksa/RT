@@ -168,7 +168,7 @@ int	get_hitpoint_material(t_obj *hitobj,
 	material->roughness = hitobj->roughness;
 	material->emission = hitobj->emission;
 	material->color = get_point_col(hitobj, texture, coord);
-	material->normal = get_normal_obj(hitpoint, ray, hitobj);
+	material->normal = get_normal_obj(hitpoint, hitobj);
 	material->enter = dot(ray.dir, material->normal) < 0 ? true : false;
 	material->normal = material->enter ? material->normal : -(material->normal);
 	if (hitobj->type == plane || hitobj->type == disk || hitobj->type == rectangle)

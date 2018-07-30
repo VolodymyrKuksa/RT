@@ -23,7 +23,7 @@
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
-	"texture" : "textures/helper2.png",
+	"texture" : "textures/roflan.jpg",
 	"light" : {
 	  "diffuse" : 1.0,
 	  "specular" : 0.0,
@@ -45,20 +45,20 @@
 	"color z" : 1.0,
 	"light" : {
 	  "diffuse" : 1.0,
-	  "emission x" : 0.0,
-	  "emission y" : 0.0,
-	  "emission z" : 0.0
+	  "emission x" : 1.0,
+	  "emission y" : 1.0,
+	  "emission z" : 1.0
 	}
   },
   "cylinder" :
   {
-	"pos x" : -30.0,
-	"pos y" : -15.0,
-	"pos z" : -70.0,
+	"pos x" : 0.0,
+	"pos y" : 15.0,
+	"pos z" : -30.0,
 	"color x" : 1.0,
 	"color y" : 1.0,
 	"color z" : 1.0,
-	"rot x" : 0.0,
+	"rot x" : -20.0,
 	"rot y" : 0.0,
 	"rot z" : 0.0,
 	"texture" : "textures/helper.jpg",
@@ -68,7 +68,7 @@
 	  "emission y" : 0.0,
 	  "emission z" : 0.0
 	},
-	"radius" : 5.0
+	"radius" : 2.0
   },
   "sphere" :
   {
@@ -128,7 +128,7 @@
 	"rot y": 0.0,
 	"rot z": 0.0,
 	"radius big": 5.0,
-	"radius small": 2.0,
+	"radius small": 3.0,
 	"texture" : "textures/helper.jpg",
 	"light": {
 	  "emission x": 0.0,
@@ -212,7 +212,10 @@
 		"color x": 1.0,
 		"color y": 1.0,
 		"color z": 1.0,
-		"d1 x" : -19.0,
+		"d1 z" : -70.0,
+	  	"d2 z" : -70.0,
+	  	"d3 z" : -70.0,
+		"texture" : "textures/helper.jpg",
 		"light": {
 			"emission x": 0.0,
 			"emission y": 0.0,
@@ -247,6 +250,23 @@
   },
 	"paralelepiped":
 	{
-
+	  "pos x": 0.0,
+	  "pos y": 15.0,
+	  "pos z": -30.0,
+	  "w": 10.0,
+	  "h": 10.0,
+	  "l": 10.0,
+	  "color x": 0.9,
+	  "color y": 0.9,
+	  "color z": 1.0,
+	  "light": {
+		"emission x": 0.0,
+		"emission y": 0.0,
+		"emission z": 0.0,
+		"roughness": 0.0,
+		"diffuse": 1.0,
+		"specular": 1.0,
+		"refraction": 5.0
+	  }
 	}
 }

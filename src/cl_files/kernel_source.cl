@@ -27,13 +27,15 @@ float	intersection_disk(t_ray*,t_disk,__float3);
 float	intersection_rectangle(t_ray*,t_rectangle,__global t_basis*);
 float	intersection_parallelogram(t_ray*,t_parallelogram,__global t_basis*);
 float 	intersection_triangle(t_ray *ray,t_triangle triangle);
+float	intersection_paraboloid(t_ray *ray,t_paraboloid paraboloid, __float3);
 
 __float3	normal_sphere(__float3 , t_sphere *);
 __float3	normal_cone(__float3  , t_cone * , __float3);
 __float3	normal_plane(__float3  , t_plane * , __float3);
 __float3	normal_cylinder(__float3 , t_cylinder * , __float3);
+__float3	normal_parallelogram(__float3, t_parallelogram *, t_basis *);
 
-float3		get_normal_obj(float3 hitpoint, t_ray ray, t_obj *hitobj);
+float3		get_normal_obj(float3 hitpoint, t_obj *hitobj);
 
 float3	get_point_color(t_obj *hitobj, float3 hitpoint, t_texture texture);
 int	get_hitpoint_material(t_obj *, float3, t_material *, t_texture, t_ray);
@@ -112,6 +114,9 @@ float	get_intersection(t_ray *r, __global t_obj *object, int num_obj, int *id)
 				break;
 			case triangle:
 				tmp = intersection_triangle(r, object[i].primitive.triangle);
+				break;
+			case paraboloid:
+				tmp = intersection_paraboloid(r, object[i].primitive.paraboloid, object[i].basis.u);
 				break;
 			default:
 				break;
@@ -196,8 +201,13 @@ t_ray	refract(t_ray ray, __float3 hitpoint, t_material material, uint2 *seeds, f
 			material.normal * cosine_theta_r;
 	}
 
-	ray.dir = sample_hemisphere(t, material.roughness, seeds);
-	ray.pos = hitpoint + EPSILON * ray.dir;
+	if (dot(t, material.normal) < 0.f)
+	{
+		ray.dir = sample_hemisphere(t, material.roughness, seeds);
+		ray.pos = hitpoint + EPSILON * ray.dir;
+	}
+	else
+		return reflect(ray, hitpoint, material, seeds);
 
 	return (ray);
 }
@@ -238,7 +248,7 @@ t_texture texture, float3 mask, float refr_coef)
 		float t = get_intersection(&ray, obj, num_obj, &hitobj_id);
 		if (t < 0)
 			break;
-//return ((__float3)(1,1,1));
+ //return ((__float3)(1,1,1));
 		t_obj hitobj = obj[hitobj_id];
 		if (ray.dust > 0.f && participating_media(&ray, t, seeds))
 			continue;
@@ -271,12 +281,11 @@ t_texture texture, float3 mask, float refr_coef)
 	return (res);
 }
 
-float		round_tenth(float val);
+float		cartoon_round(float val);
 
-float		round_tenth(float val)
+float		cartoon_round(float val)
 {
-	val *= 1;
-	return val;
+	return val > 0.5f ? 1.f : 0.f;
 }
 
 float3		apply_effect(float3 px, int effect);
@@ -304,7 +313,7 @@ float3		apply_effect(float3 px, int effect)
 	}
 	else if (effect == CARTOON)
 	{
-		return (float3)(round_tenth(px.x), round_tenth(px.y), round_tenth(px.z));
+		return (float3)(cartoon_round(px.x), cartoon_round(px.y), cartoon_round(px.z));
 	}
 	return px;
 }

@@ -7,7 +7,7 @@
 		"rot x" : 0.0000,
 		"rot y" : 0.0000,
 		"rot z" : 0.0000,
-		"effect": "NOEFFECT",
+		"effect": "BLACK_N_WHITE",
 		"f_length" : 60.0000,
 		"dust" : 0.0000,
 		"fov" : 90.0000,
@@ -78,9 +78,9 @@
 		"emission x" : 0.0000,
 		"emission y" : 0.0000,
 		"emission z" : 0.0000,
-		"diffuse" : 1.0000,
+		"diffuse" : 0.0000,
 		"specular" : 0.0000,
-		"refraction" : 0.0000,
+		"refraction" : 1.0000,
 		"roughness" : 0.0000
 		}
 	},
@@ -177,9 +177,9 @@
 		"emission x" : 0.0000,
 		"emission y" : 0.0000,
 		"emission z" : 0.0000,
-		"diffuse" : 1.0000,
+		"diffuse" : 0.0000,
 		"specular" : 0.0000,
-		"refraction" : 0.0000,
+		"refraction" : 1.0000,
 		"roughness" : 1.0000
 		}
 	},
@@ -210,9 +210,9 @@
 		"emission x" : 0.0000,
 		"emission y" : 0.0000,
 		"emission z" : 0.0000,
-		"diffuse" : 1.0000,
+		"diffuse" : 0.0000,
 		"specular" : 0.0000,
-		"refraction" : 0.0000,
+		"refraction" : 1.0000,
 		"roughness" : 1.0000
 		}
 	},

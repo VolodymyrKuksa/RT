@@ -46,9 +46,12 @@ void	update_window(t_env *env)
 		env->screen.surf_arr[i].bgra[1] = (u_char)(env->cl.pixels[i].y * 0xff);
 		env->screen.surf_arr[i].bgra[2] = (u_char)(env->cl.pixels[i].x * 0xff);
 	}
-	/* draw */
-	env->gui.draw(env->screen.renderer, &env->gui);
-	/* draw */
+	if (!env->client.active)
+	{
+		/* draw */
+		env->gui.draw(env->screen.renderer, &env->gui);
+		/* draw */
+	}
 	SDL_RenderPresent(env->screen.renderer);
 	SDL_UpdateWindowSurface(env->screen.window);
 }

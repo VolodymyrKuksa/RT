@@ -41,7 +41,7 @@ void			ftoa(float flt, int after_point, int xy, int fd)
 	multiplier = powk(10, (unsigned int)(after_point - 1));
 	while (xy++ < after_point)
 	{
-		muted = (after_point_flt/multiplier);
+		muted = (after_point_flt / multiplier);
 		muted = abs(muted % 10);
 		ft_putnbr_fd(muted, fd);
 		multiplier /= 10;

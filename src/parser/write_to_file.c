@@ -40,21 +40,22 @@ void			write_which_obj(t_scene *scene, int i, int fd)
 		write_disk(scene->obj[i], fd);
 	else if (scene->obj[i].type == rectangle)
 		write_rectangle(scene->obj[i], fd);
-	else if (scene->obj[i].type == elipsoid)
-		write_ellipse(scene->obj[i], fd);
+	else if (scene->obj[i].type == paraboloid)
+		write_paraboloid(scene->obj[i], fd);
 	else if (scene->obj[i].type == triangle)
 		write_triangle(scene->obj[i], fd);
 	else if (scene->obj[i].type == parallelogram)
 		write_parallelogram(scene->obj[i], fd);
 }
 
-void				write_scene(t_scene *scene)
+void			write_scene(t_scene *scene)
 {
-	int				fd;
-	int				i;
+	int			fd;
+	int			i;
 
 	i = 0;
-	if ((fd = open("writing.json", O_RDWR | O_CREAT | O_TRUNC, 0777)) == -1)
+	if ((fd = open("scene/writing.json",
+		O_RDWR | O_CREAT | O_TRUNC, 0777)) == -1)
 		error_fedun("cannot save scene");
 	ft_putstr_fd("{\n\t", fd);
 	write_cam(scene->cam, fd);

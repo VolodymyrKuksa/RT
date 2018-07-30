@@ -70,9 +70,12 @@ void	window_event(SDL_Event e, t_env *env)
 			push_message_for_all(env->server.tpool, &tmp,
 				sizeof(tmp), WND_SIZE);
 		}
-		/* update */
-		env->gui.update(&env->gui, env->screen.renderer);
-		/* update */
+		if (!env->client.active)
+		{
+			/* update */
+			env->gui.update(&env->gui, env->screen.renderer);
+			/* update */
+		}
 	}
 }
 

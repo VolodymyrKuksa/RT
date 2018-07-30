@@ -37,19 +37,14 @@ void			write_torus(t_obj obj, int fd)
 	write_light(obj, fd);
 }
 
-void			write_ellipse(t_obj obj, int fd)
+void			write_paraboloid(t_obj obj, int fd)
 {
-	ft_putstr_fd("\t\"elipsoid\" :\n\t{\n\t\t", fd);
-	write_feature("c1 x", obj.primitive.elipsoid.c1.x, fd);
-	write_feature("c1 y", obj.primitive.elipsoid.c1.y, fd);
-	write_feature("c1 z", obj.primitive.elipsoid.c1.z, fd);
-	write_feature("c2 x", obj.primitive.elipsoid.c2.x, fd);
-	write_feature("c2 y", obj.primitive.elipsoid.c2.y, fd);
-	write_feature("c2 z", obj.primitive.elipsoid.c2.z, fd);
-	write_feature("radius", obj.primitive.elipsoid.r, fd);
+	ft_putstr_fd("\t\"paraboloid\" :\n\t{\n\t\t", fd);
+	write_feature("m", obj.primitive.paraboloid.m, fd);
+	write_feature("k", obj.primitive.paraboloid.k, fd);
 	write_basis(obj, fd);
 	write_disrupt_tex_offs(obj, fd);
-	write_pos_color((cl_float3){0, 0, 0}, obj.color, fd);
+	write_pos_color(obj.primitive.paraboloid.pos, obj.color, fd);
 	write_texture(obj.mater_tex_id, obj.tex_id, fd);
 	write_light(obj, fd);
 }

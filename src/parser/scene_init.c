@@ -49,7 +49,7 @@ void			print_scene(t_scene *scene)
 			print_rectangle(scene->obj[i]);
 		else if (scene->obj[i].type == disk)
 			print_disk(scene->obj[i]);
-		else if (scene->obj[i].type == elipsoid)
+		else if (scene->obj[i].type == paraboloid)
 			print_ellipse(scene->obj[i]);
 		else if (scene->obj[i].type == parallelogram)
 			print_parallelogram(scene->obj[i]);
@@ -84,14 +84,12 @@ void			print_sphere(t_obj obj)
 
 void			print_ellipse(t_obj obj)
 {
-	printf("----------------------ellipse---------------------------\n");
-	printf("c1 x = %f\n", obj.primitive.elipsoid.c1.x);
-	printf("c1 y = %f\n", obj.primitive.elipsoid.c1.y);
-	printf("c1 z = %f\n", obj.primitive.elipsoid.c1.z);
-	printf("c2 x = %f\n", obj.primitive.elipsoid.c2.x);
-	printf("c2 y = %f\n", obj.primitive.elipsoid.c2.y);
-	printf("c2 z = %f\n", obj.primitive.elipsoid.c2.z);
-	printf("radius = %f\n", obj.primitive.elipsoid.r);
+	printf("----------------------paraboloid---------------------------\n");
+	printf("pos x = %f\n", obj.primitive.paraboloid.pos.x);
+	printf("pos y = %f\n", obj.primitive.paraboloid.pos.y);
+	printf("pos z = %f\n", obj.primitive.paraboloid.pos.z);
+	printf("k = %f\n", obj.primitive.paraboloid.k);
+	printf("m = %f\n", obj.primitive.paraboloid.m);
 	printf("color x = %f\n", obj.color.x);
 	printf("color y = %f\n", obj.color.y);
 	printf("color z = %f\n", obj.color.z);
@@ -285,155 +283,6 @@ void			print_triangle(t_obj obj)
 	printf("texture id= %d\n", obj.tex_id);
 }
 
-void			parselight(json_value *value, t_obj *tmp)
-{
-	int			i;
-	json_value	v;
-
-	i = 0;
-	while (i < value->u.object.length)
-	{
-		v = *(value->u.object.values[i].value);
-		if (!ft_strcmp(value->u.object.values[i].name, "emission x"))
-			tmp->emission.x = (cl_float)v.u.dbl;
-		if (!ft_strcmp(value->u.object.values[i].name, "emission y"))
-			tmp->emission.y = (cl_float)v.u.dbl;
-		if (!ft_strcmp(value->u.object.values[i].name, "emission z"))
-			tmp->emission.z = (cl_float)v.u.dbl;
-		if (!ft_strcmp(value->u.object.values[i].name, "roughness"))
-			tmp->roughness = (cl_float)v.u.dbl;
-		if (!ft_strcmp(value->u.object.values[i].name, "diffuse"))
-			tmp->diffuse = (cl_float)v.u.dbl;
-		if (!ft_strcmp(value->u.object.values[i].name, "specular"))
-			tmp->specular = (cl_float)v.u.dbl;
-		if (!ft_strcmp(value->u.object.values[i].name, "refraction"))
-			tmp->refraction = (cl_float)v.u.dbl;
-		i++;
-	}
-	checksumandemiss(tmp);
-}
-
-void			fill_basis(char *name, t_obj *tmp, cl_float v)
-{
-	if (ft_strcmp(name, "u x") == 0)
-		tmp->basis.u.x = v;
-	if (ft_strcmp(name, "u y") == 0)
-		tmp->basis.u.y = v;
-	if (ft_strcmp(name, "u z") == 0)
-		tmp->basis.u.z = v;
-	if (ft_strcmp(name, "v x") == 0)
-		tmp->basis.v.x = v;
-	if (ft_strcmp(name, "v y") == 0)
-		tmp->basis.v.y = v;
-	if (ft_strcmp(name, "v z") == 0)
-		tmp->basis.v.z = v;
-	if (ft_strcmp(name, "w x") == 0)
-		tmp->basis.w.x = v;
-	if (ft_strcmp(name, "w y") == 0)
-		tmp->basis.w.y = v;
-	if (ft_strcmp(name, "w z") == 0)
-		tmp->basis.w.z = v;
-}
-
-void			check_tex_offs(cl_float2 tex_offs)
-{
-	if (tex_offs.x < 0 || tex_offs.x > 1)
-		error_fedun("tex_offs x is not correct. 0 <= x <= 1");
-	if (tex_offs.y < 0 || tex_offs.y > 1)
-		error_fedun("tex_offs y is not correct. 0 <= y <= 1");
-}
-
-void			fill_col_distrupt(char *name, json_value v, t_obj *tmp)
-{
-	if (ft_strcmp(name, "col_disrupt") == 0)
-	{
-		if (!v.u.string.ptr)
-			error_fedun("value is absent in key col_disrupt");
-		if (ft_strcmp(v.u.string.ptr, "CHESS") == 0)
-			tmp->col_disrupt = CHESS;
-		if (ft_strcmp(v.u.string.ptr, "NODISTRUPT") == 0 ||
-				ft_strcmp(v.u.string.ptr, "") == 0)
-			tmp->col_disrupt = NODISRUPT;
-		if (ft_strcmp(v.u.string.ptr, "COS") == 0)
-			tmp->col_disrupt = COS;
-		if (ft_strcmp(v.u.string.ptr, "CIRCLE") == 0)
-			tmp->col_disrupt = CIRCLE;
-		if (ft_strcmp(v.u.string.ptr, "PERLIN") == 0)
-			tmp->col_disrupt = PERLIN;
-		if (ft_strcmp(v.u.string.ptr, "PERLIN_BLUE") == 0)
-			tmp->col_disrupt = PERLIN_BLUE;
-		if (ft_strcmp(v.u.string.ptr, "PERLIN_RED") == 0)
-			tmp->col_disrupt = PERLIN_RED;
-		if (ft_strcmp(v.u.string.ptr, "PERLIN_GREEN") == 0)
-			tmp->col_disrupt = PERLIN_GREEN;
-	}
-	if (tmp->emission.x != 0.0 || tmp->emission.y != 0.0 ||
-		tmp->emission.z != 0.0)
-		tmp->col_disrupt = NODISRUPT;
-}
-
-void			fill_textures(char *name, t_obj *tmp, json_value v)
-{
-	if (ft_strcmp(name, "texture") == 0)
-	{
-		if (!v.u.string.ptr)
-			error_fedun("texture path is missing");
-		tmp->tex_id = load_texture(v.u.string.ptr);
-	}
-	if (ft_strcmp(name, "material texture") == 0)
-	{
-		if (!v.u.string.ptr)
-			error_fedun("material  texture path is missing");
-		tmp->mater_tex_id = load_texture(v.u.string.ptr);
-	}
-}
-
-void			fill_common(char *name, t_obj *tmp,
-							json_value *v, cl_float3 *rot)
-{
-	fill_color(name, (cl_float)(v->u.dbl), tmp);
-	fill_basis(name, tmp, (cl_float)(v->u.dbl));
-	if (ft_strcmp(name, "light") == 0)
-		parselight(v, tmp);
-	fill_textures(name, tmp, *v);
-	if (ft_strcmp(name, "rot x") == 0)
-		rot->x = (cl_float)(v->u.dbl);
-	if (ft_strcmp(name, "rot y") == 0)
-		rot->y = (cl_float)(v->u.dbl);
-	if (ft_strcmp(name, "rot z") == 0)
-		rot->z = (cl_float)(v->u.dbl);
-	if (ft_strcmp(name, "tex_offs x") == 0)
-		tmp->tex_offs.x = (cl_float)v->u.dbl;
-	if (ft_strcmp(name, "tex_offs y") == 0)
-		tmp->tex_offs.y = (cl_float)v->u.dbl;
-	fill_col_distrupt(name, *v, tmp);
-	check_tex_offs(tmp->tex_offs);
-}
-
-void			rot_pos_cam(cl_float3 *pos, cl_float3 rot)
-{
-	*pos = clvec_rot_x(*pos, DTR(-rot.x));
-	*pos = clvec_rot_y(*pos, DTR(-rot.y));
-	*pos = clvec_rot_z(*pos, DTR(-rot.z));
-}
-
-void			rotate_obj_by_camera(t_obj *tmp, cl_float3 rot)
-{
-	rot_pos_cam(&(tmp->primitive.sphere.pos), rot);
-	if (tmp->type == elipsoid)
-	{
-		rot_pos_cam(&(tmp->primitive.elipsoid.c1), rot);
-		rot_pos_cam(&(tmp->primitive.elipsoid.c2), rot);
-	}
-	if (tmp->type == triangle)
-	{
-		rot_pos_cam(&(tmp->primitive.triangle.d1), rot);
-		rot_pos_cam(&(tmp->primitive.triangle.d2), rot);
-		rot_pos_cam(&(tmp->primitive.triangle.d3), rot);
-	}
-	init_rotate(&tmp->basis, (cl_float3){-rot.x, -rot.y, -rot.z});
-}
-
 void			fill_scene_obj(json_value *value, t_scene *scene, int i)
 {
 	if (ft_strcmp("sphere", value->u.object.values[i].name) == 0)
@@ -450,8 +299,8 @@ void			fill_scene_obj(json_value *value, t_scene *scene, int i)
 		fillrectangle(value->u.object.values[i].value, scene, 0);
 	else if (ft_strcmp("disk", value->u.object.values[i].name) == 0)
 		filldisk(value->u.object.values[i].value, scene, 0);
-	else if (ft_strcmp("elipsoid", value->u.object.values[i].name) == 0)
-		fillellipse(value->u.object.values[i].value, scene, 0);
+	else if (ft_strcmp("paraboloid", value->u.object.values[i].name) == 0)
+		fillparaboloid(value->u.object.values[i].value, scene, 0);
 	else if (ft_strcmp("triangle", value->u.object.values[i].name) == 0)
 		filltriangle(value->u.object.values[i].value, scene, 0);
 	else if (ft_strcmp("paralelepiped", value->u.object.values[i].name) == 0)
@@ -501,18 +350,6 @@ void			fillthescene(json_value *value, t_scene *scene)
 	}
 }
 
-void			rotate_scene_by_cam(t_scene *scene)
-{
-	int			i;
-
-	i = 0;
-	while (i < scene->num_obj)
-	{
-		rotate_obj_by_camera(&scene->obj[i], scene->cam.rot);
-		i++;
-	}
-}
-
 void			init_scene(t_scene *scene, int argc, char **argv)
 {
 	json_value	*value;
@@ -532,4 +369,5 @@ void			init_scene(t_scene *scene, int argc, char **argv)
 	rotate_scene_by_cam(scene);
 	json_value_free(value);
 	free(contents);
+	print_scene((scene));
 }
