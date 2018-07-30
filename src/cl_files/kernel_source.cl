@@ -1,6 +1,6 @@
 
 
-//#include "kernel.h"
+#include "kernel.h"
 
 __constant float EPSILON = 0.001;
 __constant float PI = 3.14159265359f;
