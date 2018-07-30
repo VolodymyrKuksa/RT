@@ -60,6 +60,7 @@ void			filltriangle(json_value *value, t_scene *scene, int i)
 		i++;
 	}
 	tmp.type = triangle;
+	tmp.primitive.triangle.tex_scale = 20.f;	// parse it
 	help_triangle(&tmp, scene, rot);
 	get_basis(&tmp);
 	init_rotate(&(tmp.basis), rot);

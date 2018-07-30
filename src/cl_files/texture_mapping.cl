@@ -12,6 +12,7 @@ void		texture_cylinder(t_obj *, float3, float2 *);
 void		texture_cone(t_obj *, float3, float2 *);
 void		texture_torus(t_obj *, float3, float2 *);
 void		texture_disk(t_obj *, float3, float2 *);
+void		texture_triangle(t_obj *, float3, float2 *);
 
 /*============================================================================*/
 
@@ -62,6 +63,15 @@ void	texture_plane(t_obj *plane, float3 hitpoint, float2 *coord)
 	hitpoint -= plane->primitive.plane.pos;
 	hitpoint = change_of_basis(hitpoint, plane->basis);
 	hitpoint /= plane->primitive.plane.tex_scale;
+	coord->x = hitpoint.x;
+	coord->y = hitpoint.z;
+}
+
+void	texture_triangle(t_obj *triangle, float3 hitpoint, float2 *coord)
+{
+	hitpoint -= triangle->primitive.triangle.d1;
+	hitpoint = change_of_basis(hitpoint, triangle->basis);
+	hitpoint /= triangle->primitive.triangle.tex_scale;
 	coord->x = hitpoint.x;
 	coord->y = hitpoint.z;
 }
@@ -163,6 +173,8 @@ void		get_texture_coord(t_obj *hitobj, float3 hitpoint, float2 *coord)
 		texture_disk(hitobj, hitpoint, coord);
 	else if (hitobj->type == rectangle)
 		texture_rectangle(hitobj, hitpoint, coord);
+	else if (hitobj->type == triangle)
+		texture_triangle(hitobj, hitpoint, coord);
 	*coord -= hitobj->tex_offs;
 	coord->x += coord->x > 0 ? -(int)coord->x : (int)coord->x;
 	coord->y += coord->y > 0 ? -(int)coord->y : (int)coord->y;

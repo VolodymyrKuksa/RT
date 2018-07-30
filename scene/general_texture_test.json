@@ -213,6 +213,7 @@
 		"color y": 1.0,
 		"color z": 1.0,
 		"d1 x" : -19.0,
+		"texture" : "textures/helper.jpg",
 		"light": {
 			"emission x": 0.0,
 			"emission y": 0.0,

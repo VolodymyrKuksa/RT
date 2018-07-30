@@ -157,7 +157,7 @@ typedef struct		s_triangle
 	__float3	d1;
 	__float3	d2;
 	__float3	d3;
-
+	float		tex_scale;
 }					t_triangle;
 
 typedef struct		s_paraboloid
