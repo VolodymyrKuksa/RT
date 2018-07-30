@@ -48,7 +48,7 @@ float	intersection_rectangle(t_ray *ray,t_rectangle rectangle, __global t_basis 
 	x = ray->pos - rectangle.pos;
 	t = -dot(x, basis->u) / dot(ray->dir,basis->u);
 	hitpoint = t * ray->dir + x;
-	if (fabs(dot(hitpoint, basis->v)) < rectangle.h && fabs(dot(hitpoint, basis->w)) < rectangle.w)
+	if (fabs(dot(hitpoint, basis->v)) <= rectangle.h  && fabs(dot(hitpoint, basis->w)) <= rectangle.w)
 		return (t);
 	return (-1.f);
 }
@@ -62,7 +62,7 @@ float	intersection_rect(t_ray *ray,t_rectangle rectangle, t_basis *basis)
 	x = ray->pos - rectangle.pos;
 	t = -dot(x, basis->u) / dot(ray->dir,basis->u);
 	hitpoint = t * ray->dir + x;
-	if (fabs(dot(hitpoint, basis->v)) < rectangle.h && fabs(dot(hitpoint, basis->w)) < rectangle.w)
+	if (fabs(dot(hitpoint, basis->v)) < rectangle.h + 0.001f && fabs(dot(hitpoint, basis->w)) < rectangle.w + 0.001f)
 		return (t);
 	return (-1.f);
 }
@@ -75,33 +75,33 @@ float	intersection_parallelogram(t_ray *ray,t_parallelogram paral, __global t_ba
 	float tmp[6], res = -1.f;
 
 	bas = *basis;
-	rect.pos = paral.pos + bas.u * paral.l;
-	rect.w = paral.w;
-	rect.h = paral.h;
+	rect.pos = paral.pos + bas.u * paral.h;
+	rect.w = paral.l;
+	rect.h = paral.w;
 	tmp[0] = intersection_rect(ray, rect, &bas);
-	rect.pos = paral.pos - bas.u * paral.l;
+	rect.pos = paral.pos - bas.u * paral.h;
 	tmp[1] = intersection_rect(ray, rect, &bas);
 
 	tmp1 = bas.w;
 	bas.w = bas.u;
 	bas.u = tmp1;
 
-	rect.pos = paral.pos + bas.u * paral.w;
-	rect.w = paral.l;
-	rect.h = paral.h;
+	rect.pos = paral.pos + bas.u * paral.l;
+	rect.w = paral.h;
+	rect.h = paral.w;
 	tmp[2] = intersection_rect(ray, rect, &bas);
-	rect.pos = paral.pos - bas.u * paral.w;
+	rect.pos = paral.pos - bas.u * paral.l;
 	tmp[3] = intersection_rect(ray, rect, &bas);
 
 	tmp1 = bas.v;
 	bas.v = bas.u;
 	bas.u = tmp1;
 
-	rect.pos = paral.pos + bas.u * paral.h;
-	rect.w = paral.l + 0.01;
-	rect.h = paral.w + 0.01;
+	rect.pos = paral.pos + bas.u * paral.w;
+	rect.w = paral.h;
+	rect.h = paral.l;
 	tmp[4] = intersection_rect(ray, rect, &bas);
-	rect.pos = paral.pos - bas.u * paral.h;
+	rect.pos = paral.pos - bas.u * paral.w;
 	tmp[5] = intersection_rect(ray, rect, &bas);
 	int i = -1;
 	while (++i < 6)
@@ -492,7 +492,7 @@ __float3	normal_parallelogram(__float3  hitpoint, t_parallelogram *paral, t_basi
 	flag = length > 0.f ? true : false;
 	if(!flag)
 		length = -length;
-	length = length - paral->l;
+	length = length - paral->h;
 	length *= length;
 
 	if (length < 0.00001f)
