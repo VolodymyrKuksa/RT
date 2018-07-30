@@ -118,8 +118,8 @@ void	texture_cone(t_obj *cone, float3 hitpoint, float2 *coord)
 	float	phi = acos(tmp.x) / PI_2;
 	phi = tmp.y > 0 ? 1.f - phi : phi;
 	hitpoint /= cone->primitive.cone.tex_scale;		//should be parsed as a variable
-	coord->x = phi;
-	coord->y = -hitpoint.y;
+	coord->x = -phi;
+	coord->y = hitpoint.y;
 }
 
 void	texture_torus(t_obj *torus, float3 hitpint, float2 *coord)

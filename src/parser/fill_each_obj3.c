@@ -117,8 +117,8 @@ void			fillthecone(json_value *value, t_scene *scene, int i)
 	tmp.type = cone;
 	check_basis(&tmp);
 	if (tmp.primitive.cone.m2 <= tmp.primitive.cone.m1
-		|| tmp.primitive.cone.m1 < 0.1 || tmp.primitive.cone.m2 < 0)
-		error_fedun("m1 > 0.1. m2 > 0; m2 > m1");
+		|| tmp.primitive.cone.m1 < 0.f || tmp.primitive.cone.m2 < 0)
+		error_fedun("m1 > 0; m2 > 0; m2 > m1");
 	scene->obj[scene->cur_obj++] = tmp;
 	fill_cone_hat1(scene, tmp);
 }
