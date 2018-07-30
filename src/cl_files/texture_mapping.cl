@@ -162,21 +162,21 @@ void	texture_paralelipiped(t_obj *p, float3 hitpoint, float2 *coord)
 	hitpoint = change_of_basis(hitpoint, p->basis);
 	hitpoint /= p->primitive.parallelogram.tex_scale;
 	float tmp = dot(n, p->basis.u);
-	if (tmp >= 0.9f || tmp <= -0.9f)
+	if (tmp >= 0.99f || tmp <= -0.99f)
 	{
 		coord->x = tmp > 0.f ? hitpoint.x : -hitpoint.x;
 		coord->y = hitpoint.z;
 		return ;
 	}
 	tmp = dot(n, p->basis.v);
-	if (tmp >= 0.9f || tmp <= -0.9f)
+	if (tmp >= 0.99f || tmp <= -0.99f)
 	{
 		coord->x = tmp < 0.f ? hitpoint.z : -hitpoint.z;
 		coord->y = -hitpoint.y;
 	}
-	else
+	tmp = dot(n, p->basis.w);
+	if (tmp >= 0.99f || tmp <= -0.99f)
 	{
-		tmp = dot(n, p->basis.w);
 		coord->x = tmp > 0.f ? hitpoint.x : -hitpoint.x;
 		coord->y = -hitpoint.y;
 	}

@@ -1,0 +1,361 @@
+{
+  "scene": {
+	"pos x": 0.0,
+	"pos y": 19.0,
+	"pos z": 40.0,
+	"rot x": -10.0,
+	"f_length": 60.0,
+	"dust": 0.0,
+	"fov": 90.0,
+	"aperture": 0.00001,
+	"refr_coef": 1.5,
+  },
+  "plane" :
+  {
+	"pos x" : 0.0,
+	"pos y" : 0.0,
+	"pos z" : -150.0,
+	"rot x" : 90.0,
+	"rot y" : 0.0,
+	"rot z" : 0.0,
+	"color x" : 1.0,
+	"color y" : 1.0,
+	"color z" : 1.0,
+	"texture" : "textures/helper2.png",
+	"light" : {
+	  "diffuse" : 1.0,
+	  "specular" : 0.0,
+	  "refraction" : 0.0,
+	  "roughness" : 0.0,
+	  "emission z" : 0.0
+	}
+  },
+  "plane" :
+  {
+	"pos x" : 150.0,
+	"pos y" : 0.0,
+	"pos z" : 0.0,
+	"rot x" : 90.0,
+	"rot y" : -90.0,
+	"rot z" : 0.0,
+	"color x" : 1.0,
+	"color y" : 1.0,
+	"color z" : 1.0,
+	"texture" : "textures/helper2.png",
+	"light" : {
+	  "diffuse" : 1.0,
+	  "specular" : 0.0,
+	  "refraction" : 0.0,
+	  "roughness" : 0.0,
+	  "emission z" : 0.0
+	}
+  },
+  "plane" :
+  {
+	"pos x" : -150.0,
+	"pos y" : 0.0,
+	"pos z" : 0.0,
+	"rot x" : 90.0,
+	"rot y" : 90.0,
+	"rot z" : 0.0,
+	"color x" : 1.0,
+	"color y" : 1.0,
+	"color z" : 1.0,
+	"texture" : "textures/helper2.png",
+	"light" : {
+	  "diffuse" : 1.0,
+	  "specular" : 0.0,
+	  "refraction" : 0.0,
+	  "roughness" : 0.0,
+	  "emission z" : 0.0
+	}
+  },
+  "plane" :
+  {
+	"pos x" : 0.0,
+	"pos y" : 0.0,
+	"pos z" : 150.0,
+	"rot x" : 90.0,
+	"rot y" : 180.0,
+	"rot z" : 0.0,
+	"color x" : 1.0,
+	"color y" : 1.0,
+	"color z" : 1.0,
+	"texture" : "textures/helper2.png",
+	"light" : {
+	  "diffuse" : 1.0,
+	  "specular" : 0.0,
+	  "refraction" : 0.0,
+	  "roughness" : 0.0,
+	  "emission z" : 0.0
+	}
+  },
+  "plane" :
+  {
+	"pos x" : 0.0,
+	"pos y" : 20.0,
+	"pos z" : -30.0,
+	"rot x" : 0.0,
+	"rot y" : 0.0,
+	"rot z" : 0.0,
+	"color x" : 1.0,
+	"color y" : 1.0,
+	"color z" : 1.0,
+	"light" : {
+	  "diffuse" : 1.0,
+	  "emission x" : 1.0,
+	  "emission y" : 1.0,
+	  "emission z" : 1.0
+	}
+  },
+  "plane" :
+  {
+	"pos x" : 0.0,
+	"pos y" : -20.0,
+	"pos z" : -30.0,
+	"rot x" : 0.0,
+	"rot y" : 0.0,
+	"rot z" : 0.0,
+	"color x" : 0.9,
+	"color y" : 0.9,
+	"color z" : 0.9,
+	"light" : {
+	  "diffuse" : 1.0,
+	  "specular": 3.0,
+	  "refraction": 0.0,
+	  "roughness": 0.01,
+	  "emission x" : 0.0,
+	  "emission y" : 0.0,
+	  "emission z" : 0.0
+	}
+  },
+  "cylinder" :
+  {
+	"pos x" : -50.0,
+	"pos y" : -20.0,
+	"pos z" : -120.0,
+	"color x" : 1.0,
+	"color y" : 1.0,
+	"color z" : 1.0,
+	"rot x" : 0.0,
+	"rot y" : 0.0,
+	"rot z" : 0.0,
+	"texture" : "textures/helper.jpg",
+	"h" : 15.0,
+	"light" : {
+	  "roughness": 0.0,
+	  "diffuse": 1.0,
+	  "specular": 1.0,
+	  "refraction": 7.0,
+	  "emission x" : 0.0,
+	  "emission y" : 0.0,
+	  "emission z" : 0.0
+	},
+	"radius" : 7.0
+  },
+  "sphere" :
+  {
+	"pos x" : -25.0,
+	"pos y" : -13.0,
+	"pos z" : -120.0,
+	"color x" : 1.0,
+	"color y" : 1.0,
+	"color z" : 1.0,
+	"rot x" : 0.0,
+	"rot y" : 0.0,
+	"rot z" : 0.0,
+	"texture" : "textures/helper.jpg",
+	"light" : {
+	  "roughness": 0.0,
+	  "emission x" : 0.0,
+	  "emission y" : 0.0,
+	  "emission z" : 0.0,
+	  "diffuse" : 1.0,
+	  "specular" : 1.0,
+	  "refraction" : 7.0
+	},
+	"radius" : 7.0
+  },
+  "cone" :
+  {
+	"pos x" : 0.0,
+	"pos y" : -5.0,
+	"pos z" : -120.0,
+	"color x" : 1.0,
+	"color y" : 1.0,
+	"color z" : 1.0,
+	"texture" : "textures/helper.jpg",
+	"rot x" : 0.0,
+	"rot y" : 0.0,
+	"rot z" : 0.0,
+	"m1" : 0.0,
+	"m2" : 15.0,
+	"light" : {
+	  "emission x" : 0.0,
+	  "emission y" : 0.0,
+	  "emission z" : 0.0,
+	  "roughness": 0.0,
+	  "diffuse" : 1.0,
+	  "specular" : 1.0,
+	  "refraction" : 7.0
+	},
+	"tng" : 0.4
+  },
+  "torus" : {
+	"pos x": 25.0,
+	"pos y": -11.0,
+	"pos z": -120.0,
+	"color x": 1.0,
+	"color y": 1.0,
+	"color z": 1.0,
+	"rot x": 90.0,
+	"rot y": 0.0,
+	"rot z": 0.0,
+	"radius big": 6.0,
+	"radius small": 3.0,
+	"texture" : "textures/helper.jpg",
+	"light": {
+	  "emission x": 0.0,
+	  "emission y": 0.0,
+	  "emission z": 0.0,
+	  "roughness": 0.0,
+	  "diffuse": 1.0,
+	  "specular": 1.0,
+	  "refraction": 7.0
+	}
+  },
+  "paralelepiped":
+  {
+	"pos x": 50.0,
+	"pos y": -13.0,
+	"pos z": -120.0,
+	"w": 7.0,
+	"h": 7.0,
+	"l": 7.0,
+	"color x": 1.0,
+	"color y": 1.0,
+	"color z": 1.0,
+	"texture" : "textures/helper.jpg",
+	"light": {
+	  "emission x": 0.0,
+	  "emission y": 0.0,
+	  "emission z": 0.0,
+	  "roughness": 0.0,
+	  "diffuse": 1.0,
+	  "specular": 1.0,
+	  "refraction": 7.0
+	}
+  },
+  "cylinder" :
+  {
+	"pos x" : -50.0,
+	"pos y" : -20.0,
+	"pos z" : -90.0,
+	"color x" : 1.0,
+	"color y" : 1.0,
+	"color z" : 1.0,
+	"rot x" : 0.0,
+	"rot y" : 0.0,
+	"rot z" : 0.0,
+	"h" : 15.0,
+	"light" : {
+	  "roughness": 0.0,
+	  "diffuse": 1.0,
+	  "specular": 1.0,
+	  "refraction": 7.0,
+	  "emission x" : 0.0,
+	  "emission y" : 0.0,
+	  "emission z" : 0.0
+	},
+	"radius" : 7.0
+  },
+  "sphere" :
+  {
+	"pos x" : -25.0,
+	"pos y" : -13.0,
+	"pos z" : -90.0,
+	"color x" : 1.0,
+	"color y" : 1.0,
+	"color z" : 1.0,
+	"rot x" : 0.0,
+	"rot y" : 0.0,
+	"rot z" : 0.0,
+	"light" : {
+	  "roughness": 0.00025,
+	  "emission x" : 0.0,
+	  "emission y" : 0.0,
+	  "emission z" : 0.0,
+	  "diffuse" : 1.0,
+	  "specular" : 1.0,
+	  "refraction" : 7.0
+	},
+	"radius" : 7.0
+  },
+  "cone" :
+  {
+	"pos x" : 0.0,
+	"pos y" : -5.0,
+	"pos z" : -90.0,
+	"color x" : 1.0,
+	"color y" : 1.0,
+	"color z" : 1.0,
+	"rot x" : 0.0,
+	"rot y" : 0.0,
+	"rot z" : 0.0,
+	"m1" : 0.0,
+	"m2" : 15.0,
+	"light" : {
+	  "emission x" : 0.0,
+	  "emission y" : 0.0,
+	  "emission z" : 0.0,
+	  "roughness": 0.0005,
+	  "diffuse" : 1.0,
+	  "specular" : 1.0,
+	  "refraction" : 7.0
+	},
+	"tng" : 0.4
+  },
+  "torus" : {
+	"pos x": 25.0,
+	"pos y": -11.0,
+	"pos z": -90.0,
+	"color x": 1.0,
+	"color y": 1.0,
+	"color z": 1.0,
+	"rot x": 90.0,
+	"rot y": 0.0,
+	"rot z": 0.0,
+	"radius big": 6.0,
+	"radius small": 3.0,
+	"light": {
+	  "emission x": 0.0,
+	  "emission y": 0.0,
+	  "emission z": 0.0,
+	  "roughness": 0.00075,
+	  "diffuse": 1.0,
+	  "specular": 1.0,
+	  "refraction": 7.0
+	}
+  },
+  "paralelepiped":
+  {
+	"pos x": 50.0,
+	"pos y": -13.0,
+	"pos z": -90.0,
+	"w": 7.0,
+	"h": 7.0,
+	"l": 7.0,
+	"color x": 1.0,
+	"color y": 1.0,
+	"color z": 1.0,
+	"light": {
+	  "emission x": 0.0,
+	  "emission y": 0.0,
+	  "emission z": 0.0,
+	  "roughness": 0.001,
+	  "diffuse": 1.0,
+	  "specular": 1.0,
+	  "refraction": 7.0
+	}
+  }
+}
