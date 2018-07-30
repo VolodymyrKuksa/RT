@@ -72,7 +72,6 @@ void			fill_cone_hat1(t_scene *scene, t_obj tmp)
 	obj2.basis.u.x = -obj2.basis.u.x;
 	obj2.basis.u.y = -obj2.basis.u.y;
 	obj2.basis.u.z = -obj2.basis.u.z;
-
 	obj1.primitive.disk.pos.x += tmp.basis.u.x * tmp.primitive.cone.m2;
 	obj1.primitive.disk.pos.y += tmp.basis.u.y * tmp.primitive.cone.m2;
 	obj1.primitive.disk.pos.z += tmp.basis.u.z * tmp.primitive.cone.m2;

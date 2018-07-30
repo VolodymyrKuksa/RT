@@ -62,6 +62,7 @@ void			write_triangle(t_obj obj, int fd)
 	write_feature("d3 y", obj.primitive.triangle.d3.y, fd);
 	write_feature("d3 z", obj.primitive.triangle.d3.z, fd);
 	write_basis(obj, fd);
+	write_feature("tex_scale", obj.primitive.triangle.tex_scale, fd);
 	write_disrupt_tex_offs(obj, fd);
 	write_pos_color((cl_float3){0, 0, 0}, obj.color, fd);
 	write_texture(obj.mater_tex_id, obj.tex_id, fd);
@@ -76,6 +77,7 @@ void			write_parallelogram(t_obj obj, int fd)
 	write_feature("w", obj.primitive.parallelogram.w, fd);
 	write_feature("l", obj.primitive.parallelogram.l, fd);
 	write_basis(obj, fd);
+	write_feature("tex_scale", obj.primitive.parallelogram.tex_scale, fd);
 	write_disrupt_tex_offs(obj, fd);
 	write_texture(obj.mater_tex_id, obj.tex_id, fd);
 	write_light(obj, fd);

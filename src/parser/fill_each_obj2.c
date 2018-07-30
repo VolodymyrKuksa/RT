@@ -64,33 +64,31 @@ void			fill_cylinder_params(char *name, json_value v, t_obj *tmp)
 
 void			fill_cylind_hats(t_scene *scene, t_obj tmp)
 {
-	t_obj		obj1;
-	t_obj		obj2;
+	t_obj		ob1;
+	t_obj		ob2;
 
-	obj1 = default_disk();
-	obj1.basis = tmp.basis;
-	obj1.type = disk;
-	obj1.tex_id = tmp.tex_id;
-	obj1.mater_tex_id = tmp.mater_tex_id;
-	obj1.color = tmp.color;
-	obj1.emission = tmp.emission;
-	obj1.diffuse = tmp.diffuse;
-	obj1.refraction = tmp.refraction;
-	obj1.roughness = tmp.roughness;
-	obj1.specular = tmp.specular;
-	obj1.primitive.disk.r = tmp.primitive.cylinder.r;
-	obj1.primitive.disk.related = scene->cur_obj - 1;
-	obj2 = obj1;
-	obj1.primitive.disk.pos = tmp.primitive.cylinder.pos;
-	obj1.basis.u.x = -obj1.basis.u.x;
-	obj1.basis.u.y = -obj1.basis.u.y;
-	obj1.basis.u.z = -obj1.basis.u.z;
-	obj2.primitive.disk.pos = tmp.primitive.cylinder.pos;
-	obj2.primitive.disk.pos.x += tmp.basis.u.x * tmp.primitive.cylinder.h;
-	obj2.primitive.disk.pos.y += tmp.basis.u.y * tmp.primitive.cylinder.h;
-	obj2.primitive.disk.pos.z += tmp.basis.u.z * tmp.primitive.cylinder.h;
-	scene->obj[scene->cur_obj++] = obj1;
-	scene->obj[scene->cur_obj++] = obj2;
+	ob1 = default_disk();
+	ob1.basis = tmp.basis;
+	ob1.type = disk;
+	ob1.tex_id = tmp.tex_id;
+	ob1.mater_tex_id = tmp.mater_tex_id;
+	ob1.color = tmp.color;
+	ob1.emission = tmp.emission;
+	ob1.diffuse = tmp.diffuse;
+	ob1.refraction = tmp.refraction;
+	ob1.roughness = tmp.roughness;
+	ob1.specular = tmp.specular;
+	ob1.primitive.disk.r = tmp.primitive.cylinder.r;
+	ob1.primitive.disk.related = scene->cur_obj - 1;
+	ob2 = ob1;
+	ob1.primitive.disk.pos = tmp.primitive.cylinder.pos;
+	ob1.basis.u = (cl_float3){-ob1.basis.u.x, -ob1.basis.u.y, ob1.basis.u.z};
+	ob2.primitive.disk.pos = tmp.primitive.cylinder.pos;
+	ob2.primitive.disk.pos.x += tmp.basis.u.x * tmp.primitive.cylinder.h;
+	ob2.primitive.disk.pos.y += tmp.basis.u.y * tmp.primitive.cylinder.h;
+	ob2.primitive.disk.pos.z += tmp.basis.u.z * tmp.primitive.cylinder.h;
+	scene->obj[scene->cur_obj++] = ob1;
+	scene->obj[scene->cur_obj++] = ob2;
 }
 
 void			fillthecylind(json_value *value, t_scene *scene, int i)

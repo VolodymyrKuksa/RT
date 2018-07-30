@@ -60,7 +60,6 @@ void			filltriangle(json_value *value, t_scene *scene, int i)
 		i++;
 	}
 	tmp.type = triangle;
-	tmp.primitive.triangle.tex_scale = 20.f;	// parse it
 	help_triangle(&tmp, scene, rot);
 	get_basis(&tmp);
 	init_rotate(&(tmp.basis), rot);
@@ -76,6 +75,11 @@ void			fill_parallelogram_params(char *name, json_value v, t_obj *tmp)
 		tmp->primitive.parallelogram.w = (float)v.u.dbl;
 	if (ft_strcmp(name, "l") == 0)
 		tmp->primitive.parallelogram.l = (float)v.u.dbl;
+	if (ft_strcmp(name, "tex_scale") == 0)
+		tmp->primitive.parallelogram.tex_scale = (int)v.u.dbl;
+	if (tmp->primitive.parallelogram.tex_scale < 1 ||
+		tmp->primitive.parallelogram.tex_scale > 100)
+		error_fedun("check tex_scale of parallelogram. 1 < x < 100");
 }
 
 void			fillparallelogram(json_value *value, t_scene *scene, int i)
@@ -98,7 +102,6 @@ void			fillparallelogram(json_value *value, t_scene *scene, int i)
 	init_rotate(&(tmp.basis), rot);
 	minus_camera(&(tmp.primitive.parallelogram.pos), scene->cam.pos);
 	tmp.type = parallelogram;
-	tmp.primitive.parallelogram.tex_scale = 20.f;//	parse it
 	check_basis(&tmp);
 	if (tmp.primitive.parallelogram.h <= 0 || tmp.primitive.parallelogram.w <= 0
 		|| tmp.primitive.parallelogram.l <= 0)

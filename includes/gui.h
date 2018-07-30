@@ -36,7 +36,7 @@ typedef enum            e_menu_type
 {
     GLOBAL_MENU,
     OBJECTS_MENU
-}                      menu_type; 
+}                      menu_type;
 
 SDL_Rect                init_rect(int x, int y, int w, int h);
 int                     check_click(int x, int y, t_gui_obj *gui_obj);

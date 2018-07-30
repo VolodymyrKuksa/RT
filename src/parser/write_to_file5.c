@@ -34,9 +34,9 @@ void			write_cam(t_cam cam, int fd)
 	write_feature("pos x", 0.0f, fd);
 	write_feature("pos y", 0.0f, fd);
 	write_feature("pos z", 0.0f, fd);
-	write_feature("rot x", cam.rot.x, fd);
-	write_feature("rot y", cam.rot.y, fd);
-	write_feature("rot z", cam.rot.z, fd);
+	write_feature("rot x", 0, fd);
+	write_feature("rot y", 0, fd);
+	write_feature("rot z", 0, fd);
 	write_cam_effect(cam, fd);
 	write_feature("f_length", cam.f_length, fd);
 	write_feature("dust", cam.dust, fd);
