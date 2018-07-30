@@ -106,6 +106,7 @@ t_obj			default_triangle(void)
 	tmp.mater_tex_id = -1;
 	tmp.tex_offs = (cl_float2){0.f, 0.f};
 	tmp.col_disrupt = NODISRUPT;
+	tmp.primitive.triangle.tex_scale = 20.f;
 	return (tmp);
 }
 
@@ -131,5 +132,6 @@ t_obj			default_parallelogram(void)
 	tmp.mater_tex_id = -1;
 	tmp.tex_offs = (cl_float2){0.f, 0.f};
 	tmp.col_disrupt = NODISRUPT;
+	tmp.primitive.parallelogram.tex_scale = 20.f;
 	return (tmp);
 }

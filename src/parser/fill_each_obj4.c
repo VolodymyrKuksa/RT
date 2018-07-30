@@ -32,6 +32,11 @@ void			fill_triangle_points(char *name, json_value v, t_obj *tmp)
 		tmp->primitive.triangle.d3.y = (float)v.u.dbl;
 	if (ft_strcmp(name, "d3 z") == 0)
 		tmp->primitive.triangle.d3.z = (float)v.u.dbl;
+	if (ft_strcmp(name, "tex_scale") == 0)
+		tmp->primitive.triangle.tex_scale = (int)v.u.dbl;
+	if (tmp->primitive.triangle.tex_scale < 1 ||
+		tmp->primitive.triangle.tex_scale > 100)
+		error_fedun("check tex_scale of triangle. 1 < x < 100");
 }
 
 cl_float3		normalize(cl_float3 vec)
