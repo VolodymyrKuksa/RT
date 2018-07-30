@@ -96,8 +96,10 @@ void	handle_events(t_env *env)
 			if (!temp)
 			{
 				get_mouse_intersection(env, e);
-				printf("id: %d, type: %d\n", *env->cl.id_host,
-				env->scene.obj[*env->cl.id_host].type);
+				env->scene.last_obj = *env->cl.id_host;
+				printf("id: %d, type: %d, kuksa_suka = %d\n", *env->cl.id_host,
+				env->scene.obj[*env->cl.id_host].type, env->scene.last_obj);
+				env->gui.duper(&env->gui, env->screen.renderer);
 			}
 		}
 		else if (e.type == SDL_MOUSEMOTION)
@@ -116,12 +118,16 @@ void	handle_events(t_env *env)
 		else if (e.type == SDL_MOUSEBUTTONUP)
 		{
 			if (temp == env->gui.collision(e.button.x, e.button.y,
-				(t_gui_obj *)&env->gui) && temp && temp->type == 0)
+				(t_gui_obj *)&env->gui) && temp)
 			{
-				if (temp->father)
-					temp->action((void *)temp->father, env->screen.renderer);
-				else
-					temp->action((void *)temp, env->screen.renderer);
+				if (temp->type == 0)
+				{
+					if (temp->father)
+						temp->action((void *)temp->father, env->screen.renderer);
+					else
+						temp->action((void *)temp, env->screen.renderer);
+				} else if (temp->type == 2)
+					temp->action(&env->scene, NULL);
 			}
 			temp = NULL;
 		}

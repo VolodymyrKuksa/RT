@@ -60,18 +60,19 @@ void                     radio_settings(t_radio_button *my_radio, SDL_Renderer *
     va_start(list, number);
     while (++i < my_radio->num_of_buttons)
     {
-        my_radio->buttons[i] = create_button(init_rect(3 + (i % 4) * 104
-        , 3 + (i / 4) * 70, 100, 50), (t_gui_obj *)my_radio, "gui_textures/images.png"); //настроить значения, но лучше со мной
+        my_radio->buttons[i] = create_button(init_rect(10 + (i % 4) * 104
+        , 8 + (i / 4) * 70, 100, 50), (t_gui_obj *)my_radio, "gui_textures/Button.png"); //настроить значения, но лучше со мной
         button_settings(renderer, &my_radio->buttons[i]);
         button_set_label(va_arg(list, char *), 128, renderer, &my_radio->buttons[i]);
         my_radio->buttons[i].action = &radio_action;
     }
     va_end(list);
-    my_radio->pointer = create_label(my_radio->buttons[*(my_radio->value)].x + my_radio->buttons[*(my_radio->value)].my_rect.w / 2 - my_radio->pointer.width / 2,
+    my_radio->pointer = (t_label *)malloc(sizeof(t_label));
+    *(my_radio->pointer) = create_label(my_radio->buttons[*(my_radio->value)].x + my_radio->buttons[*(my_radio->value)].my_rect.w / 2 - my_radio->pointer->width / 2,
             my_radio->buttons[*(my_radio->value)].y + my_radio->buttons[*(my_radio->value)].my_rect.h, "^", (t_gui_obj *)my_radio); // не трогать
-    my_radio->pointer.width = 20; //настроить значения
-    my_radio->pointer.height = 20; //настроить значения
-    label_settings(128, renderer, &my_radio->pointer, 0);
+    my_radio->pointer->width = 20;
+    my_radio->pointer->height = 20;
+    label_settings(128, renderer, my_radio->pointer, 0);
 }
 
 void                        update_radio(t_radio_button *my_radio, char with_text, SDL_Renderer *renderer) //не трогать
@@ -85,7 +86,7 @@ void                        update_radio(t_radio_button *my_radio, char with_tex
     i = -1;
     while(++i < my_radio->num_of_buttons)
         my_radio->buttons[i].update(&my_radio->buttons[i], with_text, renderer, 0);
-    my_radio->pointer.update(&my_radio->pointer, with_text, renderer, 0);
+    my_radio->pointer->update(my_radio->pointer, with_text, renderer, 0);
 }
 
 void                        draw_radio(SDL_Renderer *renderer, t_radio_button *my_radio) //не трогать
@@ -96,7 +97,7 @@ void                        draw_radio(SDL_Renderer *renderer, t_radio_button *m
     i = -1;
     while(++i < my_radio->num_of_buttons)
         my_radio->buttons[i].draw(renderer, &my_radio->buttons[i]);
-    my_radio->pointer.draw(renderer, &my_radio->pointer);
+    my_radio->pointer->draw(renderer, my_radio->pointer);
     
 }
 
@@ -129,12 +130,12 @@ void                        radio_action(void *some_shit, SDL_Renderer *renderer
 
     my_radio = (t_radio_button *)some_shit;
     *(my_radio->value) = my_radio->last_pressed;
-    my_radio->pointer.x = my_radio->buttons[my_radio->last_pressed].x +
+    my_radio->pointer->x = my_radio->buttons[my_radio->last_pressed].x +
                                   my_radio->buttons[my_radio->last_pressed].my_rect.w / 2 -
-                                  my_radio->pointer.width / 2;
-    my_radio->pointer.y = my_radio->buttons[my_radio->last_pressed].y +
+                                  my_radio->pointer->width / 2;
+    my_radio->pointer->y = my_radio->buttons[my_radio->last_pressed].y +
                                   my_radio->buttons[my_radio->last_pressed].my_rect.h;
-    my_radio->pointer.update(&my_radio->pointer, 0, renderer, 0);
+    my_radio->pointer->update(my_radio->pointer, 0, renderer, 0);
 }
 
 void                        destroy_radio(t_radio_button *my_radio) //не трогать
@@ -142,10 +143,11 @@ void                        destroy_radio(t_radio_button *my_radio) //не тр�
     int                     i;
 
     SDL_DestroyTexture(my_radio->texture);
-    destroy_label(&my_radio->pointer);
+    destroy_label(my_radio->pointer);
     i = -1;
     while (++i < my_radio->num_of_buttons)
         destroy_button(&my_radio->buttons[i]);
     free(my_radio->buttons);
     free(my_radio->source);
+    free(my_radio->pointer);
 }

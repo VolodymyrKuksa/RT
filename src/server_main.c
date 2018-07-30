@@ -24,6 +24,7 @@ int		main(int argc, char **argv)
 	init_defaults(&env);
 	init_scene(&env.scene, argc, argv);
 	compress_texture(&env.textures);
+	env.scene.last_obj = 0;
 	printf("tx count: %d\n", env.textures.tx_count);
 	printf("tx size: %d\n", env.textures.total_size);
 	if (parse_server_data(argc, argv, &env.server))
@@ -36,7 +37,7 @@ int		main(int argc, char **argv)
 	quit_server(&env.server);
 	close_sdl(&env.screen);
 	IMG_Quit();
-	write_scene(&(env.scene));
+	//write_scene(&(env.scene));
 	system("leaks -q RT"); //DEBUG
 	return (0);
 }

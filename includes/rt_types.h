@@ -242,6 +242,7 @@ typedef struct		s_scene
 	int				num_obj;
 	t_obj			*obj;
 	t_cam			cam;
+	int				last_obj;
 	int				cur_obj;
 }					t_scene;
 
@@ -392,6 +393,7 @@ void                    menu_settings(t_gui_menu *my_menu, SDL_Renderer *rendere
 void                    unhide_objects_menu(void *some_shit, SDL_Renderer *renderer);
 void                    unhide_global_menu(void  *some_shit, SDL_Renderer *renderer);
 void                    fill_global_menu(t_gui_menu *my_menu, SDL_Renderer *renderer);
+void                	super_update(t_gui_menu *my_menu, SDL_Renderer *renderer);
 void                    fill_objects_menu(t_gui_menu *my_menu, SDL_Renderer *renderer);
 void                    update_menu(t_gui_menu *my_menu, char with_text, SDL_Renderer *renderer, char hide);
 void                    draw_menu(SDL_Renderer *renderer, t_gui_menu *my_menu);
@@ -416,12 +418,14 @@ typedef struct          s_gui
 	void				(*draw)(SDL_Renderer *renderer, struct s_gui *my_gui);
 	void				(*update)(struct s_gui *my_gui, SDL_Renderer *renderer);
 	t_gui_obj			*(*collision)(int x, int y, t_gui_obj *gui_obj);
+	void				(*duper)(struct s_gui *my_gui, SDL_Renderer *renderer);
 }                       t_gui;
 
 t_gui             		init_gui(SDL_Renderer *renderer, t_scene *scene);
 void                	draw_gui(SDL_Renderer *renderer, t_gui *my_gui);
 t_gui_obj           	*check_gui_collision(int x, int y, t_gui_obj *gui_obj);
 void                	update_gui(t_gui *my_gui, SDL_Renderer *renderer);
+void                	super_duper(t_gui *my_gui, SDL_Renderer *renderer);
 void                	destroy_gui(t_gui *my_gui, SDL_Renderer *renderer);
 /*------------------------------------------------------------*/
 

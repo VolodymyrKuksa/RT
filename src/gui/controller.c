@@ -47,11 +47,10 @@ void               controller_own_set(SDL_Renderer *renderer, t_val_control *my_
     SDL_FreeSurface(surface);
 }
 
-void                more_controler_settings(t_val_control *my_control, float max_val, float min_val, char *val_name) //не трогать
+void                more_controler_settings(t_val_control *my_control, float max_val, float min_val) //не трогать
 {
     my_control->max_val = max_val;
     my_control->min_val = min_val;
-    my_control->val_name = val_name;
 }
 
 void               controller_settings(t_val_control *my_control, SDL_Renderer *renderer, float step)
@@ -63,15 +62,15 @@ void               controller_settings(t_val_control *my_control, SDL_Renderer *
     my_control->step = step;
     my_control->change_buttons[0] = create_button(init_rect(3, 3, 50, 50), (t_gui_obj *)my_control, "gui_textures/Button.png"); //настроить
     button_settings(renderer, &my_control->change_buttons[0]);
-    button_set_label("-", 128, renderer, &my_control->change_buttons[0]);
+    button_set_label("<", 128, renderer, &my_control->change_buttons[0]);
     my_control->change_buttons[1] = create_button(init_rect(107, 3, 50, 50), (t_gui_obj *)my_control, "gui_textures/Button.png");  //настроить
     button_settings(renderer, &my_control->change_buttons[1]);
-    button_set_label("+", 128, renderer, &my_control->change_buttons[1]);
+    button_set_label(">", 128, renderer, &my_control->change_buttons[1]);
     my_control->change_buttons[0].action = &minus_action;
     my_control->change_buttons[1].action = &plus_action;
     sprintf(str, "%f", *(my_control->value));
     accur = ft_strchr(str, '.');
-    accur += 3;
+    accur += 4;
     *accur = '\0';
     my_control->output = create_label(55, 3, str, (t_gui_obj *)my_control); //настроить
     my_control->output.width = 50;
@@ -125,12 +124,12 @@ void                plus_action(void *some_shit, SDL_Renderer *renderer) //не 
     char            str[10];
 
     my_control = (t_val_control *)some_shit;
-    if (*(my_control->value) < my_control->max_val)
+    if (*(my_control->value) + 0.0001 < my_control->max_val)
     {
         *(my_control->value) += my_control->step;
         sprintf(str, "%f", *(my_control->value));
         accur = ft_strchr(str, '.');
-        accur += 3;
+        accur += 4;
         *accur = '\0';
         my_control->output.text = ft_strcpy(my_control->output.text, str);
         my_control->update(my_control, 0, renderer, 1);
@@ -149,7 +148,7 @@ void                minus_action(void *some_shit, SDL_Renderer *renderer) //не
         *(my_control->value) -= my_control->step;
         sprintf(str, "%f", *(my_control->value));
         accur = ft_strchr(str, '.');
-        accur += 3;
+        accur += 4;
         *accur = '\0';
         my_control->output.text = ft_strcpy(my_control->output.text, str);
         my_control->update(my_control, 0, renderer, 1);

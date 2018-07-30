@@ -121,7 +121,6 @@ typedef struct          s_value_controler
     SDL_Texture         *texture;
     t_button            change_buttons[2];
     float               *value;
-    char                *val_name;
     float               max_val;
     float               min_val;
     float               step;
@@ -133,7 +132,7 @@ typedef struct          s_value_controler
 
 t_val_control           create_controller(SDL_Rect my_rect, t_gui_obj *father, char *text, float *value);
 void                    controller_own_set(SDL_Renderer *renderer, t_val_control *my_control);
-void                    more_controler_settings(t_val_control *my_control, float max_val, float min_val, char *val_name);
+void                    more_controler_settings(t_val_control *my_control, float max_val, float min_val);
 void                    controller_settings(t_val_control *my_control, SDL_Renderer *renderer, float step);
 void                    update_controler(t_val_control *my_control, char with_text, SDL_Renderer *renderer, char with_alph);
 void                    draw_controler(SDL_Renderer *renderer, t_val_control *my_control);
@@ -154,7 +153,7 @@ typedef struct          s_radio_button
     void                (*action)(void *some_shit, SDL_Renderer *renderer); //аналогично
     /*                  */
     char                *source;
-    t_label             pointer;
+    t_label             *pointer;
     SDL_Texture         *texture;
     t_button            *buttons;
     int                 last_pressed;

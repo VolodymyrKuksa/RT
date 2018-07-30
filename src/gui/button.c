@@ -56,9 +56,9 @@ void            button_settings(SDL_Renderer *renderer, t_button *my_button) //�
 void        button_set_label(char *text, int font_size,
                                 SDL_Renderer *renderer, t_button *my_button) //трогать только с Димкой
 {
-    my_button->name = create_label(1, 1, text, (t_gui_obj *)my_button);
-    my_button->name.width = my_button->my_rect.w;
-    my_button->name.height = my_button->my_rect.h;
+    my_button->name = create_label(1 + my_button->my_rect.w * 0.2, 1 + my_button->my_rect.h * 0.1, text, (t_gui_obj *)my_button);
+    my_button->name.width = my_button->my_rect.w - my_button->my_rect.w * 0.4;
+    my_button->name.height = my_button->my_rect.h - my_button->my_rect.h * 0.2;
     label_settings(font_size, renderer, &my_button->name, 0);
 }
 
