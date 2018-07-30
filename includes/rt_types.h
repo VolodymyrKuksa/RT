@@ -54,17 +54,17 @@ typedef struct		s_cam
 	cl_float3		rot;
 	cl_float3		updir;
 	cl_float3		ldir;
-	cl_float3		filter;	//
-	double			fov;	//
+	cl_float3		filter;
+	double			fov;
 	float			f_length;
 	float			aperture;
 	float			ratio;
 	float			pr_pl_w;
 	float			pr_pl_h;
-	float			dust;	//
-	float			brightness;	//
-	float			refr_coef;	//
-	int				effect;		//
+	float			dust;
+	float			brightness;
+	float			refr_coef;
+	int				effect;
 }					t_cam;
 
 typedef struct		s_seed
@@ -360,11 +360,9 @@ typedef struct		s_server
 typedef struct		s_env
 {
 	t_cldata			cl;
-	/***********test*******/
 	t_button			button;
 	t_gui_menu			menu;
 	t_mouse				mouse;
-	/**********************/
 	t_scrn				screen;
 	t_scene				scene;
 	t_mvdata			mv_data;

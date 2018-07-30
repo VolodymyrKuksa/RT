@@ -219,7 +219,7 @@ float	intersection_cone(t_ray *ray,t_cone cone, __float3 c_rot)
 	{
 		hitpoint = res * ray->dir + x;
 		length = dot(c_rot, hitpoint);
-		if (length > -cone.m2 && length < cone.m1)
+		if (length < cone.m2 && length > cone.m1)
 			return (res);
 	}
 	res = (-q.b + q.d) / q.a;
@@ -227,7 +227,7 @@ float	intersection_cone(t_ray *ray,t_cone cone, __float3 c_rot)
 	{
 		hitpoint = res * ray->dir + x;
 		length = dot(c_rot, hitpoint);
-		if (length < cone.m1 && length > -cone.m2)
+		if (length > cone.m1 && length < cone.m2)
 			return (res);
 	}
 	return (-1.f);
@@ -435,11 +435,12 @@ __float3	normal_cylinder(__float3  hitpoint, t_cylinder *cylinder, __float3 c_ro
 {
 	__float3 	normal;
 	float	t;
-
-	t = dot(c_rot, cylinder->pos) -
-		dot(c_rot, hitpoint);
-	t /= dot(c_rot, c_rot);
-	normal = hitpoint - cylinder->pos + c_rot * t;
+	hitpoint -= cylinder->pos;
+	normal = hitpoint - dot(hitpoint, c_rot) * c_rot;
+//	t = dot(c_rot, cylinder->pos) -
+//		dot(c_rot, hitpoint);
+//	t /= dot(c_rot, c_rot);
+//	normal = hitpoint - cylinder->pos + c_rot * t;
 	return (normalize(normal));
 }
 
