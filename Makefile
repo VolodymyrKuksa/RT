@@ -43,7 +43,7 @@ LJSON = $(D_JSON)$(N_JSON)
 
 #--------------FILES------------------------------------------------------------
 
-HEAD_FILES = rt.h rt_types.h parser.h keys.h rt_textures.h server_client.h
+HEAD_FILES = rt.h rt_types.h parser.h keys.h rt_textures.h server_client.h gui.h
 
 C_FILES = cl_exec.c\
 cl_initialization.c\

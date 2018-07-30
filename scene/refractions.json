@@ -354,8 +354,8 @@
 	  "emission z": 0.0,
 	  "roughness": 0.001,
 	  "diffuse": 1.0,
-	  "specular": 0.0,
-	  "refraction": 0.0
+	  "specular": 1.0,
+	  "refraction": 7.0
 	}
   }
 }

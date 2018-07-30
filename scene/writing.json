@@ -4,7 +4,11 @@
 		"pos x" : 0.0000,
 		"pos y" : 0.0000,
 		"pos z" : 0.0000,
+<<<<<<< HEAD
 		"rot x" : 0.0000,
+=======
+		"rot x" : -10.0000,
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
 		"rot y" : 0.0000,
 		"rot z" : 0.0000,
 		"effect": "NOEFFECT",
@@ -20,27 +24,32 @@
 	},
 	"plane" :
 	{
+<<<<<<< HEAD
 		"pos x" : 56.1850,
 		"pos y" : -0.0194,
 		"pos z" : 42.1199,
+=======
+		"pos x" : 0.0000,
+		"pos y" : 14.2818,
+		"pos z" : -190.4128,
 		"color x" : 1.0000,
 		"color y" : 1.0000,
 		"color z" : 1.0000,
 		"tex_scale" : 20.0000,
-		"u x" : -0.9842,
-		"u y" : -0.0186,
-		"u z" : -0.1757,
-		"v x" : -0.1754,
-		"v y" : -0.0166,
-		"v z" : 0.9843,
-		"w x" : 0.0212,
-		"w y" : -0.9996,
-		"w z" : -0.0130,
+		"u x" : 0.0000,
+		"u y" : -0.1736,
+		"u z" : 0.9848,
+		"v x" : 1.0000,
+		"v y" : 0.0000,
+		"v z" : 0.0000,
+		"w x" : 0.0000,
+		"w y" : -0.9848,
+		"w z" : -0.1736,
 		"tex_offs x" : 0.0000,
 		"tex_offs y" : 0.0000,
 		"col_disrupt": "NODISTRUPT",
 		"material texture": "",
-		"texture": "textures/roflan.jpg",
+		"texture": "textures/helper2.png",
 		"light" : {
 		"emission x" : 0.0000,
 		"emission y" : 0.0000,
@@ -53,13 +62,103 @@
 	},
 	"plane" :
 	{
-		"pos x" : -2.5505,
-		"pos y" : -16.1346,
-		"pos z" : 31.3761,
+		"pos x" : 150.0000,
+		"pos y" : -11.7654,
+		"pos z" : -42.6916,
 		"color x" : 1.0000,
 		"color y" : 1.0000,
 		"color z" : 1.0000,
 		"tex_scale" : 20.0000,
+		"u x" : -1.0000,
+		"u y" : 0.0000,
+		"u z" : 0.0000,
+		"v x" : 0.0000,
+		"v y" : -0.1736,
+		"v z" : 0.9848,
+		"w x" : -0.0000,
+		"w y" : -0.9848,
+		"w z" : -0.1736,
+		"tex_offs x" : 0.0000,
+		"tex_offs y" : 0.0000,
+		"col_disrupt": "NODISTRUPT",
+		"material texture": "",
+		"texture": "textures/helper2.png",
+		"light" : {
+		"emission x" : 0.0000,
+		"emission y" : 0.0000,
+		"emission z" : 0.0000,
+		"diffuse" : 1.0000,
+		"specular" : 0.0000,
+		"refraction" : 0.0000,
+		"roughness" : 0.0000
+		}
+	},
+	"plane" :
+	{
+		"pos x" : -150.0000,
+		"pos y" : -11.7654,
+		"pos z" : -42.6916,
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
+		"color x" : 1.0000,
+		"color y" : 1.0000,
+		"color z" : 1.0000,
+		"tex_scale" : 20.0000,
+<<<<<<< HEAD
+		"u x" : -0.9842,
+		"u y" : -0.0186,
+		"u z" : -0.1757,
+		"v x" : -0.1754,
+		"v y" : -0.0166,
+		"v z" : 0.9843,
+		"w x" : 0.0212,
+		"w y" : -0.9996,
+		"w z" : -0.0130,
+=======
+		"u x" : 1.0000,
+		"u y" : 0.0000,
+		"u z" : 0.0000,
+		"v x" : 0.0000,
+		"v y" : 0.1736,
+		"v z" : -0.9848,
+		"w x" : 0.0000,
+		"w y" : -0.9848,
+		"w z" : -0.1736,
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
+		"tex_offs x" : 0.0000,
+		"tex_offs y" : 0.0000,
+		"col_disrupt": "NODISTRUPT",
+		"material texture": "",
+<<<<<<< HEAD
+		"texture": "textures/roflan.jpg",
+=======
+		"texture": "textures/helper2.png",
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
+		"light" : {
+		"emission x" : 0.0000,
+		"emission y" : 0.0000,
+		"emission z" : 0.0000,
+		"diffuse" : 1.0000,
+		"specular" : 0.0000,
+		"refraction" : 0.0000,
+		"roughness" : 0.0000
+		}
+	},
+	"plane" :
+	{
+<<<<<<< HEAD
+		"pos x" : -2.5505,
+		"pos y" : -16.1346,
+		"pos z" : 31.3761,
+=======
+		"pos x" : 0.0000,
+		"pos y" : -37.8126,
+		"pos z" : 105.0295,
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
+		"color x" : 1.0000,
+		"color y" : 1.0000,
+		"color z" : 1.0000,
+		"tex_scale" : 20.0000,
+<<<<<<< HEAD
 		"u x" : -0.0212,
 		"u y" : 0.9996,
 		"u z" : 0.0130,
@@ -69,6 +168,50 @@
 		"w x" : -0.9842,
 		"w y" : -0.0186,
 		"w z" : -0.1757,
+=======
+		"u x" : 0.0000,
+		"u y" : 0.1736,
+		"u z" : -0.9848,
+		"v x" : -1.0000,
+		"v y" : 0.0000,
+		"v z" : -0.0000,
+		"w x" : 0.0000,
+		"w y" : -0.9848,
+		"w z" : -0.1736,
+		"tex_offs x" : 0.0000,
+		"tex_offs y" : 0.0000,
+		"col_disrupt": "NODISTRUPT",
+		"material texture": "",
+		"texture": "textures/helper2.png",
+		"light" : {
+		"emission x" : 0.0000,
+		"emission y" : 0.0000,
+		"emission z" : 0.0000,
+		"diffuse" : 1.0000,
+		"specular" : 0.0000,
+		"refraction" : 0.0000,
+		"roughness" : 0.0000
+		}
+	},
+	"plane" :
+	{
+		"pos x" : 0.0000,
+		"pos y" : 13.1401,
+		"pos z" : -68.7628,
+		"color x" : 1.0000,
+		"color y" : 1.0000,
+		"color z" : 1.0000,
+		"tex_scale" : 20.0000,
+		"u x" : 0.0000,
+		"u y" : 0.9848,
+		"u z" : 0.1736,
+		"v x" : 1.0000,
+		"v y" : 0.0000,
+		"v z" : 0.0000,
+		"w x" : 0.0000,
+		"w y" : -0.1736,
+		"w z" : 0.9848,
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
 		"tex_offs x" : 0.0000,
 		"tex_offs y" : 0.0000,
 		"col_disrupt": "NODISTRUPT",
@@ -84,6 +227,7 @@
 		"roughness" : 1.0000
 		}
 	},
+<<<<<<< HEAD
 	"cylinder" :
 	{
 		"pos x" : -3.1892,
@@ -104,6 +248,61 @@
 		"w x" : -0.9321,
 		"w y" : 0.3243,
 		"w z" : -0.1607,
+=======
+	"plane" :
+	{
+		"pos x" : 0.0000,
+		"pos y" : -26.2521,
+		"pos z" : -75.7088,
+		"color x" : 0.9000,
+		"color y" : 0.9000,
+		"color z" : 0.9000,
+		"tex_scale" : 20.0000,
+		"u x" : 0.0000,
+		"u y" : 0.9848,
+		"u z" : 0.1736,
+		"v x" : 1.0000,
+		"v y" : 0.0000,
+		"v z" : 0.0000,
+		"w x" : 0.0000,
+		"w y" : -0.1736,
+		"w z" : 0.9848,
+		"tex_offs x" : 0.0000,
+		"tex_offs y" : 0.0000,
+		"col_disrupt": "NODISTRUPT",
+		"material texture": "",
+		"texture": "",
+		"light" : {
+		"emission x" : 0.0000,
+		"emission y" : 0.0000,
+		"emission z" : 0.0000,
+		"diffuse" : 0.5000,
+		"specular" : 0.5000,
+		"refraction" : 0.0000,
+		"roughness" : 0.0100
+		}
+	},
+	"cylinder" :
+	{
+		"pos x" : -50.0000,
+		"pos y" : -10.6237,
+		"pos z" : -164.3415,
+		"color x" : 1.0000,
+		"color y" : 1.0000,
+		"color z" : 1.0000,
+		"radius" : 7.0000,
+		"h" : 15.0000,
+		"tex_scale" : 20.0000,
+		"u x" : 0.0000,
+		"u y" : 0.9848,
+		"u z" : 0.1736,
+		"v x" : 1.0000,
+		"v y" : 0.0000,
+		"v z" : 0.0000,
+		"w x" : 0.0000,
+		"w y" : -0.1736,
+		"w z" : 0.9848,
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
 		"tex_offs x" : 0.0000,
 		"tex_offs y" : 0.0000,
 		"col_disrupt": "NODISTRUPT",
@@ -113,14 +312,21 @@
 		"emission x" : 0.0000,
 		"emission y" : 0.0000,
 		"emission z" : 0.0000,
+<<<<<<< HEAD
 		"diffuse" : 0.0000,
 		"specular" : 0.0000,
 		"refraction" : 1.0000,
+=======
+		"diffuse" : 0.1111,
+		"specular" : 0.1111,
+		"refraction" : 0.7777,
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
 		"roughness" : 0.0000
 		}
 	},
 	"sphere" :
 	{
+<<<<<<< HEAD
 		"pos x" : 39.3454,
 		"pos y" : -10.1404,
 		"pos z" : 23.7082,
@@ -137,6 +343,24 @@
 		"w x" : -0.9842,
 		"w y" : -0.0186,
 		"w z" : -0.1757,
+=======
+		"pos x" : -25.0000,
+		"pos y" : -3.7301,
+		"pos z" : -163.1259,
+		"color x" : 1.0000,
+		"color y" : 1.0000,
+		"color z" : 1.0000,
+		"radius" : 7.0000,
+		"u x" : 0.0000,
+		"u y" : 0.9848,
+		"u z" : 0.1736,
+		"v x" : 1.0000,
+		"v y" : 0.0000,
+		"v z" : 0.0000,
+		"w x" : 0.0000,
+		"w y" : -0.1736,
+		"w z" : 0.9848,
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
 		"tex_offs x" : 0.0000,
 		"tex_offs y" : 0.0000,
 		"col_disrupt": "NODISTRUPT",
@@ -146,14 +370,21 @@
 		"emission x" : 0.0000,
 		"emission y" : 0.0000,
 		"emission z" : 0.0000,
+<<<<<<< HEAD
 		"diffuse" : 1.0000,
 		"specular" : 0.0000,
 		"refraction" : 0.0000,
+=======
+		"diffuse" : 0.1111,
+		"specular" : 0.1111,
+		"refraction" : 0.7777,
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
 		"roughness" : 0.0000
 		}
 	},
 	"cone" :
 	{
+<<<<<<< HEAD
 		"pos x" : 35.4354,
 		"pos y" : 49.5915,
 		"pos z" : 39.2581,
@@ -173,31 +404,69 @@
 		"w x" : -0.9842,
 		"w y" : -0.0186,
 		"w z" : -0.1757,
+=======
+		"pos x" : 0.0000,
+		"pos y" : 4.1483,
+		"pos z" : -161.7368,
+		"color x" : 1.0000,
+		"color y" : 1.0000,
+		"color z" : 1.0000,
+		"tng" : 0.4000,
+		"m1" : 0.0000,
+		"m2" : 15.0000,
+		"tex_scale" : 20.0000,
+		"u x" : -0.0000,
+		"u y" : -0.9848,
+		"u z" : -0.1736,
+		"v x" : -1.0000,
+		"v y" : 0.0000,
+		"v z" : 0.0000,
+		"w x" : 0.0000,
+		"w y" : -0.1736,
+		"w z" : 0.9848,
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
 		"tex_offs x" : 0.0000,
 		"tex_offs y" : 0.0000,
 		"col_disrupt": "NODISTRUPT",
 		"material texture": "",
+<<<<<<< HEAD
 		"texture": "",
+=======
+		"texture": "textures/helper.jpg",
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
 		"light" : {
 		"emission x" : 0.0000,
 		"emission y" : 0.0000,
 		"emission z" : 0.0000,
+<<<<<<< HEAD
 		"diffuse" : 0.0000,
 		"specular" : 0.0000,
 		"refraction" : 1.0000,
+=======
+		"diffuse" : 0.1111,
+		"specular" : 0.1111,
+		"refraction" : 0.7777,
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
 		"roughness" : 0.0000
 		}
 	},
 	"torus" :
 	{
+<<<<<<< HEAD
 		"pos x" : 34.0380,
 		"pos y" : -8.6395,
 		"pos z" : 53.2645,
+=======
+		"pos x" : 25.0000,
+		"pos y" : -1.7605,
+		"pos z" : -162.7786,
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
 		"color x" : 1.0000,
 		"color y" : 1.0000,
 		"color z" : 1.0000,
 		"material texture": "",
 		"texture": "textures/helper.jpg",
+<<<<<<< HEAD
 		"u x" : -0.9842,
 		"u y" : -0.0186,
 		"u z" : -0.1757,
@@ -211,11 +480,27 @@
 		"tex_offs y" : 0.0000,
 		"col_disrupt": "NODISTRUPT",
 		"radius big" : 5.0000,
+=======
+		"u x" : 0.0000,
+		"u y" : -0.1736,
+		"u z" : 0.9848,
+		"v x" : 1.0000,
+		"v y" : 0.0000,
+		"v z" : 0.0000,
+		"w x" : 0.0000,
+		"w y" : -0.9848,
+		"w z" : -0.1736,
+		"tex_offs x" : 0.0000,
+		"tex_offs y" : 0.0000,
+		"col_disrupt": "NODISTRUPT",
+		"radius big" : 6.0000,
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
 		"radius small" : 3.0000,
 				"light" : {
 		"emission x" : 0.0000,
 		"emission y" : 0.0000,
 		"emission z" : 0.0000,
+<<<<<<< HEAD
 		"diffuse" : 1.0000,
 		"specular" : 0.0000,
 		"refraction" : 0.0000,
@@ -241,6 +526,34 @@
 		"w x" : 0.0212,
 		"w y" : -0.9996,
 		"w z" : -0.0130,
+=======
+		"diffuse" : 0.1111,
+		"specular" : 0.1111,
+		"refraction" : 0.7777,
+		"roughness" : 0.0000
+		}
+	},
+	"paralelepiped" :
+	{
+		"pos x" : 50.0000,
+		"pos y" : -3.7301,
+		"pos z" : -163.1259,
+		"color x" : 1.0000,
+		"color y" : 1.0000,
+		"color z" : 1.0000,
+		"h" : 10.0000,
+		"w" : 5.0000,
+		"l" : 10.0000,
+		"u x" : 0.0000,
+		"u y" : 0.9848,
+		"u z" : 0.1736,
+		"v x" : 1.0000,
+		"v y" : 0.0000,
+		"v z" : 0.0000,
+		"w x" : 0.0000,
+		"w y" : -0.1736,
+		"w z" : 0.9848,
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
 		"tex_offs x" : 0.0000,
 		"tex_offs y" : 0.0000,
 		"col_disrupt": "NODISTRUPT",
@@ -250,6 +563,7 @@
 		"emission x" : 0.0000,
 		"emission y" : 0.0000,
 		"emission z" : 0.0000,
+<<<<<<< HEAD
 		"diffuse" : 1.0000,
 		"specular" : 0.0000,
 		"refraction" : 0.0000,
@@ -275,15 +589,48 @@
 		"w x" : 0.0212,
 		"w y" : -0.9996,
 		"w z" : -0.0130,
+=======
+		"diffuse" : 0.1111,
+		"specular" : 0.1111,
+		"refraction" : 0.7777,
+		"roughness" : 0.0000
+		}
+	},
+	"cylinder" :
+	{
+		"pos x" : -50.0000,
+		"pos y" : -15.8332,
+		"pos z" : -134.7972,
+		"color x" : 1.0000,
+		"color y" : 1.0000,
+		"color z" : 1.0000,
+		"radius" : 7.0000,
+		"h" : 15.0000,
+		"tex_scale" : 20.0000,
+		"u x" : 0.0000,
+		"u y" : 0.9848,
+		"u z" : 0.1736,
+		"v x" : 1.0000,
+		"v y" : 0.0000,
+		"v z" : 0.0000,
+		"w x" : 0.0000,
+		"w y" : -0.1736,
+		"w z" : 0.9848,
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
 		"tex_offs x" : 0.0000,
 		"tex_offs y" : 0.0000,
 		"col_disrupt": "NODISTRUPT",
 		"material texture": "",
+<<<<<<< HEAD
 		"texture": "textures/helper.jpg",
+=======
+		"texture": "",
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
 		"light" : {
 		"emission x" : 0.0000,
 		"emission y" : 0.0000,
 		"emission z" : 0.0000,
+<<<<<<< HEAD
 		"diffuse" : 1.0000,
 		"specular" : 0.0000,
 		"refraction" : 0.0000,
@@ -308,15 +655,46 @@
 		"w x" : 0.0212,
 		"w y" : -0.9996,
 		"w z" : -0.0130,
+=======
+		"diffuse" : 0.1111,
+		"specular" : 0.1111,
+		"refraction" : 0.7777,
+		"roughness" : 0.0000
+		}
+	},
+	"sphere" :
+	{
+		"pos x" : -25.0000,
+		"pos y" : -8.9395,
+		"pos z" : -133.5817,
+		"color x" : 1.0000,
+		"color y" : 1.0000,
+		"color z" : 1.0000,
+		"radius" : 7.0000,
+		"u x" : 0.0000,
+		"u y" : 0.9848,
+		"u z" : 0.1736,
+		"v x" : 1.0000,
+		"v y" : 0.0000,
+		"v z" : 0.0000,
+		"w x" : 0.0000,
+		"w y" : -0.1736,
+		"w z" : 0.9848,
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
 		"tex_offs x" : 0.0000,
 		"tex_offs y" : 0.0000,
 		"col_disrupt": "NODISTRUPT",
 		"material texture": "",
+<<<<<<< HEAD
 		"texture": "textures/helper.jpg",
+=======
+		"texture": "",
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
 		"light" : {
 		"emission x" : 0.0000,
 		"emission y" : 0.0000,
 		"emission z" : 0.0000,
+<<<<<<< HEAD
 		"diffuse" : 1.0000,
 		"specular" : 0.0000,
 		"refraction" : 0.0000,
@@ -355,10 +733,45 @@
 		"color z" : 1.0000,
 		"material texture": "",
 		"texture": "textures/helper.jpg",
+=======
+		"diffuse" : 0.1111,
+		"specular" : 0.1111,
+		"refraction" : 0.7777,
+		"roughness" : 0.0002
+		}
+	},
+	"cone" :
+	{
+		"pos x" : 0.0000,
+		"pos y" : -1.0611,
+		"pos z" : -132.1925,
+		"color x" : 1.0000,
+		"color y" : 1.0000,
+		"color z" : 1.0000,
+		"tng" : 0.4000,
+		"m1" : 0.0000,
+		"m2" : 15.0000,
+		"tex_scale" : 20.0000,
+		"u x" : -0.0000,
+		"u y" : -0.9848,
+		"u z" : -0.1736,
+		"v x" : -1.0000,
+		"v y" : 0.0000,
+		"v z" : 0.0000,
+		"w x" : 0.0000,
+		"w y" : -0.1736,
+		"w z" : 0.9848,
+		"tex_offs x" : 0.0000,
+		"tex_offs y" : 0.0000,
+		"col_disrupt": "NODISTRUPT",
+		"material texture": "",
+		"texture": "",
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
 		"light" : {
 		"emission x" : 0.0000,
 		"emission y" : 0.0000,
 		"emission z" : 0.0000,
+<<<<<<< HEAD
 		"diffuse" : 1.0000,
 		"specular" : 0.0000,
 		"refraction" : 0.0000,
@@ -396,10 +809,51 @@
 		"specular" : 0.0000,
 		"refraction" : 0.0000,
 		"roughness" : 0.0000
+=======
+		"diffuse" : 0.1111,
+		"specular" : 0.1111,
+		"refraction" : 0.7777,
+		"roughness" : 0.0005
+		}
+	},
+	"torus" :
+	{
+		"pos x" : 25.0000,
+		"pos y" : -6.9699,
+		"pos z" : -133.2344,
+		"color x" : 1.0000,
+		"color y" : 1.0000,
+		"color z" : 1.0000,
+		"material texture": "",
+		"texture": "",
+		"u x" : 0.0000,
+		"u y" : -0.1736,
+		"u z" : 0.9848,
+		"v x" : 1.0000,
+		"v y" : 0.0000,
+		"v z" : 0.0000,
+		"w x" : 0.0000,
+		"w y" : -0.9848,
+		"w z" : -0.1736,
+		"tex_offs x" : 0.0000,
+		"tex_offs y" : 0.0000,
+		"col_disrupt": "NODISTRUPT",
+		"radius big" : 6.0000,
+		"radius small" : 3.0000,
+				"light" : {
+		"emission x" : 0.0000,
+		"emission y" : 0.0000,
+		"emission z" : 0.0000,
+		"diffuse" : 0.1111,
+		"specular" : 0.1111,
+		"refraction" : 0.7777,
+		"roughness" : 0.0007
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
 		}
 	},
 	"paralelepiped" :
 	{
+<<<<<<< HEAD
 		"pos x" : -2.8698,
 		"pos y" : -1.1393,
 		"pos z" : 31.5723,
@@ -419,6 +873,26 @@
 		"w y" : -0.0186,
 		"w z" : -0.1757,
 		"tex_scale" : 20.0000,
+=======
+		"pos x" : 50.0000,
+		"pos y" : -8.9395,
+		"pos z" : -133.5817,
+		"color x" : 1.0000,
+		"color y" : 1.0000,
+		"color z" : 1.0000,
+		"h" : 10.0000,
+		"w" : 5.0000,
+		"l" : 10.0000,
+		"u x" : 0.0000,
+		"u y" : 0.9848,
+		"u z" : 0.1736,
+		"v x" : 1.0000,
+		"v y" : 0.0000,
+		"v z" : 0.0000,
+		"w x" : 0.0000,
+		"w y" : -0.1736,
+		"w z" : 0.9848,
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
 		"tex_offs x" : 0.0000,
 		"tex_offs y" : 0.0000,
 		"col_disrupt": "NODISTRUPT",
@@ -428,10 +902,17 @@
 		"emission x" : 0.0000,
 		"emission y" : 0.0000,
 		"emission z" : 0.0000,
+<<<<<<< HEAD
 		"diffuse" : 0.0000,
 		"specular" : 1.0000,
 		"refraction" : 0.0000,
 		"roughness" : 0.0000
+=======
+		"diffuse" : 0.1111,
+		"specular" : 0.1111,
+		"refraction" : 0.7777,
+		"roughness" : 0.0010
+>>>>>>> 68a000f1c5ac7319083afe2f2cb15192bf57ba82
 		}
 	}
 }
