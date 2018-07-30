@@ -13,7 +13,7 @@
 #ifndef GUI_H
 # define GUI_H
 
-# define FONT "gui_textures/label.otf"
+# define FONT "gui_textures/BebasNeue-Regular.ttf"
 
 # include <SDL_ttf.h>
 # include <SDL_image.h>

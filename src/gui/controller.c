@@ -61,12 +61,12 @@ void               controller_settings(t_val_control *my_control, SDL_Renderer *
 
     controller_own_set(renderer, my_control);
     my_control->step = step;
-    my_control->change_buttons[0] = create_button(init_rect(3, 3, 50, 50), (t_gui_obj *)my_control, "gui_textures/images.png"); //настроить
+    my_control->change_buttons[0] = create_button(init_rect(3, 3, 50, 50), (t_gui_obj *)my_control, "gui_textures/Button.png"); //настроить
     button_settings(renderer, &my_control->change_buttons[0]);
-    button_set_label(my_control->val_name, 128, renderer, &my_control->change_buttons[0]);
-    my_control->change_buttons[1] = create_button(init_rect(107, 3, 50, 50), (t_gui_obj *)my_control, "gui_textures/images.png");  //настроить
+    button_set_label("-", 128, renderer, &my_control->change_buttons[0]);
+    my_control->change_buttons[1] = create_button(init_rect(107, 3, 50, 50), (t_gui_obj *)my_control, "gui_textures/Button.png");  //настроить
     button_settings(renderer, &my_control->change_buttons[1]);
-    button_set_label(my_control->val_name, 128, renderer, &my_control->change_buttons[1]);
+    button_set_label("+", 128, renderer, &my_control->change_buttons[1]);
     my_control->change_buttons[0].action = &minus_action;
     my_control->change_buttons[1].action = &plus_action;
     sprintf(str, "%f", *(my_control->value));
