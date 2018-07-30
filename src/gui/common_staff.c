@@ -12,7 +12,7 @@
 
 #include "gui.h"
 
-SDL_Rect                init_rect(int x, int y, int w, int h)
+SDL_Rect                init_rect(int x, int y, int w, int h) //не трогать
 {
     SDL_Rect            some_rect;
 
@@ -23,7 +23,7 @@ SDL_Rect                init_rect(int x, int y, int w, int h)
     return (some_rect);
 }
 
-int        check_click(int x, int y, t_gui_obj *gui_obj)
+int        check_click(int x, int y, t_gui_obj *gui_obj) //не трогать
 {
     if (x >= gui_obj->my_rect.x &&
         x <= (gui_obj->my_rect.x + gui_obj->my_rect.w) &&

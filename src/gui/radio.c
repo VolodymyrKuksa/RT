@@ -15,16 +15,19 @@
 extern unsigned int g_win_width;
 extern unsigned int g_win_height;
 
-t_radio_button          create_radio(SDL_Rect my_rect, t_gui_obj *father, char *text, int *value)
+t_radio_button          create_radio(SDL_Rect my_rect, t_gui_obj *father, char *text, int *value) //не трогать
 {
     t_radio_button      my_radio;
 
+    my_radio.my_rect = my_rect;
     my_radio.x = my_rect.x;
     my_radio.y = my_rect.y;
-    my_radio.my_rect = my_rect;
+    my_radio.my_rect.x = my_radio.x + father->my_rect.x;
+    my_radio.my_rect.y = my_radio.y + father->my_rect.y;
     my_radio.father = father;
     my_radio.texture = NULL;
-    my_radio.source = text;
+    my_radio.source = (char *)malloc(sizeof(char) * ft_strlen(text));
+    my_radio.source = ft_strcpy(my_radio.source, text);
     my_radio.value = value;
     my_radio.last_pressed = 0;
     my_radio.draw = &draw_radio;
@@ -33,7 +36,7 @@ t_radio_button          create_radio(SDL_Rect my_rect, t_gui_obj *father, char *
     return (my_radio);
 }
 
-void                    radio_own_set(SDL_Renderer *renderer, t_radio_button *my_radio)
+void                    radio_own_set(SDL_Renderer *renderer, t_radio_button *my_radio) //не трогать
 {
     SDL_Surface         *surface;
 
@@ -54,21 +57,24 @@ void                     radio_settings(t_radio_button *my_radio, SDL_Renderer *
     my_radio->num_of_buttons = number;
     my_radio->buttons = (t_button *)malloc(sizeof(t_button) * my_radio->num_of_buttons);
     i = -1;
+    va_start(list, number);
     while (++i < my_radio->num_of_buttons)
     {
-        my_radio->buttons[i] = create_button(init_rect(i * 20, i * 20, 20, 20), (t_gui_obj *)my_radio, "gui_textures/images.png"); //настроить
+        my_radio->buttons[i] = create_button(init_rect(3 + (i % 4) * 104
+        , 3 + (i / 4) * 70, 100, 50), (t_gui_obj *)my_radio, "gui_textures/images.png"); //настроить значения, но лучше со мной
         button_settings(renderer, &my_radio->buttons[i]);
         button_set_label(va_arg(list, char *), 128, renderer, &my_radio->buttons[i]);
         my_radio->buttons[i].action = &radio_action;
     }
     va_end(list);
-    my_radio->pointer.width = 40; //настроить
-    my_radio->pointer.height = 40; //настроить
-    my_radio->pointer = create_label(my_radio->buttons[*(my_radio->value)].my_rect.x + my_radio->buttons[*(my_radio->value)].my_rect.w / 2 - my_radio->pointer.width / 2,
-            my_radio->buttons[*(my_radio->value)].my_rect.y + my_radio->buttons[*(my_radio->value)].my_rect.h, "^", (t_gui_obj *)my_radio);
+    my_radio->pointer = create_label(my_radio->buttons[*(my_radio->value)].x + my_radio->buttons[*(my_radio->value)].my_rect.w / 2 - my_radio->pointer.width / 2,
+            my_radio->buttons[*(my_radio->value)].y + my_radio->buttons[*(my_radio->value)].my_rect.h, "^", (t_gui_obj *)my_radio); // не трогать
+    my_radio->pointer.width = 20; //настроить значения
+    my_radio->pointer.height = 20; //настроить значения
+    label_settings(128, renderer, &my_radio->pointer, 0);
 }
 
-void                        update_radio(t_radio_button *my_radio, char with_text, SDL_Renderer *renderer)
+void                        update_radio(t_radio_button *my_radio, char with_text, SDL_Renderer *renderer) //не трогать
 {
     int                     i;
 
@@ -82,7 +88,7 @@ void                        update_radio(t_radio_button *my_radio, char with_tex
     my_radio->pointer.update(&my_radio->pointer, with_text, renderer, 0);
 }
 
-void                        draw_radio(SDL_Renderer *renderer, t_radio_button *my_radio)
+void                        draw_radio(SDL_Renderer *renderer, t_radio_button *my_radio) //не трогать
 {
     int                     i;
 
@@ -94,7 +100,7 @@ void                        draw_radio(SDL_Renderer *renderer, t_radio_button *m
     
 }
 
-t_gui_obj                   *check_radio_collision(int x, int y, t_gui_obj *gui_obj)
+t_gui_obj                   *check_radio_collision(int x, int y, t_gui_obj *gui_obj) //не трогать
 {
     t_radio_button          *my_radio;
     t_gui_obj               *temp;
@@ -117,15 +123,29 @@ t_gui_obj                   *check_radio_collision(int x, int y, t_gui_obj *gui_
     return (temp);
 }
 
-void                        radio_action(void *some_shit, SDL_Renderer *renderer)
+void                        radio_action(void *some_shit, SDL_Renderer *renderer) //не трогать
 {
     t_radio_button          *my_radio;
 
     my_radio = (t_radio_button *)some_shit;
     *(my_radio->value) = my_radio->last_pressed;
-    my_radio->pointer.x = my_radio->buttons[my_radio->last_pressed].my_rect.x +
+    my_radio->pointer.x = my_radio->buttons[my_radio->last_pressed].x +
                                   my_radio->buttons[my_radio->last_pressed].my_rect.w / 2 -
                                   my_radio->pointer.width / 2;
-    my_radio->pointer.y = my_radio->buttons[my_radio->last_pressed].my_rect.y +
+    my_radio->pointer.y = my_radio->buttons[my_radio->last_pressed].y +
                                   my_radio->buttons[my_radio->last_pressed].my_rect.h;
+    my_radio->pointer.update(&my_radio->pointer, 0, renderer, 0);
+}
+
+void                        destroy_radio(t_radio_button *my_radio) //не трогать
+{
+    int                     i;
+
+    SDL_DestroyTexture(my_radio->texture);
+    destroy_label(&my_radio->pointer);
+    i = -1;
+    while (++i < my_radio->num_of_buttons)
+        destroy_button(&my_radio->buttons[i]);
+    free(my_radio->buttons);
+    free(my_radio->source);
 }

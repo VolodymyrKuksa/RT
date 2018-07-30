@@ -18,6 +18,7 @@
 # include <SDL_ttf.h>
 # include <SDL_image.h>
 # include <stdarg.h>
+# include "libft.h" 
 
 /* char type 0 - button, 1 - menu */
 
@@ -57,6 +58,7 @@ typedef struct          s_label
     float               width;
     float               height;
     char                *text;
+    unsigned char       font_size;
     TTF_Font            *font;
     SDL_Texture         *texture;
     SDL_Rect            dstrect;
@@ -119,6 +121,7 @@ typedef struct          s_value_controler
     SDL_Texture         *texture;
     t_button            change_buttons[2];
     float               *value;
+    char                *val_name;
     float               max_val;
     float               min_val;
     float               step;
@@ -130,12 +133,14 @@ typedef struct          s_value_controler
 
 t_val_control           create_controller(SDL_Rect my_rect, t_gui_obj *father, char *text, float *value);
 void                    controller_own_set(SDL_Renderer *renderer, t_val_control *my_control);
+void                    more_controler_settings(t_val_control *my_control, float max_val, float min_val, char *val_name);
 void                    controller_settings(t_val_control *my_control, SDL_Renderer *renderer, float step);
 void                    update_controler(t_val_control *my_control, char with_text, SDL_Renderer *renderer, char with_alph);
 void                    draw_controler(SDL_Renderer *renderer, t_val_control *my_control);
 t_gui_obj               *check_contol_collision(int x, int y, t_gui_obj *gui_obj);
 void                    plus_action(void *some_shit, SDL_Renderer *renderer);
 void                    minus_action(void *some_shit, SDL_Renderer *renderer);
+void                    destroy_controller(t_val_control *my_control);
 /*------------------------------------------------------------*/
 
 /*-----------------------RadioButton--------------------------*/
@@ -168,58 +173,9 @@ void                    update_radio(t_radio_button *my_radio, char with_text, S
 void                    draw_radio(SDL_Renderer *renderer, t_radio_button *my_radio);
 t_gui_obj               *check_radio_collision(int x, int y, t_gui_obj *gui_obj);
 void                    radio_action(void *some_shit, SDL_Renderer *renderer);
-
+void                    destroy_radio(t_radio_button *my_radio);
 /*------------------------------------------------------------*/
 
 /*------------------------------------------------------------*/
-
-/*--------------------------Menu------------------------------*/
-typedef struct          s_gui_menu
-{
-    float               x;
-    float               y;
-    SDL_Rect            my_rect;
-    t_gui_obj           *father;
-    char                type;
-    void                (*action)(void *some_shit, SDL_Renderer *renderer);
-    /*                  */
-    t_mouse             *mouse;
-    char                *source;
-    SDL_Texture         *texture;
-    t_button            main_button;
-    unsigned char       numb_of_labels;
-    unsigned char       numb_of_control;
-    unsigned char       numb_of_radio;
-
-    t_radio_button      *radio;
-    t_val_control       *controls;
-    t_label             *labels;
-
-    void                (*draw)(SDL_Renderer *renderer, struct s_gui_menu *my_radio);
-    void                (*update)(struct s_gui_menu *my_radio, char with_text, SDL_Renderer *renderer);
-    t_gui_obj           *(*collision)(int x, int y, t_gui_obj *gui_obj);
-}                       t_gui_menu;
-
-t_gui_menu              create_menu(SDL_Rect my_rect, char *text, t_mouse *mouse);
-void                    menu_own_set(SDL_Renderer *renderer, t_gui_menu *my_menu);
-void                    menu_settings(t_gui_menu *my_menu, SDL_Renderer *renderer, menu_type type);
-void                    fill_global_menu(t_gui_menu *my_menu, SDL_Renderer *renderer);
-void                    fill_objects_menu(t_gui_menu *my_menu, SDL_Renderer *renderer);
-void                    update_menu(t_gui_menu *my_menu, char with_text, SDL_Renderer *renderer);
-void                    draw_menu(SDL_Renderer *renderer, t_gui_menu *my_menu);
-t_gui_obj               *check_menu_collision(int x, int y, t_gui_obj *gui_obj);
-void                    menu_action(void *some_shit, SDL_Renderer *renderer);
-/*------------------------------------------------------------*/
-
-typedef struct  s_gui
-{
-    t_gui_menu  *menu_list;
-    t_button    *buttons;
-    t_label     *labels;
-    /*
-        - check_collision
-        - draw
-    */
-}               t_gui;
 
 #endif  

@@ -97,6 +97,7 @@ gui/menu.c\
 gui/common_staff.c\
 gui/controller.c\
 gui/radio.c\
+gui/gui.c\
 main_loop.c
 
 C_FILES_RT = server_main.c $(C_FILES)
