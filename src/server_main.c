@@ -125,5 +125,10 @@ int		main(int argc, char **argv)
 	IMG_Quit();
 	write_scene(&(env.scene));
 	system("leaks -q RT"); //DEBUG
+//	float tmp = 0.123456789f;
+//	printf("before: %f\n", tmp);
+//	tmp = (int)(tmp * 10);
+//	tmp /= 10;
+//	printf("after: %f\n", tmp);
 	return (0);
 }

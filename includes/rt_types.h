@@ -168,6 +168,7 @@ typedef struct		s_parallelogram
 	float		h;
 	float		w;
 	float		l;
+	float		tex_scale;
 }					t_parallelogram;
 
 typedef struct		s_triangle

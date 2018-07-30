@@ -155,6 +155,33 @@ void	texture_disk(t_obj *disk, float3 hitpoint, float2 *coord)
 	coord->x = phi;
 }
 
+void	texture_paralelipiped(t_obj *p, float3 hitpoint, float2 *coord)
+{
+	float3	n = get_normal_obj(hitpoint, p);
+	hitpoint -= p->primitive.parallelogram.pos;
+	hitpoint = change_of_basis(hitpoint, p->basis);
+	hitpoint /= p->primitive.parallelogram.tex_scale;
+	float tmp = dot(n, p->basis.u);
+	if (tmp >= 0.9f || tmp <= -0.9f)
+	{
+		coord->x = tmp > 0.f ? hitpoint.x : -hitpoint.x;
+		coord->y = hitpoint.z;
+		return ;
+	}
+	tmp = dot(n, p->basis.v);
+	if (tmp >= 0.9f || tmp <= -0.9f)
+	{
+		coord->x = tmp < 0.f ? hitpoint.z : -hitpoint.z;
+		coord->y = -hitpoint.y;
+	}
+	else
+	{
+		tmp = dot(n, p->basis.w);
+		coord->x = tmp > 0.f ? hitpoint.x : -hitpoint.x;
+		coord->y = -hitpoint.y;
+	}
+}
+
 /*============================================================================*/
 
 void		get_texture_coord(t_obj *hitobj, float3 hitpoint, float2 *coord)
@@ -175,6 +202,8 @@ void		get_texture_coord(t_obj *hitobj, float3 hitpoint, float2 *coord)
 		texture_rectangle(hitobj, hitpoint, coord);
 	else if (hitobj->type == triangle)
 		texture_triangle(hitobj, hitpoint, coord);
+	else if (hitobj->type == parallelogram)
+		texture_paralelipiped(hitobj, hitpoint, coord);
 	*coord -= hitobj->tex_offs;
 	coord->x += coord->x > 0 ? -(int)coord->x : (int)coord->x;
 	coord->y += coord->y > 0 ? -(int)coord->y : (int)coord->y;

@@ -19,14 +19,16 @@ void	mouse_wheel_event(SDL_Event e, t_env *env)
 
 	ppd_spd = 0.5;
 	foc_spd = 0.01;
-	if (e.wheel.y > 0)
-		env->scene.cam.f_length -= ppd_spd;
+	if (e.wheel.y > 0 && env->scene.cam.f_length - ppd_spd >= 1.f)
+		env->scene.cam.f_length = env->scene.cam.f_length - ppd_spd >= 1.f ?
+		env->scene.cam.f_length - ppd_spd : 1.f;
 	else if (e.wheel.y < 0)
 		env->scene.cam.f_length += ppd_spd;
 	else if (e.wheel.x > 0)
 		env->scene.cam.aperture += foc_spd;
 	else if (e.wheel.x < 0)
-		env->scene.cam.aperture -= foc_spd;
+		env->scene.cam.aperture = env->scene.cam.aperture - foc_spd >= 0.f ?
+		env->scene.cam.aperture - foc_spd : 0.f;
 	else
 		return ;
 	env->scene.cam.ratio = env->scene.cam.f_length /

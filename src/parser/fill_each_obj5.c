@@ -98,6 +98,7 @@ void			fillparallelogram(json_value *value, t_scene *scene, int i)
 	init_rotate(&(tmp.basis), rot);
 	minus_camera(&(tmp.primitive.parallelogram.pos), scene->cam.pos);
 	tmp.type = parallelogram;
+	tmp.primitive.parallelogram.tex_scale = 20.f;//	parse it
 	check_basis(&tmp);
 	if (tmp.primitive.parallelogram.h <= 0 || tmp.primitive.parallelogram.w <= 0
 		|| tmp.primitive.parallelogram.l <= 0)

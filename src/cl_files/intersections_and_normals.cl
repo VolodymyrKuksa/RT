@@ -518,7 +518,7 @@ __float3	normal_triangle(__float3  hitpoint, t_triangle *triangle)
 	return (normalize(cross(triangle->d2 - triangle->d1, triangle->d3 - triangle->d2)));
 }
 
-float3		get_normal_obj(float3 hitpoint, t_ray ray, t_obj *hitobj)
+float3		get_normal_obj(float3 hitpoint, t_obj *hitobj)
 {
 	float3 n;
 	switch (hitobj->type)

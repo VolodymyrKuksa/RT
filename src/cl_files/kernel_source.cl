@@ -33,8 +33,9 @@ __float3	normal_sphere(__float3 , t_sphere *);
 __float3	normal_cone(__float3  , t_cone * , __float3);
 __float3	normal_plane(__float3  , t_plane * , __float3);
 __float3	normal_cylinder(__float3 , t_cylinder * , __float3);
+__float3	normal_parallelogram(__float3, t_parallelogram *, t_basis *);
 
-float3		get_normal_obj(float3 hitpoint, t_ray ray, t_obj *hitobj);
+float3		get_normal_obj(float3 hitpoint, t_obj *hitobj);
 
 float3	get_point_color(t_obj *hitobj, float3 hitpoint, t_texture texture);
 int	get_hitpoint_material(t_obj *, float3, t_material *, t_texture, t_ray);
@@ -200,8 +201,13 @@ t_ray	refract(t_ray ray, __float3 hitpoint, t_material material, uint2 *seeds, f
 			material.normal * cosine_theta_r;
 	}
 
-	ray.dir = sample_hemisphere(t, material.roughness, seeds);
-	ray.pos = hitpoint + EPSILON * ray.dir;
+	if (dot(t, material.normal) < 0.f)
+	{
+		ray.dir = sample_hemisphere(t, material.roughness, seeds);
+		ray.pos = hitpoint + EPSILON * ray.dir;
+	}
+	else
+		return reflect(ray, hitpoint, material, seeds);
 
 	return (ray);
 }
@@ -275,12 +281,11 @@ t_texture texture, float3 mask, float refr_coef)
 	return (res);
 }
 
-float		round_tenth(float val);
+float		cartoon_round(float val);
 
-float		round_tenth(float val)
+float		cartoon_round(float val)
 {
-	val *= 1;
-	return val;
+	return val > 0.5f ? 1.f : 0.f;
 }
 
 float3		apply_effect(float3 px, int effect);
@@ -308,7 +313,7 @@ float3		apply_effect(float3 px, int effect)
 	}
 	else if (effect == CARTOON)
 	{
-		return (float3)(round_tenth(px.x), round_tenth(px.y), round_tenth(px.z));
+		return (float3)(cartoon_round(px.x), cartoon_round(px.y), cartoon_round(px.z));
 	}
 	return px;
 }
