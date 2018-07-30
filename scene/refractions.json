@@ -7,7 +7,7 @@
 	"f_length": 60.0,
 	"dust": 0.0,
 	"fov": 90.0,
-	"aperture": 0.00001,
+	"aperture": 0.0,
 	"refr_coef": 1.5,
   },
   "plane" :
@@ -229,9 +229,9 @@
 	"pos x": 50.0,
 	"pos y": -13.0,
 	"pos z": -120.0,
-	"w": 7.0,
-	"h": 7.0,
-	"l": 7.0,
+	"w": 5.0,
+	"h": 10.0,
+	"l": 10.0,
 	"color x": 1.0,
 	"color y": 1.0,
 	"color z": 1.0,
@@ -342,9 +342,9 @@
 	"pos x": 50.0,
 	"pos y": -13.0,
 	"pos z": -90.0,
-	"w": 7.0,
-	"h": 7.0,
-	"l": 7.0,
+	  "w": 5.0,
+	  "h": 10.0,
+	  "l": 10.0,
 	"color x": 1.0,
 	"color y": 1.0,
 	"color z": 1.0,
@@ -354,8 +354,8 @@
 	  "emission z": 0.0,
 	  "roughness": 0.001,
 	  "diffuse": 1.0,
-	  "specular": 1.0,
-	  "refraction": 7.0
+	  "specular": 0.0,
+	  "refraction": 0.0
 	}
   }
 }
