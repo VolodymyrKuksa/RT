@@ -19,8 +19,8 @@ void			filldisk(json_value *value, t_scene *scene, int i)
 	cl_float3	rot;
 
 	tmp = default_disk();
-	rot = (cl_float3){0.0, 0.0, 0.0};
-	while (i < value->u.object.length)
+	rot = (cl_float3){{0.0, 0.0, 0.0}};
+	while ((unsigned int)i < value->u.object.length)
 	{
 		v = *(value->u.object.values[i].value);
 		fill_position(value->u.object.values[i].name,
@@ -101,8 +101,8 @@ void			fillthecone(json_value *value, t_scene *scene, int i)
 	cl_float3	rot;
 
 	tmp = default_cone();
-	rot = (cl_float3){0.0, 0.0, 0.0};
-	while (i < value->u.object.length)
+	rot = (cl_float3){{0.0, 0.0, 0.0}};
+	while ((unsigned int)i < value->u.object.length)
 	{
 		v = *(value->u.object.values[i].value);
 		fill_position(value->u.object.values[i].name,

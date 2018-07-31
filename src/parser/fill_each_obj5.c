@@ -27,8 +27,8 @@ void			fillparaboloid(json_value *value, t_scene *scene, int i)
 	cl_float3	rot;
 
 	tmp = default_paraboloid();
-	rot = (cl_float3){0.0, 0.0, 0.0};
-	while (i < value->u.object.length)
+	rot = (cl_float3){{0.0, 0.0, 0.0}};
+	while ((unsigned int)i < value->u.object.length)
 	{
 		v = *(value->u.object.values[i].value);
 		fill_paraboloid_params(value->u.object.values[i].name, v, &tmp);
@@ -51,8 +51,8 @@ void			filltriangle(json_value *value, t_scene *scene, int i)
 	cl_float3	rot;
 
 	tmp = default_triangle();
-	rot = (cl_float3){0.0, 0.0, 0.0};
-	while (i < value->u.object.length)
+	rot = (cl_float3){{0.0, 0.0, 0.0}};
+	while ((unsigned int)i < value->u.object.length)
 	{
 		v = *(value->u.object.values[i].value);
 		fill_triangle_points(value->u.object.values[i].name, v, &tmp);
@@ -89,8 +89,8 @@ void			fillparallelogram(json_value *value, t_scene *scene, int i)
 	cl_float3	rot;
 
 	tmp = default_parallelogram();
-	rot = (cl_float3){0.0, 0.0, 0.0};
-	while (i < value->u.object.length)
+	rot = (cl_float3){{0.0, 0.0, 0.0}};
+	while ((unsigned int)i < value->u.object.length)
 	{
 		v = *(value->u.object.values[i].value);
 		fill_position(value->u.object.values[i].name,

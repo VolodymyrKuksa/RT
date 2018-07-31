@@ -19,7 +19,7 @@ extern int	g_win_height;
 
 void			print_scene(t_scene *scene)
 {
-	int			i;
+	int	i;
 
 	printf("PRINTIN ALL THE SCENE >>>>>>>>\n\n");
 	i = 0;
@@ -311,8 +311,8 @@ void			fill_scene_obj(json_value *value, t_scene *scene, int i)
 
 int				count_helping_obj(json_value *value)
 {
-	int			i;
-	int			res;
+	unsigned int	i;
+	int				res;
 
 	i = 0;
 	res = 0;
@@ -329,8 +329,8 @@ int				count_helping_obj(json_value *value)
 
 void			fillthescene(json_value *value, t_scene *scene)
 {
-	int			l;
-	int			i;
+	int		l;
+	int		i;
 
 	l = value->u.object.length;
 	if (l <= 1)

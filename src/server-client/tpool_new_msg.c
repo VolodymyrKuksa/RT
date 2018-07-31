@@ -32,9 +32,9 @@ void			*compose_message(void *message, int id, int type,
 
 void			fill_destinations(t_tpool *tpool, int *destinations)
 {
-	int		i;
+	unsigned int	i;
 
-	i = -1;
+	i = (unsigned int)(-1);
 	while (++i < tpool->total_threads)
 	{
 		if (tpool->threads[i].status == BUSY)

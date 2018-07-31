@@ -44,9 +44,9 @@ void	clear_message_queue(t_message_queue *mq)
 
 void	destroy_tpool(t_tpool *tpool)
 {
-	int i;
+	unsigned int	i;
 
-	i = -1;
+	i = (unsigned int)(-1);
 	while (++i < tpool->total_threads)
 	{
 		tpool->threads[i].status = FREE;

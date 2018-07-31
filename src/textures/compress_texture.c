@@ -17,13 +17,13 @@ extern unsigned int	g_tx_count;
 
 int			fill_txdata(t_txdata *txdata)
 {
-	int				i;
+	unsigned int	i;
 	unsigned int	start;
 	t_txlst			*tmp;
 
 	tmp = g_txlst;
 	start = 0;
-	i = -1;
+	i = (unsigned int)(-1);
 	while (++i < g_tx_count)
 	{
 		if (!tmp)

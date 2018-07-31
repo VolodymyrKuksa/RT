@@ -27,12 +27,12 @@ void	clamp(cl_float3 *px)
 
 void	update_window(t_env *env)
 {
-	float		sample_influence;
-	int			i;
+	float			sample_influence;
+	unsigned int	i;
 
 	++(env->num_samples);
 	sample_influence = (1.0f / env->num_samples);
-	i = -1;
+	i = (unsigned int)(-1);
 	while (++i < env->cl.global_size)
 	{
 		env->cl.pixels[i].x *= 1.0f - sample_influence;
@@ -49,6 +49,7 @@ void	update_window(t_env *env)
 	if (!env->client.active)
 	{
 		env->gui.update(&env->gui, env->screen.renderer);
+		printf("lol");
 		env->gui.draw(env->screen.renderer, &env->gui);
 	}
 	SDL_RenderPresent(env->screen.renderer);

@@ -19,8 +19,8 @@ void			fillthesphere(json_value *value, t_scene *scene, int i)
 	cl_float3	rot;
 
 	tmp = default_sphere();
-	rot = (cl_float3){0.0, 0.0, 0.0};
-	while (i < value->u.object.length)
+	rot = (cl_float3){{0.0, 0.0, 0.0}};
+	while ((unsigned int)i < value->u.object.length)
 	{
 		v = *(value->u.object.values[i].value);
 		fill_position(value->u.object.values[i].name,
@@ -56,8 +56,8 @@ void			filltorus(json_value *value, t_scene *scene, int i)
 	cl_float3	rot;
 
 	tmp = default_torus();
-	rot = (cl_float3){0.0, 0.0, 0.0};
-	while (i < value->u.object.length)
+	rot = (cl_float3){{0.0, 0.0, 0.0}};
+	while ((unsigned int)i < value->u.object.length)
 	{
 		v = *(value->u.object.values[i].value);
 		fill_position(value->u.object.values[i].name,
@@ -92,8 +92,8 @@ void			fillrectangle(json_value *value, t_scene *scene, int i)
 	cl_float3	rot;
 
 	tmp = default_rectangle();
-	rot = (cl_float3){0.0, 0.0, 0.0};
-	while (i < value->u.object.length)
+	rot = (cl_float3){{0.0, 0.0, 0.0}};
+	while ((unsigned int)i < value->u.object.length)
 	{
 		v = *(value->u.object.values[i].value);
 		fill_position(value->u.object.values[i].name,

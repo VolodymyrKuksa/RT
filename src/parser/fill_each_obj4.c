@@ -44,13 +44,13 @@ cl_float3		normalize(cl_float3 vec)
 	float length;
 
 	length = (float)sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
-	return ((cl_float3){vec.x / length, vec.y / length, vec.z / length});
+	return ((cl_float3){{vec.x / length, vec.y / length, vec.z / length}});
 }
 
 cl_float3		cross(cl_float3 u, cl_float3 v)
 {
-	return ((cl_float3){u.y * v.z - u.z * v.y,
-						u.z * v.x - u.x * v.z, u.x * v.y - u.y * v.x});
+	return ((cl_float3){{u.y * v.z - u.z * v.y,
+		u.z * v.x - u.x * v.z, u.x * v.y - u.y * v.x}});
 }
 
 void			get_basis(t_obj *obj)

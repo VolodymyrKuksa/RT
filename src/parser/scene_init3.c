@@ -14,8 +14,8 @@
 
 void			parselight(json_value *value, t_obj *tmp)
 {
-	int			i;
-	json_value	v;
+	unsigned int	i;
+	json_value		v;
 
 	i = 0;
 	while (i < value->u.object.length)

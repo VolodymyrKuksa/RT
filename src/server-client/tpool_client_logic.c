@@ -62,14 +62,14 @@ void		send_starting_data(t_thread *thread)
 
 void		combine_pixels(t_thread *thread, cl_float3 *client_px)
 {
-	float	sample_influence;
-	int		i;
-	t_env	*env;
+	float			sample_influence;
+	unsigned int	i;
+	t_env			*env;
 
 	env = thread->env;
 	sample_influence = (float)CLIENT_WORK_SIZE /
 	(env->num_samples + CLIENT_WORK_SIZE);
-	i = -1;
+	i = (unsigned int)(-1);
 	while (pthread_mutex_trylock(&env->cl.pixel_lock) != 0)
 		;
 	while (++i < env->cl.global_size)

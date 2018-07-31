@@ -62,6 +62,7 @@ int		main(int argc, char **argv)
 
 	env.server.active = 0;
 	parse_client_data(&env.client, argc, argv);
+	init_defaults(&env);
 	init_client(&env.client);
 	env.scene.num_obj = 0;
 	env.textures.tx = NULL;
@@ -69,7 +70,6 @@ int		main(int argc, char **argv)
 	set_nonblock(STDIN_FILENO);
 	init_opencl(&env.cl);
 	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
-	init_defaults(&env);
 	init_seeds(&env.cl.seeds);
 	get_work_group_size(&env.cl);
 	init_win(&env.screen, 0, env.client.visual);

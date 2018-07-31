@@ -14,11 +14,11 @@
 
 void		check_message_out(t_thread *thread)
 {
-	int			i;
-	int			to_del;
+	unsigned int	i;
+	int				to_del;
 
 	to_del = 1;
-	i = -1;
+	i = (unsigned int)(-1);
 	if (!(*thread->message_queue))
 	{
 		pthread_mutex_unlock(thread->message_queue_lock);

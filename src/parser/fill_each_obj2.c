@@ -28,8 +28,8 @@ void			filltheplane(json_value *value, t_scene *scene, int i)
 	cl_float3	rot;
 
 	tmp = default_plane();
-	rot = (cl_float3){0.0, 0.0, 0.0};
-	while (i < value->u.object.length)
+	rot = (cl_float3){{0.0, 0.0, 0.0}};
+	while ((unsigned int)i < value->u.object.length)
 	{
 		v = *(value->u.object.values[i].value);
 		fill_position(value->u.object.values[i].name,
@@ -82,7 +82,7 @@ void			fill_cylind_hats(t_scene *scene, t_obj tmp)
 	ob1.primitive.disk.related = scene->cur_obj - 1;
 	ob2 = ob1;
 	ob1.primitive.disk.pos = tmp.primitive.cylinder.pos;
-	ob1.basis.u = (cl_float3){-ob1.basis.u.x, -ob1.basis.u.y, ob1.basis.u.z};
+	ob1.basis.u = (cl_float3){{-ob1.basis.u.x, -ob1.basis.u.y, ob1.basis.u.z}};
 	ob2.primitive.disk.pos = tmp.primitive.cylinder.pos;
 	ob2.primitive.disk.pos.x += tmp.basis.u.x * tmp.primitive.cylinder.h;
 	ob2.primitive.disk.pos.y += tmp.basis.u.y * tmp.primitive.cylinder.h;
@@ -98,8 +98,8 @@ void			fillthecylind(json_value *value, t_scene *scene, int i)
 	cl_float3	rot;
 
 	tmp = default_cylinder();
-	rot = (cl_float3){0.0, 0.0, 0.0};
-	while (i < value->u.object.length)
+	rot = (cl_float3){{0.0, 0.0, 0.0}};
+	while ((unsigned int)i < value->u.object.length)
 	{
 		v = *(value->u.object.values[i].value);
 		fill_position(value->u.object.values[i].name,

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rt_types.h"
+#include "rt.h"
 
 extern unsigned int g_win_width;
 extern unsigned int g_win_height;
@@ -20,6 +20,7 @@ void                save_func(void *some_shit, SDL_Renderer *renderer)
     t_scene         *scene;
 
     scene = (t_scene *)some_shit;
+	(void)renderer;
     write_scene(scene);
 }
 

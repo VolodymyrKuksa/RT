@@ -64,7 +64,7 @@ void			write_triangle(t_obj obj, int fd)
 	write_basis(obj, fd);
 	write_feature("tex_scale", obj.primitive.triangle.tex_scale, fd);
 	write_disrupt_tex_offs(obj, fd);
-	write_pos_color((cl_float3){0, 0, 0}, obj.color, fd);
+	write_pos_color((cl_float3){{0, 0, 0}}, obj.color, fd);
 	write_texture(obj.mater_tex_id, obj.tex_id, fd);
 	write_light(obj, fd);
 }

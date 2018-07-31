@@ -35,7 +35,7 @@ void			rotate_obj_by_camera(t_obj *tmp, cl_float3 rot)
 	{
 		rot_pos_cam(&(tmp->primitive.sphere.pos), rot);
 	}
-	init_rotate(&tmp->basis, (cl_float3){-rot.x, -rot.y, -rot.z});
+	init_rotate(&tmp->basis, (cl_float3){{-rot.x, -rot.y, -rot.z}});
 }
 
 void			rotate_scene_by_cam(t_scene *scene)

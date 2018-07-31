@@ -56,9 +56,9 @@ void		*thread_do(void *data)
 
 void		init_threads(t_tpool *tpool)
 {
-	int		i;
+	unsigned int	i;
 
-	i = -1;
+	i = (unsigned int)(-1);
 	while (++i < tpool->total_threads)
 	{
 		tpool->threads[i].thread_id = i;

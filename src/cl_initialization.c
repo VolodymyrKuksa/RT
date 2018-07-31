@@ -17,14 +17,14 @@ extern unsigned int		g_win_height;
 
 void	init_seeds(t_seeds *s)
 {
-	int		i;
+	size_t		i;
 
 	s->size = (uint)(g_win_height * g_win_width * 2);
 	s->seeds = (uint*)malloc(sizeof(uint) * s->size);
 	srand((uint)clock());
-	i = -1;
-	while (++i < s->size)
-		s->seeds[i] = (uint)rand();
+	i = 0;
+	while (i < s->size)
+		s->seeds[i++] = (uint)rand();
 }
 
 void	print_log(t_cldata *cl)
@@ -49,11 +49,43 @@ void	init_defaults(t_env *env)
 	env->mv_data.turn_a = 2.5;
 	env->mv_data.cosine_a = cos(DTR(env->mv_data.turn_a));
 	env->mv_data.sine_a = sin(DTR(env->mv_data.turn_a));
+	env->client.active = 0;
+	env->server.active = 0;
+}
+
+void	choose_device(t_cldata *cl)
+{
+	cl_device_id		*dev_ids;
+	unsigned int		i;
+	unsigned int		dev_count;
+	char				buff[256];
+	cl_device_fp_config	tmp;
+
+	clGetDeviceIDs(0, DEVICE_TYPE, 0, 0, &dev_count);
+	dev_ids = (cl_device_id*)malloc(sizeof(cl_device_id) * dev_count);
+	clGetDeviceIDs(0, CL_DEVICE_TYPE_GPU, dev_count, dev_ids, 0);
+	cl->dev_id = NULL;
+	i = 0;
+	while (i < dev_count)
+	{
+		clGetDeviceInfo(dev_ids[i], CL_DEVICE_DOUBLE_FP_CONFIG, sizeof(tmp),
+			&tmp, 0);
+		if (tmp & (CL_FP_FMA | CL_FP_ROUND_TO_NEAREST | CL_FP_ROUND_TO_ZERO |
+			CL_FP_ROUND_TO_INF | CL_FP_INF_NAN | CL_FP_DENORM))
+			cl->dev_id = dev_ids[i];
+		i++;
+	}
+	bzero(buff, 256);
+	clGetDeviceInfo(cl->dev_id, CL_DEVICE_NAME, 255, buff, 0);
+	ft_putendl(buff);
+	free(dev_ids);
+	if (!cl->dev_id)
+		put_error("Could not choose gpu device");
 }
 
 void	init_opencl(t_cldata *cl)
 {
-	clGetDeviceIDs(0, DEVICE_TYPE, 1, &cl->dev_id, 0);
+	choose_device(cl);
 	cl->context = clCreateContext(0, 1, &cl->dev_id, 0, 0, 0);
 	cl->command_queue = clCreateCommandQueue(cl->context, cl->dev_id, 0, 0);
 	cl->source[0] = read_file(open(KERNEL_PATH0, O_RDONLY), 0);

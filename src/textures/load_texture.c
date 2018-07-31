@@ -74,7 +74,7 @@ SDL_Surface		*get_texture(int id)
 {
 	t_txlst	*tmp;
 
-	if (id < 0 || id >= g_tx_count)
+	if (id < 0 || (unsigned int)(id) >= g_tx_count)
 		return (NULL);
 	tmp = g_txlst;
 	while (tmp && tmp->id != id)
@@ -88,7 +88,7 @@ char			*get_texture_name(int id)
 {
 	t_txlst		*tmp;
 
-	if (id < 0 || id >= g_tx_count)
+	if (id < 0 || (unsigned int)(id) >= g_tx_count)
 		return (NULL);
 	tmp = g_txlst;
 	while (tmp && tmp->id != id)

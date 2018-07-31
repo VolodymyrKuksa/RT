@@ -118,7 +118,7 @@ HEADERS = $(addprefix $(D_INC), $(HEAD_FILES))
 #--------------COMPILATION------------------------------------------------------
 
 CC = clang
-#CFLAGS = -Wall -Werror -Wextra -O1
+CFLAGS = -Wall -Werror -Wextra -O1
 
 INC = -I $(D_INC) -I $(D_LFTINC) -I $(D_LVECINC) -I $(D_JSONINC) -I $(D_SDL2)Headers -I $(D_IMG)Headers -I $(D_TTF)Headers
 FRW = -framework OpenCL -F $(D_FRW) -rpath $(D_FRW) -framework SDL2 -framework SDL2_image -framework SDL2_ttf

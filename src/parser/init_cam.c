@@ -25,8 +25,8 @@ void			camera_default(t_cam *cam)
 	cam->aperture = 0.00001f;
 	cam->fov = 90;
 	cam->dust = 0.f;
-	cam->filter = (cl_float3){1.f, 1.f, 1.f};
-	cam->rot = (cl_float3){0.0, 0.0, 0.0};
+	cam->filter = (cl_float3){{1.f, 1.f, 1.f}};
+	cam->rot = (cl_float3){{0.0, 0.0, 0.0}};
 	cam->brightness = 1.f;
 	cam->refr_coef = 1.5f;
 	cam->effect = NOEFFECT;
@@ -84,8 +84,8 @@ void			get_cam_params2(char *name, json_value v, t_scene *scene)
 
 void			get_camera_params(json_value *value, t_scene *scene)
 {
-	int			i;
-	json_value	v;
+	unsigned int	i;
+	json_value		v;
 
 	i = 0;
 	camera_default(&(scene->cam));
