@@ -401,7 +401,7 @@ t_gui_obj               *check_menu_collision(int x, int y, t_gui_obj *gui_obj);
 void                    hide_menu(void *some_shit, SDL_Renderer *renderer);
 void                    menu_action(void *some_shit, SDL_Renderer *renderer);
 void                    destroy_menu(t_gui_menu *my_menu, SDL_Renderer *renderer);
-void					we_control(t_gui_obj *gui_obj);
+void					we_control(t_gui_obj *gui_obj, SDL_Renderer *renderer);
 /*------------------------------------------------------------*/
 
 /*---------------------------MainGuiType----------------------*/

@@ -80,8 +80,8 @@ void                unhide_objects_menu(void *some_shit, SDL_Renderer *renderer)
 
     my_menu = (t_gui_menu *)some_shit;
     /*        изменяемая часть       */
-    my_menu->numb_of_control = 7;
-    my_menu->numb_of_labels = 3;
+    my_menu->numb_of_control = 10;
+    my_menu->numb_of_labels = 4;
     my_menu->numb_of_radio = 0;
     my_menu->my_rect.w = 495;
     my_menu->my_rect.h = 500;
@@ -118,7 +118,7 @@ void                fill_global_menu(t_gui_menu *my_menu, SDL_Renderer *renderer
 
     my_menu->controls[3] = create_controller(init_rect(166, 150, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.cam.dust);
     more_controler_settings(&my_menu->controls[3], 0.1, 0);
-    controller_settings(&my_menu->controls[3], renderer, 0.01);
+    controller_settings(&my_menu->controls[3], renderer, 0.001);
 
     my_menu->controls[4] = create_controller(init_rect(166, 237, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.cam.brightness);
     more_controler_settings(&my_menu->controls[4], 10, 0);
@@ -175,7 +175,7 @@ void                fill_objects_menu(t_gui_menu *my_menu, SDL_Renderer *rendere
     button_set_label("Objs menu", 128, renderer, &my_menu->main_button);
     my_menu->main_button.action = &hide_menu;
 
-    my_menu->numb_of_control = 7;
+    my_menu->numb_of_control = 10;
 
     my_menu->controls = (t_val_control *)malloc(sizeof(t_val_control) * my_menu->numb_of_control);
     my_menu->controls[0] = create_controller(init_rect(3, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.obj[my_menu->env->scene.last_obj].color.x);
@@ -206,7 +206,19 @@ void                fill_objects_menu(t_gui_menu *my_menu, SDL_Renderer *rendere
     more_controler_settings(&my_menu->controls[6], 1, 0);
     controller_settings(&my_menu->controls[6], renderer, 0.01);
 
-    my_menu->numb_of_labels = 3;
+    my_menu->controls[7] = create_controller(init_rect(3, 321, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.obj[my_menu->env->scene.last_obj].diffuse);
+    more_controler_settings(&my_menu->controls[7], 1.0, 0.0);
+    controller_settings(&my_menu->controls[7], renderer, 0.1);
+
+    my_menu->controls[8] = create_controller(init_rect(166, 321, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.obj[my_menu->env->scene.last_obj].specular);
+    more_controler_settings(&my_menu->controls[8], 1.0, 0.0);
+    controller_settings(&my_menu->controls[8], renderer, 0.1);
+
+    my_menu->controls[9] = create_controller(init_rect(331, 321, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.obj[my_menu->env->scene.last_obj].refraction);
+    more_controler_settings(&my_menu->controls[9], 1.0, 0.0);
+    controller_settings(&my_menu->controls[9], renderer, 0.1);
+
+    my_menu->numb_of_labels = 4;
 
     my_menu->labels = (t_label *)malloc(sizeof(t_label) * my_menu->numb_of_labels);
     my_menu->labels[0] = create_label(2, 36, "color_r_g_b", (t_gui_obj *)my_menu);
@@ -223,6 +235,11 @@ void                fill_objects_menu(t_gui_menu *my_menu, SDL_Renderer *rendere
     my_menu->labels[2].width = 115;
     my_menu->labels[2].height = 25;
     label_settings(128, renderer, &my_menu->labels[2], 0);
+
+    my_menu->labels[3] = create_label(2, 296, "def spec refr", (t_gui_obj *)my_menu);
+    my_menu->labels[3].width = 115;
+    my_menu->labels[3].height = 25;
+    label_settings(128, renderer, &my_menu->labels[3], 0);
 
     my_menu->numb_of_radio = 0;
 
@@ -278,6 +295,18 @@ void                super_update(t_gui_menu *my_menu, SDL_Renderer *renderer)
     my_menu->controls[6] = create_controller(init_rect(166, 237, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.obj[my_menu->env->scene.last_obj].roughness);
     more_controler_settings(&my_menu->controls[6], 1, 0);
     controller_settings(&my_menu->controls[6], renderer, 0.01);
+
+    my_menu->controls[7] = create_controller(init_rect(3, 321, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.obj[my_menu->env->scene.last_obj].diffuse);
+    more_controler_settings(&my_menu->controls[7], 1.0, 0.0);
+    controller_settings(&my_menu->controls[7], renderer, 0.1);
+
+    my_menu->controls[8] = create_controller(init_rect(166, 321, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.obj[my_menu->env->scene.last_obj].specular);
+    more_controler_settings(&my_menu->controls[8], 1.0, 0.0);
+    controller_settings(&my_menu->controls[8], renderer, 0.1);
+
+    my_menu->controls[9] = create_controller(init_rect(331, 321, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.obj[my_menu->env->scene.last_obj].refraction);
+    more_controler_settings(&my_menu->controls[9], 1.0, 0.0);
+    controller_settings(&my_menu->controls[9], renderer, 0.1);
     if (flag)
         my_menu->main_button.action(my_menu, renderer);
 }
@@ -331,14 +360,29 @@ void                draw_menu(SDL_Renderer *renderer, t_gui_menu *my_menu) //н�
         my_menu->radio[i].draw(renderer, &my_menu->radio[i]);
 }
 
-void                we_control(t_gui_obj *gui_obj)
+void				normalize_material(t_obj *obj)
+{
+	float	sum;
+
+	sum = obj->diffuse + obj->specular + obj->refraction;
+	obj->diffuse /= sum;
+	obj->specular /= sum;
+	obj->refraction /= sum;
+}
+
+void                we_control(t_gui_obj *gui_obj, SDL_Renderer *renderer)
 {
     t_gui_menu      *my_menu;
+    int             i;
 
     my_menu = (t_gui_menu *)gui_obj;
     if (my_menu->m_type == OBJECTS_MENU)
     {
         my_menu->env->num_samples = 0;
+        normalize_material(&my_menu->env->scene.obj[my_menu->env->scene.last_obj]);
+        i = -1;
+        while (++i < my_menu->numb_of_control)
+            my_menu->controls[i].update(&my_menu->controls[i], 0, renderer, 1);
         write_scene_to_kernel(my_menu->env);
     }
     else if (my_menu->m_type == GLOBAL_MENU)

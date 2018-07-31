@@ -16,26 +16,27 @@ float	intersection_paraboloid(t_ray *ray,t_paraboloid paraboloid, __float3 p_rot
 
 	q.a = 2.f * (dot(ray->dir, ray->dir) - u * u);
 	q.b = 2.f * (dot(ray->dir, x) - u * (z + 2.f *  paraboloid.k));
-	q.c = dot(x, x) - z * (z + 4 *  paraboloid.k);
-	if ((q.d = q.b * q.b - 2.0 * q.a * q.c) >= 0)
+	q.c = dot(x, x) - z * (z + 4.f *  paraboloid.k);
+	if ((q.d = q.b * q.b - 2.f * q.a * q.c) >= 0.f)
 	{
 		q.d = sqrt(q.d);
+		q.d = q.a > 0 ? q.d : -q.d;
 		q.res = (-q.b - q.d) / q.a;
-		if (q.res > 0) {
+		if (q.res > 0.f) {
 			hitpoint = q.res * ray->dir + x;
 			len = dot(hitpoint, p_rot);
-			if (len < paraboloid.m && len > 0)
+			if (len < paraboloid.m && len > 0.f)
 				return (q.res);
 		}
 		q.res = (-q.b + q.d) / q.a;
-		if (q.res > 0) {
+		if (q.res > 0.f) {
 			hitpoint = q.res * ray->dir + x;
 			len = dot(hitpoint, p_rot);
-			if (len < paraboloid.m && len > 0)
+			if (len < paraboloid.m && len > 0.f)
 				return (q.res);
 		}
 	}
-	return (-1);
+	return (-1.f);
 
 }
 
