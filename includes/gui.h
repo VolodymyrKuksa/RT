@@ -45,6 +45,8 @@ int                     check_click(int x, int y, t_gui_obj *gui_obj);
 /*--------------------------Mouse-----------------------------*/
 typedef struct          s_mouse
 {
+    int                 x;
+    int                 y;
     int                 dx;
     int                 dy;
 }                       t_mouse;

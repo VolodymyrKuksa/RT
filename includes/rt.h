@@ -70,6 +70,13 @@ void		init_seeds(t_seeds *s);
 void		main_loop_server(t_env *env);
 void		main_loop_client(t_env *env);
 void		clamp(cl_float3 *px);
+void		handle_events(t_env *env);
+void		handle_events_client(t_env *env);
+int			get_mouse_intersection(t_env *env, SDL_Event e);
+void		send_pixels(t_env *env);
+void		handle_message(t_env *env);
+void		send_connection_msg(t_env *env, time_t *t);
+void		send_quit_msg(t_env *env);
 
 /*
 **	cl_initialization.c
