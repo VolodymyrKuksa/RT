@@ -64,6 +64,7 @@ void               controller_settings(t_val_control *my_control, SDL_Renderer *
     button_settings(renderer, &my_control->change_buttons[0]);
     button_set_label("<", 128, renderer, &my_control->change_buttons[0]);
     my_control->change_buttons[1] = create_button(init_rect(107, 3, 50, 50), (t_gui_obj *)my_control, "gui_textures/Button.png");
+    button_settings(renderer, &my_control->change_buttons[1]);
     button_set_label(">", 128, renderer, &my_control->change_buttons[1]);
     my_control->change_buttons[0].action = &minus_action;
     my_control->change_buttons[1].action = &plus_action;
@@ -73,6 +74,7 @@ void               controller_settings(t_val_control *my_control, SDL_Renderer *
     *accur = '\0';
     my_control->output = create_label(55, 3, str, (t_gui_obj *)my_control);
     my_control->output.height = 50;
+    my_control->output.width = 50;
     label_settings(128, renderer, &my_control->output, 0);
 }
 
