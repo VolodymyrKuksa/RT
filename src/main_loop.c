@@ -30,8 +30,7 @@ void	update_window(t_env *env)
 	float			sample_influence;
 	unsigned int	i;
 
-	++(env->num_samples);
-	sample_influence = (1.0f / env->num_samples);
+	sample_influence = (1.0f / (++env->num_samples));
 	i = (unsigned int)(-1);
 	while (++i < env->cl.global_size)
 	{
@@ -70,89 +69,6 @@ int		get_mouse_intersection(t_env *env, SDL_Event e)
 	return (*env->cl.id_host);
 }
 
-void	handle_events(t_env *env)
-{
-	SDL_Event			e;
-	static t_gui_obj	*temp;
-	static int			x;
-	static int			y;
-
-	while (SDL_PollEvent(&e) != 0)
-	{
-		if (e.type == SDL_QUIT)
-			env->mv_data.move_keys |= KEY_ESC;
-		else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
-			keyboard_event(e, env);
-		else if (e.type == SDL_WINDOWEVENT)
-			window_event(e, env);
-		else if (e.type == SDL_MOUSEWHEEL)
-			mouse_wheel_event(e, env);
-		else if (e.type == SDL_MOUSEBUTTONDOWN)
-		{
-			x = e.button.x;
-			y = e.button.y;
-			temp = env->gui.collision(e.button.x, e.button.y,
-				(t_gui_obj *)&env->gui);
-			if (!temp)
-			{
-				get_mouse_intersection(env, e);
-				env->scene.last_obj = *env->cl.id_host;
-				printf("id: %d, type: %d, kuksa_suka = %d\n", *env->cl.id_host,
-				env->scene.obj[*env->cl.id_host].type, env->scene.last_obj);
-				env->gui.duper(&env->gui, env->screen.renderer);
-			}
-		}
-		else if (e.type == SDL_MOUSEMOTION)
-		{
-			if (temp && temp->type == 1)
-			{
-				env->gui.mouse->dx = e.motion.x - x;
-				env->gui.mouse->dy = e.motion.y - y;
-				x = e.motion.x;
-				y = e.motion.y;
-				if (temp == env->gui.collision(e.button.x, e.button.y,
-					(t_gui_obj *)&env->gui))
-					temp->action((void *)temp, env->screen.renderer);
-			}
-		}
-		else if (e.type == SDL_MOUSEBUTTONUP)
-		{
-			if (temp == env->gui.collision(e.button.x, e.button.y,
-				(t_gui_obj *)&env->gui) && temp)
-			{
-				if (temp->type == 0)
-				{
-					if (temp->father)
-					{
-						temp->action((void *)temp->father, env->screen.renderer);
-						if (temp->father->father)
-							we_control((t_gui_obj *)temp->father->father);
-					}
-					else
-						temp->action((void *)temp, env->screen.renderer);
-				} else if (temp->type == 2)
-					temp->action(&env->scene, NULL);
-			}
-			temp = NULL;
-		}
-	}
-}
-
-void	handle_events_client(t_env *env)
-{
-	SDL_Event	e;
-
-	while (SDL_PollEvent(&e) != 0)
-	{
-		if (e.type == SDL_QUIT)
-			env->mv_data.move_keys |= KEY_ESC;
-		else if (e.type == SDL_WINDOWEVENT)
-			window_event(e, env);
-		else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
-			env->mv_data.move_keys |= KEY_ESC;
-	}
-}
-
 void	main_loop_server(t_env *env)
 {
 	cl_setup(env);
@@ -172,76 +88,6 @@ void	main_loop_server(t_env *env)
 		update_window(env);
 		pthread_mutex_unlock(&env->cl.pixel_lock);
 	}
-}
-
-void	send_pixels(t_env *env)
-{
-	void			*msg;
-	unsigned int	size;
-
-	size = (unsigned int)(sizeof(cl_float3) * env->cl.global_size);
-	msg = compose_message(env->cl.pixels, env->client.message_id, PIXELS,
-		&size);
-	set_block(env->client.socket_fd);
-	if (write(env->client.socket_fd, msg, size) > 0)
-		ft_putendl("sent pixels");
-	set_nonblock(env->client.socket_fd);
-	free(msg);
-	ft_bzero(env->cl.pixels, env->cl.global_size * sizeof(cl_float3));
-	env->num_samples = 0;
-}
-
-void	handle_message(t_env *env)
-{
-	void			*msg;
-	int				type;
-	unsigned int	size;
-
-	if (!(msg = read_message(env->client.socket_fd, &env->client.message_id,
-	&type, &size)))
-		return ;
-	if (type == OBJ)
-	{
-		free(env->scene.obj);
-		read_obj(env, msg, size);
-		env->num_samples = 0;
-		write_scene_to_kernel(env);
-	}
-	else if (type == CAM)
-	{
-		env->scene.cam = *(t_cam*)msg;
-		env->num_samples = 0;
-		clSetKernelArg(env->cl.kernel, 3, sizeof(t_cam), &env->scene.cam);
-	}
-	else if (type == WND_SIZE)
-		SDL_SetWindowSize(env->screen.window, ((int*)msg)[0], ((int*)msg)[1]);
-	else if (type == QUIT)
-		env->mv_data.move_keys |= KEY_ESC;
-	free(msg);
-}
-
-void	send_connection_msg(t_env *env, time_t *t)
-{
-	void			*msg;
-	unsigned int	size;
-
-	size = 0;
-	msg = compose_message(NULL, env->client.message_id, CONNECTION, &size);
-	write(env->client.socket_fd, msg, size);
-	free(msg);
-	*t = time(NULL);
-	ft_putendl("connection message sent");
-}
-
-void	send_quit_msg(t_env *env)
-{
-	void			*msg;
-	unsigned int	size;
-
-	size = 0;
-	msg = compose_message(NULL, env->client.message_id, QUIT, &size);
-	write(env->client.socket_fd, msg, size);
-	free(msg);
 }
 
 void	main_loop_client(t_env *env)

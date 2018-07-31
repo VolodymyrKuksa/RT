@@ -101,7 +101,9 @@ gui/controller.c\
 gui/radio.c\
 gui/gui.c\
 client_read_data.c\
-main_loop.c
+main_loop.c\
+handle_events.c\
+message.c
 
 C_FILES_RT = server_main.c $(C_FILES)
 

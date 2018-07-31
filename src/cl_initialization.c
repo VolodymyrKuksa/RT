@@ -65,15 +65,14 @@ void	choose_device(t_cldata *cl)
 	dev_ids = (cl_device_id*)malloc(sizeof(cl_device_id) * dev_count);
 	clGetDeviceIDs(0, CL_DEVICE_TYPE_GPU, dev_count, dev_ids, 0);
 	cl->dev_id = NULL;
-	i = 0;
-	while (i < dev_count)
+	i = -1;
+	while (++i < dev_count)
 	{
 		clGetDeviceInfo(dev_ids[i], CL_DEVICE_DOUBLE_FP_CONFIG, sizeof(tmp),
 			&tmp, 0);
 		if (tmp & (CL_FP_FMA | CL_FP_ROUND_TO_NEAREST | CL_FP_ROUND_TO_ZERO |
 			CL_FP_ROUND_TO_INF | CL_FP_INF_NAN | CL_FP_DENORM))
 			cl->dev_id = dev_ids[i];
-		i++;
 	}
 	bzero(buff, 256);
 	clGetDeviceInfo(cl->dev_id, CL_DEVICE_NAME, 255, buff, 0);

@@ -31,6 +31,13 @@ void	cl_free(t_cldata *cl)
 
 void	handle_resize(t_env *env)
 {
+	if (g_win_height < MIN_WIN_HEIGHT || g_win_width < MIN_WIN_WIDTH)
+	{
+		SDL_SetWindowSize(env->screen.window,
+		g_win_width < MIN_WIN_WIDTH ? MIN_WIN_WIDTH : g_win_width,
+		g_win_height < MIN_WIN_HEIGHT ? MIN_WIN_HEIGHT : g_win_height);
+		return ;
+	}
 	env->scene.cam.pr_pl_w = g_win_width;
 	env->scene.cam.pr_pl_h = g_win_height;
 	env->scene.cam.ratio = env->scene.cam.f_length /

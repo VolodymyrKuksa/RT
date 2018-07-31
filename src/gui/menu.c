@@ -131,7 +131,7 @@ void                fill_global_menu(t_gui_menu *my_menu, SDL_Renderer *renderer
     my_menu->numb_of_radio = 1; //указываем кол-во 
     /*  init radio   */ //заполняем
     my_menu->radio = (t_radio_button *)malloc(sizeof(t_radio_button) * my_menu->numb_of_radio);
-    my_menu->radio[0] = create_radio(init_rect(2, 380, 430, 150), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.cam.effect);
+    my_menu->radio[0] = create_radio(init_rect(32, 400, 430, 150), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.cam.effect);
     radio_settings(&my_menu->radio[0], renderer, 5, "NO EFFECT", "B_N_W", "NEGATIVE", "SEPIA", "KUKSA_PEDR");
     /*               */ 
     my_menu->numb_of_labels = 4; // 6 указываем кол-во
@@ -164,6 +164,7 @@ void                fill_global_menu(t_gui_menu *my_menu, SDL_Renderer *renderer
     my_menu->x = (float)(my_menu->my_rect.x + (float)my_menu->my_rect.w / 2) / g_win_width;
     my_menu->y = (float)(my_menu->my_rect.y + (float)my_menu->my_rect.h / 2) / g_win_height;
     menu_own_set(renderer, my_menu); //тестурки
+    hide_menu(my_menu, renderer);
     return ; //fill
 }
 
@@ -231,14 +232,22 @@ void                fill_objects_menu(t_gui_menu *my_menu, SDL_Renderer *rendere
     my_menu->x = (float)(my_menu->my_rect.x + (float)my_menu->my_rect.w / 2) / g_win_width;
     my_menu->y = (float)(my_menu->my_rect.y + (float)my_menu->my_rect.h / 2) / g_win_height;
     menu_own_set(renderer, my_menu); //тестурки
+    hide_menu(my_menu, renderer);
     return ; //fill
 }
 
 void                super_update(t_gui_menu *my_menu, SDL_Renderer *renderer)
 {
     int             i;
+    int             flag;
 
     i = -1;
+    flag = 0;
+    if (my_menu->main_button.action != &hide_menu)
+    {
+        my_menu->main_button.action(my_menu, renderer);
+        flag = 1;
+    }
     while (++i < my_menu->numb_of_control)
         destroy_controller(&my_menu->controls[i]);
 
@@ -269,6 +278,8 @@ void                super_update(t_gui_menu *my_menu, SDL_Renderer *renderer)
     my_menu->controls[6] = create_controller(init_rect(166, 237, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.obj[my_menu->env->scene.last_obj].roughness);
     more_controler_settings(&my_menu->controls[6], 1, 0);
     controller_settings(&my_menu->controls[6], renderer, 0.01);
+    if (flag)
+        my_menu->main_button.action(my_menu, renderer);
 }
 
 void                update_menu(t_gui_menu *my_menu, char with_text, SDL_Renderer *renderer, char hide) //не трогать
