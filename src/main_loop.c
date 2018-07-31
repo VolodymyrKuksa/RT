@@ -49,7 +49,6 @@ void	update_window(t_env *env)
 	if (!env->client.active)
 	{
 		env->gui.update(&env->gui, env->screen.renderer);
-		printf("lol");
 		env->gui.draw(env->screen.renderer, &env->gui);
 	}
 	SDL_RenderPresent(env->screen.renderer);

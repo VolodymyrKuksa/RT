@@ -44,9 +44,9 @@ t_gui               init_gui(SDL_Renderer *renderer, t_scene *scene)
     /* labels */
     /* buttons */
     my_gui.button = (t_button *)malloc(sizeof(t_button) * my_gui.numb_of_buttons);
-    my_gui.button[0] = create_button(init_rect(10, 10, 60, 60), NULL, "gui_textures/save.jpg");
+    my_gui.button[0] = create_button(init_rect(10, 10, 60, 60), NULL, "gui_textures/save.png");
     button_settings(renderer, &my_gui.button[0]);
-    button_set_label("save", 128, renderer, &my_gui.button[0]);
+    button_set_label("", 128, renderer, &my_gui.button[0]);
     my_gui.button[0].action = &save_func;
     my_gui.button[0].type = 2;
     /* buttons */
