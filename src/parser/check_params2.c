@@ -44,9 +44,9 @@ void			checksumandemiss(t_obj *tmp)
 		return ;
 	else
 		error_fedun("emission > 1 or == 0");
-	if (tmp->emission.x > 5.0f || tmp->emission.y > 5.0f ||
-		tmp->emission.z > 5.0f)
-		error_fedun("emission < 5");
+	if (tmp->emission.x > 500.0f || tmp->emission.y > 500.0f ||
+		tmp->emission.z > 500.0f)
+		error_fedun("emission < 500");
 }
 
 float			scalar_dobutok(cl_float3 a, cl_float3 b)
