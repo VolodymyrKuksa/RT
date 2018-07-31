@@ -72,7 +72,6 @@ void			fill_cone_hat1(t_scene *scene, t_obj tmp)
 	obj2.basis.u.x = -obj2.basis.u.x;
 	obj2.basis.u.y = -obj2.basis.u.y;
 	obj2.basis.u.z = -obj2.basis.u.z;
-
 	obj1.primitive.disk.pos.x += tmp.basis.u.x * tmp.primitive.cone.m2;
 	obj1.primitive.disk.pos.y += tmp.basis.u.y * tmp.primitive.cone.m2;
 	obj1.primitive.disk.pos.z += tmp.basis.u.z * tmp.primitive.cone.m2;
@@ -117,8 +116,8 @@ void			fillthecone(json_value *value, t_scene *scene, int i)
 	tmp.type = cone;
 	check_basis(&tmp);
 	if (tmp.primitive.cone.m2 <= tmp.primitive.cone.m1
-		|| tmp.primitive.cone.m1 < 0.0 || tmp.primitive.cone.m2 < 0)
-		error_fedun("m1 > 0.0. m2 > 0; m2 > m1");
+		|| tmp.primitive.cone.m1 < 0.f || tmp.primitive.cone.m2 < 0)
+		error_fedun("m1 > 0; m2 > 0; m2 > m1");
 	scene->obj[scene->cur_obj++] = tmp;
 	fill_cone_hat1(scene, tmp);
 }

@@ -186,6 +186,7 @@ void		set_block(int fd);
 **	client_read_data.c
 */
 
+void	read_obj(t_env *env, void *msg, unsigned int size);
 void	read_scene(t_env *env);
 
 /*

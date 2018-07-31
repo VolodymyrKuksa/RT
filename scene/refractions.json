@@ -337,24 +337,25 @@
 	  "refraction": 7.0
 	}
   },
-	"paraboloid":
-	{
-		"pos x": 5.0,
-		"pos y": 10.0,
-		"pos z": -30.0,
-		"m": 3.0,
-		"k": 1.0,
-		"color x": 0.9,
-		"color y": 0.9,
-		"color z": 1.0,
-		"light": {
-			"emission x": 0.0,
-			"emission y": 0.0,
-			"emission z": 0.0,
-			"roughness": 0.0,
-			"diffuse": 0.0,
-			"specular": 5.0,
-			"refraction": 0.0
-		}
+  "paralelepiped":
+  {
+	"pos x": 50.0,
+	"pos y": -13.0,
+	"pos z": -90.0,
+	  "w": 5.0,
+	  "h": 10.0,
+	  "l": 10.0,
+	"color x": 1.0,
+	"color y": 1.0,
+	"color z": 1.0,
+	"light": {
+	  "emission x": 0.0,
+	  "emission y": 0.0,
+	  "emission z": 0.0,
+	  "roughness": 0.001,
+	  "diffuse": 1.0,
+	  "specular": 0.0,
+	  "refraction": 0.0
 	}
+  }
 }

@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <assert.h>
 #include "rt.h"
 
 extern unsigned int		g_win_width;
@@ -54,8 +53,6 @@ void	init_defaults(t_env *env)
 
 void	init_opencl(t_cldata *cl)
 {
-	int		err;
-
 	clGetDeviceIDs(0, DEVICE_TYPE, 1, &cl->dev_id, 0);
 	cl->context = clCreateContext(0, 1, &cl->dev_id, 0, 0, 0);
 	cl->command_queue = clCreateCommandQueue(cl->context, cl->dev_id, 0, 0);
@@ -71,23 +68,37 @@ void	init_opencl(t_cldata *cl)
 	free(cl->source[1]);
 	free(cl->source[2]);
 	free(cl->source[3]);
-	err = clBuildProgram(cl->program, 0, 0, KERNEL_INC_DIR, 0, 0);
-	if (err != CL_SUCCESS)
-	{
-		printf("%d\n", err);
+	if (clBuildProgram(cl->program, 0, 0, KERNEL_INC_DIR, 0, 0))
 		print_log(cl);
-	}
-	err = clBuildProgram(cl->pr_intersect, 0, 0, KERNEL_INC_DIR, 0, 0);
-	if (err != CL_SUCCESS)
-	{
-		printf("tutu\n");
-		printf("%d\n", err);
+	if (clBuildProgram(cl->pr_intersect, 0, 0, KERNEL_INC_DIR, 0, 0))
 		print_log(cl);
-	}
 	cl->kernel = clCreateKernel(cl->program, "render_pixel", 0);
 	cl->kr_intersect = clCreateKernel(cl->program, "get_mouse_intersect", 0);
 	cl->global_size = g_win_height * g_win_width;
 	pthread_mutex_init(&cl->pixel_lock, NULL);
+}
+
+void	cl_set_args(t_env *e)
+{
+	clSetKernelArg(e->cl.kernel, 0, sizeof(e->cl.px_gpu), &e->cl.px_gpu);
+	clSetKernelArg(e->cl.kernel, 1, sizeof(e->cl.obj_gpu), &e->cl.obj_gpu);
+	clSetKernelArg(e->cl.kernel, 2, sizeof(e->scene.num_obj),
+		&e->scene.num_obj);
+	clSetKernelArg(e->cl.kernel, 3, sizeof(e->scene.cam), &e->scene.cam);
+	clSetKernelArg(e->cl.kernel, 4, sizeof(g_win_width), &g_win_width);
+	clSetKernelArg(e->cl.kernel, 5, sizeof(g_win_height), &g_win_height);
+	clSetKernelArg(e->cl.kernel, 6, sizeof(e->cl.seed_gpu), &e->cl.seed_gpu);
+	clSetKernelArg(e->cl.kernel, 7, sizeof(e->cl.tx_gpu), &e->cl.tx_gpu);
+	clSetKernelArg(e->cl.kernel, 8, sizeof(e->cl.txdata_gpu),
+		&e->cl.txdata_gpu);
+	clSetKernelArg(e->cl.kernel, 9, sizeof(e->textures.tx_count),
+		&e->textures.tx_count);
+	clSetKernelArg(e->cl.kr_intersect, 2, sizeof(e->cl.obj_gpu),
+		&e->cl.obj_gpu);
+	clSetKernelArg(e->cl.kr_intersect, 3, sizeof(e->scene.num_obj),
+		&e->scene.num_obj);
+	clSetKernelArg(e->cl.kr_intersect, 4, sizeof(e->scene.cam), &e->scene.cam);
+	clSetKernelArg(e->cl.kr_intersect, 5, sizeof(e->cl.id_gpu), &e->cl.id_gpu);
 }
 
 void	cl_setup(t_env *e)
@@ -105,34 +116,13 @@ void	cl_setup(t_env *e)
 		sizeof(t_obj) * e->scene.num_obj, e->scene.obj, 0);
 	e->cl.seed_gpu = clCreateBuffer(e->cl.context, CL_MEM_READ_WRITE,
 		sizeof(int) * e->cl.seeds.size, 0, 0);
-
-	int		err;
-
 	e->cl.tx_gpu = clCreateBuffer(e->cl.context, CL_MEM_READ_ONLY |
 		CL_MEM_HOST_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
-		sizeof(t_rgb) * e->textures.total_size, e->textures.tx, &err);
-//	printf("total_size: %d\n", e->textures.total_size);
-//	printf("err: %d\n", err);
-	assert(err == CL_SUCCESS || err == CL_INVALID_HOST_PTR || err == CL_INVALID_BUFFER_SIZE);	//might throw CL_OUT_OF_HOST_MEMORY
+		sizeof(t_rgb) * e->textures.total_size, e->textures.tx, 0);
 	e->cl.txdata_gpu = clCreateBuffer(e->cl.context, CL_MEM_READ_ONLY |
 		CL_MEM_HOST_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
-		sizeof(t_txdata) * e->textures.tx_count, e->textures.txdata, &err);
-	assert(err == CL_SUCCESS || err == CL_INVALID_HOST_PTR || err == CL_INVALID_BUFFER_SIZE);
-
-	clSetKernelArg(e->cl.kernel, 0, sizeof(e->cl.px_gpu), &e->cl.px_gpu);
-	clSetKernelArg(e->cl.kernel, 1, sizeof(e->cl.obj_gpu), &e->cl.obj_gpu);
-	clSetKernelArg(e->cl.kernel, 2, sizeof(e->scene.num_obj), &e->scene.num_obj);
-	clSetKernelArg(e->cl.kernel, 3, sizeof(e->scene.cam), &e->scene.cam);
-	clSetKernelArg(e->cl.kernel, 4, sizeof(g_win_width), &g_win_width);
-	clSetKernelArg(e->cl.kernel, 5, sizeof(g_win_height), &g_win_height);
-	clSetKernelArg(e->cl.kernel, 6, sizeof(e->cl.seed_gpu), &e->cl.seed_gpu);
-	clSetKernelArg(e->cl.kernel, 7, sizeof(e->cl.tx_gpu), &e->cl.tx_gpu);
-	clSetKernelArg(e->cl.kernel, 8, sizeof(e->cl.txdata_gpu), &e->cl.txdata_gpu);
-	clSetKernelArg(e->cl.kernel, 9, sizeof(e->textures.tx_count), &e->textures.tx_count);
-	clSetKernelArg(e->cl.kr_intersect, 2, sizeof(e->cl.obj_gpu), &e->cl.obj_gpu);
-	clSetKernelArg(e->cl.kr_intersect, 3, sizeof(e->scene.num_obj), &e->scene.num_obj);
-	clSetKernelArg(e->cl.kr_intersect, 4, sizeof(e->scene.cam), &e->scene.cam);
-	clSetKernelArg(e->cl.kr_intersect, 5, sizeof(e->cl.id_gpu), &e->cl.id_gpu);
+		sizeof(t_txdata) * e->textures.tx_count, e->textures.txdata, 0);
+	cl_set_args(e);
 }
 
 void	get_work_group_size(t_cldata *cl)

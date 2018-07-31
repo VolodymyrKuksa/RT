@@ -62,11 +62,11 @@ void                unhide_global_menu(void *some_shit, SDL_Renderer *renderer) 
 
     my_menu = (t_gui_menu *)some_shit;
     /*        изменяемая часть       */
-    my_menu->numb_of_control = 1;
-    my_menu->numb_of_labels = 0;
+    my_menu->numb_of_control = 6;
+    my_menu->numb_of_labels = 4;
     my_menu->numb_of_radio = 1;
-    my_menu->my_rect.w = 430;
-    my_menu->my_rect.h = 300;
+    my_menu->my_rect.w = 495;
+    my_menu->my_rect.h = 600;
     /*                              */
     my_menu->x = (float)(my_menu->my_rect.x + (float)my_menu->my_rect.w / 2) / g_win_width;
     my_menu->y = (float)(my_menu->my_rect.y + (float)my_menu->my_rect.h / 2) / g_win_height;
@@ -80,11 +80,11 @@ void                unhide_objects_menu(void *some_shit, SDL_Renderer *renderer)
 
     my_menu = (t_gui_menu *)some_shit;
     /*        изменяемая часть       */
-    my_menu->numb_of_control = 1;
-    my_menu->numb_of_labels = 0;
-    my_menu->numb_of_radio = 1;
-    my_menu->my_rect.w = 430;
-    my_menu->my_rect.h = 300;
+    my_menu->numb_of_control = 7;
+    my_menu->numb_of_labels = 3;
+    my_menu->numb_of_radio = 0;
+    my_menu->my_rect.w = 495;
+    my_menu->my_rect.h = 500;
     /*                              */
     my_menu->x = (float)(my_menu->my_rect.x + (float)my_menu->my_rect.w / 2) / g_win_width;
     my_menu->y = (float)(my_menu->my_rect.y + (float)my_menu->my_rect.h / 2) / g_win_height;
@@ -96,30 +96,70 @@ void                unhide_objects_menu(void *some_shit, SDL_Renderer *renderer)
 void                fill_global_menu(t_gui_menu *my_menu, SDL_Renderer *renderer) //заполняем меню всего
 {
     /* обязательная часть */
-    my_menu->main_button = create_button(init_rect(3, 3, 100, 30), (t_gui_obj *)my_menu, "gui_textures/menu.jpg");
+    my_menu->main_button = create_button(init_rect(3, 3, 100, 30), (t_gui_obj *)my_menu, "gui_textures/Button.png");
     button_settings(renderer, &my_menu->main_button);
-    button_set_label("SETTINGS", 128, renderer, &my_menu->main_button);
+    button_set_label("RT menu", 128, renderer, &my_menu->main_button);
     my_menu->main_button.action = &hide_menu;
     /*                    */
-    my_menu->numb_of_control = 1; // указываем кол-во
+    my_menu->numb_of_control = 6; // указываем кол-во
     /*  init controls */ // заполняем
     my_menu->controls = (t_val_control *)malloc(sizeof(t_val_control) * my_menu->numb_of_control);
-    my_menu->controls[0] = create_controller(init_rect(3, 36, 160, 56), (t_gui_obj *)my_menu, "gui_textures/menu.jpg", &my_menu->scene->cam.dust);
-    more_controler_settings(&my_menu->controls[0], 1.0, 0.0, "o");
-    controller_settings(&my_menu->controls[0], renderer, 0.001);
+    my_menu->controls[0] = create_controller(init_rect(3, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->cam.filter.x);
+    more_controler_settings(&my_menu->controls[0], 1.0, 0.0);
+    controller_settings(&my_menu->controls[0], renderer, 0.1);
+
+    my_menu->controls[1] = create_controller(init_rect(166, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->cam.filter.y);
+    more_controler_settings(&my_menu->controls[1], 1.0, 0.0);
+    controller_settings(&my_menu->controls[1], renderer, 0.1);
+
+    my_menu->controls[2] = create_controller(init_rect(331, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->cam.filter.z);
+    more_controler_settings(&my_menu->controls[2], 1.0, 0.0);
+    controller_settings(&my_menu->controls[2], renderer, 0.1);
+
+    my_menu->controls[3] = create_controller(init_rect(166, 150, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->cam.dust);
+    more_controler_settings(&my_menu->controls[3], 0.1, 0);
+    controller_settings(&my_menu->controls[3], renderer, 0.01);
+
+    my_menu->controls[4] = create_controller(init_rect(166, 237, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->cam.brightness);
+    more_controler_settings(&my_menu->controls[4], 10, 0);
+    controller_settings(&my_menu->controls[4], renderer, 1);
+
+    my_menu->controls[5] = create_controller(init_rect(166, 321, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->cam.refr_coef);
+    more_controler_settings(&my_menu->controls[5], 2, 1);
+    controller_settings(&my_menu->controls[5], renderer, 0.1);
     /*               */
     my_menu->numb_of_radio = 1; //указываем кол-во 
     /*  init radio   */ //заполняем
     my_menu->radio = (t_radio_button *)malloc(sizeof(t_radio_button) * my_menu->numb_of_radio);
-    my_menu->radio[0] = create_radio(init_rect(3, 95, 418, 140), (t_gui_obj *)my_menu, "gui_textures/menu.jpg", &my_menu->scene->cam.effect);
-    radio_settings(&my_menu->radio[0], renderer, 5, "NO EFFECT", "BLACK N WHITE", "NEGATIVE", "SEPIA", "PESTON");
+    my_menu->radio[0] = create_radio(init_rect(2, 380, 430, 150), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->cam.effect);
+    radio_settings(&my_menu->radio[0], renderer, 5, "NO EFFECT", "B_N_W", "NEGATIVE", "SEPIA", "KUKSA_PEDR");
     /*               */ 
-    my_menu->numb_of_labels = 0; //указываем кол-во
+    my_menu->numb_of_labels = 4; // 6 указываем кол-во
+    my_menu->labels = (t_label *)malloc(sizeof(t_label) * my_menu->numb_of_labels);
+    my_menu->labels[0] = create_label(2, 36, "filter_x_y_z", (t_gui_obj *)my_menu);
+    my_menu->labels[0].width = 115;
+    my_menu->labels[0].height = 25;
+    label_settings(128, renderer, &my_menu->labels[0], 0);
+
+    my_menu->labels[1] = create_label(2, 122, "dust", (t_gui_obj *)my_menu);
+    my_menu->labels[1].width = 115;
+    my_menu->labels[1].height = 25;
+    label_settings(128, renderer, &my_menu->labels[1], 0);
+
+    my_menu->labels[2] = create_label(2, 209, "brightness", (t_gui_obj *)my_menu);
+    my_menu->labels[2].width = 115;
+    my_menu->labels[2].height = 25;
+    label_settings(128, renderer, &my_menu->labels[2], 0);
+
+    my_menu->labels[3] = create_label(2, 296, "refr coef", (t_gui_obj *)my_menu);
+    my_menu->labels[3].width = 115;
+    my_menu->labels[3].height = 25;
+    label_settings(128, renderer, &my_menu->labels[3], 0);
     /*  init labels  */ //заполняем
 
     /*               */
-    my_menu->my_rect.w = 430; //ширина меню
-    my_menu->my_rect.h = 300; //высота меню
+    my_menu->my_rect.w = 495; //ширина меню
+    my_menu->my_rect.h = 600; //высота меню
     //штуки на отношения
     my_menu->x = (float)(my_menu->my_rect.x + (float)my_menu->my_rect.w / 2) / g_win_width;
     my_menu->y = (float)(my_menu->my_rect.y + (float)my_menu->my_rect.h / 2) / g_win_height;
@@ -129,8 +169,106 @@ void                fill_global_menu(t_gui_menu *my_menu, SDL_Renderer *renderer
 
 void                fill_objects_menu(t_gui_menu *my_menu, SDL_Renderer *renderer) //заполнение меню объектов
 {
-    //как глобал только другие значения и переменные
+    my_menu->main_button = create_button(init_rect(3, 3, 100, 30), (t_gui_obj *)my_menu, "gui_textures/Button.png");
+    button_settings(renderer, &my_menu->main_button);
+    button_set_label("Objs menu", 128, renderer, &my_menu->main_button);
+    my_menu->main_button.action = &hide_menu;
+
+    my_menu->numb_of_control = 7;
+
+    my_menu->controls = (t_val_control *)malloc(sizeof(t_val_control) * my_menu->numb_of_control);
+    my_menu->controls[0] = create_controller(init_rect(3, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].color.x);
+    more_controler_settings(&my_menu->controls[0], 1.0, 0.0);
+    controller_settings(&my_menu->controls[0], renderer, 0.1);
+
+    my_menu->controls[1] = create_controller(init_rect(166, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].color.y);
+    more_controler_settings(&my_menu->controls[1], 1.0, 0.0);
+    controller_settings(&my_menu->controls[1], renderer, 0.1);
+
+    my_menu->controls[2] = create_controller(init_rect(331, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].color.z);
+    more_controler_settings(&my_menu->controls[2], 1.0, 0.0);
+    controller_settings(&my_menu->controls[2], renderer, 0.1);
+
+    my_menu->controls[3] = create_controller(init_rect(3, 150, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].emission.x);
+    more_controler_settings(&my_menu->controls[3], 100.0, 0.0);
+    controller_settings(&my_menu->controls[3], renderer, 1.0);
+
+    my_menu->controls[4] = create_controller(init_rect(166, 150, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].emission.y);
+    more_controler_settings(&my_menu->controls[4], 100.0, 0.0);
+    controller_settings(&my_menu->controls[4], renderer, 1.0);
+
+    my_menu->controls[5] = create_controller(init_rect(331, 150, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].emission.z);
+    more_controler_settings(&my_menu->controls[5], 100.0, 0.0);
+    controller_settings(&my_menu->controls[5], renderer, 1.0);
+
+    my_menu->controls[6] = create_controller(init_rect(166, 237, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].roughness);
+    more_controler_settings(&my_menu->controls[6], 1, 0);
+    controller_settings(&my_menu->controls[6], renderer, 0.1);
+
+    my_menu->numb_of_labels = 3;
+
+    my_menu->labels = (t_label *)malloc(sizeof(t_label) * my_menu->numb_of_labels);
+    my_menu->labels[0] = create_label(2, 36, "color_r_g_b", (t_gui_obj *)my_menu);
+    my_menu->labels[0].width = 115;
+    my_menu->labels[0].height = 25;
+    label_settings(128, renderer, &my_menu->labels[0], 0);
+
+    my_menu->labels[1] = create_label(2, 122, "emission_x_y_z", (t_gui_obj *)my_menu);
+    my_menu->labels[1].width = 115;
+    my_menu->labels[1].height = 25;
+    label_settings(128, renderer, &my_menu->labels[1], 0);
+
+    my_menu->labels[2] = create_label(2, 209, "roughness", (t_gui_obj *)my_menu);
+    my_menu->labels[2].width = 115;
+    my_menu->labels[2].height = 25;
+    label_settings(128, renderer, &my_menu->labels[2], 0);
+
+    my_menu->numb_of_radio = 0;
+
+    my_menu->my_rect.w = 495; //ширина меню
+    my_menu->my_rect.h = 500; //высота меню
+
+    my_menu->x = (float)(my_menu->my_rect.x + (float)my_menu->my_rect.w / 2) / g_win_width;
+    my_menu->y = (float)(my_menu->my_rect.y + (float)my_menu->my_rect.h / 2) / g_win_height;
+    menu_own_set(renderer, my_menu); //тестурки
     return ; //fill
+}
+
+void                super_update(t_gui_menu *my_menu, SDL_Renderer *renderer)
+{
+    int             i;
+
+    i = -1;
+    while (++i < my_menu->numb_of_control)
+        destroy_controller(&my_menu->controls[i]);
+
+    my_menu->controls[0] = create_controller(init_rect(3, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].color.x);
+    more_controler_settings(&my_menu->controls[0], 1.0, 0.0);
+    controller_settings(&my_menu->controls[0], renderer, 0.1);
+
+    my_menu->controls[1] = create_controller(init_rect(166, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].color.y);
+    more_controler_settings(&my_menu->controls[1], 1.0, 0.0);
+    controller_settings(&my_menu->controls[1], renderer, 0.1);
+
+    my_menu->controls[2] = create_controller(init_rect(331, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].color.z);
+    more_controler_settings(&my_menu->controls[2], 1.0, 0.0);
+    controller_settings(&my_menu->controls[2], renderer, 0.1);
+
+    my_menu->controls[3] = create_controller(init_rect(3, 150, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].emission.x);
+    more_controler_settings(&my_menu->controls[3], 1.0, 0.0);
+    controller_settings(&my_menu->controls[3], renderer, 0.1);
+
+    my_menu->controls[4] = create_controller(init_rect(166, 150, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].emission.y);
+    more_controler_settings(&my_menu->controls[4], 1.0, 0.0);
+    controller_settings(&my_menu->controls[4], renderer, 0.1);
+
+    my_menu->controls[5] = create_controller(init_rect(331, 150, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].emission.z);
+    more_controler_settings(&my_menu->controls[5], 1.0, 0.0);
+    controller_settings(&my_menu->controls[5], renderer, 0.1);
+
+    my_menu->controls[6] = create_controller(init_rect(166, 237, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].roughness);
+    more_controler_settings(&my_menu->controls[6], 1, 0);
+    controller_settings(&my_menu->controls[6], renderer, 0.1);
 }
 
 void                update_menu(t_gui_menu *my_menu, char with_text, SDL_Renderer *renderer, char hide) //не трогать
@@ -232,6 +370,7 @@ void            hide_menu(void *some_shit, SDL_Renderer *renderer) //можно 
     my_menu = (t_gui_menu *)some_shit;
     /* уменьшить высоту окна */
     my_menu->my_rect.h = 36;
+    my_menu->my_rect.w = 120;
     /*                       */
     my_menu->x = (float)(my_menu->my_rect.x + (float)my_menu->my_rect.w / 2) / g_win_width;
     my_menu->y = (float)(my_menu->my_rect.y + (float)my_menu->my_rect.h / 2) / g_win_height;

@@ -15,28 +15,44 @@
 extern unsigned int g_win_width;
 extern unsigned int g_win_height;
 
+void                save_func(void *some_shit, SDL_Renderer *renderer)
+{
+    t_scene         *scene;
+
+    scene = (t_scene *)some_shit;
+    write_scene(scene);
+}
+
 t_gui               init_gui(SDL_Renderer *renderer, t_scene *scene)
 {
     t_gui           my_gui;
 
-    my_gui.numb_of_menus = 1;
+    my_gui.numb_of_menus = 2;
     my_gui.numb_of_labels = 0;
-    my_gui.numb_of_buttons = 0;
+    my_gui.numb_of_buttons = 1;
     my_gui.mouse = (t_mouse *)malloc(sizeof(t_mouse));
     /* menu */
     my_gui.menu = (t_gui_menu *)malloc(sizeof(t_gui_menu) * my_gui.numb_of_menus);
-    my_gui.menu[0] = create_menu(100, 200, "gui_textures/menu.jpg", my_gui.mouse);
+    my_gui.menu[0] = create_menu(100, 200, "gui_textures/kuksa_pidor.jpg", my_gui.mouse);
     menu_settings(&my_gui.menu[0], renderer, GLOBAL_MENU, scene);
+    my_gui.menu[1] = create_menu(400, 200, "gui_textures/kuksa_pidor.jpg", my_gui.mouse);
+    menu_settings(&my_gui.menu[1], renderer, OBJECTS_MENU, scene);
     /* menu */
     /* labels */
     my_gui.label = (t_label *)malloc(sizeof(t_label) * my_gui.numb_of_labels);
     /* labels */
     /* buttons */
     my_gui.button = (t_button *)malloc(sizeof(t_button) * my_gui.numb_of_buttons);
+    my_gui.button[0] = create_button(init_rect(10, 10, 60, 60), NULL, "gui_textures/save.jpg");
+    button_settings(renderer, &my_gui.button[0]);
+    button_set_label("save", 128, renderer, &my_gui.button[0]);
+    my_gui.button[0].action = &save_func;
+    my_gui.button[0].type = 2;
     /* buttons */
     my_gui.draw = &draw_gui;
     my_gui.collision = &check_gui_collision;
     my_gui.update = &update_gui;
+    my_gui.duper = &super_duper;
     return (my_gui);
 }
 
@@ -76,6 +92,11 @@ t_gui_obj           *check_gui_collision(int x, int y, t_gui_obj *gui_obj)
             return (temp);
     }
     return (temp);
+}
+
+void                super_duper(t_gui *my_gui, SDL_Renderer *renderer)
+{
+    super_update(&my_gui->menu[1], renderer);
 }
 
 void                update_gui(t_gui *my_gui, SDL_Renderer *renderer)

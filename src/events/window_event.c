@@ -71,17 +71,6 @@ void	window_event(SDL_Event e, t_env *env)
 				sizeof(tmp), WND_SIZE);
 		}
 		if (!env->client.active)
-		{
-			/* update */
 			env->gui.update(&env->gui, env->screen.renderer);
-			/* update */
-		}
 	}
-}
-
-void	window_event_client(SDL_Event e, t_env *env)
-{
-	g_win_width = (unsigned int)e.window.data1;
-	g_win_height = (unsigned int)e.window.data2;
-	handle_resize(env);
 }
