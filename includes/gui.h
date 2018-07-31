@@ -18,7 +18,7 @@
 # include <SDL_ttf.h>
 # include <SDL_image.h>
 # include <stdarg.h>
-# include "libft.h" 
+# include "libft.h"
 
 /* char type 0 - button, 1 - menu */
 

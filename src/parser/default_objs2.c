@@ -70,7 +70,7 @@ t_obj			default_paraboloid(void)
 	tmp.basis.w = (cl_float3){{0.0, 0.0, 1.0}};
 	tmp.primitive.paraboloid.pos = (cl_float3){{-5.0f, -5.0f, -5.0f}};
 	tmp.primitive.paraboloid.k = 9.0f;
-	tmp.primitive.paraboloid.k = 10.0f;
+	tmp.primitive.paraboloid.m = 10.0f;
 	tmp.color = (cl_float3){{1.0, 1.0, 1.0}};
 	tmp.emission = (cl_float3){{0.0, 0.0, 0.0}};
 	tmp.roughness = 0.0f;
