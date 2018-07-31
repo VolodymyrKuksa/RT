@@ -13,6 +13,7 @@ void		texture_cone(t_obj *, float3, float2 *);
 void		texture_torus(t_obj *, float3, float2 *);
 void		texture_disk(t_obj *, float3, float2 *);
 void		texture_triangle(t_obj *, float3, float2 *);
+void		texture_paraboloid(t_obj *, float3 , float2 *);
 
 /*============================================================================*/
 
@@ -182,6 +183,18 @@ void	texture_paralelipiped(t_obj *p, float3 hitpoint, float2 *coord)
 	}
 }
 
+void	texture_paraboloid(t_obj *p, float3 hitpoint, float2 *coord)
+{
+	hitpoint -= p->primitive.paraboloid.pos;
+	hitpoint = change_of_basis(hitpoint, p->basis);
+	float2	tmp = normalize((float2)(hitpoint.x, hitpoint.z));
+	float	phi = acos(tmp.x) / PI_2;
+	phi = tmp.y > 0 ? 1.f - phi : phi;
+	hitpoint /= p->primitive.paraboloid.m;
+	coord->x = -phi;
+	coord->y = hitpoint.y;
+}
+
 /*============================================================================*/
 
 void		get_texture_coord(t_obj *hitobj, float3 hitpoint, float2 *coord)
@@ -204,6 +217,8 @@ void		get_texture_coord(t_obj *hitobj, float3 hitpoint, float2 *coord)
 		texture_triangle(hitobj, hitpoint, coord);
 	else if (hitobj->type == parallelogram)
 		texture_paralelipiped(hitobj, hitpoint, coord);
+	else if (hitobj->type == paraboloid)
+		texture_paraboloid(hitobj, hitpoint, coord);
 	*coord -= hitobj->tex_offs;
 	coord->x += coord->x > 0 ? -(int)coord->x : (int)coord->x;
 	coord->y += coord->y > 0 ? -(int)coord->y : (int)coord->y;
