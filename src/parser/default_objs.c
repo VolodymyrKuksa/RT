@@ -100,6 +100,7 @@ t_obj			default_plane(void)
 	tmp.roughness = 1.f;
 	tmp.diffuse = 1.f;
 	tmp.specular = 0.f;
+	tmp.refraction = 0.f;
 	tmp.type = plane;
 	tmp.primitive.plane.tex_scale = 20;
 	tmp.tex_id = -1;
