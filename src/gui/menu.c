@@ -96,22 +96,22 @@ void                unhide_objects_menu(void *some_shit, SDL_Renderer *renderer)
 void                fill_global_menu(t_gui_menu *my_menu, SDL_Renderer *renderer) //заполняем меню всего
 {
     /* обязательная часть */
-    my_menu->main_button = create_button(init_rect(3, 3, 100, 30), (t_gui_obj *)my_menu, "gui_textures/images.png");
+    my_menu->main_button = create_button(init_rect(3, 3, 100, 30), (t_gui_obj *)my_menu, "gui_textures/menu.jpg");
     button_settings(renderer, &my_menu->main_button);
-    button_set_label("Beta menu", 128, renderer, &my_menu->main_button);
+    button_set_label("SETTINGS", 128, renderer, &my_menu->main_button);
     my_menu->main_button.action = &hide_menu;
     /*                    */
     my_menu->numb_of_control = 1; // указываем кол-во
     /*  init controls */ // заполняем
     my_menu->controls = (t_val_control *)malloc(sizeof(t_val_control) * my_menu->numb_of_control);
-    my_menu->controls[0] = create_controller(init_rect(3, 36, 160, 56), (t_gui_obj *)my_menu, "gui_textures/images.png", &my_menu->scene->cam.dust);
-    more_controler_settings(&my_menu->controls[0], 1.0, 0.0, "dust");
-    controller_settings(&my_menu->controls[0], renderer, 0.1);
+    my_menu->controls[0] = create_controller(init_rect(3, 36, 160, 56), (t_gui_obj *)my_menu, "gui_textures/menu.jpg", &my_menu->scene->cam.dust);
+    more_controler_settings(&my_menu->controls[0], 1.0, 0.0, "o");
+    controller_settings(&my_menu->controls[0], renderer, 0.001);
     /*               */
     my_menu->numb_of_radio = 1; //указываем кол-во 
     /*  init radio   */ //заполняем
     my_menu->radio = (t_radio_button *)malloc(sizeof(t_radio_button) * my_menu->numb_of_radio);
-    my_menu->radio[0] = create_radio(init_rect(3, 95, 418, 140), (t_gui_obj *)my_menu, "gui_textures/images.png", &my_menu->scene->cam.effect);
+    my_menu->radio[0] = create_radio(init_rect(3, 95, 418, 140), (t_gui_obj *)my_menu, "gui_textures/menu.jpg", &my_menu->scene->cam.effect);
     radio_settings(&my_menu->radio[0], renderer, 5, "NO EFFECT", "BLACK N WHITE", "NEGATIVE", "SEPIA", "PESTON");
     /*               */ 
     my_menu->numb_of_labels = 0; //указываем кол-во

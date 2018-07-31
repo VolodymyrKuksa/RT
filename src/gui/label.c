@@ -19,10 +19,10 @@ SDL_Color       set_default_text_color(void) //можно менять знач�
 {
     SDL_Color   that;
 
-    that.r = 198;
-    that.g = 157;
-    that.b = 5;
-    that.a = 170;
+    that.r = 0xff;
+    that.g = 0xff;
+    that.b = 0xff;
+    that.a = 0;
     return (that);
 }
 

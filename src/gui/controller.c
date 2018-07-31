@@ -71,7 +71,7 @@ void               controller_settings(t_val_control *my_control, SDL_Renderer *
     my_control->change_buttons[1].action = &plus_action;
     sprintf(str, "%f", *(my_control->value));
     accur = ft_strchr(str, '.');
-    accur += 3;
+    accur += 4;
     *accur = '\0';
     my_control->output = create_label(55, 3, str, (t_gui_obj *)my_control); //настроить
     my_control->output.width = 50;
@@ -130,7 +130,7 @@ void                plus_action(void *some_shit, SDL_Renderer *renderer) //не 
         *(my_control->value) += my_control->step;
         sprintf(str, "%f", *(my_control->value));
         accur = ft_strchr(str, '.');
-        accur += 3;
+        accur += 4;
         *accur = '\0';
         my_control->output.text = ft_strcpy(my_control->output.text, str);
         my_control->update(my_control, 0, renderer, 1);
@@ -144,12 +144,12 @@ void                minus_action(void *some_shit, SDL_Renderer *renderer) //не
     char            str[10];
 
     my_control = (t_val_control *)some_shit;
-    if (*(my_control->value) - 0.0001 > my_control->min_val)
+    if (*(my_control->value) - 0.0009 > my_control->min_val)
     {
         *(my_control->value) -= my_control->step;
         sprintf(str, "%f", *(my_control->value));
         accur = ft_strchr(str, '.');
-        accur += 3;
+        accur += 4;
         *accur = '\0';
         my_control->output.text = ft_strcpy(my_control->output.text, str);
         my_control->update(my_control, 0, renderer, 1);
