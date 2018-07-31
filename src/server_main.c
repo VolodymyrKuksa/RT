@@ -38,7 +38,6 @@ int		main(int argc, char **argv)
 	destroy_gui(&env.gui, env.screen.renderer);
 	close_sdl(&env.screen);
 	IMG_Quit();
-	//write_scene(&(env.scene));
 	system("leaks -q RT"); //DEBUG
 	return (0);
 }
