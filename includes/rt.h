@@ -48,6 +48,9 @@
 # define DEVICE_TYPE CL_DEVICE_TYPE_GPU
 # define CLIENT_WORK_SIZE 100
 
+# define MIN_WIN_WIDTH 500
+# define MIN_WIN_HEIGHT 500
+
 /*
 **	returns a string with file content and writes it`s in the size variable
 **	returns NULL and writes 0 to size in case of an error

@@ -35,6 +35,7 @@ int		main(int argc, char **argv)
 	env.gui = init_gui(env.screen.renderer, &env.scene);
 	main_loop_server(&env);
 	quit_server(&env.server);
+	destroy_gui(&env.gui, env.screen.renderer);
 	close_sdl(&env.screen);
 	IMG_Quit();
 	//write_scene(&(env.scene));
