@@ -80,6 +80,9 @@ void               controller_settings(t_val_control *my_control, SDL_Renderer *
 
 void                update_controler(t_val_control *my_control, char with_text, SDL_Renderer *renderer, char with_alph)
 {
+    char             str[10];
+    char             *accur;
+
     if (with_text)
         controller_own_set(renderer, my_control);
     if (!with_alph || with_text)
@@ -89,6 +92,14 @@ void                update_controler(t_val_control *my_control, char with_text, 
     }
     my_control->change_buttons[0].update(&my_control->change_buttons[0], with_text, renderer, 0);
     my_control->change_buttons[1].update(&my_control->change_buttons[1], with_text, renderer, 0);
+    if (with_alph)
+    {
+        sprintf(str, "%f", *(my_control->value));
+        accur = ft_strchr(str, '.');
+        accur += 4;
+        *accur = '\0';
+        my_control->output.text = ft_strcpy(my_control->output.text, str);
+    }
     my_control->output.update(&my_control->output, with_text, renderer, with_alph);
 }
 

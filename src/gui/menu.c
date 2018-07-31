@@ -118,7 +118,7 @@ void                fill_global_menu(t_gui_menu *my_menu, SDL_Renderer *renderer
 
     my_menu->controls[3] = create_controller(init_rect(166, 150, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.cam.dust);
     more_controler_settings(&my_menu->controls[3], 0.1, 0);
-    controller_settings(&my_menu->controls[3], renderer, 0.01);
+    controller_settings(&my_menu->controls[3], renderer, 0.001);
 
     my_menu->controls[4] = create_controller(init_rect(166, 237, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.cam.brightness);
     more_controler_settings(&my_menu->controls[4], 10, 0);
@@ -370,15 +370,19 @@ void				normalize_material(t_obj *obj)
 	obj->refraction /= sum;
 }
 
-void                we_control(t_gui_obj *gui_obj)
+void                we_control(t_gui_obj *gui_obj, SDL_Renderer *renderer)
 {
     t_gui_menu      *my_menu;
+    int             i;
 
     my_menu = (t_gui_menu *)gui_obj;
     if (my_menu->m_type == OBJECTS_MENU)
     {
         my_menu->env->num_samples = 0;
         normalize_material(&my_menu->env->scene.obj[my_menu->env->scene.last_obj]);
+        i = -1;
+        while (++i < my_menu->numb_of_control)
+            my_menu->controls[i].update(&my_menu->controls[i], 0, renderer, 1);
         write_scene_to_kernel(my_menu->env);
     }
     else if (my_menu->m_type == GLOBAL_MENU)

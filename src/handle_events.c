@@ -49,7 +49,7 @@ void	handle_mousebuttonup(SDL_Event *e, t_env *env, t_gui_obj **temp)
 			{
 				(*temp)->action((void *)(*temp)->father, env->screen.renderer);
 				if ((*temp)->father->father)
-					we_control((*temp)->father->father);
+					we_control((*temp)->father->father, env->screen.renderer);
 			}
 			else
 				(*temp)->action((void *)(*temp), env->screen.renderer);
