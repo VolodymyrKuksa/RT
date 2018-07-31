@@ -331,6 +331,16 @@ void                draw_menu(SDL_Renderer *renderer, t_gui_menu *my_menu) //Ð½Ð
         my_menu->radio[i].draw(renderer, &my_menu->radio[i]);
 }
 
+void				normalize_material(t_obj *obj)
+{
+	float	sum;
+
+	sum = obj->diffuse + obj->specular + obj->refraction;
+	obj->diffuse /= sum;
+	obj->specular /= sum;
+	obj->refraction /= sum;
+}
+
 void                we_control(t_gui_obj *gui_obj)
 {
     t_gui_menu      *my_menu;
@@ -339,6 +349,7 @@ void                we_control(t_gui_obj *gui_obj)
     if (my_menu->m_type == OBJECTS_MENU)
     {
         my_menu->env->num_samples = 0;
+        normalize_material(&my_menu->env->scene.obj[my_menu->env->scene.last_obj]);
         write_scene_to_kernel(my_menu->env);
     }
     else if (my_menu->m_type == GLOBAL_MENU)
