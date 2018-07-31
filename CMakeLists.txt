@@ -45,9 +45,9 @@ add_executable(RT includes/rt_types.h includes/rt.h src/server_main.c src/sdl_ut
         src/gui/radio.c
         src/gui/gui.c
         src/handle_events.c
-        includes/server_client.h src/server-client/run_server.c src/main_loop.c src/events/mouse_event.c src/server-client/socket_utils.c src/server-client/tpool_new_msg.c src/server-client/tpool_read_send_msg.c src/server-client/tpool_cleanup.c src/server-client/tpool_client.c src/server-client/tpool_threads.c src/server-client/tpool_client_logic.c src/client_read_data.c src/events/rot_obj2.c src/events/mv_obj2.c includes/gui.h src/message.c)
+        includes/server_client.h src/server-client/run_server.c src/main_loop.c src/events/mouse_event.c src/server-client/socket_utils.c src/server-client/tpool_new_msg.c src/server-client/tpool_read_send_msg.c src/server-client/tpool_cleanup.c src/server-client/tpool_client.c src/server-client/tpool_threads.c src/server-client/tpool_client_logic.c src/client_read_data.c src/events/rot_obj2.c src/events/mv_obj2.c includes/gui.h src/message.c src/build_stuff.c)
 
-add_executable(client src/client_main.c src/server-client/thread_pool.c src/server-client/run_server.c src/main_loop.c src/server-client/socket_utils.c src/server-client/tpool_new_msg.c src/server-client/tpool_read_send_msg.c src/server-client/tpool_cleanup.c src/server-client/tpool_client.c src/server-client/tpool_threads.c src/server-client/tpool_client_logic.c src/client_read_data.c src/events/rot_obj2.c src/events/mv_obj2.c src/message.c)
+add_executable(client src/client_main.c src/server-client/thread_pool.c src/server-client/run_server.c src/main_loop.c src/server-client/socket_utils.c src/server-client/tpool_new_msg.c src/server-client/tpool_read_send_msg.c src/server-client/tpool_cleanup.c src/server-client/tpool_client.c src/server-client/tpool_threads.c src/server-client/tpool_client_logic.c src/client_read_data.c src/events/rot_obj2.c src/events/mv_obj2.c src/message.c src/build_stuff.c)
 
 target_link_libraries(RT ${OPENCL} libft libvec lib_json
         ${SDL} "-F ${PROJECT_SOURCE_DIR}/frameworks -framework SDL2"

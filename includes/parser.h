@@ -25,28 +25,6 @@
 # define LENGTH(a) sqrt(a.x * a.x + a.y * a.y + a.z * a.z)
 # define SUKA(x, y) ((x > y) ? x : y)
 
-
-//cl_float3 normal(cl_float3 a)
-//{
-//	float	length;
-//
-//	length = LENGTH(a);
-//	a.x /= length;
-//	a.y /= length;
-//	a.z /= length;
-//	return (a);
-//}
-//
-//cl_float3	new_float3(float x, float y, float z)
-//{
-//	cl_float3	tmp;
-//
-//	tmp.x = x;
-//	tmp.y = y;
-//	tmp.z = z;
-//	return (tmp);
-//}
-
 void			print_scene(t_scene *scene);
 void			print_plane(t_obj obj);
 void			print_cone(t_obj obj);

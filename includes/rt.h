@@ -32,17 +32,17 @@
 # include "json.h"
 
 # ifdef CLION_BUILD
-#define KERNEL_PATH0 "../src/cl_files/kernel_source.cl"
-#define KERNEL_PATH1 "../src/cl_files/intersections_and_normals.cl"
-#define KERNEL_PATH2 "../src/cl_files/texture_mapping.cl"
-#define KERNEL_PATH3 "../src/cl_files/material.cl"
-#define KERNEL_INC_DIR "-I ../includes"
+# define KERNEL_PATH0 "../src/cl_files/kernel_source.cl"
+# define KERNEL_PATH1 "../src/cl_files/intersections_and_normals.cl"
+# define KERNEL_PATH2 "../src/cl_files/texture_mapping.cl"
+# define KERNEL_PATH3 "../src/cl_files/material.cl"
+# define KERNEL_INC_DIR "-I ../includes"
 # else
-#define KERNEL_PATH0 "src/cl_files/kernel_source.cl"
-#define KERNEL_PATH1 "src/cl_files/intersections_and_normals.cl"
-#define KERNEL_PATH2 "src/cl_files/texture_mapping.cl"
-#define KERNEL_PATH3 "src/cl_files/material.cl"
-#define KERNEL_INC_DIR "-I includes"
+# define KERNEL_PATH0 "src/cl_files/kernel_source.cl"
+# define KERNEL_PATH1 "src/cl_files/intersections_and_normals.cl"
+# define KERNEL_PATH2 "src/cl_files/texture_mapping.cl"
+# define KERNEL_PATH3 "src/cl_files/material.cl"
+# define KERNEL_INC_DIR "-I includes"
 # endif
 
 # define DEVICE_TYPE CL_DEVICE_TYPE_GPU
@@ -89,6 +89,8 @@ void		init_opencl(t_cldata *cl);
 void		cl_setup(t_env *e);
 void		get_work_group_size(t_cldata *cl);
 void		init_defaults(t_env *env);
+void		init_seeds(t_seeds *s);
+void		print_log(t_cldata *cl);
 
 /*
 ** cl_exec.c

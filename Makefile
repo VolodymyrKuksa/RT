@@ -103,7 +103,8 @@ gui/gui.c\
 client_read_data.c\
 main_loop.c\
 handle_events.c\
-message.c
+message.c\
+build_stuff.c
 
 C_FILES_RT = server_main.c $(C_FILES)
 

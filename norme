@@ -10,19 +10,25 @@ Norme: ./src/cl_files/material.cl
 Warning: Not a valid file
 Norme: ./src/cl_files/texture_mapping.cl
 Warning: Not a valid file
+Norme: ./src/build_stuff.c
+Error: file must end with a single empty line
+Error (line 36): must begin only by tabulations
+Error (line 39): must begin only by tabulations
+Error (line 54, col 0): no newline after block
 Norme: ./src/cl_exec.c
 Norme: ./src/events/keyboard_events.c
 Norme: ./src/client_main.c
-Norme: ./src/events/mouse_event.c
 Norme: ./src/client_read_data.c
+Norme: ./src/events/mouse_event.c
 Norme: ./src/events/mv_obj.c
 Norme: ./src/events/mv_obj2.c
+Norme: ./src/events/movement_events.c
 Norme: ./src/events/rot_obj2.c
 Norme: ./src/events/rotate.c
-Norme: ./src/events/movement_events.c
 Norme: ./src/events/write_png.c
+Norme: ./src/cl_initialization.c
 Norme: ./src/events/write_ppm.c
-Norme: ./src/events/window_event.c
+Norme: ./src/events/rot_obj.c
 Norme: ./src/gui/common_staff.c
 Error: global scope bad aligned
 Error (line 15): Space before function name
@@ -75,6 +81,7 @@ Error (line 32): must begin only by tabulations
 Error (line 32): bad indentation
 Error (line 33): must begin only by tabulations
 Error (line 33): bad indentation
+Norme: ./src/events/window_event.c
 Norme: ./src/gui/button.c
 Error: file must end with a single empty line
 Error: global scope bad aligned
@@ -278,8 +285,6 @@ Error (line 99): bad indentation
 Error (line 100): must begin only by tabulations
 Error (line 100): bad indentation
 Error (line 101, col 0): no newline after block
-Norme: ./src/cl_initialization.c
-/Norme: ./src/events/rot_obj.c
 Norme: ./src/gui/label.c
 Error: global scope bad aligned
 Error: 7 functions in the file
@@ -494,7 +499,7 @@ Error (line 115): must begin only by tabulations
 Error (line 115): bad indentation
 Norme: ./src/gui/gui.c
 Error: file must end with a single empty line
-Error: 7 functions in the file
+Error: 8 functions in the file
 Error (line 18): Space before function name
 Error (line 18): Space before function name
 Error (line 18): Space before function name
@@ -519,7 +524,6 @@ Error (line 22): must begin only by tabulations
 Error (line 22): bad indentation
 Error (line 24): must begin only by tabulations
 Error (line 24): bad indentation
-Error (line 27): function init_gui has 29 lines
 Error (line 27): Space before function name
 Error (line 27): Space before function name
 Error (line 27): Space before function name
@@ -535,7 +539,8 @@ Error (line 27): Space before function name
 Error (line 27): Space before function name
 Error (line 27): Space before function name
 Error (line 27): Space before function name
-Error (line 27, col 5): bad spacing
+Error (line 27): Space before function name
+Error (line 27, col 4): bad spacing
 Error (line 29): must begin only by tabulations
 Error (line 29): bad indentation
 Error (line 29, col 9): bad spacing
@@ -545,32 +550,31 @@ Error (line 32): must begin only by tabulations
 Error (line 32): bad indentation
 Error (line 33): must begin only by tabulations
 Error (line 33): bad indentation
-Error (line 34): must begin only by tabulations
-Error (line 34): bad indentation
-Error (line 35): must begin only by tabulations
-Error (line 35): comment not well placed
-Error (line 35): comment not well formatted
-Error (line 35): bad indentation
-Error (line 36): must begin only by tabulations
-Error (line 36): line has 83 characters
-Error (line 36): bad indentation
-Error (line 37): must begin only by tabulations
-Error (line 37): line has 90 characters
-Error (line 37): bad indentation
+Error (line 36): function init_gui has 35 lines
+Error (line 36): Space before function name
+Error (line 36): Space before function name
+Error (line 36): Space before function name
+Error (line 36): Space before function name
+Error (line 36): Space before function name
+Error (line 36): Space before function name
+Error (line 36): Space before function name
+Error (line 36): Space before function name
+Error (line 36): Space before function name
+Error (line 36): Space before function name
+Error (line 36): Space before function name
+Error (line 36): Space before function name
+Error (line 36): Space before function name
+Error (line 36): Space before function name
+Error (line 36): Space before function name
+Error (line 36, col 5): bad spacing
 Error (line 38): must begin only by tabulations
 Error (line 38): bad indentation
-Error (line 39): must begin only by tabulations
-Error (line 39): line has 90 characters
-Error (line 39): bad indentation
+Error (line 38, col 9): bad spacing
 Error (line 40): must begin only by tabulations
 Error (line 40): bad indentation
 Error (line 41): must begin only by tabulations
-Error (line 41): comment not well placed
-Error (line 41): comment not well formatted
 Error (line 41): bad indentation
 Error (line 42): must begin only by tabulations
-Error (line 42): comment not well placed
-Error (line 42): comment not well formatted
 Error (line 42): bad indentation
 Error (line 43): must begin only by tabulations
 Error (line 43): bad indentation
@@ -579,57 +583,56 @@ Error (line 44): comment not well placed
 Error (line 44): comment not well formatted
 Error (line 44): bad indentation
 Error (line 45): must begin only by tabulations
-Error (line 45): comment not well placed
-Error (line 45): comment not well formatted
+Error (line 45): line has 83 characters
 Error (line 45): bad indentation
 Error (line 46): must begin only by tabulations
-Error (line 46): line has 83 characters
+Error (line 46): line has 88 characters
 Error (line 46): bad indentation
 Error (line 47): must begin only by tabulations
-Error (line 47): line has 96 characters
 Error (line 47): bad indentation
 Error (line 48): must begin only by tabulations
+Error (line 48): line has 89 characters
 Error (line 48): bad indentation
 Error (line 49): must begin only by tabulations
 Error (line 49): bad indentation
 Error (line 50): must begin only by tabulations
+Error (line 50): comment not well placed
+Error (line 50): comment not well formatted
 Error (line 50): bad indentation
 Error (line 51): must begin only by tabulations
+Error (line 51): comment not well placed
+Error (line 51): comment not well formatted
 Error (line 51): bad indentation
 Error (line 52): must begin only by tabulations
-Error (line 52): comment not well placed
-Error (line 52): comment not well formatted
 Error (line 52): bad indentation
 Error (line 53): must begin only by tabulations
+Error (line 53): comment not well placed
+Error (line 53): comment not well formatted
 Error (line 53): bad indentation
 Error (line 54): must begin only by tabulations
+Error (line 54): comment not well placed
+Error (line 54): comment not well formatted
 Error (line 54): bad indentation
 Error (line 55): must begin only by tabulations
+Error (line 55): line has 83 characters
 Error (line 55): bad indentation
 Error (line 56): must begin only by tabulations
+Error (line 56): line has 96 characters
 Error (line 56): bad indentation
 Error (line 57): must begin only by tabulations
 Error (line 57): bad indentation
-Error (line 60): Space before function name
-Error (line 60): Space before function name
-Error (line 60): Space before function name
-Error (line 60): Space before function name
-Error (line 60): Space before function name
-Error (line 60): Space before function name
-Error (line 60): Space before function name
-Error (line 60): Space before function name
-Error (line 60): Space before function name
-Error (line 60): Space before function name
-Error (line 60): Space before function name
-Error (line 60): Space before function name
-Error (line 60): Space before function name
-Error (line 60): Space before function name
-Error (line 60): Space before function name
-Error (line 60): Space before function name
-Error (line 60, col 4): bad spacing
+Error (line 58): must begin only by tabulations
+Error (line 58): bad indentation
+Error (line 59): must begin only by tabulations
+Error (line 59): bad indentation
+Error (line 60): must begin only by tabulations
+Error (line 60): bad indentation
+Error (line 61): Empty line
 Error (line 62): must begin only by tabulations
+Error (line 62): line has 96 characters
 Error (line 62): bad indentation
-Error (line 62, col 7): bad spacing
+Error (line 63): must begin only by tabulations
+Error (line 63): bad indentation
 Error (line 64): must begin only by tabulations
 Error (line 64): bad indentation
 Error (line 65): must begin only by tabulations
@@ -637,6 +640,8 @@ Error (line 65): bad indentation
 Error (line 66): must begin only by tabulations
 Error (line 66): bad indentation
 Error (line 67): must begin only by tabulations
+Error (line 67): comment not well placed
+Error (line 67): comment not well formatted
 Error (line 67): bad indentation
 Error (line 68): must begin only by tabulations
 Error (line 68): bad indentation
@@ -659,16 +664,19 @@ Error (line 75): Space before function name
 Error (line 75): Space before function name
 Error (line 75): Space before function name
 Error (line 75): Space before function name
-Error (line 75, col 9): bad spacing
+Error (line 75): Space before function name
+Error (line 75): Space before function name
+Error (line 75): Space before function name
+Error (line 75): Space before function name
+Error (line 75): Space before function name
+Error (line 75, col 4): bad spacing
 Error (line 77): must begin only by tabulations
 Error (line 77): bad indentation
-Error (line 77, col 9): bad spacing
-Error (line 78): must begin only by tabulations
-Error (line 78): bad indentation
-Error (line 78, col 13): bad spacing
+Error (line 77, col 7): bad spacing
 Error (line 79): must begin only by tabulations
 Error (line 79): bad indentation
-Error (line 79, col 7): bad spacing
+Error (line 80): must begin only by tabulations
+Error (line 80): bad indentation
 Error (line 81): must begin only by tabulations
 Error (line 81): bad indentation
 Error (line 82): must begin only by tabulations
@@ -680,67 +688,55 @@ Error (line 84): bad indentation
 Error (line 85): must begin only by tabulations
 Error (line 85): bad indentation
 Error (line 86): must begin only by tabulations
-Error (line 86): line has 85 characters
 Error (line 86): bad indentation
 Error (line 87): must begin only by tabulations
 Error (line 87): bad indentation
-Error (line 88): must begin only by tabulations
-Error (line 88): bad indentation
-Error (line 89): must begin only by tabulations
-Error (line 89): bad indentation
-Error (line 90): must begin only by tabulations
-Error (line 90): bad indentation
-Error (line 91): must begin only by tabulations
-Error (line 91): bad indentation
+Error (line 90): Space before function name
+Error (line 90): Space before function name
+Error (line 90): Space before function name
+Error (line 90): Space before function name
+Error (line 90): Space before function name
+Error (line 90): Space before function name
+Error (line 90): Space before function name
+Error (line 90): Space before function name
+Error (line 90): Space before function name
+Error (line 90): Space before function name
+Error (line 90): Space before function name
+Error (line 90, col 9): bad spacing
 Error (line 92): must begin only by tabulations
-Error (line 92): line has 89 characters
 Error (line 92): bad indentation
+Error (line 92, col 9): bad spacing
 Error (line 93): must begin only by tabulations
 Error (line 93): bad indentation
+Error (line 93, col 13): bad spacing
 Error (line 94): must begin only by tabulations
 Error (line 94): bad indentation
-Error (line 95): must begin only by tabulations
-Error (line 95): bad indentation
-Error (line 98): Space before function name
-Error (line 98): Space before function name
-Error (line 98): Space before function name
-Error (line 98): Space before function name
-Error (line 98): Space before function name
-Error (line 98): Space before function name
-Error (line 98): Space before function name
-Error (line 98): Space before function name
-Error (line 98): Space before function name
-Error (line 98): Space before function name
-Error (line 98): Space before function name
-Error (line 98): Space before function name
-Error (line 98): Space before function name
-Error (line 98): Space before function name
-Error (line 98): Space before function name
-Error (line 98): Space before function name
-Error (line 98, col 4): bad spacing
+Error (line 94, col 7): bad spacing
+Error (line 96): must begin only by tabulations
+Error (line 96): bad indentation
+Error (line 97): must begin only by tabulations
+Error (line 97): bad indentation
+Error (line 98): must begin only by tabulations
+Error (line 98): bad indentation
+Error (line 99): must begin only by tabulations
+Error (line 99): bad indentation
 Error (line 100): must begin only by tabulations
 Error (line 100): bad indentation
-Error (line 103): Space before function name
-Error (line 103): Space before function name
-Error (line 103): Space before function name
-Error (line 103): Space before function name
-Error (line 103): Space before function name
-Error (line 103): Space before function name
-Error (line 103): Space before function name
-Error (line 103): Space before function name
-Error (line 103): Space before function name
-Error (line 103): Space before function name
-Error (line 103): Space before function name
-Error (line 103): Space before function name
-Error (line 103): Space before function name
-Error (line 103): Space before function name
-Error (line 103): Space before function name
-Error (line 103): Space before function name
-Error (line 103, col 4): bad spacing
+Error (line 101): must begin only by tabulations
+Error (line 101): line has 89 characters
+Error (line 101): bad indentation
+Error (line 102): must begin only by tabulations
+Error (line 102): bad indentation
+Error (line 103): must begin only by tabulations
+Error (line 103): bad indentation
+Error (line 104): must begin only by tabulations
+Error (line 104): bad indentation
 Error (line 105): must begin only by tabulations
 Error (line 105): bad indentation
-Error (line 105, col 7): bad spacing
+Error (line 106): must begin only by tabulations
+Error (line 106): bad indentation
 Error (line 107): must begin only by tabulations
+Error (line 107): line has 85 characters
 Error (line 107): bad indentation
 Error (line 108): must begin only by tabulations
 Error (line 108): bad indentation
@@ -748,14 +744,23 @@ Error (line 109): must begin only by tabulations
 Error (line 109): bad indentation
 Error (line 110): must begin only by tabulations
 Error (line 110): bad indentation
-Error (line 111): must begin only by tabulations
-Error (line 111): bad indentation
-Error (line 112): must begin only by tabulations
-Error (line 112): bad indentation
-Error (line 113): must begin only by tabulations
-Error (line 113): bad indentation
-Error (line 114): must begin only by tabulations
-Error (line 114): bad indentation
+Error (line 113): Space before function name
+Error (line 113): Space before function name
+Error (line 113): Space before function name
+Error (line 113): Space before function name
+Error (line 113): Space before function name
+Error (line 113): Space before function name
+Error (line 113): Space before function name
+Error (line 113): Space before function name
+Error (line 113): Space before function name
+Error (line 113): Space before function name
+Error (line 113): Space before function name
+Error (line 113): Space before function name
+Error (line 113): Space before function name
+Error (line 113): Space before function name
+Error (line 113): Space before function name
+Error (line 113): Space before function name
+Error (line 113, col 4): bad spacing
 Error (line 115): must begin only by tabulations
 Error (line 115): bad indentation
 Error (line 118): Space before function name
@@ -796,11 +801,45 @@ Error (line 129): must begin only by tabulations
 Error (line 129): bad indentation
 Error (line 130): must begin only by tabulations
 Error (line 130): bad indentation
-Error (line 131, col 0): no newline after block
-Norme: ./src/handle_events.c
-Error: file must end with a single empty line
-Error (line 20): must begin only by tabulations
-Error (line 96, col 0): no newline after block
+Error (line 133): Space before function name
+Error (line 133): Space before function name
+Error (line 133): Space before function name
+Error (line 133): Space before function name
+Error (line 133): Space before function name
+Error (line 133): Space before function name
+Error (line 133): Space before function name
+Error (line 133): Space before function name
+Error (line 133): Space before function name
+Error (line 133): Space before function name
+Error (line 133): Space before function name
+Error (line 133): Space before function name
+Error (line 133): Space before function name
+Error (line 133): Space before function name
+Error (line 133): Space before function name
+Error (line 133): Space before function name
+Error (line 133, col 4): bad spacing
+Error (line 135): must begin only by tabulations
+Error (line 135): bad indentation
+Error (line 135, col 7): bad spacing
+Error (line 137): must begin only by tabulations
+Error (line 137): bad indentation
+Error (line 138): must begin only by tabulations
+Error (line 138): bad indentation
+Error (line 139): must begin only by tabulations
+Error (line 139): bad indentation
+Error (line 140): must begin only by tabulations
+Error (line 140): bad indentation
+Error (line 141): must begin only by tabulations
+Error (line 141): bad indentation
+Error (line 142): must begin only by tabulations
+Error (line 142): bad indentation
+Error (line 143): must begin only by tabulations
+Error (line 143): bad indentation
+Error (line 144): must begin only by tabulations
+Error (line 144): bad indentation
+Error (line 145): must begin only by tabulations
+Error (line 145): bad indentation
+Error (line 146, col 0): no newline after block
 Norme: ./src/gui/controller.c
 Error: global scope bad aligned
 Error: 10 functions in the file
@@ -956,28 +995,28 @@ Error (line 75): must begin only by tabulations
 Error (line 75): bad indentation
 Error (line 76): must begin only by tabulations
 Error (line 76): bad indentation
-Error (line 79): Space before function name
-Error (line 79): Space before function name
-Error (line 79): Space before function name
-Error (line 79): Space before function name
-Error (line 79): Space before function name
-Error (line 79): Space before function name
-Error (line 79): Space before function name
-Error (line 79): Space before function name
-Error (line 79): Space before function name
-Error (line 79): Space before function name
-Error (line 79): Space before function name
-Error (line 79): Space before function name
-Error (line 79): Space before function name
-Error (line 79): Space before function name
-Error (line 79): Space before function name
-Error (line 79): Space before function name
-Error (line 79): line has 120 characters
-Error (line 79, col 4): bad spacing
-Error (line 81): must begin only by tabulations
-Error (line 81): bad indentation
-Error (line 82): must begin only by tabulations
-Error (line 82): bad indentation
+Error (line 77): must begin only by tabulations
+Error (line 77): bad indentation
+Error (line 78): must begin only by tabulations
+Error (line 78): bad indentation
+Error (line 81): Space before function name
+Error (line 81): Space before function name
+Error (line 81): Space before function name
+Error (line 81): Space before function name
+Error (line 81): Space before function name
+Error (line 81): Space before function name
+Error (line 81): Space before function name
+Error (line 81): Space before function name
+Error (line 81): Space before function name
+Error (line 81): Space before function name
+Error (line 81): Space before function name
+Error (line 81): Space before function name
+Error (line 81): Space before function name
+Error (line 81): Space before function name
+Error (line 81): Space before function name
+Error (line 81): Space before function name
+Error (line 81): line has 120 characters
+Error (line 81, col 4): bad spacing
 Error (line 83): must begin only by tabulations
 Error (line 83): bad indentation
 Error (line 84): must begin only by tabulations
@@ -989,70 +1028,69 @@ Error (line 86): bad indentation
 Error (line 87): must begin only by tabulations
 Error (line 87): bad indentation
 Error (line 88): must begin only by tabulations
-Error (line 88): line has 98 characters
 Error (line 88): bad indentation
 Error (line 89): must begin only by tabulations
-Error (line 89): line has 98 characters
 Error (line 89): bad indentation
 Error (line 90): must begin only by tabulations
-Error (line 90): line has 84 characters
+Error (line 90): line has 98 characters
 Error (line 90): bad indentation
-Error (line 93): Space before function name
-Error (line 93): Space before function name
-Error (line 93): Space before function name
-Error (line 93): Space before function name
-Error (line 93): Space before function name
-Error (line 93): Space before function name
-Error (line 93): Space before function name
-Error (line 93): Space before function name
-Error (line 93): Space before function name
-Error (line 93): Space before function name
-Error (line 93): Space before function name
-Error (line 93): Space before function name
-Error (line 93): Space before function name
-Error (line 93): Space before function name
-Error (line 93): Space before function name
-Error (line 93): Space before function name
-Error (line 93): line has 86 characters
-Error (line 93, col 4): bad spacing
-Error (line 95): must begin only by tabulations
-Error (line 95): bad indentation
-Error (line 96): must begin only by tabulations
-Error (line 96): line has 82 characters
-Error (line 96): bad indentation
+Error (line 91): must begin only by tabulations
+Error (line 91): line has 98 characters
+Error (line 91): bad indentation
+Error (line 92): must begin only by tabulations
+Error (line 92): line has 84 characters
+Error (line 92): bad indentation
+Error (line 95): Space before function name
+Error (line 95): Space before function name
+Error (line 95): Space before function name
+Error (line 95): Space before function name
+Error (line 95): Space before function name
+Error (line 95): Space before function name
+Error (line 95): Space before function name
+Error (line 95): Space before function name
+Error (line 95): Space before function name
+Error (line 95): Space before function name
+Error (line 95): Space before function name
+Error (line 95): Space before function name
+Error (line 95): Space before function name
+Error (line 95): Space before function name
+Error (line 95): Space before function name
+Error (line 95): Space before function name
+Error (line 95): line has 86 characters
+Error (line 95, col 4): bad spacing
 Error (line 97): must begin only by tabulations
-Error (line 97): line has 82 characters
 Error (line 97): bad indentation
 Error (line 98): must begin only by tabulations
+Error (line 98): line has 82 characters
 Error (line 98): bad indentation
-Error (line 101): Space before function name
-Error (line 101): Space before function name
-Error (line 101): Space before function name
-Error (line 101): Space before function name
-Error (line 101): Space before function name
-Error (line 101): Space before function name
-Error (line 101): Space before function name
-Error (line 101): Space before function name
-Error (line 101): Space before function name
-Error (line 101): Space before function name
-Error (line 101): Space before function name
-Error (line 101, col 9): bad spacing
-Error (line 103): must begin only by tabulations
-Error (line 103): bad indentation
-Error (line 103, col 17): bad spacing
-Error (line 104): must begin only by tabulations
-Error (line 104): bad indentation
-Error (line 104, col 13): bad spacing
+Error (line 99): must begin only by tabulations
+Error (line 99): line has 82 characters
+Error (line 99): bad indentation
+Error (line 100): must begin only by tabulations
+Error (line 100): bad indentation
+Error (line 103): Space before function name
+Error (line 103): Space before function name
+Error (line 103): Space before function name
+Error (line 103): Space before function name
+Error (line 103): Space before function name
+Error (line 103): Space before function name
+Error (line 103): Space before function name
+Error (line 103): Space before function name
+Error (line 103): Space before function name
+Error (line 103): Space before function name
+Error (line 103): Space before function name
+Error (line 103, col 9): bad spacing
+Error (line 105): must begin only by tabulations
+Error (line 105): bad indentation
+Error (line 105, col 17): bad spacing
 Error (line 106): must begin only by tabulations
 Error (line 106): bad indentation
-Error (line 107): must begin only by tabulations
-Error (line 107): bad indentation
+Error (line 106, col 13): bad spacing
 Error (line 108): must begin only by tabulations
 Error (line 108): bad indentation
 Error (line 109): must begin only by tabulations
 Error (line 109): bad indentation
 Error (line 110): must begin only by tabulations
-Error (line 110): line has 113 characters
 Error (line 110): bad indentation
 Error (line 111): must begin only by tabulations
 Error (line 111): bad indentation
@@ -1062,39 +1100,40 @@ Error (line 112): bad indentation
 Error (line 113): must begin only by tabulations
 Error (line 113): bad indentation
 Error (line 114): must begin only by tabulations
+Error (line 114): line has 113 characters
 Error (line 114): bad indentation
 Error (line 115): must begin only by tabulations
 Error (line 115): bad indentation
-Error (line 118): Space before function name
-Error (line 118): Space before function name
-Error (line 118): Space before function name
-Error (line 118): Space before function name
-Error (line 118): Space before function name
-Error (line 118): Space before function name
-Error (line 118): Space before function name
-Error (line 118): Space before function name
-Error (line 118): Space before function name
-Error (line 118): Space before function name
-Error (line 118): Space before function name
-Error (line 118): Space before function name
-Error (line 118): Space before function name
-Error (line 118): Space before function name
-Error (line 118): Space before function name
-Error (line 118): Space before function name
-Error (line 118, col 4): bad spacing
-Error (line 120): must begin only by tabulations
-Error (line 120): bad indentation
-Error (line 120, col 17): bad spacing
-Error (line 121): must begin only by tabulations
-Error (line 121): bad indentation
-Error (line 121, col 8): bad spacing
+Error (line 116): must begin only by tabulations
+Error (line 116): bad indentation
+Error (line 117): must begin only by tabulations
+Error (line 117): bad indentation
+Error (line 120): Space before function name
+Error (line 120): Space before function name
+Error (line 120): Space before function name
+Error (line 120): Space before function name
+Error (line 120): Space before function name
+Error (line 120): Space before function name
+Error (line 120): Space before function name
+Error (line 120): Space before function name
+Error (line 120): Space before function name
+Error (line 120): Space before function name
+Error (line 120): Space before function name
+Error (line 120): Space before function name
+Error (line 120): Space before function name
+Error (line 120): Space before function name
+Error (line 120): Space before function name
+Error (line 120): Space before function name
+Error (line 120, col 4): bad spacing
 Error (line 122): must begin only by tabulations
 Error (line 122): bad indentation
-Error (line 122, col 8): bad spacing
+Error (line 122, col 17): bad spacing
+Error (line 123): must begin only by tabulations
+Error (line 123): bad indentation
+Error (line 123, col 8): bad spacing
 Error (line 124): must begin only by tabulations
 Error (line 124): bad indentation
-Error (line 125): must begin only by tabulations
-Error (line 125): bad indentation
+Error (line 124, col 8): bad spacing
 Error (line 126): must begin only by tabulations
 Error (line 126): bad indentation
 Error (line 127): must begin only by tabulations
@@ -1113,40 +1152,40 @@ Error (line 133): must begin only by tabulations
 Error (line 133): bad indentation
 Error (line 134): must begin only by tabulations
 Error (line 134): bad indentation
-Error (line 137): Space before function name
-Error (line 137): Space before function name
-Error (line 137): Space before function name
-Error (line 137): Space before function name
-Error (line 137): Space before function name
-Error (line 137): Space before function name
-Error (line 137): Space before function name
-Error (line 137): Space before function name
-Error (line 137): Space before function name
-Error (line 137): Space before function name
-Error (line 137): Space before function name
-Error (line 137): Space before function name
-Error (line 137): Space before function name
-Error (line 137): Space before function name
-Error (line 137): Space before function name
-Error (line 137): Space before function name
-Error (line 137, col 4): bad spacing
-Error (line 139): must begin only by tabulations
-Error (line 139): bad indentation
-Error (line 139, col 17): bad spacing
-Error (line 140): must begin only by tabulations
-Error (line 140): bad indentation
-Error (line 140, col 8): bad spacing
-Error (line 141): must begin only by tabulations
-Error (line 141): bad indentation
-Error (line 141, col 8): bad spacing
+Error (line 135): must begin only by tabulations
+Error (line 135): bad indentation
+Error (line 136): must begin only by tabulations
+Error (line 136): bad indentation
+Error (line 137): must begin only by tabulations
+Error (line 137): bad indentation
+Error (line 138): must begin only by tabulations
+Error (line 138): bad indentation
+Error (line 141): Space before function name
+Error (line 141): Space before function name
+Error (line 141): Space before function name
+Error (line 141): Space before function name
+Error (line 141): Space before function name
+Error (line 141): Space before function name
+Error (line 141): Space before function name
+Error (line 141): Space before function name
+Error (line 141): Space before function name
+Error (line 141): Space before function name
+Error (line 141): Space before function name
+Error (line 141): Space before function name
+Error (line 141): Space before function name
+Error (line 141): Space before function name
+Error (line 141): Space before function name
+Error (line 141): Space before function name
+Error (line 141, col 4): bad spacing
 Error (line 143): must begin only by tabulations
 Error (line 143): bad indentation
+Error (line 143, col 17): bad spacing
 Error (line 144): must begin only by tabulations
 Error (line 144): bad indentation
+Error (line 144, col 8): bad spacing
 Error (line 145): must begin only by tabulations
 Error (line 145): bad indentation
-Error (line 146): must begin only by tabulations
-Error (line 146): bad indentation
+Error (line 145, col 8): bad spacing
 Error (line 147): must begin only by tabulations
 Error (line 147): bad indentation
 Error (line 148): must begin only by tabulations
@@ -1161,38 +1200,50 @@ Error (line 152): must begin only by tabulations
 Error (line 152): bad indentation
 Error (line 153): must begin only by tabulations
 Error (line 153): bad indentation
-Error (line 156): Space before function name
-Error (line 156): Space before function name
-Error (line 156): Space before function name
-Error (line 156): Space before function name
-Error (line 156): Space before function name
-Error (line 156): Space before function name
-Error (line 156): Space before function name
-Error (line 156): Space before function name
-Error (line 156): Space before function name
-Error (line 156): Space before function name
-Error (line 156): Space before function name
-Error (line 156): Space before function name
-Error (line 156): Space before function name
-Error (line 156): Space before function name
-Error (line 156): Space before function name
-Error (line 156): Space before function name
-Error (line 156, col 4): bad spacing
+Error (line 154): must begin only by tabulations
+Error (line 154): bad indentation
+Error (line 155): must begin only by tabulations
+Error (line 155): bad indentation
+Error (line 156): must begin only by tabulations
+Error (line 156): bad indentation
+Error (line 157): must begin only by tabulations
+Error (line 157): bad indentation
 Error (line 158): must begin only by tabulations
 Error (line 158): bad indentation
 Error (line 159): must begin only by tabulations
 Error (line 159): bad indentation
-Error (line 160): must begin only by tabulations
-Error (line 160): bad indentation
-Error (line 161): must begin only by tabulations
-Error (line 161): bad indentation
-Error (line 162): must begin only by tabulations
-Error (line 162): bad indentation
-Norme: ./src/message.c
+Error (line 162): Space before function name
+Error (line 162): Space before function name
+Error (line 162): Space before function name
+Error (line 162): Space before function name
+Error (line 162): Space before function name
+Error (line 162): Space before function name
+Error (line 162): Space before function name
+Error (line 162): Space before function name
+Error (line 162): Space before function name
+Error (line 162): Space before function name
+Error (line 162): Space before function name
+Error (line 162): Space before function name
+Error (line 162): Space before function name
+Error (line 162): Space before function name
+Error (line 162): Space before function name
+Error (line 162): Space before function name
+Error (line 162, col 4): bad spacing
+Error (line 164): must begin only by tabulations
+Error (line 164): bad indentation
+Error (line 165): must begin only by tabulations
+Error (line 165): bad indentation
+Error (line 166): must begin only by tabulations
+Error (line 166): bad indentation
+Error (line 167): must begin only by tabulations
+Error (line 167): bad indentation
+Error (line 168): must begin only by tabulations
+Error (line 168): bad indentation
+Norme: ./src/handle_events.c
 Error: file must end with a single empty line
-Error (line 22): must begin only by tabulations
-Error (line 39): must begin only by tabulations
-Error (line 83, col 0): no newline after block
+Error (line 20): must begin only by tabulations
+Error (line 52): bad indentation
+Error (line 102, col 0): no newline after block
 Norme: ./src/gui/radio.c
 Error: file must end with a single empty line
 Error: global scope bad aligned
@@ -1604,21 +1655,28 @@ Error (line 152): must begin only by tabulations
 Error (line 152): bad indentation
 Error (line 153, col 0): no newline after block
 Norme: ./src/parser/check_params1.c
-Norme: ./src/main_loop.c
+Norme: ./src/message.c
+Error (line 22): must begin only by tabulations
+Error (line 39): must begin only by tabulations
 Norme: ./src/parser/check_params2.c
-Norme: ./src/parser/fill_each_obj.c
+Norme: ./src/main_loop.c
 Norme: ./src/parser/default_objs.c
+Norme: ./src/parser/fill_each_obj.c
 Norme: ./src/parser/fill_each_obj2.c
-Norme: ./src/parser/fill_each_obj3.c
 Norme: ./src/parser/fill_each_obj4.c
+Norme: ./src/parser/fill_each_obj3.c
 Norme: ./src/parser/ftoa.c
 Norme: ./src/parser/fill_each_obj5.c
 Norme: ./src/parser/init_cam.c
 Norme: ./src/parser/parse.c
+Norme: ./src/parser/scene_init.c
+Error: 15 functions in the file
+Error (line 20): function print_scene has 38 lines
+Norme: ./src/parser/scene_init2.c
 Norme: ./src/gui/menu.c
 Error: file must end with a single empty line
 Error: global scope bad aligned
-Error: 14 functions in the file
+Error: 15 functions in the file
 Error (line 18): Space before function name
 Error (line 18): Space before function name
 Error (line 18): Space before function name
@@ -1712,7 +1770,7 @@ Error (line 49): Space before function name
 Error (line 49): Space before function name
 Error (line 49): Space before function name
 Error (line 49): Space before function name
-Error (line 49): line has 123 characters
+Error (line 49): line has 119 characters
 Error (line 49): C++ comment
 Error (line 49, col 4): bad spacing
 Error (line 51): must begin only by tabulations
@@ -1834,7 +1892,7 @@ Error (line 92): bad indentation
 Error (line 93): must begin only by tabulations
 Error (line 93): C++ comment
 Error (line 93): bad indentation
-Error (line 96): function fill_global_menu has 70 lines
+Error (line 96): function fill_global_menu has 71 lines
 Error (line 96): Space before function name
 Error (line 96): Space before function name
 Error (line 96): Space before function name
@@ -1882,7 +1940,7 @@ Error (line 106): must begin only by tabulations
 Error (line 106): line has 99 characters
 Error (line 106): bad indentation
 Error (line 107): must begin only by tabulations
-Error (line 107): line has 153 characters
+Error (line 107): line has 157 characters
 Error (line 107): bad indentation
 Error (line 108): must begin only by tabulations
 Error (line 108): bad indentation
@@ -1890,7 +1948,7 @@ Error (line 109): must begin only by tabulations
 Error (line 109): bad indentation
 Error (line 110): Empty line
 Error (line 111): must begin only by tabulations
-Error (line 111): line has 155 characters
+Error (line 111): line has 159 characters
 Error (line 111): bad indentation
 Error (line 112): must begin only by tabulations
 Error (line 112): bad indentation
@@ -1898,7 +1956,7 @@ Error (line 113): must begin only by tabulations
 Error (line 113): bad indentation
 Error (line 114): Empty line
 Error (line 115): must begin only by tabulations
-Error (line 115): line has 155 characters
+Error (line 115): line has 159 characters
 Error (line 115): bad indentation
 Error (line 116): must begin only by tabulations
 Error (line 116): bad indentation
@@ -1906,7 +1964,7 @@ Error (line 117): must begin only by tabulations
 Error (line 117): bad indentation
 Error (line 118): Empty line
 Error (line 119): must begin only by tabulations
-Error (line 119): line has 152 characters
+Error (line 119): line has 156 characters
 Error (line 119): bad indentation
 Error (line 120): must begin only by tabulations
 Error (line 120): bad indentation
@@ -1914,7 +1972,7 @@ Error (line 121): must begin only by tabulations
 Error (line 121): bad indentation
 Error (line 122): Empty line
 Error (line 123): must begin only by tabulations
-Error (line 123): line has 158 characters
+Error (line 123): line has 162 characters
 Error (line 123): bad indentation
 Error (line 124): must begin only by tabulations
 Error (line 124): bad indentation
@@ -1922,7 +1980,7 @@ Error (line 125): must begin only by tabulations
 Error (line 125): bad indentation
 Error (line 126): Empty line
 Error (line 127): must begin only by tabulations
-Error (line 127): line has 157 characters
+Error (line 127): line has 161 characters
 Error (line 127): bad indentation
 Error (line 128): must begin only by tabulations
 Error (line 128): bad indentation
@@ -1945,7 +2003,7 @@ Error (line 133): must begin only by tabulations
 Error (line 133): line has 96 characters
 Error (line 133): bad indentation
 Error (line 134): must begin only by tabulations
-Error (line 134): line has 145 characters
+Error (line 134): line has 150 characters
 Error (line 134): bad indentation
 Error (line 135): must begin only by tabulations
 Error (line 135): line has 110 characters
@@ -2028,309 +2086,307 @@ Error (line 166): must begin only by tabulations
 Error (line 166): C++ comment
 Error (line 166): bad indentation
 Error (line 167): must begin only by tabulations
-Error (line 167): C++ comment
 Error (line 167): bad indentation
-Error (line 170): function fill_objects_menu has 63 lines
-Error (line 170): Space before function name
-Error (line 170): Space before function name
-Error (line 170): Space before function name
-Error (line 170): Space before function name
-Error (line 170): Space before function name
-Error (line 170): Space before function name
-Error (line 170): Space before function name
-Error (line 170): Space before function name
-Error (line 170): Space before function name
-Error (line 170): Space before function name
-Error (line 170): Space before function name
-Error (line 170): Space before function name
-Error (line 170): Space before function name
-Error (line 170): Space before function name
-Error (line 170): Space before function name
-Error (line 170): Space before function name
-Error (line 170): line has 110 characters
-Error (line 170): C++ comment
-Error (line 170, col 4): bad spacing
-Error (line 172): must begin only by tabulations
-Error (line 172): line has 117 characters
-Error (line 172): bad indentation
+Error (line 168): must begin only by tabulations
+Error (line 168): C++ comment
+Error (line 168): bad indentation
+Error (line 171): function fill_objects_menu has 64 lines
+Error (line 171): Space before function name
+Error (line 171): Space before function name
+Error (line 171): Space before function name
+Error (line 171): Space before function name
+Error (line 171): Space before function name
+Error (line 171): Space before function name
+Error (line 171): Space before function name
+Error (line 171): Space before function name
+Error (line 171): Space before function name
+Error (line 171): Space before function name
+Error (line 171): Space before function name
+Error (line 171): Space before function name
+Error (line 171): Space before function name
+Error (line 171): Space before function name
+Error (line 171): Space before function name
+Error (line 171): Space before function name
+Error (line 171): line has 110 characters
+Error (line 171): C++ comment
+Error (line 171, col 4): bad spacing
 Error (line 173): must begin only by tabulations
+Error (line 173): line has 117 characters
 Error (line 173): bad indentation
 Error (line 174): must begin only by tabulations
 Error (line 174): bad indentation
 Error (line 175): must begin only by tabulations
 Error (line 175): bad indentation
-Error (line 176): Empty line
-Error (line 177): must begin only by tabulations
-Error (line 177): bad indentation
-Error (line 178): Empty line
-Error (line 179): must begin only by tabulations
-Error (line 179): line has 99 characters
-Error (line 179): bad indentation
+Error (line 176): must begin only by tabulations
+Error (line 176): bad indentation
+Error (line 177): Empty line
+Error (line 178): must begin only by tabulations
+Error (line 178): bad indentation
+Error (line 179): Empty line
 Error (line 180): must begin only by tabulations
-Error (line 180): line has 178 characters
+Error (line 180): line has 99 characters
 Error (line 180): bad indentation
 Error (line 181): must begin only by tabulations
+Error (line 181): line has 186 characters
 Error (line 181): bad indentation
 Error (line 182): must begin only by tabulations
 Error (line 182): bad indentation
-Error (line 183): Empty line
-Error (line 184): must begin only by tabulations
-Error (line 184): line has 180 characters
-Error (line 184): bad indentation
+Error (line 183): must begin only by tabulations
+Error (line 183): bad indentation
+Error (line 184): Empty line
 Error (line 185): must begin only by tabulations
+Error (line 185): line has 188 characters
 Error (line 185): bad indentation
 Error (line 186): must begin only by tabulations
 Error (line 186): bad indentation
-Error (line 187): Empty line
-Error (line 188): must begin only by tabulations
-Error (line 188): line has 180 characters
-Error (line 188): bad indentation
+Error (line 187): must begin only by tabulations
+Error (line 187): bad indentation
+Error (line 188): Empty line
 Error (line 189): must begin only by tabulations
+Error (line 189): line has 188 characters
 Error (line 189): bad indentation
 Error (line 190): must begin only by tabulations
 Error (line 190): bad indentation
-Error (line 191): Empty line
-Error (line 192): must begin only by tabulations
-Error (line 192): line has 182 characters
-Error (line 192): bad indentation
+Error (line 191): must begin only by tabulations
+Error (line 191): bad indentation
+Error (line 192): Empty line
 Error (line 193): must begin only by tabulations
+Error (line 193): line has 190 characters
 Error (line 193): bad indentation
 Error (line 194): must begin only by tabulations
 Error (line 194): bad indentation
-Error (line 195): Empty line
-Error (line 196): must begin only by tabulations
-Error (line 196): line has 184 characters
-Error (line 196): bad indentation
+Error (line 195): must begin only by tabulations
+Error (line 195): bad indentation
+Error (line 196): Empty line
 Error (line 197): must begin only by tabulations
+Error (line 197): line has 192 characters
 Error (line 197): bad indentation
 Error (line 198): must begin only by tabulations
 Error (line 198): bad indentation
-Error (line 199): Empty line
-Error (line 200): must begin only by tabulations
-Error (line 200): line has 184 characters
-Error (line 200): bad indentation
+Error (line 199): must begin only by tabulations
+Error (line 199): bad indentation
+Error (line 200): Empty line
 Error (line 201): must begin only by tabulations
+Error (line 201): line has 192 characters
 Error (line 201): bad indentation
 Error (line 202): must begin only by tabulations
 Error (line 202): bad indentation
-Error (line 203): Empty line
-Error (line 204): must begin only by tabulations
-Error (line 204): line has 183 characters
-Error (line 204): bad indentation
+Error (line 203): must begin only by tabulations
+Error (line 203): bad indentation
+Error (line 204): Empty line
 Error (line 205): must begin only by tabulations
+Error (line 205): line has 191 characters
 Error (line 205): bad indentation
 Error (line 206): must begin only by tabulations
 Error (line 206): bad indentation
-Error (line 207): Empty line
-Error (line 208): must begin only by tabulations
-Error (line 208): bad indentation
-Error (line 209): Empty line
-Error (line 210): must begin only by tabulations
-Error (line 210): line has 84 characters
-Error (line 210): bad indentation
+Error (line 207): must begin only by tabulations
+Error (line 207): bad indentation
+Error (line 208): Empty line
+Error (line 209): must begin only by tabulations
+Error (line 209): bad indentation
+Error (line 210): Empty line
 Error (line 211): must begin only by tabulations
-Error (line 211): line has 83 characters
+Error (line 211): line has 84 characters
 Error (line 211): bad indentation
 Error (line 212): must begin only by tabulations
+Error (line 212): line has 83 characters
 Error (line 212): bad indentation
 Error (line 213): must begin only by tabulations
 Error (line 213): bad indentation
 Error (line 214): must begin only by tabulations
 Error (line 214): bad indentation
-Error (line 215): Empty line
-Error (line 216): must begin only by tabulations
-Error (line 216): line has 87 characters
-Error (line 216): bad indentation
+Error (line 215): must begin only by tabulations
+Error (line 215): bad indentation
+Error (line 216): Empty line
 Error (line 217): must begin only by tabulations
+Error (line 217): line has 87 characters
 Error (line 217): bad indentation
 Error (line 218): must begin only by tabulations
 Error (line 218): bad indentation
 Error (line 219): must begin only by tabulations
 Error (line 219): bad indentation
-Error (line 220): Empty line
-Error (line 221): must begin only by tabulations
-Error (line 221): line has 82 characters
-Error (line 221): bad indentation
+Error (line 220): must begin only by tabulations
+Error (line 220): bad indentation
+Error (line 221): Empty line
 Error (line 222): must begin only by tabulations
+Error (line 222): line has 82 characters
 Error (line 222): bad indentation
 Error (line 223): must begin only by tabulations
 Error (line 223): bad indentation
 Error (line 224): must begin only by tabulations
 Error (line 224): bad indentation
-Error (line 225): Empty line
-Error (line 226): must begin only by tabulations
-Error (line 226): bad indentation
-Error (line 227): Empty line
-Error (line 228): must begin only by tabulations
-Error (line 228): C++ comment
-Error (line 228): bad indentation
+Error (line 225): must begin only by tabulations
+Error (line 225): bad indentation
+Error (line 226): Empty line
+Error (line 227): must begin only by tabulations
+Error (line 227): bad indentation
+Error (line 228): Empty line
 Error (line 229): must begin only by tabulations
 Error (line 229): C++ comment
 Error (line 229): bad indentation
-Error (line 230): Empty line
-Error (line 231): must begin only by tabulations
-Error (line 231): line has 92 characters
-Error (line 231): bad indentation
+Error (line 230): must begin only by tabulations
+Error (line 230): C++ comment
+Error (line 230): bad indentation
+Error (line 231): Empty line
 Error (line 232): must begin only by tabulations
-Error (line 232): line has 93 characters
+Error (line 232): line has 92 characters
 Error (line 232): bad indentation
 Error (line 233): must begin only by tabulations
-Error (line 233): C++ comment
+Error (line 233): line has 93 characters
 Error (line 233): bad indentation
 Error (line 234): must begin only by tabulations
 Error (line 234): C++ comment
 Error (line 234): bad indentation
-Error (line 237): function super_update has 33 lines
-Error (line 237): Space before function name
-Error (line 237): Space before function name
-Error (line 237): Space before function name
-Error (line 237): Space before function name
-Error (line 237): Space before function name
-Error (line 237): Space before function name
-Error (line 237): Space before function name
-Error (line 237): Space before function name
-Error (line 237): Space before function name
-Error (line 237): Space before function name
-Error (line 237): Space before function name
-Error (line 237): Space before function name
-Error (line 237): Space before function name
-Error (line 237): Space before function name
-Error (line 237): Space before function name
-Error (line 237): Space before function name
-Error (line 237, col 4): bad spacing
-Error (line 239): must begin only by tabulations
-Error (line 239): bad indentation
-Error (line 239, col 7): bad spacing
+Error (line 235): must begin only by tabulations
+Error (line 235): bad indentation
+Error (line 236): must begin only by tabulations
+Error (line 236): C++ comment
+Error (line 236): bad indentation
+Error (line 239): function super_update has 42 lines
+Error (line 239): Space before function name
+Error (line 239): Space before function name
+Error (line 239): Space before function name
+Error (line 239): Space before function name
+Error (line 239): Space before function name
+Error (line 239): Space before function name
+Error (line 239): Space before function name
+Error (line 239): Space before function name
+Error (line 239): Space before function name
+Error (line 239): Space before function name
+Error (line 239): Space before function name
+Error (line 239): Space before function name
+Error (line 239): Space before function name
+Error (line 239): Space before function name
+Error (line 239): Space before function name
+Error (line 239): Space before function name
+Error (line 239, col 4): bad spacing
 Error (line 241): must begin only by tabulations
 Error (line 241): bad indentation
+Error (line 241, col 7): bad spacing
 Error (line 242): must begin only by tabulations
 Error (line 242): bad indentation
-Error (line 243): must begin only by tabulations
-Error (line 243): bad indentation
-Error (line 244): Empty line
+Error (line 242, col 7): bad spacing
+Error (line 244): must begin only by tabulations
+Error (line 244): bad indentation
 Error (line 245): must begin only by tabulations
-Error (line 245): line has 178 characters
 Error (line 245): bad indentation
 Error (line 246): must begin only by tabulations
 Error (line 246): bad indentation
 Error (line 247): must begin only by tabulations
 Error (line 247): bad indentation
-Error (line 248): Empty line
+Error (line 248): must begin only by tabulations
+Error (line 248): bad indentation
 Error (line 249): must begin only by tabulations
-Error (line 249): line has 180 characters
 Error (line 249): bad indentation
 Error (line 250): must begin only by tabulations
 Error (line 250): bad indentation
 Error (line 251): must begin only by tabulations
 Error (line 251): bad indentation
-Error (line 252): Empty line
-Error (line 253): must begin only by tabulations
-Error (line 253): line has 180 characters
-Error (line 253): bad indentation
+Error (line 252): must begin only by tabulations
+Error (line 252): bad indentation
+Error (line 253): Empty line
 Error (line 254): must begin only by tabulations
+Error (line 254): line has 186 characters
 Error (line 254): bad indentation
 Error (line 255): must begin only by tabulations
 Error (line 255): bad indentation
-Error (line 256): Empty line
-Error (line 257): must begin only by tabulations
-Error (line 257): line has 182 characters
-Error (line 257): bad indentation
+Error (line 256): must begin only by tabulations
+Error (line 256): bad indentation
+Error (line 257): Empty line
 Error (line 258): must begin only by tabulations
+Error (line 258): line has 188 characters
 Error (line 258): bad indentation
 Error (line 259): must begin only by tabulations
 Error (line 259): bad indentation
-Error (line 260): Empty line
-Error (line 261): must begin only by tabulations
-Error (line 261): line has 184 characters
-Error (line 261): bad indentation
+Error (line 260): must begin only by tabulations
+Error (line 260): bad indentation
+Error (line 261): Empty line
 Error (line 262): must begin only by tabulations
+Error (line 262): line has 188 characters
 Error (line 262): bad indentation
 Error (line 263): must begin only by tabulations
 Error (line 263): bad indentation
-Error (line 264): Empty line
-Error (line 265): must begin only by tabulations
-Error (line 265): line has 184 characters
-Error (line 265): bad indentation
+Error (line 264): must begin only by tabulations
+Error (line 264): bad indentation
+Error (line 265): Empty line
 Error (line 266): must begin only by tabulations
+Error (line 266): line has 190 characters
 Error (line 266): bad indentation
 Error (line 267): must begin only by tabulations
 Error (line 267): bad indentation
-Error (line 268): Empty line
-Error (line 269): must begin only by tabulations
-Error (line 269): line has 183 characters
-Error (line 269): bad indentation
+Error (line 268): must begin only by tabulations
+Error (line 268): bad indentation
+Error (line 269): Empty line
 Error (line 270): must begin only by tabulations
+Error (line 270): line has 192 characters
 Error (line 270): bad indentation
 Error (line 271): must begin only by tabulations
 Error (line 271): bad indentation
-Error (line 274): function update_menu has 28 lines
-Error (line 274): Space before function name
-Error (line 274): Space before function name
-Error (line 274): Space before function name
-Error (line 274): Space before function name
-Error (line 274): Space before function name
-Error (line 274): Space before function name
-Error (line 274): Space before function name
-Error (line 274): Space before function name
-Error (line 274): Space before function name
-Error (line 274): Space before function name
-Error (line 274): Space before function name
-Error (line 274): Space before function name
-Error (line 274): Space before function name
-Error (line 274): Space before function name
-Error (line 274): Space before function name
-Error (line 274): Space before function name
-Error (line 274): line has 117 characters
-Error (line 274): C++ comment
-Error (line 274, col 4): bad spacing
+Error (line 272): must begin only by tabulations
+Error (line 272): bad indentation
+Error (line 273): Empty line
+Error (line 274): must begin only by tabulations
+Error (line 274): line has 192 characters
+Error (line 274): bad indentation
+Error (line 275): must begin only by tabulations
+Error (line 275): bad indentation
 Error (line 276): must begin only by tabulations
 Error (line 276): bad indentation
-Error (line 276, col 7): bad spacing
-Error (line 277): must begin only by tabulations
-Error (line 277): bad indentation
-Error (line 277, col 7): bad spacing
+Error (line 277): Empty line
+Error (line 278): must begin only by tabulations
+Error (line 278): line has 191 characters
+Error (line 278): bad indentation
 Error (line 279): must begin only by tabulations
 Error (line 279): bad indentation
 Error (line 280): must begin only by tabulations
 Error (line 280): bad indentation
 Error (line 281): must begin only by tabulations
-Error (line 281): line has 83 characters
 Error (line 281): bad indentation
 Error (line 282): must begin only by tabulations
-Error (line 282): line has 84 characters
 Error (line 282): bad indentation
-Error (line 283): must begin only by tabulations
-Error (line 283): bad indentation
-Error (line 284): must begin only by tabulations
-Error (line 284): bad indentation
-Error (line 285): must begin only by tabulations
-Error (line 285): bad indentation
-Error (line 286): must begin only by tabulations
-Error (line 286): bad indentation
+Error (line 285): function update_menu has 28 lines
+Error (line 285): Space before function name
+Error (line 285): Space before function name
+Error (line 285): Space before function name
+Error (line 285): Space before function name
+Error (line 285): Space before function name
+Error (line 285): Space before function name
+Error (line 285): Space before function name
+Error (line 285): Space before function name
+Error (line 285): Space before function name
+Error (line 285): Space before function name
+Error (line 285): Space before function name
+Error (line 285): Space before function name
+Error (line 285): Space before function name
+Error (line 285): Space before function name
+Error (line 285): Space before function name
+Error (line 285): Space before function name
+Error (line 285): line has 117 characters
+Error (line 285): C++ comment
+Error (line 285, col 4): bad spacing
 Error (line 287): must begin only by tabulations
 Error (line 287): bad indentation
+Error (line 287, col 7): bad spacing
 Error (line 288): must begin only by tabulations
 Error (line 288): bad indentation
-Error (line 289): must begin only by tabulations
-Error (line 289): bad indentation
+Error (line 288, col 7): bad spacing
 Error (line 290): must begin only by tabulations
 Error (line 290): bad indentation
 Error (line 291): must begin only by tabulations
-Error (line 291): line has 84 characters
 Error (line 291): bad indentation
 Error (line 292): must begin only by tabulations
+Error (line 292): line has 83 characters
 Error (line 292): bad indentation
 Error (line 293): must begin only by tabulations
+Error (line 293): line has 84 characters
 Error (line 293): bad indentation
 Error (line 294): must begin only by tabulations
-Error (line 294): line has 84 characters
 Error (line 294): bad indentation
 Error (line 295): must begin only by tabulations
 Error (line 295): bad indentation
 Error (line 296): must begin only by tabulations
 Error (line 296): bad indentation
 Error (line 297): must begin only by tabulations
-Error (line 297): line has 88 characters
 Error (line 297): bad indentation
 Error (line 298): must begin only by tabulations
 Error (line 298): bad indentation
@@ -2341,32 +2397,24 @@ Error (line 300): bad indentation
 Error (line 301): must begin only by tabulations
 Error (line 301): bad indentation
 Error (line 302): must begin only by tabulations
+Error (line 302): line has 84 characters
 Error (line 302): bad indentation
-Error (line 302, col 47): bad character after ,
 Error (line 303): must begin only by tabulations
 Error (line 303): bad indentation
-Error (line 306): Space before function name
-Error (line 306): Space before function name
-Error (line 306): Space before function name
-Error (line 306): Space before function name
-Error (line 306): Space before function name
-Error (line 306): Space before function name
-Error (line 306): Space before function name
-Error (line 306): Space before function name
-Error (line 306): Space before function name
-Error (line 306): Space before function name
-Error (line 306): Space before function name
-Error (line 306): Space before function name
-Error (line 306): Space before function name
-Error (line 306): Space before function name
-Error (line 306): Space before function name
-Error (line 306): Space before function name
-Error (line 306): line has 88 characters
-Error (line 306): C++ comment
-Error (line 306, col 4): bad spacing
+Error (line 304): must begin only by tabulations
+Error (line 304): bad indentation
+Error (line 305): must begin only by tabulations
+Error (line 305): line has 84 characters
+Error (line 305): bad indentation
+Error (line 306): must begin only by tabulations
+Error (line 306): bad indentation
+Error (line 307): must begin only by tabulations
+Error (line 307): bad indentation
 Error (line 308): must begin only by tabulations
+Error (line 308): line has 88 characters
 Error (line 308): bad indentation
-Error (line 308, col 7): bad spacing
+Error (line 309): must begin only by tabulations
+Error (line 309): bad indentation
 Error (line 310): must begin only by tabulations
 Error (line 310): bad indentation
 Error (line 311): must begin only by tabulations
@@ -2375,64 +2423,74 @@ Error (line 312): must begin only by tabulations
 Error (line 312): bad indentation
 Error (line 313): must begin only by tabulations
 Error (line 313): bad indentation
+Error (line 313, col 47): bad character after ,
 Error (line 314): must begin only by tabulations
 Error (line 314): bad indentation
-Error (line 315): must begin only by tabulations
-Error (line 315): bad indentation
-Error (line 316): must begin only by tabulations
-Error (line 316): bad indentation
-Error (line 317): must begin only by tabulations
-Error (line 317): bad indentation
-Error (line 318): must begin only by tabulations
-Error (line 318): bad indentation
+Error (line 317): Space before function name
+Error (line 317): Space before function name
+Error (line 317): Space before function name
+Error (line 317): Space before function name
+Error (line 317): Space before function name
+Error (line 317): Space before function name
+Error (line 317): Space before function name
+Error (line 317): Space before function name
+Error (line 317): Space before function name
+Error (line 317): Space before function name
+Error (line 317): Space before function name
+Error (line 317): Space before function name
+Error (line 317): Space before function name
+Error (line 317): Space before function name
+Error (line 317): Space before function name
+Error (line 317): Space before function name
+Error (line 317): line has 88 characters
+Error (line 317): C++ comment
+Error (line 317, col 4): bad spacing
 Error (line 319): must begin only by tabulations
 Error (line 319): bad indentation
-Error (line 320): must begin only by tabulations
-Error (line 320): bad indentation
-Error (line 323): Space before function name
-Error (line 323): Space before function name
-Error (line 323): Space before function name
-Error (line 323): Space before function name
-Error (line 323): Space before function name
-Error (line 323): Space before function name
-Error (line 323): Space before function name
-Error (line 323): Space before function name
-Error (line 323): Space before function name
-Error (line 323): Space before function name
-Error (line 323): Space before function name
-Error (line 323): line has 89 characters
-Error (line 323): C++ comment
-Error (line 323, col 9): bad spacing
+Error (line 319, col 7): bad spacing
+Error (line 321): must begin only by tabulations
+Error (line 321): bad indentation
+Error (line 322): must begin only by tabulations
+Error (line 322): bad indentation
+Error (line 323): must begin only by tabulations
+Error (line 323): bad indentation
+Error (line 324): must begin only by tabulations
+Error (line 324): bad indentation
 Error (line 325): must begin only by tabulations
 Error (line 325): bad indentation
-Error (line 325, col 14): bad spacing
 Error (line 326): must begin only by tabulations
 Error (line 326): bad indentation
-Error (line 326, col 13): bad spacing
 Error (line 327): must begin only by tabulations
 Error (line 327): bad indentation
-Error (line 327, col 7): bad spacing
+Error (line 328): must begin only by tabulations
+Error (line 328): bad indentation
 Error (line 329): must begin only by tabulations
 Error (line 329): bad indentation
 Error (line 330): must begin only by tabulations
 Error (line 330): bad indentation
 Error (line 331): must begin only by tabulations
 Error (line 331): bad indentation
-Error (line 332): must begin only by tabulations
-Error (line 332): bad indentation
-Error (line 333): must begin only by tabulations
-Error (line 333): bad indentation
-Error (line 334): must begin only by tabulations
-Error (line 334): line has 95 characters
-Error (line 334): bad indentation
-Error (line 335): must begin only by tabulations
-Error (line 335): bad indentation
+Error (line 334): Space before function name
+Error (line 334): Space before function name
+Error (line 334): Space before function name
+Error (line 334): Space before function name
+Error (line 334): Space before function name
+Error (line 334): Space before function name
+Error (line 334): Space before function name
+Error (line 334): Space before function name
+Error (line 334): Space before function name
+Error (line 334): Space before function name
+Error (line 334): Space before function name
+Error (line 334): Space before function name
+Error (line 334): Space before function name
+Error (line 334): Space before function name
+Error (line 334): Space before function name
+Error (line 334): Space before function name
+Error (line 334, col 4): bad spacing
 Error (line 336): must begin only by tabulations
 Error (line 336): bad indentation
-Error (line 337): must begin only by tabulations
-Error (line 337): bad indentation
+Error (line 336, col 14): bad spacing
 Error (line 338): must begin only by tabulations
-Error (line 338): line has 99 characters
 Error (line 338): bad indentation
 Error (line 339): must begin only by tabulations
 Error (line 339): bad indentation
@@ -2445,38 +2503,39 @@ Error (line 342): bad indentation
 Error (line 343): must begin only by tabulations
 Error (line 343): bad indentation
 Error (line 344): must begin only by tabulations
-Error (line 344): line has 93 characters
 Error (line 344): bad indentation
 Error (line 345): must begin only by tabulations
 Error (line 345): bad indentation
 Error (line 346): must begin only by tabulations
 Error (line 346): bad indentation
 Error (line 347): must begin only by tabulations
+Error (line 347): line has 111 characters
 Error (line 347): bad indentation
 Error (line 348): must begin only by tabulations
 Error (line 348): bad indentation
-Error (line 349): must begin only by tabulations
-Error (line 349): bad indentation
-Error (line 352): Space before function name
-Error (line 352): Space before function name
-Error (line 352): Space before function name
-Error (line 352): Space before function name
-Error (line 352): Space before function name
-Error (line 352): Space before function name
-Error (line 352): Space before function name
-Error (line 352): Space before function name
-Error (line 352): Space before function name
-Error (line 352): Space before function name
-Error (line 352): Space before function name
-Error (line 352): Space before function name
-Error (line 352): line has 82 characters
-Error (line 352): C++ comment
-Error (line 352, col 4): bad spacing
+Error (line 351): Space before function name
+Error (line 351): Space before function name
+Error (line 351): Space before function name
+Error (line 351): Space before function name
+Error (line 351): Space before function name
+Error (line 351): Space before function name
+Error (line 351): Space before function name
+Error (line 351): Space before function name
+Error (line 351): Space before function name
+Error (line 351): Space before function name
+Error (line 351): Space before function name
+Error (line 351): line has 89 characters
+Error (line 351): C++ comment
+Error (line 351, col 9): bad spacing
+Error (line 353): must begin only by tabulations
+Error (line 353): bad indentation
+Error (line 353, col 14): bad spacing
 Error (line 354): must begin only by tabulations
 Error (line 354): bad indentation
-Error (line 354, col 14): bad spacing
-Error (line 356): must begin only by tabulations
-Error (line 356): bad indentation
+Error (line 354, col 13): bad spacing
+Error (line 355): must begin only by tabulations
+Error (line 355): bad indentation
+Error (line 355, col 7): bad spacing
 Error (line 357): must begin only by tabulations
 Error (line 357): bad indentation
 Error (line 358): must begin only by tabulations
@@ -2486,113 +2545,115 @@ Error (line 359): bad indentation
 Error (line 360): must begin only by tabulations
 Error (line 360): bad indentation
 Error (line 361): must begin only by tabulations
-Error (line 361): line has 92 characters
 Error (line 361): bad indentation
 Error (line 362): must begin only by tabulations
-Error (line 362): line has 93 characters
+Error (line 362): line has 95 characters
 Error (line 362): bad indentation
 Error (line 363): must begin only by tabulations
 Error (line 363): bad indentation
-Error (line 366): Space before function name
-Error (line 366): Space before function name
-Error (line 366): Space before function name
-Error (line 366): Space before function name
-Error (line 366): Space before function name
-Error (line 366): Space before function name
-Error (line 366): Space before function name
-Error (line 366): Space before function name
-Error (line 366): Space before function name
-Error (line 366): Space before function name
-Error (line 366): Space before function name
-Error (line 366): Space before function name
-Error (line 366): line has 124 characters
-Error (line 366): C++ comment
-Error (line 366, col 4): bad spacing
+Error (line 364): must begin only by tabulations
+Error (line 364): bad indentation
+Error (line 365): must begin only by tabulations
+Error (line 365): bad indentation
+Error (line 366): must begin only by tabulations
+Error (line 366): line has 99 characters
+Error (line 366): bad indentation
+Error (line 367): must begin only by tabulations
+Error (line 367): bad indentation
 Error (line 368): must begin only by tabulations
 Error (line 368): bad indentation
-Error (line 368, col 14): bad spacing
+Error (line 369): must begin only by tabulations
+Error (line 369): bad indentation
 Error (line 370): must begin only by tabulations
 Error (line 370): bad indentation
 Error (line 371): must begin only by tabulations
-Error (line 371): comment not well placed
-Error (line 371): comment not well formatted
 Error (line 371): bad indentation
 Error (line 372): must begin only by tabulations
+Error (line 372): line has 93 characters
 Error (line 372): bad indentation
 Error (line 373): must begin only by tabulations
 Error (line 373): bad indentation
 Error (line 374): must begin only by tabulations
-Error (line 374): comment not well placed
-Error (line 374): comment not well formatted
 Error (line 374): bad indentation
 Error (line 375): must begin only by tabulations
-Error (line 375): line has 92 characters
 Error (line 375): bad indentation
 Error (line 376): must begin only by tabulations
-Error (line 376): line has 93 characters
 Error (line 376): bad indentation
 Error (line 377): must begin only by tabulations
 Error (line 377): bad indentation
-Error (line 378): must begin only by tabulations
-Error (line 378): bad indentation
-Error (line 379): must begin only by tabulations
-Error (line 379): bad indentation
-Error (line 380): must begin only by tabulations
-Error (line 380): bad indentation
-Error (line 381): must begin only by tabulations
-Error (line 381): bad indentation
+Error (line 380): Space before function name
+Error (line 380): Space before function name
+Error (line 380): Space before function name
+Error (line 380): Space before function name
+Error (line 380): Space before function name
+Error (line 380): Space before function name
+Error (line 380): Space before function name
+Error (line 380): Space before function name
+Error (line 380): Space before function name
+Error (line 380): Space before function name
+Error (line 380): Space before function name
+Error (line 380): Space before function name
+Error (line 380): line has 82 characters
+Error (line 380): C++ comment
+Error (line 380, col 4): bad spacing
 Error (line 382): must begin only by tabulations
 Error (line 382): bad indentation
-Error (line 383): must begin only by tabulations
-Error (line 383): bad indentation
+Error (line 382, col 14): bad spacing
 Error (line 384): must begin only by tabulations
 Error (line 384): bad indentation
-Error (line 387): Space before function name
-Error (line 387): Space before function name
-Error (line 387): Space before function name
-Error (line 387): Space before function name
-Error (line 387): Space before function name
-Error (line 387): Space before function name
-Error (line 387): Space before function name
-Error (line 387): Space before function name
-Error (line 387): Space before function name
-Error (line 387): Space before function name
-Error (line 387): Space before function name
-Error (line 387): Space before function name
-Error (line 387): Space before function name
-Error (line 387): line has 88 characters
-Error (line 387): C++ comment
-Error (line 387, col 4): bad spacing
+Error (line 385): must begin only by tabulations
+Error (line 385): bad indentation
+Error (line 386): must begin only by tabulations
+Error (line 386): bad indentation
+Error (line 387): must begin only by tabulations
+Error (line 387): bad indentation
+Error (line 388): must begin only by tabulations
+Error (line 388): bad indentation
 Error (line 389): must begin only by tabulations
+Error (line 389): line has 92 characters
 Error (line 389): bad indentation
-Error (line 389, col 7): bad spacing
+Error (line 390): must begin only by tabulations
+Error (line 390): line has 93 characters
+Error (line 390): bad indentation
 Error (line 391): must begin only by tabulations
 Error (line 391): bad indentation
-Error (line 392): must begin only by tabulations
-Error (line 392): bad indentation
-Error (line 393): must begin only by tabulations
-Error (line 393): bad indentation
-Error (line 394): must begin only by tabulations
-Error (line 394): bad indentation
-Error (line 395): must begin only by tabulations
-Error (line 395): bad indentation
+Error (line 394): Space before function name
+Error (line 394): Space before function name
+Error (line 394): Space before function name
+Error (line 394): Space before function name
+Error (line 394): Space before function name
+Error (line 394): Space before function name
+Error (line 394): Space before function name
+Error (line 394): Space before function name
+Error (line 394): Space before function name
+Error (line 394): Space before function name
+Error (line 394): Space before function name
+Error (line 394): Space before function name
+Error (line 394): line has 124 characters
+Error (line 394): C++ comment
+Error (line 394, col 4): bad spacing
 Error (line 396): must begin only by tabulations
 Error (line 396): bad indentation
-Error (line 397): must begin only by tabulations
-Error (line 397): bad indentation
+Error (line 396, col 14): bad spacing
 Error (line 398): must begin only by tabulations
 Error (line 398): bad indentation
 Error (line 399): must begin only by tabulations
+Error (line 399): comment not well placed
+Error (line 399): comment not well formatted
 Error (line 399): bad indentation
 Error (line 400): must begin only by tabulations
 Error (line 400): bad indentation
 Error (line 401): must begin only by tabulations
 Error (line 401): bad indentation
 Error (line 402): must begin only by tabulations
+Error (line 402): comment not well placed
+Error (line 402): comment not well formatted
 Error (line 402): bad indentation
 Error (line 403): must begin only by tabulations
+Error (line 403): line has 92 characters
 Error (line 403): bad indentation
 Error (line 404): must begin only by tabulations
+Error (line 404): line has 93 characters
 Error (line 404): bad indentation
 Error (line 405): must begin only by tabulations
 Error (line 405): bad indentation
@@ -2606,28 +2667,87 @@ Error (line 409): must begin only by tabulations
 Error (line 409): bad indentation
 Error (line 410): must begin only by tabulations
 Error (line 410): bad indentation
-Error (line 411, col 0): no newline after block
-Norme: ./src/parser/scene_init2.c
-Norme: ./src/parser/default_objs2.c
+Error (line 411): must begin only by tabulations
+Error (line 411): bad indentation
+Error (line 412): must begin only by tabulations
+Error (line 412): bad indentation
+Error (line 415): Space before function name
+Error (line 415): Space before function name
+Error (line 415): Space before function name
+Error (line 415): Space before function name
+Error (line 415): Space before function name
+Error (line 415): Space before function name
+Error (line 415): Space before function name
+Error (line 415): Space before function name
+Error (line 415): Space before function name
+Error (line 415): Space before function name
+Error (line 415): Space before function name
+Error (line 415): Space before function name
+Error (line 415): Space before function name
+Error (line 415): line has 88 characters
+Error (line 415): C++ comment
+Error (line 415, col 4): bad spacing
+Error (line 417): must begin only by tabulations
+Error (line 417): bad indentation
+Error (line 417, col 7): bad spacing
+Error (line 419): must begin only by tabulations
+Error (line 419): bad indentation
+Error (line 420): must begin only by tabulations
+Error (line 420): bad indentation
+Error (line 421): must begin only by tabulations
+Error (line 421): bad indentation
+Error (line 422): must begin only by tabulations
+Error (line 422): bad indentation
+Error (line 423): must begin only by tabulations
+Error (line 423): bad indentation
+Error (line 424): must begin only by tabulations
+Error (line 424): bad indentation
+Error (line 425): must begin only by tabulations
+Error (line 425): bad indentation
+Error (line 426): must begin only by tabulations
+Error (line 426): bad indentation
+Error (line 427): must begin only by tabulations
+Error (line 427): bad indentation
+Error (line 428): must begin only by tabulations
+Error (line 428): bad indentation
+Error (line 429): must begin only by tabulations
+Error (line 429): bad indentation
+Error (line 430): must begin only by tabulations
+Error (line 430): bad indentation
+Error (line 431): must begin only by tabulations
+Error (line 431): bad indentation
+Error (line 432): must begin only by tabulations
+Error (line 432): bad indentation
+Error (line 433): must begin only by tabulations
+Error (line 433): bad indentation
+Error (line 434): must begin only by tabulations
+Error (line 434): bad indentation
+Error (line 435): must begin only by tabulations
+Error (line 435): bad indentation
+Error (line 436): must begin only by tabulations
+Error (line 436): bad indentation
+Error (line 437): must begin only by tabulations
+Error (line 437): bad indentation
+Error (line 438): must begin only by tabulations
+Error (line 438): bad indentation
+Error (line 439, col 0): no newline after block
 Norme: ./src/parser/scene_init4.c
-Norme: ./src/parser/init_cam2.c
-Norme: ./src/parser/write_to_file2.c
-Norme: ./src/parser/write_to_file.c
 Norme: ./src/parser/scene_init3.c
-Norme: ./src/parser/write_to_file3.c
+Norme: ./src/parser/write_to_file.c
+Norme: ./src/parser/write_to_file2.c
+Norme: ./src/parser/default_objs2.c
+Norme: ./src/parser/init_cam2.c
 Norme: ./src/scene_utils.c
+Norme: ./src/parser/write_to_file5.c
 Norme: ./src/parser/write_to_file4.c
 Norme: ./src/sdl_utils.c
 Norme: ./src/server-client/socket_utils.c
-Norme: ./src/parser/scene_init.c
-Error: 15 functions in the file
-Error (line 20): function print_scene has 38 lines
-Norme: ./src/parser/write_to_file5.c
+Norme: ./src/parser/write_to_file3.c
 Norme: ./src/server-client/run_server.c
 Norme: ./src/server-client/tpool_cleanup.c
 Norme: ./src/server-client/tpool_client.c
-Norme: ./src/server-client/thread_pool.c
 Norme: ./src/server-client/tpool_new_msg.c
+Norme: ./src/server-client/thread_pool.c
 Norme: ./src/server_main.c
 Error (line 39): C++ comment
 Norme: ./src/server-client/tpool_read_send_msg.c
@@ -2636,10 +2756,6 @@ Norme: ./src/server-client/tpool_threads.c
 Norme: ./src/textures/load_texture.c
 Norme: ./src/textures/compress_texture.c
 Norme: ./includes/keys.h
-Norme: ./src/server-client/tpool_client_logic.c
-Norme: ./includes/kernel.h
-Warning: /Users/ikorchah/CLionProjects/RT/includes//kernel.h may not compile or is invalid for some reasons.
-Norme: ./includes/rt_textures.h
 Norme: ./includes/gui.h
 Error: file must end with a single empty line
 Error (line 21): spaces at the end of line
@@ -2967,19 +3083,11 @@ Error (line 177, col 4): bad spacing
 Error (line 178): comment not well formatted
 Error (line 180): comment not well formatted
 Error (line 182): spaces at the end of line
+Norme: ./src/server-client/tpool_client_logic.c
+Norme: ./includes/kernel.h
+Warning: /Users/ikorchah/CLionProjects/RT/includes//kernel.h may not compile or is invalid for some reasons.
+Norme: ./includes/rt_textures.h
 Norme: ./includes/server_client.h
-Norme: ./includes/rt.h
-Error: global scope bad aligned
-Error (line 35): wrong number of spaces in preprocessor indentation
-Error (line 36): wrong number of spaces in preprocessor indentation
-Error (line 37): wrong number of spaces in preprocessor indentation
-Error (line 38): wrong number of spaces in preprocessor indentation
-Error (line 39): wrong number of spaces in preprocessor indentation
-Error (line 41): wrong number of spaces in preprocessor indentation
-Error (line 42): wrong number of spaces in preprocessor indentation
-Error (line 43): wrong number of spaces in preprocessor indentation
-Error (line 44): wrong number of spaces in preprocessor indentation
-Error (line 45): wrong number of spaces in preprocessor indentation
 Norme: ./includes/parser.h
 Error (line 28): multiple empty lines
 Error (line 29): C++ comment
@@ -3002,5 +3110,16 @@ Error (line 45): C++ comment
 Error (line 46): C++ comment
 Error (line 47): C++ comment
 Error (line 48): C++ comment
+Norme: ./includes/rt.h
+Error: global scope bad aligned
+Error (line 35): wrong number of spaces in preprocessor indentation
+Error (line 36): wrong number of spaces in preprocessor indentation
+Error (line 37): wrong number of spaces in preprocessor indentation
+Error (line 39): wrong number of spaces in preprocessor indentation
+Error (line 41): wrong number of spaces in preprocessor indentation
+Error (line 42): wrong number of spaces in preprocessor indentation
+Error (line 43): wrong number of spaces in preprocessor indentation
+Error (line 44): wrong number of spaces in preprocessor indentation
+Error (line 45): wrong number of spaces in preprocessor indentation
 Norme: ./includes/rt_types.h
 Warning: /Users/ikorchah/CLionProjects/RT/includes//rt_types.h may not compile or is invalid for some reasons.
