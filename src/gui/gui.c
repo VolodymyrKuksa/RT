@@ -34,9 +34,9 @@ t_gui               init_gui(SDL_Renderer *renderer, t_scene *scene)
     my_gui.mouse = (t_mouse *)malloc(sizeof(t_mouse));
     /* menu */
     my_gui.menu = (t_gui_menu *)malloc(sizeof(t_gui_menu) * my_gui.numb_of_menus);
-    my_gui.menu[0] = create_menu(100, 200, "gui_textures/kuksa_pidor.jpg", my_gui.mouse);
+    my_gui.menu[0] = create_menu(100, 200, "gui_textures/menu_texture.png", my_gui.mouse);
     menu_settings(&my_gui.menu[0], renderer, GLOBAL_MENU, scene);
-    my_gui.menu[1] = create_menu(400, 200, "gui_textures/kuksa_pidor.jpg", my_gui.mouse);
+    my_gui.menu[1] = create_menu(400, 200, "gui_textures/menu_texture.png", my_gui.mouse);
     menu_settings(&my_gui.menu[1], renderer, OBJECTS_MENU, scene);
     /* menu */
     /* labels */
