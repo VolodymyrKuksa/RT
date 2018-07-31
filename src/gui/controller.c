@@ -143,7 +143,7 @@ void                minus_action(void *some_shit, SDL_Renderer *renderer) //не
     char            str[10];
 
     my_control = (t_val_control *)some_shit;
-    if (*(my_control->value) - 0.0001 > my_control->min_val)
+    if (*(my_control->value) - 0.0009 > my_control->min_val)
     {
         *(my_control->value) -= my_control->step;
         sprintf(str, "%f", *(my_control->value));

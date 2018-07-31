@@ -227,7 +227,7 @@ void                fill_objects_menu(t_gui_menu *my_menu, SDL_Renderer *rendere
 
     my_menu->my_rect.w = 495; //ширина меню
     my_menu->my_rect.h = 500; //высота меню
-    
+
     my_menu->x = (float)(my_menu->my_rect.x + (float)my_menu->my_rect.w / 2) / g_win_width;
     my_menu->y = (float)(my_menu->my_rect.y + (float)my_menu->my_rect.h / 2) / g_win_height;
     menu_own_set(renderer, my_menu); //тестурки

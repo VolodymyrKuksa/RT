@@ -1,0 +1,9 @@
+This Font is a Derivative of the Apache Licensed open source font, Open Sans.
+
+Change Log:
+
+Additions of basic Roman Numerals, new lowercase L, addition of Russian Ruble sign, new number 1, new apostrophe and quotation marks, fixed uppercase A with ring above, and character simplifications for parts of the greek, cyrillic and latin character sets.
+
+Updated 5 August 2015, with new weights added.
+
+Additions and changed characters contributed by Cannot Into Space Fonts.

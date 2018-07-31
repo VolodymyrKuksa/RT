@@ -98,6 +98,7 @@
 	"color z" : 1.0,
 	"light" : {
 	  "diffuse" : 1.0,
+		"refraction": 0.0,
 	  "emission z" : 0.0
 	}
   },
