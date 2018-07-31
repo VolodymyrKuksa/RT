@@ -37,27 +37,27 @@ t_gui				init_gui(SDL_Renderer *renderer, t_env *env)
 {
 	t_gui			my_gui;
 
-	my_gui.numb_of_menus = 2;
-	my_gui.numb_of_labels = 0;
-	my_gui.numb_of_buttons = 2;
-	my_gui.mouse = (t_mouse *)malloc(sizeof(t_mouse));
-	/* menu */
-	my_gui.menu = (t_gui_menu *)malloc(sizeof(t_gui_menu) * my_gui.numb_of_menus);
-	my_gui.menu[0] = create_menu(75, 10, "gui_textures/kuksa_pidor.jpg", my_gui.mouse);
-	menu_settings(&my_gui.menu[0], renderer, GLOBAL_MENU, env);
-	my_gui.menu[1] = create_menu(200, 10, "gui_textures/kuksa_pidor.jpg", my_gui.mouse);
-	menu_settings(&my_gui.menu[1], renderer, OBJECTS_MENU, env);
-	/* menu */
-	/* labels */
-	my_gui.label = (t_label *)malloc(sizeof(t_label) * my_gui.numb_of_labels);
-	/* labels */
-	/* buttons */
-	my_gui.button = (t_button *)malloc(sizeof(t_button) * my_gui.numb_of_buttons);
-	my_gui.button[0] = create_button(init_rect(10, 10, 60, 60), NULL, "gui_textures/save.png");
-	button_settings(renderer, &my_gui.button[0]);
-	button_set_label("", 128, renderer, &my_gui.button[0]);
-	my_gui.button[0].action = &save_func;
-	my_gui.button[0].type = 2;
+    my_gui.numb_of_menus = 2;
+    my_gui.numb_of_labels = 0;
+    my_gui.numb_of_buttons = 2;
+    my_gui.mouse = (t_mouse *)malloc(sizeof(t_mouse));
+    /* menu */
+    my_gui.menu = (t_gui_menu *)malloc(sizeof(t_gui_menu) * my_gui.numb_of_menus);
+    my_gui.menu[0] = create_menu(75, 10, "gui_textures/menu_texture.png", my_gui.mouse);
+    menu_settings(&my_gui.menu[0], renderer, GLOBAL_MENU, env);
+    my_gui.menu[1] = create_menu(200, 10, "gui_textures/menu_texture.png", my_gui.mouse);
+    menu_settings(&my_gui.menu[1], renderer, OBJECTS_MENU, env);
+    /* menu */
+    /* labels */
+    my_gui.label = (t_label *)malloc(sizeof(t_label) * my_gui.numb_of_labels);
+    /* labels */
+    /* buttons */
+    my_gui.button = (t_button *)malloc(sizeof(t_button) * my_gui.numb_of_buttons);
+    my_gui.button[0] = create_button(init_rect(10, 10, 60, 60), NULL, "gui_textures/save.png");
+    button_settings(renderer, &my_gui.button[0]);
+    button_set_label("", 128, renderer, &my_gui.button[0]);
+    my_gui.button[0].action = &save_func;
+    my_gui.button[0].type = 2;
 
 	my_gui.button[1] = create_button(init_rect(10, 75, 60, 60), NULL, "gui_textures/scrn.png");
 	button_settings(renderer, &my_gui.button[1]);
