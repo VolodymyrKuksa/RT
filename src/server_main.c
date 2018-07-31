@@ -32,7 +32,7 @@ int		main(int argc, char **argv)
 	init_seeds(&env.cl.seeds);
 	get_work_group_size(&env.cl);
 	init_win(&env.screen, 1, 1);
-	env.gui = init_gui(env.screen.renderer, &env.scene);
+	env.gui = init_gui(env.screen.renderer, &env);
 	main_loop_server(&env);
 	quit_server(&env.server);
 	close_sdl(&env.screen);

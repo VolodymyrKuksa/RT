@@ -123,7 +123,11 @@ void	handle_events(t_env *env)
 				if (temp->type == 0)
 				{
 					if (temp->father)
+					{
 						temp->action((void *)temp->father, env->screen.renderer);
+						if (temp->father->father)
+							we_control((t_gui_obj *)temp->father->father);
+					}
 					else
 						temp->action((void *)temp, env->screen.renderer);
 				} else if (temp->type == 2)

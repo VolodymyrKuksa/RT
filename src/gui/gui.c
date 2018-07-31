@@ -24,7 +24,7 @@ void                save_func(void *some_shit, SDL_Renderer *renderer)
     write_scene(scene);
 }
 
-t_gui               init_gui(SDL_Renderer *renderer, t_scene *scene)
+t_gui               init_gui(SDL_Renderer *renderer, t_env *env)
 {
     t_gui           my_gui;
 
@@ -34,10 +34,10 @@ t_gui               init_gui(SDL_Renderer *renderer, t_scene *scene)
     my_gui.mouse = (t_mouse *)malloc(sizeof(t_mouse));
     /* menu */
     my_gui.menu = (t_gui_menu *)malloc(sizeof(t_gui_menu) * my_gui.numb_of_menus);
-    my_gui.menu[0] = create_menu(100, 200, "gui_textures/kuksa_pidor.jpg", my_gui.mouse);
-    menu_settings(&my_gui.menu[0], renderer, GLOBAL_MENU, scene);
-    my_gui.menu[1] = create_menu(400, 200, "gui_textures/kuksa_pidor.jpg", my_gui.mouse);
-    menu_settings(&my_gui.menu[1], renderer, OBJECTS_MENU, scene);
+    my_gui.menu[0] = create_menu(0, 200, "gui_textures/kuksa_pidor.jpg", my_gui.mouse);
+    menu_settings(&my_gui.menu[0], renderer, GLOBAL_MENU, env);
+    my_gui.menu[1] = create_menu(585, 200, "gui_textures/kuksa_pidor.jpg", my_gui.mouse);
+    menu_settings(&my_gui.menu[1], renderer, OBJECTS_MENU, env);
     /* menu */
     /* labels */
     my_gui.label = (t_label *)malloc(sizeof(t_label) * my_gui.numb_of_labels);
@@ -80,16 +80,16 @@ t_gui_obj           *check_gui_collision(int x, int y, t_gui_obj *gui_obj)
 
     my_gui = (t_gui *)gui_obj;
     temp = NULL;
-    i = -1;
-    while (++i < my_gui->numb_of_menus)
-    {
-        if ((temp = my_gui->menu[i].collision(x, y, (t_gui_obj *)&my_gui->menu[i])))
-            return (temp);
-    }
-    i = -1;
-    while (++i < my_gui->numb_of_buttons)
+    i = my_gui->numb_of_buttons;
+    while (--i >= 0)
     {
         if ((temp = my_gui->button[i].collision(x, y, (t_gui_obj *)&my_gui->button[i])))
+            return (temp);
+    }
+    i = my_gui->numb_of_menus;
+    while (--i >= 0)
+    {
+        if ((temp = my_gui->menu[i].collision(x, y, (t_gui_obj *)&my_gui->menu[i])))
             return (temp);
     }
     return (temp);
