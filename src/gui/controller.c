@@ -15,7 +15,7 @@
 extern unsigned int g_win_width;
 extern unsigned int g_win_height;
 
-t_val_control      create_controller(SDL_Rect my_rect, t_gui_obj *father, char *text, float *value) //не трогать
+t_val_control      create_controller(SDL_Rect my_rect, t_gui_obj *father, char *text, float *value)
 {
     t_val_control   my_control;
 
@@ -35,7 +35,7 @@ t_val_control      create_controller(SDL_Rect my_rect, t_gui_obj *father, char *
     return (my_control);
 }
 
-void               controller_own_set(SDL_Renderer *renderer, t_val_control *my_control) //не трогать
+void               controller_own_set(SDL_Renderer *renderer, t_val_control *my_control)
 {
     SDL_Surface     *surface;
 
@@ -47,7 +47,7 @@ void               controller_own_set(SDL_Renderer *renderer, t_val_control *my_
     SDL_FreeSurface(surface);
 }
 
-void                more_controler_settings(t_val_control *my_control, float max_val, float min_val) //не трогать
+void                more_controler_settings(t_val_control *my_control, float max_val, float min_val)
 {
     my_control->max_val = max_val;
     my_control->min_val = min_val;
@@ -60,11 +60,10 @@ void               controller_settings(t_val_control *my_control, SDL_Renderer *
 
     controller_own_set(renderer, my_control);
     my_control->step = step;
-    my_control->change_buttons[0] = create_button(init_rect(3, 3, 50, 50), (t_gui_obj *)my_control, "gui_textures/Button.png"); //настроить
+    my_control->change_buttons[0] = create_button(init_rect(3, 3, 50, 50), (t_gui_obj *)my_control, "gui_textures/Button.png");
     button_settings(renderer, &my_control->change_buttons[0]);
     button_set_label("<", 128, renderer, &my_control->change_buttons[0]);
-    my_control->change_buttons[1] = create_button(init_rect(107, 3, 50, 50), (t_gui_obj *)my_control, "gui_textures/Button.png");  //настроить
-    button_settings(renderer, &my_control->change_buttons[1]);
+    my_control->change_buttons[1] = create_button(init_rect(107, 3, 50, 50), (t_gui_obj *)my_control, "gui_textures/Button.png");
     button_set_label(">", 128, renderer, &my_control->change_buttons[1]);
     my_control->change_buttons[0].action = &minus_action;
     my_control->change_buttons[1].action = &plus_action;
@@ -72,13 +71,12 @@ void               controller_settings(t_val_control *my_control, SDL_Renderer *
     accur = ft_strchr(str, '.');
     accur += 4;
     *accur = '\0';
-    my_control->output = create_label(55, 3, str, (t_gui_obj *)my_control); //настроить
-    my_control->output.width = 50;
+    my_control->output = create_label(55, 3, str, (t_gui_obj *)my_control);
     my_control->output.height = 50;
     label_settings(128, renderer, &my_control->output, 0);
 }
 
-void                update_controler(t_val_control *my_control, char with_text, SDL_Renderer *renderer, char with_alph) //не трогать
+void                update_controler(t_val_control *my_control, char with_text, SDL_Renderer *renderer, char with_alph)
 {
     if (with_text)
         controller_own_set(renderer, my_control);
@@ -92,7 +90,7 @@ void                update_controler(t_val_control *my_control, char with_text, 
     my_control->output.update(&my_control->output, with_text, renderer, with_alph);
 }
 
-void                draw_controler(SDL_Renderer *renderer, t_val_control *my_control) //не трогать
+void                draw_controler(SDL_Renderer *renderer, t_val_control *my_control)
 {
     SDL_RenderCopy(renderer, my_control->texture, NULL, &my_control->my_rect);
     my_control->change_buttons[0].draw(renderer, &my_control->change_buttons[0]);
@@ -100,7 +98,7 @@ void                draw_controler(SDL_Renderer *renderer, t_val_control *my_con
     my_control->output.draw(renderer, &my_control->output);
 }
 
-t_gui_obj           *check_contol_collision(int x, int y, t_gui_obj *gui_obj) //не трогать
+t_gui_obj           *check_contol_collision(int x, int y, t_gui_obj *gui_obj)
 {
     t_val_control   *my_control;
     t_gui_obj       *temp;
@@ -117,7 +115,7 @@ t_gui_obj           *check_contol_collision(int x, int y, t_gui_obj *gui_obj) //
     return (temp);
 }
 
-void                plus_action(void *some_shit, SDL_Renderer *renderer) //не трогать
+void                plus_action(void *some_shit, SDL_Renderer *renderer)
 {
     t_val_control   *my_control;
     char            *accur;
@@ -136,7 +134,7 @@ void                plus_action(void *some_shit, SDL_Renderer *renderer) //не 
     }
 }
 
-void                minus_action(void *some_shit, SDL_Renderer *renderer) //не трогать
+void                minus_action(void *some_shit, SDL_Renderer *renderer)
 {
     t_val_control   *my_control;
     char            *accur;
@@ -155,7 +153,7 @@ void                minus_action(void *some_shit, SDL_Renderer *renderer) //не
     }
 }
 
-void                destroy_controller(t_val_control *my_control) //не трогать
+void                destroy_controller(t_val_control *my_control)
 {
     SDL_DestroyTexture(my_control->texture);
     destroy_label(&my_control->output);
