@@ -368,7 +368,7 @@ typedef struct          s_gui_menu
     char                type;
     void                (*action)(void *some_shit, SDL_Renderer *renderer);
     /*                  */
-    t_scene             *scene;
+    t_env       	    *env;
     menu_type           m_type;
     t_mouse             *mouse;
     char                *source;
@@ -389,7 +389,7 @@ typedef struct          s_gui_menu
 
 t_gui_menu              create_menu(int x, int y, char *text, t_mouse *mouse);
 void                    menu_own_set(SDL_Renderer *renderer, t_gui_menu *my_menu);
-void                    menu_settings(t_gui_menu *my_menu, SDL_Renderer *renderer, menu_type type, t_scene *scene);
+void                    menu_settings(t_gui_menu *my_menu, SDL_Renderer *renderer, menu_type type, t_env *env);
 void                    unhide_objects_menu(void *some_shit, SDL_Renderer *renderer);
 void                    unhide_global_menu(void  *some_shit, SDL_Renderer *renderer);
 void                    fill_global_menu(t_gui_menu *my_menu, SDL_Renderer *renderer);
@@ -401,6 +401,7 @@ t_gui_obj               *check_menu_collision(int x, int y, t_gui_obj *gui_obj);
 void                    hide_menu(void *some_shit, SDL_Renderer *renderer);
 void                    menu_action(void *some_shit, SDL_Renderer *renderer);
 void                    destroy_menu(t_gui_menu *my_menu, SDL_Renderer *renderer);
+void					we_control(t_gui_obj *gui_obj);
 /*------------------------------------------------------------*/
 
 /*---------------------------MainGuiType----------------------*/
@@ -421,7 +422,7 @@ typedef struct          s_gui
 	void				(*duper)(struct s_gui *my_gui, SDL_Renderer *renderer);
 }                       t_gui;
 
-t_gui             		init_gui(SDL_Renderer *renderer, t_scene *scene);
+t_gui             		init_gui(SDL_Renderer *renderer, t_env *env);
 void                	draw_gui(SDL_Renderer *renderer, t_gui *my_gui);
 t_gui_obj           	*check_gui_collision(int x, int y, t_gui_obj *gui_obj);
 void                	update_gui(t_gui *my_gui, SDL_Renderer *renderer);

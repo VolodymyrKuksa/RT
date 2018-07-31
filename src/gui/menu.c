@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rt_types.h"
+#include "rt.h"
 
 extern unsigned int g_win_width;
 extern unsigned int g_win_height;
@@ -46,9 +46,9 @@ void                menu_own_set(SDL_Renderer *renderer, t_gui_menu *my_menu) //
     SDL_FreeSurface(surface);
 }
 
-void               menu_settings(t_gui_menu *my_menu, SDL_Renderer *renderer, menu_type type, t_scene *scene) //не трогать
+void               menu_settings(t_gui_menu *my_menu, SDL_Renderer *renderer, menu_type type, t_env *env) //не трогать
 {
-    my_menu->scene = scene;
+    my_menu->env = env;
     my_menu->m_type = type;
     if (type == GLOBAL_MENU)
         fill_global_menu(my_menu, renderer);
@@ -104,34 +104,34 @@ void                fill_global_menu(t_gui_menu *my_menu, SDL_Renderer *renderer
     my_menu->numb_of_control = 6; // указываем кол-во
     /*  init controls */ // заполняем
     my_menu->controls = (t_val_control *)malloc(sizeof(t_val_control) * my_menu->numb_of_control);
-    my_menu->controls[0] = create_controller(init_rect(3, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->cam.filter.x);
+    my_menu->controls[0] = create_controller(init_rect(3, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.cam.filter.x);
     more_controler_settings(&my_menu->controls[0], 1.0, 0.0);
     controller_settings(&my_menu->controls[0], renderer, 0.1);
 
-    my_menu->controls[1] = create_controller(init_rect(166, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->cam.filter.y);
+    my_menu->controls[1] = create_controller(init_rect(166, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.cam.filter.y);
     more_controler_settings(&my_menu->controls[1], 1.0, 0.0);
     controller_settings(&my_menu->controls[1], renderer, 0.1);
 
-    my_menu->controls[2] = create_controller(init_rect(331, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->cam.filter.z);
+    my_menu->controls[2] = create_controller(init_rect(331, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.cam.filter.z);
     more_controler_settings(&my_menu->controls[2], 1.0, 0.0);
     controller_settings(&my_menu->controls[2], renderer, 0.1);
 
-    my_menu->controls[3] = create_controller(init_rect(166, 150, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->cam.dust);
+    my_menu->controls[3] = create_controller(init_rect(166, 150, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.cam.dust);
     more_controler_settings(&my_menu->controls[3], 0.1, 0);
     controller_settings(&my_menu->controls[3], renderer, 0.01);
 
-    my_menu->controls[4] = create_controller(init_rect(166, 237, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->cam.brightness);
+    my_menu->controls[4] = create_controller(init_rect(166, 237, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.cam.brightness);
     more_controler_settings(&my_menu->controls[4], 10, 0);
     controller_settings(&my_menu->controls[4], renderer, 1);
 
-    my_menu->controls[5] = create_controller(init_rect(166, 321, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->cam.refr_coef);
+    my_menu->controls[5] = create_controller(init_rect(166, 321, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.cam.refr_coef);
     more_controler_settings(&my_menu->controls[5], 2, 1);
     controller_settings(&my_menu->controls[5], renderer, 0.1);
     /*               */
     my_menu->numb_of_radio = 1; //указываем кол-во 
     /*  init radio   */ //заполняем
     my_menu->radio = (t_radio_button *)malloc(sizeof(t_radio_button) * my_menu->numb_of_radio);
-    my_menu->radio[0] = create_radio(init_rect(2, 380, 430, 150), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->cam.effect);
+    my_menu->radio[0] = create_radio(init_rect(32, 400, 430, 150), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.cam.effect);
     radio_settings(&my_menu->radio[0], renderer, 5, "NO EFFECT", "B_N_W", "NEGATIVE", "SEPIA", "KUKSA_PEDR");
     /*               */ 
     my_menu->numb_of_labels = 4; // 6 указываем кол-во
@@ -164,6 +164,7 @@ void                fill_global_menu(t_gui_menu *my_menu, SDL_Renderer *renderer
     my_menu->x = (float)(my_menu->my_rect.x + (float)my_menu->my_rect.w / 2) / g_win_width;
     my_menu->y = (float)(my_menu->my_rect.y + (float)my_menu->my_rect.h / 2) / g_win_height;
     menu_own_set(renderer, my_menu); //тестурки
+    hide_menu(my_menu, renderer);
     return ; //fill
 }
 
@@ -177,33 +178,33 @@ void                fill_objects_menu(t_gui_menu *my_menu, SDL_Renderer *rendere
     my_menu->numb_of_control = 7;
 
     my_menu->controls = (t_val_control *)malloc(sizeof(t_val_control) * my_menu->numb_of_control);
-    my_menu->controls[0] = create_controller(init_rect(3, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].color.x);
+    my_menu->controls[0] = create_controller(init_rect(3, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.obj[my_menu->env->scene.last_obj].color.x);
     more_controler_settings(&my_menu->controls[0], 1.0, 0.0);
     controller_settings(&my_menu->controls[0], renderer, 0.1);
 
-    my_menu->controls[1] = create_controller(init_rect(166, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].color.y);
+    my_menu->controls[1] = create_controller(init_rect(166, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.obj[my_menu->env->scene.last_obj].color.y);
     more_controler_settings(&my_menu->controls[1], 1.0, 0.0);
     controller_settings(&my_menu->controls[1], renderer, 0.1);
 
-    my_menu->controls[2] = create_controller(init_rect(331, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].color.z);
+    my_menu->controls[2] = create_controller(init_rect(331, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.obj[my_menu->env->scene.last_obj].color.z);
     more_controler_settings(&my_menu->controls[2], 1.0, 0.0);
     controller_settings(&my_menu->controls[2], renderer, 0.1);
 
-    my_menu->controls[3] = create_controller(init_rect(3, 150, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].emission.x);
+    my_menu->controls[3] = create_controller(init_rect(3, 150, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.obj[my_menu->env->scene.last_obj].emission.x);
     more_controler_settings(&my_menu->controls[3], 100.0, 0.0);
     controller_settings(&my_menu->controls[3], renderer, 1.0);
 
-    my_menu->controls[4] = create_controller(init_rect(166, 150, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].emission.y);
+    my_menu->controls[4] = create_controller(init_rect(166, 150, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.obj[my_menu->env->scene.last_obj].emission.y);
     more_controler_settings(&my_menu->controls[4], 100.0, 0.0);
     controller_settings(&my_menu->controls[4], renderer, 1.0);
 
-    my_menu->controls[5] = create_controller(init_rect(331, 150, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].emission.z);
+    my_menu->controls[5] = create_controller(init_rect(331, 150, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.obj[my_menu->env->scene.last_obj].emission.z);
     more_controler_settings(&my_menu->controls[5], 100.0, 0.0);
     controller_settings(&my_menu->controls[5], renderer, 1.0);
 
-    my_menu->controls[6] = create_controller(init_rect(166, 237, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].roughness);
+    my_menu->controls[6] = create_controller(init_rect(166, 237, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.obj[my_menu->env->scene.last_obj].roughness);
     more_controler_settings(&my_menu->controls[6], 1, 0);
-    controller_settings(&my_menu->controls[6], renderer, 0.1);
+    controller_settings(&my_menu->controls[6], renderer, 0.01);
 
     my_menu->numb_of_labels = 3;
 
@@ -231,44 +232,54 @@ void                fill_objects_menu(t_gui_menu *my_menu, SDL_Renderer *rendere
     my_menu->x = (float)(my_menu->my_rect.x + (float)my_menu->my_rect.w / 2) / g_win_width;
     my_menu->y = (float)(my_menu->my_rect.y + (float)my_menu->my_rect.h / 2) / g_win_height;
     menu_own_set(renderer, my_menu); //тестурки
+    hide_menu(my_menu, renderer);
     return ; //fill
 }
 
 void                super_update(t_gui_menu *my_menu, SDL_Renderer *renderer)
 {
     int             i;
+    int             flag;
 
     i = -1;
+    flag = 0;
+    if (my_menu->main_button.action != &hide_menu)
+    {
+        my_menu->main_button.action(my_menu, renderer);
+        flag = 1;
+    }
     while (++i < my_menu->numb_of_control)
         destroy_controller(&my_menu->controls[i]);
 
-    my_menu->controls[0] = create_controller(init_rect(3, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].color.x);
+    my_menu->controls[0] = create_controller(init_rect(3, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.obj[my_menu->env->scene.last_obj].color.x);
     more_controler_settings(&my_menu->controls[0], 1.0, 0.0);
     controller_settings(&my_menu->controls[0], renderer, 0.1);
 
-    my_menu->controls[1] = create_controller(init_rect(166, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].color.y);
+    my_menu->controls[1] = create_controller(init_rect(166, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.obj[my_menu->env->scene.last_obj].color.y);
     more_controler_settings(&my_menu->controls[1], 1.0, 0.0);
     controller_settings(&my_menu->controls[1], renderer, 0.1);
 
-    my_menu->controls[2] = create_controller(init_rect(331, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].color.z);
+    my_menu->controls[2] = create_controller(init_rect(331, 63, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.obj[my_menu->env->scene.last_obj].color.z);
     more_controler_settings(&my_menu->controls[2], 1.0, 0.0);
     controller_settings(&my_menu->controls[2], renderer, 0.1);
 
-    my_menu->controls[3] = create_controller(init_rect(3, 150, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].emission.x);
-    more_controler_settings(&my_menu->controls[3], 1.0, 0.0);
-    controller_settings(&my_menu->controls[3], renderer, 0.1);
+    my_menu->controls[3] = create_controller(init_rect(3, 150, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.obj[my_menu->env->scene.last_obj].emission.x);
+    more_controler_settings(&my_menu->controls[3], 100.0, 0.0);
+    controller_settings(&my_menu->controls[3], renderer, 1.0);
 
-    my_menu->controls[4] = create_controller(init_rect(166, 150, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].emission.y);
-    more_controler_settings(&my_menu->controls[4], 1.0, 0.0);
-    controller_settings(&my_menu->controls[4], renderer, 0.1);
+    my_menu->controls[4] = create_controller(init_rect(166, 150, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.obj[my_menu->env->scene.last_obj].emission.y);
+    more_controler_settings(&my_menu->controls[4], 100.0, 0.0);
+    controller_settings(&my_menu->controls[4], renderer, 1.0);
 
-    my_menu->controls[5] = create_controller(init_rect(331, 150, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].emission.z);
-    more_controler_settings(&my_menu->controls[5], 1.0, 0.0);
-    controller_settings(&my_menu->controls[5], renderer, 0.1);
+    my_menu->controls[5] = create_controller(init_rect(331, 150, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.obj[my_menu->env->scene.last_obj].emission.z);
+    more_controler_settings(&my_menu->controls[5], 100.0, 0.0);
+    controller_settings(&my_menu->controls[5], renderer, 1.0);
 
-    my_menu->controls[6] = create_controller(init_rect(166, 237, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->scene->obj[my_menu->scene->last_obj].roughness);
+    my_menu->controls[6] = create_controller(init_rect(166, 237, 160, 56), (t_gui_obj *)my_menu, "gui_textures/Button.png", &my_menu->env->scene.obj[my_menu->env->scene.last_obj].roughness);
     more_controler_settings(&my_menu->controls[6], 1, 0);
-    controller_settings(&my_menu->controls[6], renderer, 0.1);
+    controller_settings(&my_menu->controls[6], renderer, 0.01);
+    if (flag)
+        my_menu->main_button.action(my_menu, renderer);
 }
 
 void                update_menu(t_gui_menu *my_menu, char with_text, SDL_Renderer *renderer, char hide) //не трогать
@@ -318,6 +329,23 @@ void                draw_menu(SDL_Renderer *renderer, t_gui_menu *my_menu) //н�
     i = -1;
     while (++i < my_menu->numb_of_radio)
         my_menu->radio[i].draw(renderer, &my_menu->radio[i]);
+}
+
+void                we_control(t_gui_obj *gui_obj)
+{
+    t_gui_menu      *my_menu;
+
+    my_menu = (t_gui_menu *)gui_obj;
+    if (my_menu->m_type == OBJECTS_MENU)
+    {
+        my_menu->env->num_samples = 0;
+        write_scene_to_kernel(my_menu->env);
+    }
+    else if (my_menu->m_type == GLOBAL_MENU)
+    {
+        my_menu->env->num_samples = 0;
+        clSetKernelArg(my_menu->env->cl.kernel, 3, sizeof(my_menu->env->scene.cam), &my_menu->env->scene.cam);
+    }
 }
 
 t_gui_obj           *check_menu_collision(int x, int y, t_gui_obj *gui_obj) //не трогать

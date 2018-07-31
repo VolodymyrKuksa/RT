@@ -25,14 +25,12 @@ int		main(int argc, char **argv)
 	init_scene(&env.scene, argc, argv);
 	compress_texture(&env.textures);
 	env.scene.last_obj = 0;
-	printf("tx count: %d\n", env.textures.tx_count);
-	printf("tx size: %d\n", env.textures.total_size);
 	if (parse_server_data(argc, argv, &env.server))
 		run_server(&env);
 	init_seeds(&env.cl.seeds);
 	get_work_group_size(&env.cl);
 	init_win(&env.screen, 1, 1);
-	env.gui = init_gui(env.screen.renderer, &env.scene);
+	env.gui = init_gui(env.screen.renderer, &env);
 	main_loop_server(&env);
 	quit_server(&env.server);
 	destroy_gui(&env.gui, env.screen.renderer);
