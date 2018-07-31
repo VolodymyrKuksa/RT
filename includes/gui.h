@@ -70,7 +70,7 @@ typedef struct          s_label
     void                (*update)(struct s_label *my_label, char with_text, SDL_Renderer *renderer, char with_alph);
 }                       t_label;
 
-
+SDL_Color			    set_default_text_color(void);
 t_label                 create_label(unsigned short int x, unsigned short int y, char *text, t_gui_obj *father);
 void                    label_settings(int font_size, SDL_Renderer *renderer, t_label *my_label, int set_wh);
 void                    draw_label(SDL_Renderer *renderer, t_label *label);
@@ -175,8 +175,8 @@ void                    draw_radio(SDL_Renderer *renderer, t_radio_button *my_ra
 t_gui_obj               *check_radio_collision(int x, int y, t_gui_obj *gui_obj);
 void                    radio_action(void *some_shit, SDL_Renderer *renderer);
 void                    destroy_radio(t_radio_button *my_radio);
+void					radio_kek(t_radio_button *my_radio);
 /*------------------------------------------------------------*/
-
 /*------------------------------------------------------------*/
 
 #endif  
