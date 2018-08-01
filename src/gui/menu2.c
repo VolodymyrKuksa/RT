@@ -101,7 +101,7 @@ void				fill_global_menu(t_gui_menu *my_menu,
 	(t_gui_obj *)my_menu,
 	"gui_textures/Button.png", &my_menu->env->scene.cam.effect);
 	radio_settings(&my_menu->radio[0], renderer, 5, "NO EFFECT",
-	"B_N_W", "NEGATIVE", "SEPIA", "KUKSA_PEDR");
+	"B_N_W", "NEGATIVE", "SEPIA", "Cartoon");
 	my_menu->numb_of_labels = 4;
 	fill_glob_labels(my_menu, renderer);
 	my_menu->my_rect.w = 495;
@@ -129,11 +129,18 @@ void				we_control(t_gui_obj *gui_obj,
 		while (++i < my_menu->numb_of_control)
 			my_menu->controls[i].update(&my_menu->controls[i], 0, renderer, 1);
 		write_scene_to_kernel(my_menu->env);
+		if (my_menu->env->server.active)
+			push_message_for_all(my_menu->env->server.tpool,
+				my_menu->env->scene.obj, sizeof(t_obj) *
+				my_menu->env->scene.num_obj, OBJ);
 	}
 	else if (my_menu->m_type == GLOBAL_MENU)
 	{
 		my_menu->env->num_samples = 0;
 		clSetKernelArg(my_menu->env->cl.kernel, 3,
 		sizeof(my_menu->env->scene.cam), &my_menu->env->scene.cam);
+		if (my_menu->env->server.active)
+			push_message_for_all(my_menu->env->server.tpool,
+				&my_menu->env->scene.cam, sizeof(t_cam), CAM);
 	}
 }
