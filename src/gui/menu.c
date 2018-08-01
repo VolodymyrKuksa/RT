@@ -46,7 +46,7 @@ void                menu_own_set(SDL_Renderer *renderer, t_gui_menu *my_menu) //
     SDL_FreeSurface(surface);
 }
 
-void               menu_settings(t_gui_menu *my_menu, SDL_Renderer *renderer, menu_type type, t_env *env) //не трогать
+void               menu_settings(t_gui_menu *my_menu, SDL_Renderer *renderer, t_menu_type type, t_env *env) //не трогать
 {
     my_menu->env = env;
     my_menu->m_type = type;
