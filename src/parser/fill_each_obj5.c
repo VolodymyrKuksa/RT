@@ -18,6 +18,11 @@ void			fill_paraboloid_params(char *name, json_value v, t_obj *tmp)
 		tmp->primitive.paraboloid.k = (cl_float)fabs(v.u.dbl);
 	if (ft_strcmp(name, "m") == 0)
 		tmp->primitive.paraboloid.m = (cl_float)fabs(v.u.dbl);
+	if (ft_strcmp(name, "tex_scale") == 0)
+		tmp->primitive.paraboloid.tex_scale = (int)v.u.dbl;
+	if (tmp->primitive.paraboloid.tex_scale < 1 ||
+		tmp->primitive.paraboloid.tex_scale > 100)
+		error_fedun("check tex_scale of paraboloid. 1 < x < 100");
 }
 
 void			fillparaboloid(json_value *value, t_scene *scene, int i)

@@ -42,6 +42,7 @@ void			write_paraboloid(t_obj obj, int fd)
 	ft_putstr_fd("\t\"paraboloid\" :\n\t{\n\t\t", fd);
 	write_feature("m", obj.primitive.paraboloid.m, fd);
 	write_feature("k", obj.primitive.paraboloid.k, fd);
+	write_feature("tex_scale", obj.primitive.paraboloid.tex_scale, fd);
 	write_basis(obj, fd);
 	write_disrupt_tex_offs(obj, fd);
 	write_pos_color(obj.primitive.paraboloid.pos, obj.color, fd);
