@@ -39,9 +39,9 @@ t_rgb	*get_pixels(cl_float3 *px_host)
 	unsigned int	i;
 	unsigned int	size;
 
-	size = g_win_height *g_win_width;
+	size = g_win_height * g_win_width;
 	if (!(pixels = (t_rgb*)malloc(sizeof(t_rgb) * size)))
-		return NULL;
+		return (NULL);
 	i = 0;
 	while (i < size)
 	{

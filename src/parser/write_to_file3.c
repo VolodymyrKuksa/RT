@@ -32,7 +32,7 @@ void			write_torus(t_obj obj, int fd)
 	ft_putstr_fd("\t\t", fd);
 	write_basis(obj, fd);
 	write_disrupt_tex_offs(obj, fd);
-	write_feature("radius big", obj.primitive.torus.R, fd);
+	write_feature("radius big", obj.primitive.torus.big_r, fd);
 	write_feature("radius small", obj.primitive.torus.r, fd);
 	write_light(obj, fd);
 }

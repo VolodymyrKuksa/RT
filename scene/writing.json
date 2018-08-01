@@ -7,6 +7,7 @@
 		"rot x" : 0.0000,
 		"rot y" : 0.0000,
 		"rot z" : 0.0000,
+<<<<<<< HEAD
 		"effect": "NOEFFECT",
 		"f_length" : 60.0000,
 		"dust" : 0.0000,
@@ -15,6 +16,16 @@
 		"brightness" : 1.0000,
 		"filter x" : 1.0000,
 		"filter y" : 1.0000,
+=======
+		"effect": "BLACK_N_WHITE",
+		"f_length" : 60.0000,
+		"dust" : 0.0040,
+		"fov" : 90.0000,
+		"refr_coef" : 2.0000,
+		"brightness" : 1.0000,
+		"filter x" : 0.5999,
+		"filter y" : 0.5999,
+>>>>>>> f706ddbaa975cd9836eb1eaac4594f2776672dc2
 		"filter z" : 1.0000,
 		"aperture" : 0.0000
 	},
@@ -25,7 +36,11 @@
 		"pos z" : -30.0000,
 		"color x" : 0.0000,
 		"color y" : 1.0000,
+<<<<<<< HEAD
 		"color z" : 0.0000,
+=======
+		"color z" : 0.5000,
+>>>>>>> f706ddbaa975cd9836eb1eaac4594f2776672dc2
 		"tex_scale" : 20.0000,
 		"u x" : -1.0000,
 		"u y" : 0.0000,
@@ -44,11 +59,19 @@
 		"light" : {
 		"emission x" : 0.0000,
 		"emission y" : 0.0000,
+<<<<<<< HEAD
 		"emission z" : 0.0000,
 		"diffuse" : 1.0000,
 		"specular" : 0.0000,
 		"refraction" : 0.0000,
 		"roughness" : 1.0000
+=======
+		"emission z" : 1.0000,
+		"diffuse" : 0.2633,
+		"specular" : 0.7366,
+		"refraction" : 0.0000,
+		"roughness" : 0.1600
+>>>>>>> f706ddbaa975cd9836eb1eaac4594f2776672dc2
 		}
 	},
 	"plane" :

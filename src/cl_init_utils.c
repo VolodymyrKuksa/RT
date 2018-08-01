@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   build_stuff.c                                      :+:      :+:    :+:   */
+/*   cl_init_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vkuksa <vkuksa@student.unit.ua>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/07/31 19:27:00 by vkuksa            #+#    #+#             */
-/*   Updated: 2018/07/31 19:27:00 by vkuksa           ###   ########.fr       */
+/*   Created: 2018/08/01 10:58:00 by vkuksa            #+#    #+#             */
+/*   Updated: 2018/08/01 10:58:00 by vkuksa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ void	print_log(t_cldata *cl)
 	size_t	size;
 
 	clGetProgramBuildInfo(cl->program, cl->dev_id, CL_PROGRAM_BUILD_LOG, 0, 0,
-						  &size);
+		&size);
 	build_log = (char*)malloc(sizeof(char) * size);
 	clGetProgramBuildInfo(cl->program, cl->dev_id, CL_PROGRAM_BUILD_LOG, size,
-						  build_log, 0);
+		build_log, 0);
 	write(1, build_log, ft_strlen(build_log));
 	exit(EXIT_FAILURE);
 }

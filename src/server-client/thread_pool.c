@@ -51,6 +51,7 @@ void		tpool_execute_logic(t_thread *this)
 {
 	time_t			t;
 
+	put_host_log(this->client_hostname, "connected to server");
 	send_starting_data(this);
 	t = time(NULL);
 	while (this->status == BUSY)

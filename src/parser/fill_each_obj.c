@@ -44,8 +44,8 @@ void			fill_torus_params(char *name, json_value v, t_obj *tmp)
 	if (ft_strcmp(name, "radius small") == 0)
 		tmp->primitive.torus.r = (cl_float)v.u.dbl;
 	if (ft_strcmp(name, "radius big") == 0)
-		tmp->primitive.torus.R = (cl_float)v.u.dbl;
-	if (tmp->primitive.torus.R < 0.5f)
+		tmp->primitive.torus.big_r = (cl_float)v.u.dbl;
+	if (tmp->primitive.torus.big_r < 0.5f)
 		error_fedun("torus big radius must be bigger 0.5");
 }
 
@@ -70,7 +70,7 @@ void			filltorus(json_value *value, t_scene *scene, int i)
 	init_rotate(&(tmp.basis), rot);
 	minus_camera(&(tmp.primitive.torus.pos), scene->cam.pos);
 	check_basis(&tmp);
-	if ((tmp.primitive.torus.R <= 0) || (tmp.primitive.torus.r <= 0))
+	if ((tmp.primitive.torus.big_r <= 0) || (tmp.primitive.torus.r <= 0))
 		error_fedun("radius of torus is bad");
 	scene->obj[scene->cur_obj++] = tmp;
 }

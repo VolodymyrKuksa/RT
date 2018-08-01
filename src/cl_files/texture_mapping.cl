@@ -132,7 +132,7 @@ void	texture_torus(t_obj *torus, float3 hitpint, float2 *coord)
 	float	phi = acos(projected.x) / PI_2;
 	phi = hitpint.z > 0 ? 1.f - phi : phi;
 
-	float3	cent = projected * torus->primitive.torus.R;
+	float3	cent = projected * torus->primitive.torus.big_r;
 	float3	to_pt = normalize(hitpint - cent);
 	float3	to_cent = -projected;
 

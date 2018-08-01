@@ -26,13 +26,6 @@ typedef struct		s_txdata
 	unsigned int	start;
 }					t_txdata;
 
-typedef struct		s_texture
-{
-	__global t_rgb		*tx;
-	__global t_txdata	*txdata;
-	int					tx_count;
-}					t_texture;
-
 enum				e_effects
 {
 	NOEFFECT,
@@ -72,11 +65,11 @@ typedef struct		s_ray
 
 typedef struct		s_quad
 {
-	float a;
-	float b;
-	float c;
-	float d;
-	float res;
+	float			a;
+	float			b;
+	float			c;
+	float			d;
+	float			res;
 }					t_quad;
 
 typedef enum		e_obj_type
@@ -117,30 +110,30 @@ typedef struct		s_cone
 {
 	__float3	pos;
 	float		tng;
-	float 		m1;
-	float 		m2;
+	float		m1;
+	float		m2;
 	float		tex_scale;
 }					t_cone;
 
 typedef struct		s_torus
 {
 	__float3	pos;
-	float		R;
+	float		big_r;
 	float		r;
 }					t_torus;
 
 typedef struct		s_disk
 {
 	__float3	pos;
-	float	r;
+	float		r;
 	int			related;
 }					t_disk;
 
 typedef struct		s_rectangle
 {
-    __float3	pos;
-    float		h;
-    float		w;
+	__float3	pos;
+	float		h;
+	float		w;
 	float		tex_scale;
 }					t_rectangle;
 
@@ -164,12 +157,12 @@ typedef struct		s_triangle
 typedef struct		s_paraboloid
 {
 	__float3	pos;
-	float 		k;
+	float		k;
 	float		m;
 	float		tex_scale;
 }					t_paraboloid;
 
-typedef	union		u_primitive
+typedef union		u_primitive
 {
 	t_plane			plane;
 	t_sphere		sphere;
@@ -177,13 +170,11 @@ typedef	union		u_primitive
 	t_cone			cone;
 	t_torus			torus;
 	t_disk			disk;
-    t_rectangle 	rectangle;
+	t_rectangle		rectangle;
 	t_parallelogram	parallelogram;
 	t_triangle		triangle;
-	t_paraboloid		paraboloid;
+	t_paraboloid	paraboloid;
 }					t_primitive;
-
-
 
 typedef struct		s_basis
 {

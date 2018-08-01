@@ -47,6 +47,7 @@ HEAD_FILES = rt.h rt_types.h parser.h keys.h rt_textures.h server_client.h gui.h
 
 C_FILES = cl_exec.c\
 cl_initialization.c\
+cl_init_utils.c\
 events/keyboard_events.c\
 events/movement_events.c\
 events/mouse_event.c\
@@ -94,17 +95,26 @@ server-client/tpool_client.c\
 server-client/tpool_threads.c\
 server-client/tpool_client_logic.c\
 gui/label.c\
+gui/label1.c\
 gui/button.c\
+gui/button1.c\
 gui/menu.c\
+gui/menu1.c\
+gui/menu2.c\
+gui/menu3.c\
+gui/menu4.c\
 gui/common_staff.c\
 gui/controller.c\
+gui/controller1.c\
 gui/radio.c\
+gui/radio1.c\
 gui/gui.c\
+gui/gui1.c\
 client_read_data.c\
 main_loop.c\
 handle_events.c\
 message.c\
-build_stuff.c
+
 
 C_FILES_RT = server_main.c $(C_FILES)
 

@@ -19,7 +19,7 @@ void	send_pixels(t_env *env)
 
 	size = (unsigned int)(sizeof(cl_float3) * env->cl.global_size);
 	msg = compose_message(env->cl.pixels, env->client.message_id, PIXELS,
-						  &size);
+		&size);
 	set_block(env->client.socket_fd);
 	if (write(env->client.socket_fd, msg, size) > 0)
 		ft_putendl("sent pixels");
@@ -36,7 +36,7 @@ void	handle_message(t_env *env)
 	unsigned int	size;
 
 	if (!(msg = read_message(env->client.socket_fd, &env->client.message_id,
-							 &type, &size)))
+		&type, &size)))
 		return ;
 	if (type == OBJ)
 	{

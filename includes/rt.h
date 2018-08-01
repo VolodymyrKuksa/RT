@@ -13,43 +13,7 @@
 #ifndef RT_H
 # define RT_H
 
-# include <OpenCL/opencl.h>
-# include <SDL.h>
-# include <SDL_image.h>
-# include <time.h>
-# include <fcntl.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include "libft.h"
-# include "libvec.h"
-# include "get_next_line.h"
-# include "rt_textures.h"
-# include <netinet/in.h>
-# include "server_client.h"
-# include "rt_types.h"
-# include "keys.h"
-# include "parser.h"
-# include "json.h"
-
-# ifdef CLION_BUILD
-# define KERNEL_PATH0 "../src/cl_files/kernel_source.cl"
-# define KERNEL_PATH1 "../src/cl_files/intersections_and_normals.cl"
-# define KERNEL_PATH2 "../src/cl_files/texture_mapping.cl"
-# define KERNEL_PATH3 "../src/cl_files/material.cl"
-# define KERNEL_INC_DIR "-I ../includes"
-# else
-# define KERNEL_PATH0 "src/cl_files/kernel_source.cl"
-# define KERNEL_PATH1 "src/cl_files/intersections_and_normals.cl"
-# define KERNEL_PATH2 "src/cl_files/texture_mapping.cl"
-# define KERNEL_PATH3 "src/cl_files/material.cl"
-# define KERNEL_INC_DIR "-I includes"
-# endif
-
-# define DEVICE_TYPE CL_DEVICE_TYPE_GPU
-# define CLIENT_WORK_SIZE 100
-
-# define MIN_WIN_WIDTH 500
-# define MIN_WIN_HEIGHT 500
+# include "env.h"
 
 /*
 **	returns a string with file content and writes it`s in the size variable
@@ -59,12 +23,6 @@
 int			init_win(t_scrn *screen, int server, int shown);
 void		close_sdl(t_scrn *screen);
 void		init_scene(t_scene *scene, int argc, char **argv);
-
-/*
-**	server_main.c
-*/
-
-void		init_seeds(t_seeds *s);
 
 /*
 **	main_loop.c
@@ -88,6 +46,12 @@ void		send_quit_msg(t_env *env);
 void		init_opencl(t_cldata *cl);
 void		cl_setup(t_env *e);
 void		get_work_group_size(t_cldata *cl);
+
+/*
+**	cl_init_utils.c
+*/
+
+void		print_log(t_cldata *cl);
 void		init_defaults(t_env *env);
 void		init_seeds(t_seeds *s);
 void		print_log(t_cldata *cl);
@@ -198,21 +162,13 @@ void		set_block(int fd);
 **	client_read_data.c
 */
 
-void	read_obj(t_env *env, void *msg, unsigned int size);
-void	read_scene(t_env *env);
-
-/*
-**	write_ppm.c
-*/
-
-int			write_ppm(char *filename, cl_float3 *pixels);
+void		read_obj(t_env *env, void *msg, unsigned int size);
+void		read_scene(t_env *env);
 
 /*
 **	write_png.c
 */
 
 void		write_png(t_env *env);
-
-t_obj	*find_mouse_intersect(int x, int y, t_env *env);
 
 #endif

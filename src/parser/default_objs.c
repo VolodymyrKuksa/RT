@@ -119,7 +119,7 @@ t_obj			default_torus(void)
 	tmp.basis.w = (cl_float3){{0.0, 0.0, 1.0}};
 	tmp.primitive.torus.pos = (cl_float3){{-5.0f, 60, -5.0f}};
 	tmp.primitive.torus.r = 40.f;
-	tmp.primitive.torus.R = 60.f;
+	tmp.primitive.torus.big_r = 60.f;
 	tmp.color = (cl_float3){{1.0, 1.0, 1.0}};
 	tmp.emission = (cl_float3){{0.0, 0.0, 0.0}};
 	tmp.roughness = 1.f;

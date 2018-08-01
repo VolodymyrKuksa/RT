@@ -17,7 +17,7 @@ void	handle_mousebuttondown(SDL_Event *e, t_env *env, t_gui_obj **temp)
 	env->gui.mouse->x = e->button.x;
 	env->gui.mouse->y = e->button.y;
 	*temp = env->gui.collision(e->button.x, e->button.y,
-							   (t_gui_obj *)&env->gui);
+		(t_gui_obj *)&env->gui);
 	if (!(*temp))
 	{
 		get_mouse_intersection(env, *e);
@@ -41,7 +41,7 @@ void	handle_mousemotion(SDL_Event *e, t_env *env, t_gui_obj *temp)
 void	handle_mousebuttonup(SDL_Event *e, t_env *env, t_gui_obj **temp)
 {
 	if (*temp == env->gui.collision(e->button.x, e->button.y,
-									(t_gui_obj *)&env->gui) && *temp)
+		(t_gui_obj *)&env->gui) && *temp)
 	{
 		if ((*temp)->type == 0)
 		{
