@@ -82,6 +82,7 @@ t_obj			default_paraboloid(void)
 	tmp.mater_tex_id = -1;
 	tmp.tex_offs = (cl_float2){{0.f, 0.f}};
 	tmp.col_disrupt = NODISRUPT;
+	tmp.primitive.paraboloid.tex_scale = 20.f;
 	return (tmp);
 }
 

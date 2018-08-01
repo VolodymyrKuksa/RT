@@ -54,6 +54,7 @@ void		get_work_group_size(t_cldata *cl);
 void		print_log(t_cldata *cl);
 void		init_defaults(t_env *env);
 void		init_seeds(t_seeds *s);
+void		print_log(t_cldata *cl);
 
 /*
 ** cl_exec.c

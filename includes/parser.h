@@ -25,6 +25,18 @@
 # define LENGTH(a) sqrt(a.x * a.x + a.y * a.y + a.z * a.z)
 # define SUKA(x, y) ((x > y) ? x : y)
 
+void			print_scene(t_scene *scene);
+void			print_plane(t_obj obj);
+void			print_cone(t_obj obj);
+void			print_cylinder(t_obj obj);
+void			print_sphere(t_obj obj);
+void			print_torus(t_obj obj);
+void			print_rectangle(t_obj obj);
+void			print_disk(t_obj obj);
+void			print_ellipse(t_obj obj);
+void			print_triangle(t_obj obj);
+void			print_parallelogram(t_obj obj);
+
 t_obj			default_parallelogram(void);
 t_obj			default_sphere(void);
 char			*read_file(int fd, size_t *size);

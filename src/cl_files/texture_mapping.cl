@@ -190,7 +190,7 @@ void	texture_paraboloid(t_obj *p, float3 hitpoint, float2 *coord)
 	float2	tmp = normalize((float2)(hitpoint.x, hitpoint.z));
 	float	phi = acos(tmp.x) / PI_2;
 	phi = tmp.y > 0 ? 1.f - phi : phi;
-	hitpoint /= p->primitive.paraboloid.m;
+	hitpoint /= p->primitive.paraboloid.tex_scale;
 	coord->x = -phi;
 	coord->y = hitpoint.y;
 }

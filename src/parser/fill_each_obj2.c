@@ -82,7 +82,7 @@ void			fill_cylind_hats(t_scene *scene, t_obj tmp)
 	ob1.primitive.disk.related = scene->cur_obj - 1;
 	ob2 = ob1;
 	ob1.primitive.disk.pos = tmp.primitive.cylinder.pos;
-	ob1.basis.u = (cl_float3){{-ob1.basis.u.x, -ob1.basis.u.y, ob1.basis.u.z}};
+	ob1.basis.u = (cl_float3){{-ob1.basis.u.x, -ob1.basis.u.y, -ob1.basis.u.z}};
 	ob2.primitive.disk.pos = tmp.primitive.cylinder.pos;
 	ob2.primitive.disk.pos.x += tmp.basis.u.x * tmp.primitive.cylinder.h;
 	ob2.primitive.disk.pos.y += tmp.basis.u.y * tmp.primitive.cylinder.h;

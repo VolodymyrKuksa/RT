@@ -258,19 +258,19 @@
 	  "pos x": 0.0,
 	  "pos y": 0.0,
 	  "pos z": -30.0,
-	  "m": 20.0,
-	  "k": 7.0,
+	  "h": 20000000.0,
+		"k": 7.0,
 	  "color x": 0.9,
 	  "color y": 0.9,
 	  "color z": 1.0,
-	  "texture" : "textures/helper.jpg",
+		"texture" : "textures/helper.jpg",
 	  "light": {
-		"emission x": 0.0,
-		"emission y": 0.0,
+		"emission x": 1.0,
+		"emission y": 1.0,
 		"emission z": 0.0,
 		"roughness": 0.0,
-		"diffuse": 1.0,
-		"specular": 0.0,
+		"diffuse": 0.0,
+		"specular": 5.0,
 		"refraction": 0.0
 	  }
 	}
