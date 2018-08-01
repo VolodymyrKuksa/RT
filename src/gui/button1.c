@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gui.h"
+#include "rt.h"
 
 extern unsigned int g_win_width;
 extern unsigned int g_win_height;
@@ -48,6 +48,8 @@ void			button_settings(SDL_Renderer *renderer, t_button *my_button)
 	SDL_Surface *surface;
 
 	surface = IMG_Load(my_button->source);
+	if (!surface)
+		put_error(my_button->source);
 	SDL_SetColorKey(surface, SDL_TRUE,
 		SDL_MapRGB(surface->format, 0xFF, 0xFF, 0xFF));
 	if (my_button->texture)
