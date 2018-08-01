@@ -86,7 +86,7 @@ void		delete_message(t_message_queue **message)
 		free((*message)->message);
 	free(*message);
 	*message = tmp;
-	write(1,"message entry deleted from queue\n", 33);
+	write(1, "message entry deleted from queue\n", 33);
 }
 
 int			push_message_for_all(t_tpool *tpool, void *message,

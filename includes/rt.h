@@ -61,12 +61,6 @@ void		close_sdl(t_scrn *screen);
 void		init_scene(t_scene *scene, int argc, char **argv);
 
 /*
-**	server_main.c
-*/
-
-void		init_seeds(t_seeds *s);
-
-/*
 **	main_loop.c
 */
 
@@ -88,7 +82,14 @@ void		send_quit_msg(t_env *env);
 void		init_opencl(t_cldata *cl);
 void		cl_setup(t_env *e);
 void		get_work_group_size(t_cldata *cl);
+
+/*
+**	cl_init_utils.c
+*/
+
+void		print_log(t_cldata *cl);
 void		init_defaults(t_env *env);
+void		init_seeds(t_seeds *s);
 
 /*
 ** cl_exec.c

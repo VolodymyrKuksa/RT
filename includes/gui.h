@@ -78,6 +78,7 @@ void					draw_label(SDL_Renderer *renderer, t_label *label);
 void					update_label(t_label *my_label, char with_text,
 							SDL_Renderer *renderer, char with_alph);
 void					destroy_label(t_label *my_label);
+SDL_Color				set_default_text_color(void);
 
 typedef struct			s_button
 {
@@ -193,5 +194,6 @@ t_gui_obj				*check_radio_collision(int x, int y,
 							t_gui_obj *gui_obj);
 void					radio_action(void *some_shit, SDL_Renderer *renderer);
 void					destroy_radio(t_radio_button *my_radio);
+void					radio_kek(t_radio_button *my_radio);
 
 #endif

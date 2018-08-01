@@ -425,6 +425,10 @@ t_gui_obj				*check_gui_collision(int x, int y, t_gui_obj *gui_obj);
 void					update_gui(t_gui *my_gui, SDL_Renderer *renderer);
 void					super_duper(t_gui *my_gui, SDL_Renderer *renderer);
 void					destroy_gui(t_gui *my_gui, SDL_Renderer *renderer);
+void					nm(t_obj *obj);
+void					fill_buttons(t_gui_menu *my_menu, SDL_Renderer *renderer);
+void					fill_buttons_one(t_gui_menu *my_menu,
+						SDL_Renderer *renderer);
 
 typedef struct		s_env
 {
