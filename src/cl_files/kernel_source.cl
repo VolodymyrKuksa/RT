@@ -1,6 +1,12 @@
 
-
 #include "kernel.h"
+
+typedef struct		s_texture
+{
+	__global t_rgb		*tx;
+	__global t_txdata	*txdata;
+	int					tx_count;
+}					t_texture;
 
 __constant float EPSILON = 0.001;
 __constant float PI = 3.14159265359f;

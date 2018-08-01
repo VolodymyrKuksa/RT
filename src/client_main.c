@@ -67,6 +67,8 @@ int		main(int argc, char **argv)
 	env.scene.num_obj = 0;
 	env.textures.tx = NULL;
 	read_scene(&env);
+	ft_putstr("connected to ");
+	ft_putendl(argv[1]);
 	set_nonblock(STDIN_FILENO);
 	init_opencl(&env.cl);
 	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);

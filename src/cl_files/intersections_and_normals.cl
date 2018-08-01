@@ -367,7 +367,7 @@ float intersection_torus(t_ray *ray, t_torus torus, __float3 t_rot)
 	__float2 solve = (__float2){-1.f, -1.f};
 	float R2, r2, Rr, dist;
 
-	Rr = torus.R + torus.r + 1;
+	Rr = torus.big_r + torus.r + 1;
 	if (!check_sphere(ray, Rr, torus.pos))
 		return (-1.f);
 	x = ray->pos - torus.pos;
@@ -376,7 +376,7 @@ float intersection_torus(t_ray *ray, t_torus torus, __float3 t_rot)
 		x += ray->dir * dist;
 	else
 		dist = 0.f;
-	R2 = torus.R * torus.R;
+	R2 = torus.big_r * torus.big_r;
 	r2 = torus.r * torus.r;
 	//ax4+bx3+cx2+dx1+e
 	//a == 1
@@ -466,7 +466,7 @@ __float3	normal_torus(__float3  hitpoint, t_torus *torus, __float3 t_rot)
 	hitpoint -= torus->pos;
 	normal = hitpoint - dot(hitpoint, t_rot) * t_rot;
 	normal = normalize(normal);
-	normal = hitpoint - normal * torus->R;
+	normal = hitpoint - normal * torus->big_r;
 	return (normalize(normal));
 }
 

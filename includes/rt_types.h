@@ -13,10 +13,9 @@
 #ifndef RT_TYPES_H
 # define RT_TYPES_H
 
-#include <stdatomic.h>
+# include <stdatomic.h>
 # include "rt_textures.h"
 # include "libvec.h"
-
 # include <stdlib.h>
 # include <pthread.h>
 # include <sys/types.h>
@@ -28,17 +27,17 @@
 # include "libft.h"
 # include "gui.h"
 
-typedef struct		s_env t_env;
+typedef struct s_env	t_env;
 
-typedef struct		s_scrn
+typedef struct			s_scrn
 {
 	SDL_Window		*window;
 	SDL_Surface		*surface;
 	SDL_Renderer	*renderer;
 	t_rgb			*surf_arr;
-}					t_scrn;
+}						t_scrn;
 
-enum				e_effects
+enum					e_effects
 {
 	NOEFFECT,
 	BLACK_N_WHITE,
@@ -47,7 +46,7 @@ enum				e_effects
 	CARTOON
 };
 
-typedef struct		s_cam
+typedef struct			s_cam
 {
 	cl_float3		pos;
 	cl_float3		dir;
@@ -65,39 +64,39 @@ typedef struct		s_cam
 	float			brightness;
 	float			refr_coef;
 	int				effect;
-}					t_cam;
+}						t_cam;
 
-typedef struct		s_seed
+typedef struct			s_seed
 {
 	uint			*seeds;
 	size_t			size;
-}					t_seeds;
+}						t_seeds;
 
-typedef struct		s_mvdata
+typedef struct			s_mvdata
 {
 	unsigned int	move_keys;
 	float			move_spd;
 	double			turn_a;
 	double			cosine_a;
 	double			sine_a;
-}					t_mvdata;
+}						t_mvdata;
 
-typedef struct		s_ray
+typedef struct			s_ray
 {
 	t_vec		pos;
 	t_vec		dir;
-}					t_ray;
+}						t_ray;
 
-typedef struct		s_quad
+typedef struct			s_quad
 {
 	float a;
 	float b;
 	float c;
 	float d;
 	float res;
-}					t_quad;
+}						t_quad;
 
-typedef enum		e_obj_type
+typedef enum			e_obj_type
 {
 	sphere,
 	plane,
@@ -109,84 +108,84 @@ typedef enum		e_obj_type
 	parallelogram,
 	triangle,
 	paraboloid
-}					t_obj_type;
+}						t_obj_type;
 
-typedef struct		s_disk
+typedef struct			s_disk
 {
 	cl_float3	pos;
 	cl_float	r;
 	int			related;
-}					t_disk;
+}						t_disk;
 
-typedef struct		s_sphere
+typedef struct			s_sphere
 {
 	cl_float3	pos;
 	cl_float	r;
-}					t_sphere;
+}						t_sphere;
 
-typedef struct		s_cylinder
+typedef struct			s_cylinder
 {
 	cl_float3	pos;
 	float		r;
 	float		h;
 	float		tex_scale;
-}					t_cylinder;
+}						t_cylinder;
 
-typedef struct		s_plane
+typedef struct			s_plane
 {
 	cl_float3	pos;
 	float		tex_scale;
-}					t_plane;
+}						t_plane;
 
-typedef struct		s_cone
+typedef struct			s_cone
 {
 	cl_float3	pos;
 	float		tng;
 	float		m1;
 	float		m2;
 	float		tex_scale;
-}					t_cone;
+}						t_cone;
 
-typedef struct		s_torus
+typedef struct			s_torus
 {
 	cl_float3	pos;
-	float		R;
+	float		big_r;
 	float		r;
-}					t_torus;
+}						t_torus;
 
-typedef struct		s_rectangle
+typedef struct			s_rectangle
 {
 	cl_float3	pos;
 	float		h;
 	float		w;
 	float		tex_scale;
-}					t_rectangle;
+}						t_rectangle;
 
-typedef struct		s_parallelogram
+typedef struct			s_parallelogram
 {
 	cl_float3	pos;
 	float		h;
 	float		w;
 	float		l;
 	float		tex_scale;
-}					t_parallelogram;
+}						t_parallelogram;
 
-typedef struct		s_triangle
+typedef struct			s_triangle
 {
 	cl_float3	d1;
 	cl_float3	d2;
 	cl_float3	d3;
 	float		tex_scale;
-}					t_triangle;
+}						t_triangle;
 
-typedef struct		s_paraboloid
+typedef struct			s_paraboloid
 {
 	cl_float3	pos;
-	float 		k;
-	float 		m;
-}					t_paraboloid;
+	float		k;
+	float		m;
+}						t_paraboloid;
 
-typedef	union		u_primitive
+typedef	union			u_primitive
 {
 	t_plane			plane;
 	t_sphere		sphere;
@@ -197,17 +196,17 @@ typedef	union		u_primitive
 	t_rectangle		rectangle;
 	t_parallelogram	parallelogram;
 	t_triangle		triangle;
-	t_paraboloid		paraboloid;
-}					t_primitive;
+	t_paraboloid	paraboloid;
+}						t_primitive;
 
-typedef struct		s_basis
+typedef struct			s_basis
 {
 	cl_float3		u;
 	cl_float3		v;
 	cl_float3		w;
-}					t_basis;
+}						t_basis;
 
-enum				e_col_disrupt
+enum					e_col_disrupt
 {
 	NODISRUPT,
 	CHESS,
@@ -219,7 +218,7 @@ enum				e_col_disrupt
 	PERLIN_BLUE
 };
 
-typedef struct		s_object
+typedef struct			s_object
 {
 	t_obj_type	type;
 	t_primitive	primitive;
@@ -234,19 +233,19 @@ typedef struct		s_object
 	cl_float2	tex_offs;
 	int			col_disrupt;
 	int			mater_tex_id;
-	cl_float3   rot;
-}					t_obj;
+	cl_float3	rot;
+}						t_obj;
 
-typedef struct		s_scene
+typedef struct			s_scene
 {
 	int				num_obj;
 	t_obj			*obj;
 	t_cam			cam;
 	int				last_obj;
 	int				cur_obj;
-}					t_scene;
+}						t_scene;
 
-typedef struct		s_cldata
+typedef struct			s_cldata
 {
 	cl_device_id		dev_id;
 	cl_context			context;
@@ -272,9 +271,9 @@ typedef struct		s_cldata
 	cl_mem				id_gpu;
 
 	t_seeds				seeds;
-}					t_cldata;
+}						t_cldata;
 
-typedef struct		s_client
+typedef struct			s_client
 {
 	int					active;
 	int					visual;
@@ -283,34 +282,34 @@ typedef struct		s_client
 	struct hostent		*server;
 	struct sockaddr_in	server_addr;
 	atomic_int			message_id;
-}					t_client;
+}						t_client;
 
-enum				e_status
+enum					e_status
 {
 	BUSY,
 	FREE
 };
 
-enum				e_message
+enum					e_message
 {
-	STRING =     0b0,
-	OBJ =        0b1,
-	CAM =        0b10,
-	TEXTURES =   0b100,
-	TEX_DATA =   0b1000,
-	PIXELS =     0b10000,
-	WND_SIZE =   0b100000,
+	STRING = 0b0,
+	OBJ = 0b1,
+	CAM = 0b10,
+	TEXTURES = 0b100,
+	TEX_DATA = 0b1000,
+	PIXELS = 0b10000,
+	WND_SIZE = 0b100000,
 	CONNECTION = 0b1000000,
-	QUIT =       0b10000000
+	QUIT = 0b10000000
 };
 
-typedef struct		s_client_queue
+typedef struct			s_client_queue
 {
 	int						client_fd;
 	struct s_client_queue	*next;
-}					t_client_queue;
+}						t_client_queue;
 
-typedef struct		s_message_queue
+typedef struct			s_message_queue
 {
 	enum e_message			type;
 	unsigned int			size;
@@ -318,9 +317,9 @@ typedef struct		s_message_queue
 	int						*destinations;
 	size_t					dest_size;
 	struct s_message_queue	*next;
-}					t_message_queue;
+}						t_message_queue;
 
-typedef struct		s_thread
+typedef struct			s_thread
 {
 	int				thread_id;
 	pthread_t		pid;
@@ -333,9 +332,9 @@ typedef struct		s_thread
 	t_message_queue	**message_queue;
 	pthread_mutex_t	*message_queue_lock;
 	t_env			*env;
-}					t_thread;
+}						t_thread;
 
-typedef struct		s_tpool
+typedef struct			s_tpool
 {
 	unsigned int	total_threads;
 	t_thread		*threads;
@@ -344,9 +343,9 @@ typedef struct		s_tpool
 	t_message_queue	*message_queue;
 	pthread_mutex_t	message_queue_lock;
 	t_env			*env;
-}					t_tpool;
+}						t_tpool;
 
-typedef struct		s_server
+typedef struct			s_server
 {
 	atomic_int			active;
 	pthread_t			pid;
@@ -356,9 +355,8 @@ typedef struct		s_server
 	unsigned int		num_threads;
 	t_tpool				*tpool;
 	atomic_int			message_id;
-}					t_server;
+}						t_server;
 
-/*--------------------------Menu------------------------------*/
 typedef struct			s_gui_menu
 {
 	float				x;
@@ -381,25 +379,37 @@ typedef struct			s_gui_menu
 	t_val_control		*controls;
 	t_label				*labels;
 
-	void				(*draw)(SDL_Renderer *renderer, struct s_gui_menu *my_radio);
-	void				(*update)(struct s_gui_menu *my_menu, char with_text, SDL_Renderer *renderer, char hide);
+	void				(*draw)(SDL_Renderer *renderer,
+							struct s_gui_menu *my_radio);
+	void				(*update)(struct s_gui_menu *my_menu, char with_text,
+							SDL_Renderer *renderer, char hide);
 	t_gui_obj			*(*collision)(int x, int y, t_gui_obj *gui_obj);
 }						t_gui_menu;
 
 t_gui_menu				create_menu(int x, int y, char *text, t_mouse *mouse);
-void					menu_own_set(SDL_Renderer *renderer, t_gui_menu *my_menu);
-void					menu_settings(t_gui_menu *my_menu, SDL_Renderer *renderer, t_menu_type type, t_env *env);
-void					unhide_objects_menu(void *some_shit, SDL_Renderer *renderer);
-void					unhide_global_menu(void  *some_shit, SDL_Renderer *renderer);
-void					fill_global_menu(t_gui_menu *my_menu, SDL_Renderer *renderer);
-void					super_update(t_gui_menu *my_menu, SDL_Renderer *renderer);
-void					fill_objects_menu(t_gui_menu *my_menu, SDL_Renderer *renderer);
-void					update_menu(t_gui_menu *my_menu, char with_text, SDL_Renderer *renderer, char hide);
+void					menu_own_set(SDL_Renderer *renderer,
+							t_gui_menu *my_menu);
+void					menu_settings(t_gui_menu *my_menu,
+							SDL_Renderer *renderer, t_menu_type type,
+							t_env *env);
+void					unhide_objects_menu(void *some_shit,
+							SDL_Renderer *renderer);
+void					unhide_global_menu(void *some_shit,
+							SDL_Renderer *renderer);
+void					fill_global_menu(t_gui_menu *my_menu,
+							SDL_Renderer *renderer);
+void					super_update(t_gui_menu *my_menu,
+							SDL_Renderer *renderer);
+void					fill_objects_menu(t_gui_menu *my_menu,
+							SDL_Renderer *renderer);
+void					update_menu(t_gui_menu *my_menu, char with_text,
+							SDL_Renderer *renderer, char hide);
 void					draw_menu(SDL_Renderer *renderer, t_gui_menu *my_menu);
 t_gui_obj				*check_menu_collision(int x, int y, t_gui_obj *gui_obj);
 void					hide_menu(void *some_shit, SDL_Renderer *renderer);
 void					menu_action(void *some_shit, SDL_Renderer *renderer);
-void					destroy_menu(t_gui_menu *my_menu, SDL_Renderer *renderer);
+void					destroy_menu(t_gui_menu *my_menu,
+							SDL_Renderer *renderer);
 void					we_control(t_gui_obj *gui_obj, SDL_Renderer *renderer);
 
 typedef struct			s_gui
@@ -426,21 +436,9 @@ void					update_gui(t_gui *my_gui, SDL_Renderer *renderer);
 void					super_duper(t_gui *my_gui, SDL_Renderer *renderer);
 void					destroy_gui(t_gui *my_gui, SDL_Renderer *renderer);
 void					nm(t_obj *obj);
-void					fill_buttons(t_gui_menu *my_menu, SDL_Renderer *renderer);
+void					fill_buttons(t_gui_menu *my_menu,
+							SDL_Renderer *renderer);
 void					fill_buttons_one(t_gui_menu *my_menu,
 						SDL_Renderer *renderer);
-
-typedef struct		s_env
-{
-	t_cldata			cl;
-	t_gui				gui;
-	t_scrn				screen;
-	t_scene				scene;
-	t_mvdata			mv_data;
-	t_txgpu				textures;
-	t_server			server;
-	t_client			client;
-	unsigned int		num_samples;
-}					t_env;
 
 #endif
