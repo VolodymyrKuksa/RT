@@ -166,6 +166,7 @@ typedef struct		s_paraboloid
 	__float3	pos;
 	float 		k;
 	float		m;
+	float		tex_scale;
 }					t_paraboloid;
 
 typedef	union		u_primitive

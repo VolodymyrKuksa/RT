@@ -184,6 +184,7 @@ typedef struct		s_paraboloid
 	cl_float3	pos;
 	float 		k;
 	float 		m;
+	float		tex_scale;
 }					t_paraboloid;
 
 typedef	union		u_primitive

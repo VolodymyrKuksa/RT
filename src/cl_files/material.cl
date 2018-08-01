@@ -124,6 +124,8 @@ float3		get_point_col(t_obj *hitobj, t_texture texture, float2 coord)
 	float3	res;
 
 	res = hitobj->color;
+//	if (hitobj->type == paraboloid)
+//		return (res);
 	if (hitobj->col_disrupt && hitobj->tex_id < 0)
 		res = color_disrupt(hitobj->col_disrupt, coord, hitobj->color);
 	if (hitobj->tex_id >= 0)
@@ -147,7 +149,7 @@ int	get_hitpoint_material(t_obj *hitobj,
 	material->specular = hitobj->specular;
 	material->refraction = hitobj->refraction;
 
-	if (hitobj->mater_tex_id >= 0)
+	if (hitobj->mater_tex_id >= 0)// && hitobj->type != paraboloid)
 	{
 		float3 tmp = get_texture_col_float(texture, coord.x, coord.y, hitobj->mater_tex_id);
 

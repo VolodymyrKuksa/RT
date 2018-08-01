@@ -20,7 +20,6 @@ float	intersection_paraboloid(t_ray *ray,t_paraboloid paraboloid, __float3 p_rot
 	if ((q.d = q.b * q.b - 2.f * q.a * q.c) >= 0.f)
 	{
 		q.d = sqrt(q.d);
-		q.d = q.a > 0 ? q.d : -q.d;
 		q.res = (-q.b - q.d) / q.a;
 		if (q.res > 0.f) {
 			hitpoint = q.res * ray->dir + x;
@@ -438,10 +437,6 @@ __float3	normal_cylinder(__float3  hitpoint, t_cylinder *cylinder, __float3 c_ro
 	float	t;
 	hitpoint -= cylinder->pos;
 	normal = hitpoint - dot(hitpoint, c_rot) * c_rot;
-//	t = dot(c_rot, cylinder->pos) -
-//		dot(c_rot, hitpoint);
-//	t /= dot(c_rot, c_rot);
-//	normal = hitpoint - cylinder->pos + c_rot * t;
 	return (normalize(normal));
 }
 
@@ -532,7 +527,7 @@ float3		get_normal_obj(float3 hitpoint, t_obj *hitobj)
 			n = normal_cylinder(hitpoint, &(hitobj->primitive.cylinder), hitobj->basis.u);
 			break;
 		case plane:
-			n = hitobj->basis.u;//normal_plane(hitpoint, &(hitobj->primitive.plane), hitobj->basis.u);
+			n = hitobj->basis.u;
 			break;
 		case cone:
 			n = normal_cone(hitpoint, &(hitobj->primitive.cone), hitobj->basis.u);
@@ -541,10 +536,10 @@ float3		get_normal_obj(float3 hitpoint, t_obj *hitobj)
 			n = normal_torus(hitpoint, &(hitobj->primitive.torus), hitobj->basis.u);
 			break;
 		case disk:
-			n = hitobj->basis.u;//normal_disk(hitpoint, &(hitobj->primitive.disk), hitobj->basis.u);
+			n = hitobj->basis.u;
 			break;
         case rectangle:
-            n = hitobj->basis.u;//normal_rectangle(hitpoint, &(hitobj->primitive.rectangle), hitobj->basis.u);
+            n = hitobj->basis.u;
 			break;
 		case parallelogram:
 			n = normal_parallelogram(hitpoint, &(hitobj->primitive.parallelogram), &(hitobj->basis));
