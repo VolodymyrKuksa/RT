@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gui.h"
+#include "rt.h"
 
 extern unsigned int g_win_width;
 extern unsigned int g_win_height;
@@ -63,6 +63,8 @@ void				label_settings(int font_size, SDL_Renderer *renderer,
 
 	my_color = set_default_text_color();
 	my_label->font = TTF_OpenFont(FONT, font_size);
+	if (!my_label->font)
+		put_error(FONT);
 	surface = TTF_RenderText_Solid(my_label->font, my_label->text, my_color);
 	my_label->texture = SDL_CreateTextureFromSurface(renderer, surface);
 	SDL_FreeSurface(surface);
