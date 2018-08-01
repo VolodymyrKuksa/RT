@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "rt.h"
-#include "gui.h"
 
 extern unsigned int g_win_width;
 extern unsigned int g_win_height;
@@ -121,11 +120,10 @@ void				we_control(t_gui_obj *gui_obj,
 	int				i;
 
 	my_menu = (t_gui_menu *)gui_obj;
-	if (my_menu->m_type == OBJECTS_MENU)
+	if (my_menu->m_type == OBJECTS_MENU && (i = -1))
 	{
 		my_menu->env->num_samples = 0;
 		nm(&my_menu->env->scene.obj[my_menu->env->scene.last_obj]);
-		i = -1;
 		while (++i < my_menu->numb_of_control)
 			my_menu->controls[i].update(&my_menu->controls[i], 0, renderer, 1);
 		write_scene_to_kernel(my_menu->env);
