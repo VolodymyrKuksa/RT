@@ -1,0 +1,96 @@
+{
+  "scene" :
+  {
+    "pos x" : 0.0,
+    "pos y" : 0.0,
+    "pos z" : 0.0,
+    "rot x" : 0.0,
+    "f_length" : 60.0,
+    "dust" : 0.0,
+    "fov" : 90.0,
+    "aperture" : 0.0
+  },
+  "torus" : {
+    "pos x": 0.0,
+    "pos y": 100.0,
+    "pos z": -70.0,
+    "color x": 1.0,
+    "color y": 1.0,
+    "color z": 1.0,
+    "rot x": 0.0,
+    "rot y": 0.0,
+    "rot z": 0.0,
+    "radius big": 30.0,
+    "radius small": 10.0,
+    "light": {
+      "emission x": 2.0,
+      "emission y": 2.0,
+      "emission z": 2.0,
+      "roughness": 0.0,
+      "diffuse": 1.0,
+      "specular": 0.0,
+      "refraction": 0.0
+    }
+  },
+  "plane" :
+  {
+    "pos x" : 0.0,
+    "pos y" : -20.0,
+    "pos z" : 0.0,
+    "rot x" : 0.0,
+    "rot y" : 0.0,
+    "rot z" : 0.0,
+    "color x" : 1.0,
+    "color y" : 1.0,
+    "color z" : 1.0,
+    "texture" : "textures/helper2.png",
+    "light" : {
+      "diffuse" : 1.0,
+      "emission z" : 0.0
+    }
+  },
+  "cylinder" :
+  {
+    "pos x" : 0.0,
+    "pos y" : -20.0,
+    "pos z" : -50.0,
+    "color x" : 1.0,
+    "color y" : 1.0,
+    "color z" : 1.0,
+    "rot x" : 0.0,
+    "rot y" : 0.0,
+    "rot z" : 0.0,
+    "h" : 15.0,
+    "light" : {
+      "roughness" : 0.0,
+      "diffuse" : 1.0,
+      "specular" : 0.0,
+      "refraction" : 0.0,
+      "emission x" : 0.0,
+      "emission y" : 0.0,
+      "emission z" : 0.0
+    },
+    "radius" : 2.0
+  },
+  "paralelepiped":
+  {
+    "pos x": 0.0,
+    "pos y": 0.0,
+    "pos z": -80.0,
+    "w": 7.0,
+    "h": 7.0,
+    "l": 1.0,
+    "color x": 1.0,
+    "color y": 1.0,
+    "color z": 1.0,
+    "light": {
+      "emission x": 20.0,
+      "emission y": 20.0,
+      "emission z": 20.0,
+      "roughness": 0.0,
+      "diffuse": 1.0,
+      "specular": 5.0,
+      "refraction": 0.0
+    }
+  }
+}

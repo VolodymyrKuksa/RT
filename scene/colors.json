@@ -1,0 +1,171 @@
+{
+  "scene" :
+  {
+    "pos x" : 0.0,
+    "pos y" : 50.0,
+    "pos z" : 0.0,
+    "dir y" : 0.0,
+    "dir x" : -1.0,
+    "dir z" : -1.0,
+    "rot x" : -50.0,
+    "f_length" : 70.71,
+    "dust" : 0.0,
+    "fov" : 90.0,
+    "aperture" : 0.0
+  },
+  "plane" :
+  {
+    "pos x" : 0.0,
+    "pos y" : -20.0,
+    "pos z" : 0.0,
+    "rot x" : 0.0,
+    "rot y" : 0.0,
+    "rot z" : 0.0,
+    "color x" : 1.0,
+    "color y" : 1.0,
+    "color z" : 1.0,
+    "texture" : "textures/helper2.png",
+    "light" : {
+      "diffuse" : 1.0,
+      "emission z" : 0.0
+    }
+  },
+  "paralelepiped":
+  {
+    "pos x": 0.0,
+    "pos y": -15.0,
+    "pos z": -50.0,
+    "w": 10.0,
+    "h": 5.0,
+    "l": 10.0,
+    "color x": 1.0,
+    "color y": 1.0,
+    "color z": 1.0,
+    "texture" : "textures/helper.jpg",
+    "tex_offs x" : 0.5,
+    "tex_offs y" : 0.5,
+    "light": {
+      "emission x": 0.0,
+      "emission y": 0.0,
+      "emission z": 0.0,
+      "roughness": 0.001,
+      "diffuse": 1.0,
+      "specular": 0.0,
+      "refraction": 0.0
+    }
+  },
+  "paralelepiped":
+  {
+    "pos x": -21.0,
+    "pos y": -15.0,
+    "pos z": -50.0,
+    "w": 10.0,
+    "h": 5.0,
+    "l": 10.0,
+    "color x": 1.0,
+    "color y": 1.0,
+    "color z": 1.0,
+    "texture" : "textures/helper.jpg",
+    "tex_offs x" : 0.5,
+    "tex_offs y" : 0.5,
+    "light": {
+      "emission x": 0.0,
+      "emission y": 0.0,
+      "emission z": 0.0,
+      "roughness": 0.0,
+      "diffuse": 1.0,
+      "specular": 0.0,
+      "refraction": 0.0
+    }
+  },
+  "paralelepiped":
+  {
+    "pos x": 21.0,
+    "pos y": -15.0,
+    "pos z": -50.0,
+    "w": 10.0,
+    "h": 5.0,
+    "l": 10.0,
+    "color x": 1.0,
+    "color y": 1.0,
+    "color z": 1.0,
+    "texture" : "textures/helper.jpg",
+    "tex_offs x" : 0.5,
+    "tex_offs y" : 0.5,
+    "light": {
+      "emission x": 0.0,
+      "emission y": 0.0,
+      "emission z": 0.0,
+      "roughness": 0.01,
+      "diffuse": 1.0,
+      "specular": 0.0,
+      "refraction": 0.0
+    }
+  },
+  "sphere" :
+  {
+    "pos x" : 0.0,
+    "pos y" : 0.0,
+    "pos z" : -50.0,
+    "color x" : 1.0,
+    "color y" : 1.0,
+    "color z" : 0.0,
+    "rot x" : 0.0,
+    "rot y" : 0.0,
+    "rot z" : 0.0,
+    "light" : {
+      "roughness": 0.0001,
+      "emission x" : 10.0,
+      "emission y" : 10.0,
+      "emission z" : 0.0,
+      "diffuse" : 1.0,
+      "specular" : 0.0,
+      "refraction" : 0.0
+    },
+    "radius" : 7.0
+  },
+  "sphere" :
+  {
+    "pos x" : -21.0,
+    "pos y" : 0.0,
+    "pos z" : -50.0,
+    "color x" : 1.0,
+    "color y" : 0.0,
+    "color z" : 1.0,
+    "rot x" : 0.0,
+    "rot y" : 0.0,
+    "rot z" : 0.0,
+    "light" : {
+      "roughness": 0.0,
+      "emission x" : 10.0,
+      "emission y" : 0.0,
+      "emission z" : 10.0,
+      "diffuse" : 1.0,
+      "specular" : 0.0,
+      "refraction" : 0.0
+    },
+    "radius" : 7.0
+  },
+  "sphere" :
+  {
+    "pos x" : 21.0,
+    "pos y" : 0.0,
+    "pos z" : -50.0,
+    "color x" : 0.0,
+    "color y" : 1.0,
+    "color z" : 1.0,
+    "rot x" : 0.0,
+    "rot y" : 0.0,
+    "rot z" : 0.0,
+    "light" : {
+      "roughness": 0.001,
+      "emission x" : 0.0,
+      "emission y" : 10.0,
+      "emission z" : 10.0,
+      "diffuse" : 1.0,
+      "specular" : 0.0,
+      "refraction" : 0.0
+    },
+    "radius" : 7.0
+  }
+}
