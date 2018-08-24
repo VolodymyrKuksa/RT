@@ -79,7 +79,5 @@ int		main(int argc, char **argv)
 		SDL_HideWindow(env.screen.window);
 	main_loop_client(&env);
 	close(env.client.socket_fd);
-	close_sdl(&env.screen);
-	IMG_Quit();
 	return (0);
 }
