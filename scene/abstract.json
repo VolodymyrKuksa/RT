@@ -1,0 +1,289 @@
+{
+  "scene" :
+  {
+    "pos x" : 0.0,
+    "pos y" : 0.0,
+    "pos z" : 0.0,
+    "rot x" : 0.0,
+    "f_length" : 50.0,
+    "dust" : 0.0,
+    "fov" : 90.0,
+    "aperture" : 0.0
+  },
+  "torus" : {
+    "pos x": 0.0,
+    "pos y": 20.0,
+    "pos z": -70.0,
+    "color x": 1.0,
+    "color y": 1.0,
+    "color z": 0.0,
+    "rot x": 0.0,
+    "rot y": 0.0,
+    "rot z": 0.0,
+    "radius big": 100.0,
+    "radius small": 5.0,
+    "light": {
+      "emission x": 5.0,
+      "emission y": 5.0,
+      "emission z": 0.0,
+      "roughness": 0.0,
+      "diffuse": 1.0,
+      "specular": 0.0,
+      "refraction": 0.0
+    }
+  },
+  "torus" : {
+    "pos x": 0.0,
+    "pos y": 0.0,
+    "pos z": -70.0,
+    "color x": 0.0,
+    "color y": 1.0,
+    "color z": 1.0,
+    "rot x": 0.0,
+    "rot y": 0.0,
+    "rot z": 0.0,
+    "radius big": 100.0,
+    "radius small": 5.0,
+    "light": {
+      "emission x": 0.0,
+      "emission y": 5.0,
+      "emission z": 5.0,
+      "roughness": 0.0,
+      "diffuse": 1.0,
+      "specular": 0.0,
+      "refraction": 0.0
+    }
+  },
+  "torus" : {
+    "pos x": 0.0,
+    "pos y": -20.0,
+    "pos z": -70.0,
+    "color x": 1.0,
+    "color y": 0.0,
+    "color z": 1.0,
+    "rot x": 0.0,
+    "rot y": 0.0,
+    "rot z": 0.0,
+    "radius big": 100.0,
+    "radius small": 5.0,
+    "light": {
+      "emission x": 5.0,
+      "emission y": 0.0,
+      "emission z": 5.0,
+      "roughness": 0.0,
+      "diffuse": 1.0,
+      "specular": 0.0,
+      "refraction": 0.0
+    }
+  },
+  "paralelepiped":
+  {
+    "pos x": 0.0,
+    "pos y": 0.0,
+    "pos z": -70.0,
+    "w": 10.0,
+    "h": 15.0,
+    "l": 5.0,
+    "color x": 0.5,
+    "color y": 0.5,
+    "color z": 0.5,
+    "light": {
+      "emission x": 0.0,
+      "emission y": 0.0,
+      "emission z": 0.0,
+      "roughness": 0.01,
+      "diffuse": 1.0,
+      "specular": 1.0,
+      "refraction": 0.0
+    }
+  },
+  "paralelepiped":
+  {
+    "pos x": 10.0,
+    "pos y": -10.0,
+    "pos z": -65.0,
+    "w": 7.0,
+    "h": 7.0,
+    "l": 7.0,
+    "color x": 0.5,
+    "color y": 0.5,
+    "color z": 0.5,
+    "light": {
+      "emission x": 0.0,
+      "emission y": 0.0,
+      "emission z": 0.0,
+      "roughness": 0.01,
+      "diffuse": 1.0,
+      "specular": 1.0,
+      "refraction": 0.0
+    }
+  },
+  "paralelepiped":
+  {
+    "pos x": 0.0,
+    "pos y": 0.0,
+    "pos z": -70.0,
+    "w": 4.0,
+    "h": 4.0,
+    "l": 8.0,
+    "color x": 1.0,
+    "color y": 0.0,
+    "color z": 0.0,
+    "light": {
+      "emission x": 0.0,
+      "emission y": 0.0,
+      "emission z": 0.0,
+      "roughness": 0.01,
+      "diffuse": 1.0,
+      "specular": 1.0,
+      "refraction": 0.0
+    }
+  },
+  "paralelepiped":
+  {
+    "pos x": 5.0,
+    "pos y": 7.0,
+    "pos z": -68.0,
+    "w": 8.0,
+    "h": 1.0,
+    "l": 10.0,
+    "color x": 0.5,
+    "color y": 0.5,
+    "color z": 0.5,
+    "light": {
+      "emission x": 0.0,
+      "emission y": 0.0,
+      "emission z": 0.0,
+      "roughness": 0.01,
+      "diffuse": 1.0,
+      "specular": 1.0,
+      "refraction": 0.0
+    }
+  },
+  "paralelepiped":
+  {
+    "pos x": 5.0,
+    "pos y": 10.0,
+    "pos z": -68.0,
+    "w": 8.0,
+    "h": 1.0,
+    "l": 10.0,
+    "color x": 0.5,
+    "color y": 0.5,
+    "color z": 0.5,
+    "light": {
+      "emission x": 0.0,
+      "emission y": 0.0,
+      "emission z": 0.0,
+      "roughness": 0.01,
+      "diffuse": 1.0,
+      "specular": 1.0,
+      "refraction": 0.0
+    }
+  },
+  "paralelepiped":
+  {
+    "pos x": 9.0,
+    "pos y": 3.0,
+    "pos z": -75.0,
+    "w": 5.0,
+    "h": 8.0,
+    "l": 4.0,
+    "color x": 1.0,
+    "color y": 1.0,
+    "color z": 1.0,
+    "light": {
+      "emission x": 0.0,
+      "emission y": 0.0,
+      "emission z": 0.0,
+      "roughness": 0.01,
+      "diffuse": 1.0,
+      "specular": 1.0,
+      "refraction": 0.0
+    }
+  },
+  "paralelepiped":
+  {
+    "pos x": 10.0,
+    "pos y": 4.0,
+    "pos z": -65.0,
+    "w": 1.0,
+    "h": 1.0,
+    "l": 1.0,
+    "color x": 0.5,
+    "color y": 0.5,
+    "color z": 0.5,
+    "light": {
+      "emission x": 0.0,
+      "emission y": 0.0,
+      "emission z": 0.0,
+      "roughness": 0.01,
+      "diffuse": 1.0,
+      "specular": 1.0,
+      "refraction": 0.0
+    }
+  },
+  "paralelepiped":
+  {
+    "pos x": 10.0,
+    "pos y": -2.0,
+    "pos z": -65.0,
+    "w": 4.0,
+    "h": 1.0,
+    "l": 4.0,
+    "color x": 0.5,
+    "color y": 0.5,
+    "color z": 0.5,
+    "light": {
+      "emission x": 0.0,
+      "emission y": 0.0,
+      "emission z": 0.0,
+      "roughness": 0.01,
+      "diffuse": 1.0,
+      "specular": 1.0,
+      "refraction": 0.0
+    }
+  },
+  "paralelepiped":
+  {
+    "pos x": 14.0,
+    "pos y": 0.0,
+    "pos z": -75.0,
+    "w": 0.5,
+    "h": 3.0,
+    "l": 3.0,
+    "color x": 0.0,
+    "color y": 1.0,
+    "color z": 0.0,
+    "light": {
+      "emission x": 0.0,
+      "emission y": 0.0,
+      "emission z": 0.0,
+      "roughness": 0.01,
+      "diffuse": 1.0,
+      "specular": 1.0,
+      "refraction": 0.0
+    }
+  },
+  "paralelepiped":
+  {
+    "pos x": 14.0,
+    "pos y": 7.0,
+    "pos z": -75.0,
+    "w": 0.5,
+    "h": 3.0,
+    "l": 3.0,
+    "color x": 0.0,
+    "color y": 1.0,
+    "color z": 0.0,
+    "light": {
+      "emission x": 0.0,
+      "emission y": 0.0,
+      "emission z": 0.0,
+      "roughness": 0.01,
+      "diffuse": 1.0,
+      "specular": 1.0,
+      "refraction": 0.0
+    }
+  }
+}
