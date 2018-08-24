@@ -30,11 +30,11 @@ This command will build executables called `RT` and `client`.
  ## Menus
  ![menu1](images/Interface1.png)  
  ![menu2](images/Interface2.png)  
- - Menues can be minimized/maximized by clicking on the button at the top right corner of each menu.  
- - Menues can be dragged with mouse.  
+ - Menus can be minimized/maximized by clicking on the button at the top right corner of each menu.  
+ - Menus can be dragged with mouse.  
  - Clicking on objects in the scene changes `OBJS MENU` focus.  
  - Click `PHOTO ICON` to save rendered picture.  
- - Click `SAVE ICON` to save current scene to `scenes/writing.json`.  
+ - Click `SAVE ICON` to save current scene to `scene/writing.json`.  
  
  ## More Renders
  ![render2](images/RT_reflections.png)  
