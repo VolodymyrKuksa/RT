@@ -19,7 +19,23 @@ This command will build executables called `RT` and `client`.
  enter `localhost` to connect to your own machine.  
  `port_number` must the port which the server (RT) listens.  
  `-v` is an optional parameter, which enables visual mode for client.  
-   
+ 
+ ## Controls
+ `WASD, QE` - rotate camera.  
+ `Arrows, LSHIFT, SPACE` - move camera.  
+ `P` - save picture.  
+ `Mousewheel` - vertical to change focal length, horizontal to change aperture size.  
+ `LMB` - change `OBJS MENU` focus.  
+ 
+ ## Menus
+ ![menu1](images/Interface1.png)  
+ ![menu2](images/Interface2.png)  
+ - Menus can be minimized/maximized by clicking on the button at the top right corner of each menu.  
+ - Menus can be dragged with mouse.  
+ - Clicking on objects in the scene changes `OBJS MENU` focus.  
+ - Click `PHOTO ICON` to save rendered picture.  
+ - Click `SAVE ICON` to save current scene to `scene/writing.json`.  
+ 
  ## More Renders
  ![render2](images/RT_reflections.png)  
  ![render3](images/RT_refraction.png)  
