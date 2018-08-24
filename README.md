@@ -27,6 +27,15 @@ This command will build executables called `RT` and `client`.
  `Mousewheel` - vertical to change focal length, horizontal to change aperture size.  
  `LMB` - change `OBJS MENU` focus.  
  
+ ## Menus
+ ![menu1](images/Interface1.png)  
+ ![menu2](images/Interface2.png)  
+ - Menues can be minimized/maximized by clicking on the button at the top right corner of each menu.  
+ - Menues can be dragged with mouse.  
+ - Clicking on objects in the scene changes `OBJS MENU` focus.  
+ - Click `PHOTO ICON` to save rendered picture.  
+ - Click `SAVE ICON` to save current scene to `scenes/writing.json`.  
+ 
  ## More Renders
  ![render2](images/RT_reflections.png)  
  ![render3](images/RT_refraction.png)  
