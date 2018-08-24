@@ -19,7 +19,14 @@ This command will build executables called `RT` and `client`.
  enter `localhost` to connect to your own machine.  
  `port_number` must the port which the server (RT) listens.  
  `-v` is an optional parameter, which enables visual mode for client.  
-   
+ 
+ ## Controls
+ `WASD, QE` - rotate camera.  
+ `Arrows, LSHIFT, SPACE` - move camera.  
+ `P` - save picture.  
+ `Mousewheel` - vertical to change focal length, horizontal to change aperture size.  
+ `LMB` - change `OBJS MENU` focus.  
+ 
  ## More Renders
  ![render2](images/RT_reflections.png)  
  ![render3](images/RT_refraction.png)  
