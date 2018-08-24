@@ -27,7 +27,7 @@ void	set_icon(t_scrn *screen)
 void	create_window(SDL_Window **window, int server, int shown)
 {
 	if (server)
-		*window = SDL_CreateWindow("CANCER RT",
+		*window = SDL_CreateWindow("RT",
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, g_win_width,
 		g_win_height, SDL_WINDOW_RESIZABLE);
 	else
