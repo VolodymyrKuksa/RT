@@ -26,6 +26,8 @@ This command will build executables called `RT` and `client`.
  ![render4](images/RT_composed_colors.png)  
  ![render5](images/RT_soft_shadow.png)  
  ![render6](images/RT_recursion.png)  
+ ![render7](images/RT_21194_samples.png)  
+  ![render8](images/RT_3256_samples.png)  
    
  ## Authors
  [vkuksa](https://github.com/VolodymyrKuksa)  
